@@ -8,8 +8,8 @@ Depends on SFML and SFGUI packages.
 
 Downloading:
 ```
-$ git clone https://github.com/mirai65536/Mazemaze.git
-$ cd Mazemaze
+$ git clone https://github.com/mirai65536/mazemaze.git
+$ cd mazemaze
 ```
 
 Building:
