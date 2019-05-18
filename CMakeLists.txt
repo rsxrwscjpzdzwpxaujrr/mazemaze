@@ -1,0 +1,57 @@
+cmake_minimum_required(VERSION 3.1)
+
+set(CMAKE_CXX_STANDARD 11)
+set(OpenGL_GL_PREFERENCE LEGACY)
+
+project(mazemaze)
+
+set(SOURCE_FILES
+    src/Chunk.cpp
+    src/Chunk.hpp
+    src/Game.cpp
+    src/Game.hpp
+    src/GraphicEngine.cpp
+    src/GraphicEngine.hpp
+    src/IRenderable.cpp
+    src/IRenderable.hpp
+    src/ITickable.cpp
+    src/ITickable.hpp
+    src/main.cpp
+    src/MainMenu.cpp
+    src/MainMenu.hpp
+    src/MenuState.cpp
+    src/MenuState.hpp
+    src/Maze.cpp
+    src/Maze.hpp
+    src/MazeRenderer.cpp
+    src/MazeRenderer.hpp
+    src/Player.cpp
+    src/Player.hpp
+    src/StarSky.cpp
+    src/StarSky.hpp
+    src/MenuStates/Empty.cpp
+    src/MenuStates/Empty.hpp
+    src/MenuStates/Main.cpp
+    src/MenuStates/Main.hpp
+    src/MenuStates/Options.cpp
+    src/MenuStates/Options.hpp
+    src/MenuStates/Pause.cpp
+    src/MenuStates/Pause.hpp
+    src/MenuStates/Win.cpp
+    src/MenuStates/Win.hpp
+    src/MenuStates/NewGame.cpp
+    src/MenuStates/NewGame.hpp)
+
+find_package(OpenGL REQUIRED)
+find_package(SFML COMPONENTS window graphics REQUIRED)
+find_package(SFGUI REQUIRED)
+
+include_directories(${SFGUI_INCLUDE_DIR})
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} ${SFGUI_LIBRARY})
+target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics)
+target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
+
+# target_compile_options(${PROJECT_NAME} PRIVATE -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-macros -Wno-exit-time-destructors -Wno-global-constructors -Wno-gnu-zero-variadic-macro-arguments -Wno-documentation -Wno-shadow -Wno-padded)

@@ -1,0 +1,112 @@
+Window {
+    BackgroundColor: #2D2D2DE0;
+}
+
+* {
+    BorderWidth: 0.0f;
+    Padding: 16.0f;
+    Spacing: 16.0f;
+    Gap: 16.0f;
+    FontSize: 30.0f;
+    FontName: data/Noto-Sans-R.ttf;
+}
+
+Button {
+    FontName: data/Noto-Sans-M.ttf;
+    Color: #DCDCDCff;
+    BackgroundColor: #3D3D3Dff;
+}
+
+Button:PRELIGHT {
+    Color: #DCDCDCff;
+    BackgroundColor: #D64937ff;
+}
+
+Button:ACTIVE {
+    Color: #3D3D3Dff;
+    BackgroundColor: #DCDCDCff;
+}
+
+CheckButton {
+    Spacing: 0.0f;
+    Padding: 0.0f;
+    BoxSize: 28.0f;
+    CheckSize: 15.0f;
+    CheckColor: #DCDCDCff;
+    BackgroundColor: #3D3D3Dff;
+}
+
+CheckButton:PRELIGHT {
+    CheckColor: #DCDCDCff;
+    BackgroundColor: #3D3D3Dff;
+}
+
+CheckButton:ACTIVE {
+    CheckColor: #DCDCDCff;
+    BackgroundColor: #3D3D3Dff;
+}
+
+Separator {
+    Color: #00000000;
+}
+
+Scrollbar {
+    StepperBackgroundColor: #3D3D3Dff;
+    StepperArrowColor: #DCDCDCff;
+    SliderColor: #3D3D3Dff;
+    TroughColor: #00000000;
+    BackgroundColor: #00000000;
+}
+
+ComboBox {
+    FontSize: 16.0f;
+    FontName: data/Noto-Sans-M.ttf;
+
+    ItemPadding: 5.0f;
+
+    ArrowColor: #DCDCDCff;
+    Color: #DCDCDCff;
+    BackgroundColor: #3D3D3Dff;
+    HighlightedColor: #D64937ff;
+}
+
+ComboBox:PRELIGHT {
+    BackgroundColor: #D64937ff;
+}
+
+ComboBox:ACTIVE {
+    BackgroundColor: #3D3D3Dff;
+}
+
+Label {
+    FontSize: 21.0f;
+}
+
+Label.win {
+    FontName: data/Noto-Sans-M.ttf;
+    FontSize: 48.0f;
+}
+
+Label.optionsGroup {
+    FontName: data/Noto-Sans-M.ttf;
+    FontSize: 30.0f;
+}
+
+Label.newGameMazeSize {
+    FontName: data/Noto-Sans-M.ttf;
+    FontSize: 25.0f;
+}
+
+Entry {
+    FontSize: 21.0f;
+    BackgroundColor: #3D3D3DFF;
+    Padding: 10.0f;
+}
+
+Box.options {
+    Gap: 10.0f;
+}
+
+*.nogap {
+    Gap: 0.0f;
+}
