@@ -72,7 +72,10 @@ Maze::generate(uint seed) {
 
     generators.push(currentGenerator);
 
-    srand(seed);
+    std::mt19937 randGen(seed);
+    std::uniform_int_distribution<> sideDistrib(0, 3);
+
+    int side;
 
     while (!done) {
         if (triedR && triedL && triedU && triedB) {
@@ -89,7 +92,9 @@ Maze::generate(uint seed) {
                 currentGenerator = generators.top();
         }
 
-        switch (rand() % 4) {
+        side = sideDistrib(randGen);
+
+        switch (side) {
             case 0:
                 if (!triedR) {
                     if (getOpened(currentGenerator.x + 2, currentGenerator.y)) {

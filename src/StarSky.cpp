@@ -55,11 +55,15 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
     drawList = glGenLists(1);
     glNewList(drawList, GL_COMPILE);
 
+    std::mt19937 randGen(0);
+    std::uniform_real_distribution<> coordInterval(-1.0, 1.0);
+    std::uniform_int_distribution<> sizeInterval(0, 11);
+
     for (int i = 0; i < starCount; i++) {
-        randX = static_cast<float>(drand48() - 0.5) * 2.0f;
-        randY = static_cast<float>(drand48() - 0.5) * 2.0f;
-        randZ = static_cast<float>(drand48() - 0.5) * 2.0f;
-        sizeRand = rand() % 12;
+        randX = coordInterval(randGen);
+        randY = coordInterval(randGen);
+        randZ = coordInterval(randGen);
+        sizeRand = sizeInterval(randGen);
 
         distance = std::sqrt(randX * randX + randY * randY + randZ * randZ);
 
