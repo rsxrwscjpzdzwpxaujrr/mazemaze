@@ -1,5 +1,5 @@
-Mazemaze 0.1
-============
+Mazemaze
+========
 Simple 3D OpenGL first-person maze game.
 
 Depends on SFML and SFGUI packages.
