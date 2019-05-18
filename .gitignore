@@ -1,0 +1,10 @@
+*
+!.gitignore
+!/CMakeLists.txt
+!/README.md
+!/COPYING
+!/screenshot.png
+!/src
+!/src/**
+!/data
+!/data/**
