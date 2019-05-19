@@ -6,19 +6,15 @@ Depends on SFML and SFGUI packages.
 
 ![](screenshot.png)
 
-Downloading:
+### Downloading and Building:
 ```
 $ git clone --recursive https://github.com/mirai65536/mazemaze.git
 $ cd mazemaze
-```
-
-Building:
-```
 $ cmake .
 $ make
 ```
 
-Running:
+### Running:
 ```
 $ ./mazemaze
 ```
