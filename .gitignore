@@ -1,5 +1,6 @@
 *
 !.gitignore
+!.gitmodules
 !/CMakeLists.txt
 !/README.md
 !/COPYING
@@ -8,3 +9,4 @@
 !/src/**
 !/data
 !/data/**
+!/sfgui

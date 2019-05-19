@@ -44,13 +44,21 @@ set(SOURCE_FILES
 
 find_package(OpenGL REQUIRED)
 find_package(SFML COMPONENTS window graphics REQUIRED)
-find_package(SFGUI REQUIRED)
+find_package(SFGUI QUIET)
+
+if (SFGUI_FOUND)
+    message(STATUS "Found SFGUI in " ${SFGUI_DIR})
+else (SFGUI_FOUND)
+    set(SFGUI_BUILD_EXAMPLES OFF CACHE BOOL "Build examples." FORCE)
+
+    add_subdirectory(sfgui)
+endif (SFGUI_FOUND)
 
 include_directories(${SFGUI_INCLUDE_DIR})
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} ${SFGUI_LIBRARY})
+target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 

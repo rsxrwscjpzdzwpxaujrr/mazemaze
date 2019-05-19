@@ -1,0 +1,3 @@
+[submodule "sfgui"]
+	path = sfgui
+	url = https://github.com/TankOs/SFGUI.git
