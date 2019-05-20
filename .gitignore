@@ -6,7 +6,8 @@
 !/COPYING
 !/screenshot.png
 !/src
-!/src/**
+!/src/**.cpp
+!/src/**.hpp
 !/data
 !/data/**
 !/sfgui
