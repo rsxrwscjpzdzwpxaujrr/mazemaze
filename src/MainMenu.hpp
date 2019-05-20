@@ -62,7 +62,7 @@ private:
     std::stack<unsigned int> stateStack;
     unsigned int state;
 
-    bool wantExit;
+    bool wantExit = false;
 
     inline void setupStarSky();
     void updateTickableAndRenderable(Game* game);
