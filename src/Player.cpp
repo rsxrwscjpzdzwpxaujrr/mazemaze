@@ -125,4 +125,16 @@ Player::getZ() const {
     return z;
 }
 
+void Player::setX(float x) {
+    Player::x = x;
+}
+
+void Player::setY(float y) {
+    Player::y = y;
+}
+
+void Player::setZ(float z) {
+    Player::z = z;
+}
+
 }

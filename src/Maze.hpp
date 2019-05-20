@@ -31,11 +31,17 @@ public:
     ~Maze();
 
     void generate(uint seed);
+
     bool getOpened(int x, int y);
     int getWidth() const;
     int getHeight() const;
+    uint getSeed() const;
     int getExitX() const;
     int getExitY() const;
+    Chunk* getChunks() const;
+    int getChunksCount() const;
+
+    void setSeed(uint seed);
 
 private:
     void setOpened(int x, int y, bool opened);

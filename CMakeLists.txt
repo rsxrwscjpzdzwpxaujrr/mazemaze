@@ -29,6 +29,10 @@ set(SOURCE_FILES
     src/Player.hpp
     src/StarSky.cpp
     src/StarSky.hpp
+    src/Saver.cpp
+    src/Saver.hpp
+    src/Loader.cpp
+    src/Loader.hpp
     src/MenuStates/Empty.cpp
     src/MenuStates/Empty.hpp
     src/MenuStates/Main.cpp

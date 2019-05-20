@@ -28,6 +28,7 @@
 namespace mazemaze {
 
 class MenuState;
+class Game;
 
 class MainMenu {
 public:
@@ -44,7 +45,8 @@ public:
     void setState(uint state, bool back = false);
     uint getState() const;
 
-    void startGame(int mazeWidth, int mazeHeight);
+    void newGame(int mazeWidth, int mazeHeight);
+    void resumeGame();
     void stopGame();
 
     void exit();
@@ -63,6 +65,7 @@ private:
     bool wantExit;
 
     inline void setupStarSky();
+    void updateTickableAndRenderable(Game* game);
 };
 
 }

@@ -31,7 +31,7 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
     startButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu, sizeEntry] {
         int mazeSize = std::stoi(sizeEntry->GetText().toWideString());
 
-        mainMenu->startGame(mazeSize, mazeSize);
+        mainMenu->newGame(mazeSize, mazeSize);
     });
 
     backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {

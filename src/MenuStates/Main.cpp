@@ -31,9 +31,13 @@ namespace mazemaze {
 namespace menu_states {
 
 inline void
-initSignals(Button::Ptr buttonStart, Button::Ptr buttonOptions, Button::Ptr buttonExit,
-            MainMenu* mainMenu) {
-    buttonStart->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
+initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr buttonOptions,
+            Button::Ptr buttonExit, MainMenu* mainMenu) {
+    buttonResume->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
+        mainMenu->resumeGame();
+    });
+
+    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
         mainMenu->setState(3);
     });
 
@@ -47,30 +51,47 @@ initSignals(Button::Ptr buttonStart, Button::Ptr buttonOptions, Button::Ptr butt
 }
 
 Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
-    auto buttonStart   = Button::Create(L"Start");
-    auto buttonOptions = Button::Create(L"Options");
-    auto buttonExit    = Button::Create(L"Exit");
-    auto frame         = Window::Create(Window::Style::BACKGROUND);
-
-    frame->Add(buttonOptions);
+    buttonResume  = Button::Create(L"Resume");
+    buttonNewGame = Button::Create(L"New Game");
+    buttonOptions = Button::Create(L"Options");
+    buttonExit    = Button::Create(L"Exit");
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
-    box->Pack(buttonStart);
-    box->Pack(buttonOptions);
-    box->Pack(buttonExit);
-
     box->SetSpacing(20.0f);
-    box->SetRequisition({300.0f, box->GetRequisition().y});
 
     desktop->Add(box);
 
-    initSignals(buttonStart, buttonOptions, buttonExit, mainMenu);
+    initSignals(buttonResume, buttonNewGame, buttonOptions, buttonExit, mainMenu);
 
-    center();
+    updateButtons(fopen("sav", "r"));
 }
 
 Main::~Main() {}
+
+void
+Main::show(bool show) {
+    MenuState::show(show);
+
+    if (show)
+        updateButtons(fopen("sav", "r"));
+}
+
+void
+Main::updateButtons(bool saveExists) {
+    box->RemoveAll();
+
+    if (saveExists)
+        box->Pack(buttonResume);
+
+    box->Pack(buttonNewGame);
+    box->Pack(buttonOptions);
+    box->Pack(buttonExit);
+
+    box->SetRequisition({300.0f, box->GetRequisition().y});
+
+    center();
+}
 
 }
 }

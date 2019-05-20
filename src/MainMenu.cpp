@@ -15,8 +15,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cmath>
-
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -24,6 +22,7 @@
 #include <SFGUI/Window.hpp>
 
 #include "Game.hpp"
+#include "Loader.hpp"
 
 #include "MenuStates/Empty.hpp"
 #include "MenuStates/Main.hpp"
@@ -120,19 +119,19 @@ MainMenu::getState() const {
 }
 
 void
-MainMenu::startGame(int mazeWidth, int mazeHeight) {
+MainMenu::newGame(int mazeWidth, int mazeHeight) {
     Game* game = new Game(this, mazeWidth, mazeHeight);
+    game->newGame();
 
-    backgroundRenderable = game;
-    backgroundTickable = game;
+    updateTickableAndRenderable(game);
+}
 
-    states.emplace_back(new menu_states::Pause(&desktop, this, game));
-    states.back()->show(false);
+void
+MainMenu::resumeGame() {
+    Loader loader("sav");
+    Game* game = loader.load(this);
 
-    states.emplace_back(new menu_states::Win(&desktop, game));
-    states.back()->show(false);
-
-    setState(2);
+    updateTickableAndRenderable(game);
 }
 
 void
@@ -169,6 +168,20 @@ MainMenu::setupStarSky() {
 
     backgroundRenderable = starSky;
     backgroundTickable = starSky;
+}
+
+void
+MainMenu::updateTickableAndRenderable(Game* game) {
+    backgroundRenderable = dynamic_cast<IRenderable*>(game);
+    backgroundTickable   = dynamic_cast<ITickable*>(game);
+
+    states.emplace_back(new menu_states::Pause(&desktop, this, game));
+    states.back()->show(false);
+
+    states.emplace_back(new menu_states::Win(&desktop, game));
+    states.back()->show(false);
+
+    setState(2);
 }
 
 }

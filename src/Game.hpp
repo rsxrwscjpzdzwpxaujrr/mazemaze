@@ -21,6 +21,7 @@
 #include "MazeRenderer.hpp"
 #include "Player.hpp"
 #include "StarSky.hpp"
+#include "Saver.hpp"
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
 
@@ -33,11 +34,15 @@ public:
     explicit Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight);
     ~Game() override;
 
+    void newGame();
+    void onLoad();
+
     void render() override;
     void tick(float deltaTime) override;
 
     void setPaused(bool paused);
     void setWon(bool won);
+    void setTime(float time);
     void setWantExit();
 
     bool isPaused() const;
@@ -46,6 +51,7 @@ public:
 
     float getTime() const;
     Maze* getMaze();
+    Player* getPlayer();
 
 private:
     Maze maze;
@@ -54,6 +60,10 @@ private:
     StarSky starSky;
 
     MainMenu* mainMenu;
+
+    Saver saver;
+    float lastSaveTime = 0;
+    const float saveInterval = 60.0f;
 
     bool paused = false;
     bool won = false;

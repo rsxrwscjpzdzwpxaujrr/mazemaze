@@ -84,6 +84,11 @@ Maze::genStep(sf::Vector2i* generator, bool tried[], int side) {
     }
 }
 
+uint
+Maze::getSeed() const {
+    return seed;
+}
+
 void
 Maze::generate(uint seed) {
     std::stack<sf::Vector2i> generators;
@@ -168,6 +173,20 @@ Maze::getExitX() const {
 int
 Maze::getExitY() const {
     return height - 2;
+}
+
+Chunk*
+Maze::getChunks() const {
+    return chunks;
+}
+
+int Maze::getChunksCount() const {
+    return chunksX * chunksY;
+}
+
+void
+Maze::setSeed(uint seed) {
+    Maze::seed = seed;
 }
 
 }

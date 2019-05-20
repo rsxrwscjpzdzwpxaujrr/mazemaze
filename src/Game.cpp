@@ -22,6 +22,8 @@
 
 #include "GraphicEngine.hpp"
 #include "MainMenu.hpp"
+#include "Saver.hpp"
+#include "Loader.hpp"
 
 #include "Game.hpp"
 
@@ -29,16 +31,24 @@ namespace mazemaze {
 
 Game::Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight) : maze(mazeWidth, mazeHeight),
                                                                 player(1.5f, 0.5f, 1.5f),
-                                                                starSky(1024, 0.0f, 1.5f, 0.7f) {
-    maze.generate(static_cast<uint>(std::time(nullptr)));
-    mazeRenderer.update(&maze);
-    setPaused(false);
-    setWon(false);
-
+                                                                starSky(1024, 0.0f, 1.5f, 0.7f),
+                                                                saver(this, "sav") {
     Game::mainMenu = mainMenu;
 }
 
 Game::~Game() = default;
+
+void Game::newGame() {
+    maze.generate(static_cast<uint>(std::time(nullptr)));
+    onLoad();
+}
+
+void Game::onLoad() {
+    lastSaveTime = time;
+    mazeRenderer.update(&maze);
+    setPaused(false);
+    setWon(false);
+}
 
 void
 Game::tick(float deltaTime) {
@@ -52,6 +62,9 @@ Game::tick(float deltaTime) {
 
     if (!(paused || won)) {
         player.tick(deltaTime, window, &maze);
+
+        if (time - lastSaveTime >= saveInterval)
+            saver.save();
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
@@ -97,9 +110,11 @@ Game::setPaused(bool paused) {
     if (Game::paused != paused) {
         Game::paused = paused;
 
-        if (paused)
+        if (paused) {
             mainMenu->setState(4);
-        else
+
+            saver.save();
+        } else
             mainMenu->backTo(2);
     }
 }
@@ -121,6 +136,11 @@ Game::setWon(bool won) {
         else
             mainMenu->backTo(2);
     }
+}
+
+void
+Game::setTime(float time) {
+    Game::time = time;
 }
 
 bool
@@ -146,6 +166,11 @@ Game::getTime() const {
 Maze*
 Game::getMaze() {
     return &maze;
+}
+
+Player*
+Game::getPlayer() {
+    return &player;
 }
 
 }

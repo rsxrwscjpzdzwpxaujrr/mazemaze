@@ -17,29 +17,24 @@
 
 #pragma once
 
-#include "../MenuState.hpp"
+#include <string>
 
 namespace mazemaze {
 
 class Game;
-class MainMenu;
+class Chunk;
 
-namespace menu_states {
-
-class Main : public MenuState {
+class Saver {
 public:
-    explicit Main(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~Main() override;
+    explicit Saver(Game* game, std::string filename);
 
-    void show(bool show) override;
-    void updateButtons(bool saveExists);
+    void save();
 
 private:
-    sfg::Button::Ptr buttonResume;
-    sfg::Button::Ptr buttonNewGame;
-    sfg::Button::Ptr buttonOptions;
-    sfg::Button::Ptr buttonExit;
+    Game* game;
+    std::string filename;
+
+    void writeChunk(std::ofstream* stream, Chunk* chunk);
 };
 
-}
 }
