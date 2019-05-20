@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <vector>
-
 #include <SFML/System/Vector2.hpp>
 
 namespace mazemaze {
@@ -48,7 +46,7 @@ private:
     uint seed;
     uint chunksX;
     uint chunksY;
-    std::vector<Chunk> chunks;
+    Chunk* chunks;
 };
 
 }

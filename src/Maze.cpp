@@ -46,12 +46,11 @@ Maze::Maze(int width, int height) {
     if (uHeight % Chunk::SIZE != 0)
         chunksY++;
 
-    for (uint i = 0; i < chunksX * chunksY; i++)
-        chunks.push_back(Chunk());
+    chunks = new Chunk[chunksX * chunksY] {Chunk()};
 }
 
 Maze::~Maze() {
-    chunks.clear();
+    delete [] chunks;
 }
 
 bool
