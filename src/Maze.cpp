@@ -36,8 +36,14 @@ Maze::Maze(int width, int height) {
     uint uWidth = static_cast<uint>(Maze::width);
     uint uHeight = static_cast<uint>(Maze::height);
 
-    chunksX = (uWidth / Chunk::SIZE + 1);
-    chunksY = (uHeight / Chunk::SIZE + 1);
+    chunksX = uWidth / Chunk::SIZE;
+    chunksY = uHeight / Chunk::SIZE;
+
+    if (uWidth % Chunk::SIZE != 0)
+        chunksX++;
+
+    if (uHeight % Chunk::SIZE != 0)
+        chunksY++;
 
     for (uint i = 0; i < chunksX * chunksY; i++)
         chunks.push_back(Chunk());
