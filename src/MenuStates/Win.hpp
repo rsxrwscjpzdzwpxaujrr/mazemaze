@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "SFGUI/Label.hpp"
+#include <SFGUI/Label.hpp>
 
 #include "../MenuState.hpp"
 

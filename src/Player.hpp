@@ -28,7 +28,7 @@ public:
     explicit Player(float x, float y, float z);
     ~Player();
 
-    void tick(float deltaTime, sf::Window *window, Maze *maze);
+    void tick(float deltaTime, sf::Window* window, Maze* maze);
 
     void setCameraRotation();
     void setCameraTranslation();

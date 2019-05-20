@@ -15,12 +15,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <SFGUI/Button.hpp>
-#include <SFGUI/Entry.hpp>
-#include <SFGUI/Label.hpp>
-#include <SFGUI/Separator.hpp>
-#include <SFGUI/Window.hpp>
-
 #include "../Game.hpp"
 #include "../MainMenu.hpp"
 

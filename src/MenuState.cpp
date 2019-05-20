@@ -21,7 +21,7 @@
 
 namespace mazemaze {
 
-MenuState::MenuState(sfg::Desktop *desktop) {
+MenuState::MenuState(sfg::Desktop* desktop) {
     MenuState::desktop = desktop;
     box = sfg::Box::Create();
 }

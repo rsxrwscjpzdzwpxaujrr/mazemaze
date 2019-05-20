@@ -15,8 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <SFGUI/Window.hpp>
-#include <SFGUI/Button.hpp>
+#include <SFGUI/Widgets.hpp>
 
 #include "../Game.hpp"
 #include "../GraphicEngine.hpp"

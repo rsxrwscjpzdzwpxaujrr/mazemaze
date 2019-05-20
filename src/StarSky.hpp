@@ -38,10 +38,10 @@ public:
 private:
     bool firstGeneration = true;
     int starCount;
-    float *starsX;
-    float *starsY;
-    float *starsZ;
-    int *starSize;
+    float* starsX;
+    float* starsY;
+    float* starsZ;
+    int* starSize;
 
     float distance = 90.0f;
 

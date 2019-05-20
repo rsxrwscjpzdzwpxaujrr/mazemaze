@@ -19,15 +19,14 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include <SFGUI/Desktop.hpp>
-#include <SFGUI/Container.hpp>
+#include <SFGUI/Widgets.hpp>
 #include <SFGUI/Box.hpp>
 
 namespace mazemaze {
 
 class MenuState {
 public:
-    explicit MenuState(sfg::Desktop *desktop);
+    explicit MenuState(sfg::Desktop* desktop);
     virtual ~MenuState();
 
     virtual void center(sf::Event event);

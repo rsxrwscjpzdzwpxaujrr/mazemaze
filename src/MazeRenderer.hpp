@@ -26,7 +26,7 @@ public:
     MazeRenderer();
     ~MazeRenderer();
 
-    void update(Maze *maze);
+    void update(Maze* maze);
     void render();
 
 private:

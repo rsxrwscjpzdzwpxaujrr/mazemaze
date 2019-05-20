@@ -18,15 +18,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
-#include <SFGUI/Button.hpp>
-#include <SFGUI/ScrolledWindow.hpp>
-#include <SFGUI/Adjustment.hpp>
-#include <SFGUI/Label.hpp>
-#include <SFGUI/CheckButton.hpp>
-#include <SFGUI/Separator.hpp>
-#include <SFGUI/ComboBox.hpp>
-#include <SFGUI/Alignment.hpp>
-#include <SFGUI/Window.hpp>
+#include <SFGUI/Widgets.hpp>
 
 #include "../MainMenu.hpp"
 #include "../GraphicEngine.hpp"
@@ -114,7 +106,7 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
     antialiasingCombo->SelectItem(0);
 }
 
-Options::Options(Desktop *desktop, MainMenu *mainMenu) :
+Options::Options(Desktop* desktop, MainMenu* mainMenu) :
                       MenuState(desktop) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());

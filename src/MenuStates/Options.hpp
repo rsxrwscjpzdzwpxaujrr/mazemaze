@@ -29,7 +29,7 @@ namespace menu_states {
 
 class Options : public MenuState {
 public:
-    explicit Options(sfg::Desktop *desktop, MainMenu *mainMenu);
+    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~Options() override;
 };
 

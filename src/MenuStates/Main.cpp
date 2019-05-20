@@ -15,8 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <SFGUI/Button.hpp>
-#include <SFGUI/Window.hpp>
+#include <SFGUI/Widgets.hpp>
 
 #include "../Game.hpp"
 #include "../MainMenu.hpp"
@@ -47,7 +46,7 @@ initSignals(Button::Ptr buttonStart, Button::Ptr buttonOptions, Button::Ptr butt
     });
 }
 
-Main::Main(Desktop* desktop, MainMenu *mainMenu) : MenuState(desktop) {
+Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
     auto buttonStart   = Button::Create(L"Start");
     auto buttonOptions = Button::Create(L"Options");
     auto buttonExit    = Button::Create(L"Exit");

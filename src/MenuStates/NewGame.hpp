@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <SFGUI/Entry.hpp>
+#include <SFGUI/Widgets.hpp>
 
 #include "../MenuState.hpp"
 
@@ -29,7 +29,7 @@ namespace menu_states {
 
 class NewGame : public MenuState {
 public:
-    explicit NewGame(sfg::Desktop *desktop, MainMenu* mainMenu);
+    explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~NewGame();
 };
 

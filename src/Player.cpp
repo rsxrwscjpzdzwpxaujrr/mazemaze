@@ -39,7 +39,7 @@ Player::~Player() {
 }
 
 void
-Player::tick(float deltaTime, sf::Window *window, Maze *maze) {
+Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     float mouseSensitivity = 0.001f;
 
     int intx = static_cast<int>(x);
