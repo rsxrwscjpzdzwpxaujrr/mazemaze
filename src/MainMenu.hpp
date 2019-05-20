@@ -40,10 +40,10 @@ public:
     void tick(float deltatime);
     void render();
     void back();
-    void backTo(uint destState);
+    void backTo(unsigned int destState);
 
-    void setState(uint state, bool back = false);
-    uint getState() const;
+    void setState(unsigned int state, bool back = false);
+    unsigned int getState() const;
 
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();
@@ -59,8 +59,8 @@ private:
     ITickable* backgroundTickable = nullptr;
 
     std::vector<MenuState*> states;
-    std::stack<uint> stateStack;
-    uint state;
+    std::stack<unsigned int> stateStack;
+    unsigned int state;
 
     bool wantExit;
 

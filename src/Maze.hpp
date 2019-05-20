@@ -23,25 +23,23 @@ namespace mazemaze {
 
 class Chunk;
 
-typedef unsigned int uint;
-
 class Maze {
 public:
     explicit Maze(int width, int height);
     ~Maze();
 
-    void generate(uint seed);
+    void generate(unsigned int seed);
 
     bool getOpened(int x, int y);
     int getWidth() const;
     int getHeight() const;
-    uint getSeed() const;
+    unsigned int getSeed() const;
     int getExitX() const;
     int getExitY() const;
     Chunk* getChunks() const;
     int getChunksCount() const;
 
-    void setSeed(uint seed);
+    void setSeed(unsigned int seed);
 
 private:
     void setOpened(int x, int y, bool opened);
@@ -49,9 +47,9 @@ private:
 
     int width;
     int height;
-    uint seed;
-    uint chunksX;
-    uint chunksY;
+    unsigned int seed;
+    unsigned int chunksX;
+    unsigned int chunksY;
     Chunk* chunks;
 };
 

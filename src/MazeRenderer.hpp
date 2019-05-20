@@ -30,7 +30,7 @@ public:
     void render();
 
 private:
-    uint drawList;
+    unsigned int drawList;
 };
 
 }

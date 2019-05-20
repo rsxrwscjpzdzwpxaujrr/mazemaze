@@ -68,7 +68,7 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
 }
 
 void
-GraphicEngine::openWindow(uint width, uint height, bool fullscreen) {
+GraphicEngine::openWindow(unsigned int width, unsigned int height, bool fullscreen) {
     sf::VideoMode videoMode = sf::VideoMode(width, height);
     GraphicEngine::openWindow(videoMode, fullscreen);
 }
@@ -125,7 +125,7 @@ GraphicEngine::setFullscreen(bool fullscreen) {
 }
 
 void
-GraphicEngine::setAntialiasing(uint antialiasing) {
+GraphicEngine::setAntialiasing(unsigned int antialiasing) {
     if (antialiasing != settings.antialiasingLevel) {
         oldWindowPos = window->getPosition();
 

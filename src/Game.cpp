@@ -39,7 +39,7 @@ Game::Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight) : maze(mazeWidth, 
 Game::~Game() = default;
 
 void Game::newGame() {
-    maze.generate(static_cast<uint>(std::time(nullptr)));
+    maze.generate(static_cast<unsigned int>(std::time(nullptr)));
     onLoad();
 }
 

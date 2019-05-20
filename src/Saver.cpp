@@ -74,9 +74,9 @@ Saver::writeChunk(std::ofstream* stream, Chunk* chunk) {
     const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
     char bytes[byteCount] {0};
 
-    for (uint i = 0; i < Chunk::SIZE; i++)
-        for (uint j = 0; j < Chunk::SIZE; j++) {
-            uint block = i * Chunk::SIZE + j;
+    for (unsigned int i = 0; i < Chunk::SIZE; i++)
+        for (unsigned int j = 0; j < Chunk::SIZE; j++) {
+            unsigned int block = i * Chunk::SIZE + j;
 
             if (chunk->getOpened(i, j))
                 bytes[block / 8] |= 1 << block % 8;

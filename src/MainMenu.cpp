@@ -51,7 +51,7 @@ MainMenu::MainMenu() {
 void
 MainMenu::handleEvent(sf::Event event) {
     if (event.type == sf::Event::Resized) {
-        for (uint i = 0; i < states.size(); i++) {
+        for (unsigned int i = 0; i < states.size(); i++) {
             states[i]->center(event);
         }
     }
@@ -79,7 +79,7 @@ MainMenu::back() {
     setState(stateStack.top(), true);
 }
 
-void MainMenu::backTo(uint destState) {
+void MainMenu::backTo(unsigned int destState) {
     while (stateStack.top() != destState) {
         stateStack.pop();
 
@@ -98,8 +98,8 @@ MainMenu::show(bool show) {
 }
 
 void
-MainMenu::setState(uint state, bool back) {
-    for (uint i = 0; i < states.size(); i++) {
+MainMenu::setState(unsigned int state, bool back) {
+    for (unsigned int i = 0; i < states.size(); i++) {
         if (i == state) {
             states[i]->show(true);
 
@@ -113,7 +113,7 @@ MainMenu::setState(uint state, bool back) {
     MainMenu::state = state;
 }
 
-uint
+unsigned int
 MainMenu::getState() const {
     return state;
 }

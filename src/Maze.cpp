@@ -34,8 +34,8 @@ Maze::Maze(int width, int height) {
     Maze::width  = width  * 2 + 1;
     Maze::height = height * 2 + 1;
 
-    uint uWidth  = static_cast<uint>(Maze::width);
-    uint uHeight = static_cast<uint>(Maze::height);
+    unsigned int uWidth  = static_cast<unsigned int>(Maze::width);
+    unsigned int uHeight = static_cast<unsigned int>(Maze::height);
 
     chunksX = uWidth  / Chunk::SIZE;
     chunksY = uHeight / Chunk::SIZE;
@@ -84,13 +84,13 @@ Maze::genStep(sf::Vector2i* generator, bool tried[], int side) {
     }
 }
 
-uint
+unsigned int
 Maze::getSeed() const {
     return seed;
 }
 
 void
-Maze::generate(uint seed) {
+Maze::generate(unsigned int seed) {
     std::stack<sf::Vector2i> generators;
     sf::Vector2i currentGenerator(1, 1);
 
@@ -136,8 +136,8 @@ Maze::getOpened(int x, int y) {
     if (x < 0 || x >= width || y < 0 || y >= height)
         return true;
 
-    uint ux = static_cast<uint>(x);
-    uint uy = static_cast<uint>(y);
+    unsigned int ux = static_cast<unsigned int>(x);
+    unsigned int uy = static_cast<unsigned int>(y);
 
     return chunks[((uy / Chunk::SIZE) * chunksY) + (ux / Chunk::SIZE)]
            .getOpened(ux % Chunk::SIZE, uy % Chunk::SIZE);
@@ -148,8 +148,8 @@ Maze::setOpened(int x, int y, bool opened) {
     if (x < 0 || x >= width || y < 0 || y >= height)
         return;
 
-    uint ux = static_cast<uint>(x);
-    uint uy = static_cast<uint>(y);
+    unsigned int ux = static_cast<unsigned int>(x);
+    unsigned int uy = static_cast<unsigned int>(y);
 
     chunks[((uy / Chunk::SIZE) * chunksY) + (ux / Chunk::SIZE)]
             .setOpened(ux % Chunk::SIZE, uy % Chunk::SIZE, opened);
@@ -185,7 +185,7 @@ int Maze::getChunksCount() const {
 }
 
 void
-Maze::setSeed(uint seed) {
+Maze::setSeed(unsigned int seed) {
     Maze::seed = seed;
 }
 

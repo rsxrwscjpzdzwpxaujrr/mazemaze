@@ -19,22 +19,20 @@
 
 namespace mazemaze {
 
-typedef unsigned int uint;
-
 class Chunk {
 public:
-    static const uint SIZE = 32;
+    static const unsigned int SIZE = 32;
 
     Chunk();
 
-    void setOpened(uint x, uint y, bool opened);
+    void setOpened(unsigned int x, unsigned int y, bool opened);
 
-    bool getOpened(uint x, uint y);
+    bool getOpened(unsigned int x, unsigned int y);
 
 private:
     bool opened[SIZE][SIZE];
 
-    bool inBound(uint i);
+    bool inBound(unsigned int i);
 };
 
 }

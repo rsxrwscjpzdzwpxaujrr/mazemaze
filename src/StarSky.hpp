@@ -22,8 +22,6 @@
 
 namespace mazemaze {
 
-typedef unsigned int uint;
-
 class StarSky : public IRenderable, public ITickable {
 public:
     explicit StarSky(int starCount, float timeSpeed, float pitch, float yaw);
@@ -52,7 +50,7 @@ private:
     float time;
     float timeSpeed;
 
-    uint drawList;
+    unsigned int drawList;
 };
 
 }

@@ -37,10 +37,10 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
         delete starSize;
     }
 
-    starsX = new float[static_cast<uint>(starCount)];
-    starsY = new float[static_cast<uint>(starCount)];
-    starsZ = new float[static_cast<uint>(starCount)];
-    starSize = new int[static_cast<uint>(starCount)];
+    starsX = new float[static_cast<unsigned int>(starCount)];
+    starsY = new float[static_cast<unsigned int>(starCount)];
+    starsZ = new float[static_cast<unsigned int>(starCount)];
+    starSize = new int[static_cast<unsigned int>(starCount)];
 
     firstGeneration = false;
 

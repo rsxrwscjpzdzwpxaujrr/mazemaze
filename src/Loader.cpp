@@ -81,9 +81,9 @@ Loader::readChunk(std::istream* stream, Chunk* chunk) {
 
     stream->read(bytes, byteCount);
 
-    for (uint i = 0; i < Chunk::SIZE; i++)
-        for (uint j = 0; j < Chunk::SIZE; j++) {
-            uint block = i * Chunk::SIZE + j;
+    for (unsigned int i = 0; i < Chunk::SIZE; i++)
+        for (unsigned int j = 0; j < Chunk::SIZE; j++) {
+            unsigned int block = i * Chunk::SIZE + j;
 
             chunk->setOpened(i, j, (bytes[block / 8] & (1 << block % 8)) != 0);
         }

@@ -20,13 +20,13 @@
 namespace mazemaze {
 
 Chunk::Chunk() {
-    for (uint i = 0; i < SIZE; i++)
-        for (uint j = 0; j < SIZE; j++)
+    for (unsigned int i = 0; i < SIZE; i++)
+        for (unsigned int j = 0; j < SIZE; j++)
             opened[j][i] = false;
 }
 
 bool
-Chunk::getOpened(uint x, uint y) {
+Chunk::getOpened(unsigned int x, unsigned int y) {
     if (inBound(x) && inBound(y))
         return opened[x][y];
     else
@@ -34,13 +34,13 @@ Chunk::getOpened(uint x, uint y) {
 }
 
 void
-Chunk::setOpened(uint x, uint y, bool opened) {
+Chunk::setOpened(unsigned int x, unsigned int y, bool opened) {
     if (inBound(x) && inBound(y))
         Chunk::opened[x][y] = opened;
 }
 
 bool
-Chunk::inBound(uint i) {
+Chunk::inBound(unsigned int i) {
     return i < SIZE;
 }
 

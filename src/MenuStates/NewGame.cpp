@@ -43,7 +43,7 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
         sf::String newText = L"";
         bool changed = false;
 
-        for (uint i = 0; i < text.getSize(); i++)
+        for (unsigned int i = 0; i < text.getSize(); i++)
             if (std::isdigit(text[i]))
                 newText = newText + text[i];
             else

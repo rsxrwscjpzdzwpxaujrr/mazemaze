@@ -70,7 +70,7 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
 
     antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([antialiasingCombo] () {
         int item = antialiasingCombo->GetSelectedItem();
-        uint antialiasing = 1;
+        unsigned int antialiasing = 1;
 
         for (int i = 0; i < item; i++)
             antialiasing *= 2;

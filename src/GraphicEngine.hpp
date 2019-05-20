@@ -23,14 +23,14 @@ namespace mazemaze {
 
 class GraphicEngine {
 public:  
-    void openWindow(uint width, uint height, bool fullscreen);
+    void openWindow(unsigned int width, unsigned int height, bool fullscreen);
     void openWindow(sf::VideoMode videoMode, bool fullscreen);
 
     void update();
     void setStates();
 
     void setFullscreen(bool fullscreen);
-    void setAntialiasing(uint antialiasing);
+    void setAntialiasing(unsigned int antialiasing);
     void setVsync(bool vsync);
 
     sf::RenderWindow* getWindow() const;
