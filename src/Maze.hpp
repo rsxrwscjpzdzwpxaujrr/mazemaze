@@ -19,6 +19,8 @@
 
 #include <vector>
 
+#include <SFML/System/Vector2.hpp>
+
 namespace mazemaze {
 
 class Chunk;
@@ -39,6 +41,7 @@ public:
 
 private:
     void setOpened(int x, int y, bool opened);
+    bool genStep(sf::Vector2i* generator, bool tried[], int side);
 
     int width;
     int height;

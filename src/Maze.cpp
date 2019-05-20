@@ -17,8 +17,9 @@
 
 #include <stack>
 #include <random>
-#include <iostream>
-#include <cmath>
+#include <stdexcept>
+
+#include <SFML/System/Vector2.hpp>
 
 #include "Chunk.hpp"
 
@@ -30,13 +31,13 @@ Maze::Maze(int width, int height) {
     if (width < 1 || height < 1)
         throw std::invalid_argument("Width and height must be 1 or bigger");
 
-    Maze::width = width * 2 + 1;
+    Maze::width  = width  * 2 + 1;
     Maze::height = height * 2 + 1;
 
-    uint uWidth = static_cast<uint>(Maze::width);
+    uint uWidth  = static_cast<uint>(Maze::width);
     uint uHeight = static_cast<uint>(Maze::height);
 
-    chunksX = uWidth / Chunk::SIZE;
+    chunksX = uWidth  / Chunk::SIZE;
     chunksY = uHeight / Chunk::SIZE;
 
     if (uWidth % Chunk::SIZE != 0)
@@ -53,142 +54,77 @@ Maze::~Maze() {
     chunks.clear();
 }
 
+bool
+Maze::genStep(sf::Vector2i* generator, bool tried[], int side) {
+    if (tried[side])
+        return false;
+
+    int x = 0;
+    int y = 0;
+
+    if (side >= 2)
+        y = side % 2 * 2 - 1;
+    else
+        x = side % 2 * 2 - 1;
+
+    if (getOpened(generator->x + x * 2, generator->y + y * 2)) {
+        tried[side] = true;
+
+        return false;
+    } else {
+        setOpened(generator->x + x,     generator->y + y,     true);
+        setOpened(generator->x + x * 2, generator->y + y * 2, true);
+
+        for (int i = 0; i < 4; i++)
+            tried[i] = false;
+
+        generator->x += x * 2;
+        generator->y += y * 2;
+
+        return true;
+    }
+}
+
 void
 Maze::generate(uint seed) {
-    struct point {
-        point(int x, int y) {
-            point::x = x;
-            point::y = y;
-        }
+    std::stack<sf::Vector2i> generators;
+    sf::Vector2i currentGenerator(1, 1);
 
-        int x;
-        int y;
-    };
-
-    std::stack<point> generators;
-    point currentGenerator = point(1, 1);
-    bool done = false;
-    bool triedR = false;
-    bool triedL = false;
-    bool triedU = false;
-    bool triedB = false;
-
-    Maze::seed = seed;
     setOpened(currentGenerator.x, currentGenerator.x, true);
-
-    generators.push(currentGenerator);
+    generators.emplace(currentGenerator);
 
     std::mt19937 randGen(seed);
     std::uniform_int_distribution<> sideDistrib(0, 3);
 
-    int side;
+    bool done = false;
+    bool tried[4] = {false};
 
     while (!done) {
-        if (triedR && triedL && triedU && triedB) {
+        int side = sideDistrib(randGen);
+
+        if (genStep(&currentGenerator, tried, side))
+            generators.emplace(currentGenerator);
+
+        bool goBack = true;
+
+        for (int i = 0; i < 4; i++)
+            goBack &= tried[i];
+
+        if (goBack) {
             generators.pop();
 
-            triedR = false;
-            triedL = false;
-            triedU = false;
-            triedB = false;
+            for (int i = 0; i < 4; i++)
+                tried[i] = false;
 
             if (generators.empty())
                 done = true;
             else
                 currentGenerator = generators.top();
         }
-
-        side = sideDistrib(randGen);
-
-        switch (side) {
-            case 0:
-                if (!triedR) {
-                    if (getOpened(currentGenerator.x + 2, currentGenerator.y)) {
-                        triedR = true;
-                        continue;
-                    }
-
-                    setOpened(currentGenerator.x + 1, currentGenerator.y, true);
-                    setOpened(currentGenerator.x + 2, currentGenerator.y, true);
-
-                    triedR = false;
-                    triedL = false;
-                    triedU = false;
-                    triedB = false;
-
-                    currentGenerator.x += 2;
-                    generators.push(currentGenerator);
-                }
-
-                break;
-
-            case 1:
-                if (!triedL) {
-                    if (getOpened(currentGenerator.x - 2, currentGenerator.y)) {
-                        triedL = true;
-                        continue;
-                    }
-
-                    setOpened(currentGenerator.x - 1, currentGenerator.y, true);
-                    setOpened(currentGenerator.x - 2, currentGenerator.y, true);
-
-                    triedR = false;
-                    triedL = false;
-                    triedU = false;
-                    triedB = false;
-
-                    currentGenerator.x -= 2;
-                    generators.push(currentGenerator);
-                }
-
-                break;
-
-            case 2:
-                if (!triedU) {
-                    if (getOpened(currentGenerator.x, currentGenerator.y + 2)) {
-                        triedU = true;
-                        continue;
-                    }
-
-                    setOpened(currentGenerator.x, currentGenerator.y + 1, true);
-                    setOpened(currentGenerator.x, currentGenerator.y + 2, true);
-
-                    triedR = false;
-                    triedL = false;
-                    triedU = false;
-                    triedB = false;
-
-                    currentGenerator.y += 2;
-                    generators.push(currentGenerator);
-                }
-
-                break;
-
-            case 3:
-                if (!triedB) {
-                    if (getOpened(currentGenerator.x, currentGenerator.y - 2)) {
-                        triedB = true;
-                        continue;
-                    }
-
-                    setOpened(currentGenerator.x, currentGenerator.y - 1, true);
-                    setOpened(currentGenerator.x, currentGenerator.y - 2, true);
-
-                    triedR = false;
-                    triedL = false;
-                    triedU = false;
-                    triedB = false;
-
-                    currentGenerator.y -= 2;
-                    generators.push(currentGenerator);
-                }
-
-                break;
-        }
     }
 
-    //setOpened(0, 1, true);
     setOpened(getExitX(), getExitY(), true);
+    Maze::seed = seed;
 }
 
 bool
