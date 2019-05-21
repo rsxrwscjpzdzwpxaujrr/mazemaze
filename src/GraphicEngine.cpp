@@ -99,12 +99,14 @@ void GraphicEngine::setStates() {
     double ratio = width / static_cast<double>(height);
     double fov = 90.0;
     double near = 0.001;
+    double far = 500.0;
 
     glLoadIdentity();
     glViewport(0, 0, width, height);
-    glFrustum(-ratio * near, ratio * near, -1.0 * near, 1.0 * near,
+    glFrustum(-ratio * near, ratio * near,
+              -1.0   * near, 1.0   * near,
               (ratio * near) / tan(fov * (M_PI / 360.0)),
-              500.0);
+              far);
 }
 
 void
