@@ -33,7 +33,7 @@ class Game;
 class MainMenu {
 public:
     MainMenu();
-    ~MainMenu() = default;
+    ~MainMenu();
 
     void handleEvent(sf::Event event);
     void show(bool show);

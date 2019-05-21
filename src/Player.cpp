@@ -34,9 +34,7 @@ Player::Player(float x, float y, float z) {
     Player::z = z;
 }
 
-Player::~Player() {
-
-}
+Player::~Player() = default;
 
 void
 Player::tick(float deltaTime, sf::Window* window, Maze* maze) {

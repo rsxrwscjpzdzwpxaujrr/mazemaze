@@ -34,7 +34,6 @@ public:
     void setTime(float time);
 
 private:
-    bool firstGeneration = true;
     int starCount;
     float* starsX;
     float* starsY;

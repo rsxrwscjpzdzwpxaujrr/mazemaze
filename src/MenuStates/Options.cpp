@@ -149,7 +149,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
     center();
 }
 
-Options::~Options() {}
+Options::~Options() = default;
 
 }
 }

@@ -70,7 +70,7 @@ Win::Win(Desktop* desktop, Game* game) : MenuState (desktop) {
     center();
 }
 
-Win::~Win() {}
+Win::~Win() = default;
 
 void
 Win::show(bool show) {

@@ -67,7 +67,7 @@ Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
     updateButtons(fopen("sav", "r"));
 }
 
-Main::~Main() {}
+Main::~Main() = default;
 
 void
 Main::show(bool show) {

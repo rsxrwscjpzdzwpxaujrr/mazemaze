@@ -48,6 +48,8 @@ MainMenu::MainMenu() {
     setState(0);
 }
 
+MainMenu::~MainMenu() = default;
+
 void
 MainMenu::handleEvent(sf::Event event) {
     if (event.type == sf::Event::Resized) {

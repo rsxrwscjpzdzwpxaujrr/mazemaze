@@ -24,7 +24,7 @@ Empty::Empty(sfg::Desktop* desktop) : MenuState(desktop) {
 
 }
 
-Empty::~Empty() {}
+Empty::~Empty() = default;
 
 }
 }

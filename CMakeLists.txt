@@ -5,7 +5,23 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 project(mazemaze)
 
-set(SOURCE_FILES
+find_package(OpenGL REQUIRED)
+find_package(SFML COMPONENTS window graphics REQUIRED)
+find_package(SFGUI QUIET)
+
+if (SFGUI_FOUND)
+    message(STATUS "Found SFGUI in " ${SFGUI_DIR})
+else (SFGUI_FOUND)
+    set(SFGUI_BUILD_EXAMPLES OFF CACHE BOOL "Build examples." FORCE)
+
+    add_subdirectory(sfgui)
+endif (SFGUI_FOUND)
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_sources(
+    ${PROJECT_NAME}
+    PRIVATE
     src/Chunk.cpp
     src/Chunk.hpp
     src/Game.cpp
@@ -46,24 +62,24 @@ set(SOURCE_FILES
     src/MenuStates/NewGame.cpp
     src/MenuStates/NewGame.hpp)
 
-find_package(OpenGL REQUIRED)
-find_package(SFML COMPONENTS window graphics REQUIRED)
-find_package(SFGUI QUIET)
-
-if (SFGUI_FOUND)
-    message(STATUS "Found SFGUI in " ${SFGUI_DIR})
-else (SFGUI_FOUND)
-    set(SFGUI_BUILD_EXAMPLES OFF CACHE BOOL "Build examples." FORCE)
-
-    add_subdirectory(sfgui)
-endif (SFGUI_FOUND)
-
-include_directories(${SFGUI_INCLUDE_DIR})
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
-# target_compile_options(${PROJECT_NAME} PRIVATE -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-macros -Wno-exit-time-destructors -Wno-global-constructors -Wno-gnu-zero-variadic-macro-arguments -Wno-documentation -Wno-shadow -Wno-padded)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -Weverything
+        -Wno-c++98-compat
+        -Wno-c++98-compat-pedantic
+        -Wno-unused-macros
+        -Wno-exit-time-destructors
+        -Wno-global-constructors
+        -Wno-gnu-zero-variadic-macro-arguments
+        -Wno-documentation
+        -Wno-shadow
+        -Wno-padded
+        -Wno-conversion
+        -Wno-switch-enum)
+endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")

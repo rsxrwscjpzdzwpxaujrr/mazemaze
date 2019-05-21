@@ -19,8 +19,6 @@
 
 namespace mazemaze {
 
-ITickable::~ITickable() {
-
-}
+ITickable::~ITickable() = default;
 
 }

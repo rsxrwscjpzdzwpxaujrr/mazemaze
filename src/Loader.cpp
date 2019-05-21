@@ -28,6 +28,8 @@ Loader::Loader(std::string filename) {
     Loader::filename = filename;
 }
 
+Loader::~Loader() = default;
+
 Game*
 Loader::load(MainMenu* mainMenu) {
     std::ifstream stream;

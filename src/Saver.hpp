@@ -27,6 +27,7 @@ class Chunk;
 class Saver {
 public:
     explicit Saver(Game* game, std::string filename);
+    ~Saver();
 
     void save();
 

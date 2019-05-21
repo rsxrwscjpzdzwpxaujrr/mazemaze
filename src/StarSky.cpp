@@ -30,19 +30,10 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
     StarSky::pitch = pitch;
     StarSky::yaw = yaw;
 
-    if (!firstGeneration) {
-        delete starsX;
-        delete starsY;
-        delete starsZ;
-        delete starSize;
-    }
-
     starsX = new float[static_cast<unsigned int>(starCount)];
     starsY = new float[static_cast<unsigned int>(starCount)];
     starsZ = new float[static_cast<unsigned int>(starCount)];
     starSize = new int[static_cast<unsigned int>(starCount)];
-
-    firstGeneration = false;
 
     StarSky::starCount = starCount;
 
@@ -97,13 +88,6 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
 }
 
 StarSky::~StarSky() {
-    if (!firstGeneration) {
-        delete starsX;
-        delete starsY;
-        delete starsZ;
-        delete starSize;
-    }
-
     glDeleteLists(drawList, 1);
 }
 

@@ -28,6 +28,7 @@ class Chunk;
 class Loader {
 public:
     explicit Loader(std::string filename);
+    ~Loader();
 
     Game* load(MainMenu* mainMenu);
 

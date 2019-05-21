@@ -21,9 +21,7 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer() {
-
-}
+MazeRenderer::MazeRenderer() = default;
 
 MazeRenderer::~MazeRenderer() {
     glDeleteLists(drawList, 1);

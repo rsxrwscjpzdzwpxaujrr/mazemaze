@@ -29,6 +29,8 @@ Saver::Saver(Game* game, std::string filename) {
     Saver::filename = filename;
 }
 
+Saver::~Saver() = default;
+
 void
 Saver::save() {
     std::ofstream stream;

@@ -106,7 +106,7 @@ NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
     center();
 }
 
-NewGame::~NewGame() {}
+NewGame::~NewGame() = default;
 
 }
 }

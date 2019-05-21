@@ -19,8 +19,6 @@
 
 namespace mazemaze {
 
-IRenderable::~IRenderable() {
-
-}
+IRenderable::~IRenderable() = default;
 
 }

@@ -59,7 +59,7 @@ Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : MenuState(deskt
     center();
 }
 
-Pause::~Pause() {}
+Pause::~Pause() = default;
 
 }
 }
