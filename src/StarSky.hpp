@@ -46,7 +46,7 @@ private:
     float yaw;
     float roll;
 
-    float time;
+    float time = 0.0f;
     float timeSpeed;
 
     unsigned int drawList;
