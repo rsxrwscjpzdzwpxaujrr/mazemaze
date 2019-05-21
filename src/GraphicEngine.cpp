@@ -97,9 +97,9 @@ void GraphicEngine::setStates() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     double ratio = width / static_cast<double>(height);
-    double fov = 90.0;
+    double fov = 100.0;
     double near_val = 0.001;
-    double far = 500.0;
+    double far = 100.0;
 
     glLoadIdentity();
     glViewport(0, 0, width, height);
