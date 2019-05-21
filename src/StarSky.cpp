@@ -105,11 +105,13 @@ StarSky::render() {
     glPopMatrix();
 }
 
-void StarSky::tick(float deltatime) {
+void
+StarSky::tick(float deltatime) {
     time += deltatime * timeSpeed;
 }
 
-void StarSky::setTime(float time) {
+void
+StarSky::setTime(float time) {
     StarSky::time = time;
 }
 
