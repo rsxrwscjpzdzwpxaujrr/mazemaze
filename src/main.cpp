@@ -46,31 +46,28 @@ main() {
     GraphicEngine* graphicEngine = GraphicEngine::getInstance();
     graphicEngine->openWindow(startWindowWidth, startWindowHeight, false);
 
-    float frameStartTime;
-    float frameEndTime;
     float frameDeltaTime = 1.0f / 60.0f;
 
     const float fpsShowInterval = 0.5f;
-    float fpsShowSumm = 0.0f;
-    int fpsShowCount = 0;
+    float fpsShowDeltaSumm = 0.0f;
+    float fpsShowCount = 0;
 
     bool running = true;
 
     MainMenu mainMenu;
 
-    sf::Clock clock;
+    sf::Clock deltaClock;
     sf::Clock fpsShowClock;
 
     while (running) {
-        frameStartTime = clock.getElapsedTime().asSeconds();
-
         if (fpsShowClock.getElapsedTime().asSeconds() < fpsShowInterval) {
-            fpsShowSumm += 1.0f / frameDeltaTime;
+            fpsShowDeltaSumm += frameDeltaTime;
             fpsShowCount++;
         } else {
             std::string s(16, '\0');
-            int written = std::snprintf(&s[0], s.size(), "\rFPS: %.2f        ",
-                    fpsShowSumm / fpsShowCount);
+            int written = std::snprintf(&s[0], s.size(),
+                    "\rFPS: %.2f        ",
+                    1.0f / (fpsShowDeltaSumm / fpsShowCount));
 
             s.resize(written);
 
@@ -78,7 +75,7 @@ main() {
 
             fpsShowClock.restart();
 
-            fpsShowSumm = 0;
+            fpsShowDeltaSumm = 0;
             fpsShowCount = 0;
         }
 
@@ -114,8 +111,8 @@ main() {
 
         running &= !mainMenu.isWantExit();
 
-        frameEndTime = clock.getElapsedTime().asSeconds();
-        frameDeltaTime = frameEndTime - frameStartTime;
+        frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
+        deltaClock.restart();
     }
 
     std::cout << std::endl;
