@@ -24,18 +24,15 @@
 
 namespace mazemaze {
 
-StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
-    StarSky::timeSpeed = timeSpeed;
-
-    StarSky::pitch = pitch;
-    StarSky::yaw = yaw;
-
+StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
+        starCount(starCount),
+        pitch(pitch),
+        yaw(yaw),
+        timeSpeed(timeSpeed) {
     starsX = new float[static_cast<unsigned int>(starCount)];
     starsY = new float[static_cast<unsigned int>(starCount)];
     starsZ = new float[static_cast<unsigned int>(starCount)];
     starSize = new int[static_cast<unsigned int>(starCount)];
-
-    StarSky::starCount = starCount;
 
     float randX;
     float randY;
@@ -47,7 +44,7 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) {
     glNewList(drawList, GL_COMPILE);
 
     std::mt19937 randGen(0);
-    std::uniform_real_distribution<> coordInterval(-1.0, 1.0);
+    std::uniform_real_distribution<float> coordInterval(-1.0, 1.0);
     std::uniform_int_distribution<> sizeInterval(0, 11);
 
     for (int i = 0; i < starCount; i++) {

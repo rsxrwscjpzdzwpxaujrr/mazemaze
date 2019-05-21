@@ -24,9 +24,10 @@
 
 namespace mazemaze {
 
-GraphicEngine::GraphicEngine() : oldWindowPos(-1, -1),
-                                 oldWindowSize(0, 0) {
-    icon = new sf::Image();
+GraphicEngine::GraphicEngine() :
+        oldWindowPos(-1, -1),
+        oldWindowSize(0, 0),
+        icon(new sf::Image()) {
     icon->loadFromFile("data/icon.png");
 
     settings.depthBits = 24;
@@ -35,7 +36,6 @@ GraphicEngine::GraphicEngine() : oldWindowPos(-1, -1),
 
 GraphicEngine::~GraphicEngine() {
     delete icon;
-    //delete instance;
 }
 
 void

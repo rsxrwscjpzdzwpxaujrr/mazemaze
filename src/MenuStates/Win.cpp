@@ -28,13 +28,11 @@ using namespace sfg;
 namespace mazemaze {
 namespace menu_states {
 
-Win::Win(Desktop* desktop, Game* game) : MenuState (desktop) {
+Win::Win(Desktop* desktop, Game* game) : MenuState (desktop), game(game) {
     auto buttonExit           = Button::Create(L"Exit to main menu");
     auto label                = Label::Create(L"You won!");
     auto winNoteTimeAlignment = Alignment::Create();
     auto winNoteSizeAlignment = Alignment::Create();
-
-    Win::game = game;
 
     label->SetClass("win");
 

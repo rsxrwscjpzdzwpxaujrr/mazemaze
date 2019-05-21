@@ -24,9 +24,7 @@
 
 namespace mazemaze {
 
-Loader::Loader(std::string filename) {
-    Loader::filename = filename;
-}
+Loader::Loader(std::string filename) : filename(filename) {}
 
 Loader::~Loader() = default;
 

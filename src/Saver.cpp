@@ -24,10 +24,7 @@
 
 namespace mazemaze {
 
-Saver::Saver(Game* game, std::string filename) {
-    Saver::game = game;
-    Saver::filename = filename;
-}
+Saver::Saver(Game* game, std::string filename) : game(game), filename(filename) {}
 
 Saver::~Saver() = default;
 

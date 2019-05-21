@@ -28,11 +28,7 @@
 
 namespace mazemaze {
 
-Player::Player(float x, float y, float z) {
-    Player::x = x;
-    Player::y = y;
-    Player::z = z;
-}
+Player::Player(float x, float y, float z) : x(x), y(y), z(z) {}
 
 Player::~Player() = default;
 
