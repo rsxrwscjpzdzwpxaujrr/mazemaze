@@ -33,8 +33,20 @@
 #include "Game.hpp"
 #include "MainMenu.hpp"
 #include "GraphicEngine.hpp"
+#include "FpsCalculator.hpp"
 
 using namespace mazemaze;
+
+void
+showFps(float fps) {
+    std::string s(16, '\0');
+    int written = std::snprintf(&s[0], s.size(),
+            "\rFPS: %.2f        ", fps);
+
+    s.resize(written);
+
+    std::cout << s << std::flush;
+}
 
 int
 main() {
@@ -47,38 +59,15 @@ main() {
     graphicEngine->openWindow(startWindowWidth, startWindowHeight, false);
 
     float frameDeltaTime = 1.0f / 60.0f;
-
-    const float fpsShowInterval = 0.5f;
-    float fpsShowDeltaSumm = 0.0f;
-    float fpsShowCount = 0;
+    FpsCalculator fpsCalculator(showFps, 0.5f);
 
     bool running = true;
 
     MainMenu mainMenu;
 
     sf::Clock deltaClock;
-    sf::Clock fpsShowClock;
 
     while (running) {
-        if (fpsShowClock.getElapsedTime().asSeconds() < fpsShowInterval) {
-            fpsShowDeltaSumm += frameDeltaTime;
-            fpsShowCount++;
-        } else {
-            std::string s(16, '\0');
-            int written = std::snprintf(&s[0], s.size(),
-                    "\rFPS: %.2f        ",
-                    1.0f / (fpsShowDeltaSumm / fpsShowCount));
-
-            s.resize(written);
-
-            std::cout << s << std::flush;
-
-            fpsShowClock.restart();
-
-            fpsShowDeltaSumm = 0;
-            fpsShowCount = 0;
-        }
-
         sf::RenderWindow* window = graphicEngine->getWindow();
 
         sf::Event event{};
@@ -113,6 +102,8 @@ main() {
 
         frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
         deltaClock.restart();
+
+        fpsCalculator.tick(frameDeltaTime);
     }
 
     std::cout << std::endl;

@@ -49,6 +49,8 @@ target_sources(
     src/Saver.hpp
     src/Loader.cpp
     src/Loader.hpp
+    src/FpsCalculator.cpp
+    src/FpsCalculator.hpp
     src/MenuStates/Empty.cpp
     src/MenuStates/Empty.hpp
     src/MenuStates/Main.cpp
