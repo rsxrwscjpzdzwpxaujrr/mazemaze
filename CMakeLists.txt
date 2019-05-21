@@ -6,7 +6,7 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 project(mazemaze)
 
 find_package(OpenGL REQUIRED)
-find_package(SFML COMPONENTS window graphics REQUIRED)
+find_package(SFML COMPONENTS window graphics system REQUIRED)
 find_package(SFGUI QUIET)
 
 if (SFGUI_FOUND)
@@ -65,7 +65,7 @@ target_sources(
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME} SFGUI)
-target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics)
+target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
