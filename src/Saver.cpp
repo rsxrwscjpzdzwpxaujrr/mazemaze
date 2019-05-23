@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Saver.hpp"
+
 #include <fstream>
 
 #include "Game.hpp"
 #include "Chunk.hpp"
-
-#include "Saver.hpp"
 
 namespace mazemaze {
 

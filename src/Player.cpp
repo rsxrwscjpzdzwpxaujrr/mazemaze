@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Player.hpp"
+
 #include <cmath>
 #include <iostream>
 
@@ -23,8 +25,6 @@
 #include <SFML/OpenGL.hpp>
 
 #include "Maze.hpp"
-
-#include "Player.hpp"
 
 namespace mazemaze {
 

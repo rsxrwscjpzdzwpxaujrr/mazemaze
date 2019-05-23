@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "StarSky.hpp"
+
 #include <random>
 #include <cmath>
 
 #include <SFML/OpenGL.hpp>
-
-#include "StarSky.hpp"
 
 namespace mazemaze {
 

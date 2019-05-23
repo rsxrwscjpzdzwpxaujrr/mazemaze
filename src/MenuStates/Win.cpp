@@ -15,13 +15,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Win.hpp"
+
 #include <SFGUI/Widgets.hpp>
 
 #include "../Game.hpp"
 #include "../GraphicEngine.hpp"
 #include "../MainMenu.hpp"
-
-#include "Win.hpp"
 
 using namespace sfg;
 

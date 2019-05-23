@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Main.hpp"
+
 #include <SFGUI/Widgets.hpp>
 
 #include "../Game.hpp"
@@ -22,8 +24,6 @@
 #include "../GraphicEngine.hpp"
 
 #include "Options.hpp"
-
-#include "Main.hpp"
 
 using namespace sfg;
 

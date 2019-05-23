@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Game.hpp"
+
 #include <ctime>
 
 #include <SFML/OpenGL.hpp>
@@ -24,8 +26,6 @@
 #include "MainMenu.hpp"
 #include "Saver.hpp"
 #include "Loader.hpp"
-
-#include "Game.hpp"
 
 namespace mazemaze {
 

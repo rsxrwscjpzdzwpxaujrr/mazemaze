@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Maze.hpp"
+
 #include <stack>
 #include <random>
 #include <stdexcept>
@@ -22,8 +24,6 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "Chunk.hpp"
-
-#include "Maze.hpp"
 
 namespace mazemaze {
 

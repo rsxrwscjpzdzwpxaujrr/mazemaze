@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "MainMenu.hpp"
+
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -30,8 +32,6 @@
 #include "MenuStates/Pause.hpp"
 #include "MenuStates/Win.hpp"
 #include "MenuStates/NewGame.hpp"
-
-#include "MainMenu.hpp"
 
 namespace mazemaze {
 

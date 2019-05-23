@@ -15,10 +15,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "NewGame.hpp"
+
 #include "../Game.hpp"
 #include "../MainMenu.hpp"
-
-#include "NewGame.hpp"
 
 using namespace sfg;
 

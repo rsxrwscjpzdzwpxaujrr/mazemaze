@@ -15,9 +15,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <SFML/OpenGL.hpp>
-
 #include "MazeRenderer.hpp"
+
+#include <SFML/OpenGL.hpp>
 
 namespace mazemaze {
 

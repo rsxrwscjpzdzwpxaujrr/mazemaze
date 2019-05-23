@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Options.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -22,8 +24,6 @@
 
 #include "../MainMenu.hpp"
 #include "../GraphicEngine.hpp"
-
-#include "Options.hpp"
 
 using namespace sfg;
 

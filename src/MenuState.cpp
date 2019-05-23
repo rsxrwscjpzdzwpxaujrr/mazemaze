@@ -15,9 +15,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GraphicEngine.hpp"
-
 #include "MenuState.hpp"
+
+#include "GraphicEngine.hpp"
 
 namespace mazemaze {
 

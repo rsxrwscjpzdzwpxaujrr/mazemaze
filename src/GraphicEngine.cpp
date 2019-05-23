@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "GraphicEngine.hpp"
+
 #include <cmath>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
-
-#include "GraphicEngine.hpp"
 
 namespace mazemaze {
 
