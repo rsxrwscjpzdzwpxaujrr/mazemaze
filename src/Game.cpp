@@ -31,7 +31,7 @@ namespace mazemaze {
 
 Game::Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
         maze(mazeWidth, mazeHeight),
-        player(1.5f, 0.5f, 1.5f),
+        player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
         mainMenu(mainMenu),
         saver(this, "sav") {}
@@ -79,11 +79,10 @@ void
 Game::render() {
     glPushMatrix();
 
-    player.setCameraRotation();
-
+    player.getCamera()->setupRotation();
     starSky.render();
-    player.setCameraTranslation();
 
+    player.getCamera()->setupTranslation();
     mazeRenderer.render();
 
     glPopMatrix();

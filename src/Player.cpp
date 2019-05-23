@@ -28,7 +28,11 @@
 
 namespace mazemaze {
 
-Player::Player(float x, float y, float z) : x(x), y(y), z(z) {}
+Player::Player(float x, float y, float z) :
+        camera(x, 0.0f, z, 0.0f, 0.0f, 0.0f),
+        x(x), y(y), z(z) {
+    camera.setY(y + height);
+}
 
 Player::~Player() = default;
 
@@ -41,6 +45,9 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
 
     float M_PIf = static_cast<float>(M_PI);
     float M_PI_2f = static_cast<float>(M_PI_2);
+
+    float pitch = camera.getPitch();
+    float yaw   = camera.getYaw();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         if (maze->getOpened(static_cast<int>(x + cosf(yaw) * speed * deltaTime), intz))
@@ -83,25 +90,19 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     pitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * mouseSensitivity;
     yaw += (cursor.x - static_cast<int>(windowHalfSize.x)) * mouseSensitivity;
 
-    if (pitch < -M_PI_2f)
-        pitch = -M_PI_2f;
-    else if (pitch >= M_PI_2f)
-        pitch = M_PI_2f;
+    camera.setPitch(pitch);
+    camera.setYaw(yaw);
+
+    camera.setX(x);
+    camera.setY(y + height);
+    camera.setZ(z);
 
     sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), *window);
 }
 
-void
-Player::setCameraRotation() {
-    float todeg = static_cast<float>(180.0 / M_PI);
-
-    glRotatef(pitch * todeg, 1.0, 0.0, 0.0);
-    glRotatef(yaw * todeg, 0.0, 1.0, 0.0);
-}
-
-void
-Player::setCameraTranslation() {
-    glTranslatef(-x, -y, -z);
+Camera*
+Player::getCamera() {
+    return &camera;
 }
 
 float

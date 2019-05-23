@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,39 +17,37 @@
 
 #pragma once
 
-#include <SFML/Window.hpp>
-
-#include "Camera.hpp"
-
-namespace mazemaze {
-
-class Maze;
-
-class Player {
+class Camera {
 public:
-    explicit Player(float x, float y, float z);
-    ~Player();
+    Camera(float x,     float y,    float z,
+           float pitch, float yaw, float roll);
+    ~Camera();
 
-    void tick(float deltaTime, sf::Window* window, Maze* maze);
-
-    Camera* getCamera();
+    void setupRotation();
+    void setupTranslation();
 
     float getX() const;
     float getY() const;
     float getZ() const;
 
+    float getPitch() const;
+    float getYaw() const;
+    float getRoll() const;
+
     void setX(float x);
     void setY(float y);
     void setZ(float z);
 
-private:
-    Camera camera;
+    void setPitch(float pitch);
+    void setYaw(float yaw);
+    void setRoll(float roll);
 
+private:
     float x;
     float y;
     float z;
-    float speed = 3.0f;
-    float height = 0.5f;
-};
 
-}
+    float pitch;
+    float yaw;
+    float roll;
+};
