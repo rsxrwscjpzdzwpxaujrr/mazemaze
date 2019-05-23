@@ -43,7 +43,7 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     int intx = static_cast<int>(x);
     int intz = static_cast<int>(z);
 
-    float M_PIf = static_cast<float>(M_PI);
+    float M_PIf   = static_cast<float>(M_PI);
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
@@ -88,7 +88,7 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     sf::Vector2i cursor = sf::Mouse::getPosition(*window);
 
     pitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * mouseSensitivity;
-    yaw += (cursor.x - static_cast<int>(windowHalfSize.x)) * mouseSensitivity;
+    yaw   += (cursor.x - static_cast<int>(windowHalfSize.x)) * mouseSensitivity;
 
     camera.setPitch(pitch);
     camera.setYaw(yaw);
@@ -120,15 +120,18 @@ Player::getZ() const {
     return z;
 }
 
-void Player::setX(float x) {
+void
+Player::setX(float x) {
     Player::x = x;
 }
 
-void Player::setY(float y) {
+void
+Player::setY(float y) {
     Player::y = y;
 }
 
-void Player::setZ(float z) {
+void
+Player::setZ(float z) {
     Player::z = z;
 }
 
