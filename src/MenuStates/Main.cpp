@@ -50,7 +50,7 @@ initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr but
     });
 }
 
-Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop){
+Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
     buttonResume  = Button::Create(L"Resume");
     buttonNewGame = Button::Create(L"New Game");
     buttonOptions = Button::Create(L"Options");

@@ -85,7 +85,7 @@ void MainMenu::backTo(unsigned int destState) {
     while (stateStack.top() != destState) {
         stateStack.pop();
 
-        if (stateStack.size() == 0) {
+        if (stateStack.empty()) {
             wantExit = true;
             return;
         }

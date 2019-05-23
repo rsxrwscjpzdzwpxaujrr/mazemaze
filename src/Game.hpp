@@ -67,7 +67,7 @@ private:
 
     bool paused = false;
     bool won = false;
-    int oldPauseKeyState = false;
+    bool oldPauseKeyState = false;
     float time = 0.0f;
     bool wantExit = false;
 };
