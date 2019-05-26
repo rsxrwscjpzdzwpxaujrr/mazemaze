@@ -22,6 +22,8 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_sources(
     ${PROJECT_NAME}
     PRIVATE
+    src/Camera.cpp
+    src/Camera.hpp
     src/Chunk.cpp
     src/Chunk.hpp
     src/Game.cpp
