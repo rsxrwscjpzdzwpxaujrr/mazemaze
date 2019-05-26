@@ -81,7 +81,8 @@ MainMenu::back() {
     setState(stateStack.top(), true);
 }
 
-void MainMenu::backTo(unsigned int destState) {
+void
+MainMenu::backTo(unsigned int destState) {
     while (stateStack.top() != destState) {
         stateStack.pop();
 

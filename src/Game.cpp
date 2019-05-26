@@ -38,12 +38,14 @@ Game::Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
 
 Game::~Game() = default;
 
-void Game::newGame() {
+void
+Game::newGame() {
     maze.generate(static_cast<unsigned int>(std::time(nullptr)));
     onLoad();
 }
 
-void Game::onLoad() {
+void
+Game::onLoad() {
     lastSaveTime = time;
     mazeRenderer.update(&maze);
     setPaused(false);

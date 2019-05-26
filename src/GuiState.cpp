@@ -52,11 +52,13 @@ GuiState::show(bool show) {
     getMainContainer()->Show(show);
 }
 
-void GuiState::tick(float deltatime) {
+void
+GuiState::tick(float deltatime) {
 
 }
 
-sfg::Container::Ptr GuiState::getMainContainer() {
+sfg::Container::Ptr
+GuiState::getMainContainer() {
     return box;
 }
 
