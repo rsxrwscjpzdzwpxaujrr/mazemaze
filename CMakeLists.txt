@@ -37,6 +37,8 @@ target_sources(
     src/main.cpp
     src/MainMenu.cpp
     src/MainMenu.hpp
+    src/Gui.cpp
+    src/Gui.hpp
     src/GuiState.cpp
     src/GuiState.hpp
     src/Maze.cpp

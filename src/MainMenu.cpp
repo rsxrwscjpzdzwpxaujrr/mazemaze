@@ -17,12 +17,6 @@
 
 #include "MainMenu.hpp"
 
-#include <SFML/OpenGL.hpp>
-#include <SFML/Window/Event.hpp>
-
-#include <SFGUI/Button.hpp>
-#include <SFGUI/Window.hpp>
-
 #include "Game.hpp"
 #include "Loader.hpp"
 
@@ -35,154 +29,64 @@
 
 namespace mazemaze {
 
-MainMenu::MainMenu() {
-    desktop.LoadThemeFromFile("data/style.theme");
+MainMenu::MainMenu() :
+        starSky(new StarSky(1024, 600.0f, 1.5f, 2.5f)) {
+    getDesktop()->LoadThemeFromFile("data/style.theme");
 
-    setupStarSky();
-
-    states.emplace_back(new menu_states::Main(&desktop, this));
-    states.emplace_back(new menu_states::Options(&desktop, this));
-    states.emplace_back(new menu_states::Empty(&desktop));
-    states.emplace_back(new menu_states::NewGame(&desktop, this));
+    addState(new menu_states::Main   (getDesktop(), this));
+    addState(new menu_states::Options(getDesktop(), this));
+    addState(new menu_states::Empty  (getDesktop()));
+    addState(new menu_states::NewGame(getDesktop(), this));
 
     setState(0);
+
+    setBackground(starSky, starSky);
 }
 
-MainMenu::~MainMenu() = default;
+MainMenu::~MainMenu() {
+    delete starSky;
 
-void
-MainMenu::handleEvent(sf::Event event) {
-    if (event.type == sf::Event::Resized) {
-        for (unsigned int i = 0; i < states.size(); i++) {
-            states[i]->center(event);
-        }
-    }
-
-    desktop.HandleEvent(event);
-}
-
-void
-MainMenu::tick(float deltatime) {
-    desktop.Update(deltatime);
-
-    if (backgroundTickable != nullptr)
-        backgroundTickable->tick(deltatime);
-}
-
-void
-MainMenu::render() {
-    if (backgroundRenderable != nullptr)
-        backgroundRenderable->render();
-}
-
-void
-MainMenu::back() {
-    stateStack.pop();
-    setState(stateStack.top(), true);
-}
-
-void
-MainMenu::backTo(unsigned int destState) {
-    while (stateStack.top() != destState) {
-        stateStack.pop();
-
-        if (stateStack.empty()) {
-            wantExit = true;
-            return;
-        }
-    }
-
-    setState(stateStack.top(), true);
-}
-
-void
-MainMenu::show(bool show) {
-    states[state]->show(show);
-}
-
-void
-MainMenu::setState(unsigned int state, bool back) {
-    for (unsigned int i = 0; i < states.size(); i++) {
-        if (i == state) {
-            states[i]->show(true);
-
-            if (!back)
-                stateStack.emplace(i);
-        } else {
-            states[i]->show(false);
-        }
-    }
-
-    MainMenu::state = state;
-}
-
-unsigned int
-MainMenu::getState() const {
-    return state;
+    if (game != nullptr)
+        delete game;
 }
 
 void
 MainMenu::newGame(int mazeWidth, int mazeHeight) {
-    Game* game = new Game(this, mazeWidth, mazeHeight);
+    game = new Game(this, mazeWidth, mazeHeight);
     game->newGame();
 
-    updateTickableAndRenderable(game);
+    setupGame();
 }
 
 void
 MainMenu::resumeGame() {
     Loader loader("sav");
-    Game* game = loader.load(this);
+    game = loader.load(this);
 
-    updateTickableAndRenderable(game);
+    setupGame();
 }
 
 void
 MainMenu::stopGame() {
-    backgroundRenderable = nullptr;
-    backgroundTickable = nullptr;
-
     backTo(0);
 
-    delete backgroundTickable;
+    delete game;
 
-    delete states.back();
-    states.pop_back();
+    delete getState(5);
+    delete getState(4);
 
-    delete states.back();
-    states.pop_back();
+    removeState(5);
+    removeState(4);
 
-    setupStarSky();
+    setBackground(starSky, starSky);
 }
 
 void
-MainMenu::exit() {
-    wantExit = true;
-}
+MainMenu::setupGame() {
+    setBackground(game, game);
 
-bool
-MainMenu::isWantExit() {
-    return wantExit;
-}
-
-inline void
-MainMenu::setupStarSky() {
-    StarSky* starSky = new StarSky(1024, 600.0f, 1.5f, 2.5f);
-
-    backgroundRenderable = starSky;
-    backgroundTickable = starSky;
-}
-
-void
-MainMenu::updateTickableAndRenderable(Game* game) {
-    backgroundRenderable = dynamic_cast<IRenderable*>(game);
-    backgroundTickable   = dynamic_cast<ITickable*>(game);
-
-    states.emplace_back(new menu_states::Pause(&desktop, this, game));
-    states.back()->show(false);
-
-    states.emplace_back(new menu_states::Win(&desktop, game));
-    states.back()->show(false);
+    addState(new menu_states::Pause(getDesktop(), this, game));
+    addState(new menu_states::Win  (getDesktop(), game));
 
     setState(2);
 }

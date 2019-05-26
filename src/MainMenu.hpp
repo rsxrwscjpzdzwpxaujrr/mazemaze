@@ -17,55 +17,28 @@
 
 #pragma once
 
-#include <stack>
-
-#include <SFGUI/Desktop.hpp>
-#include <SFGUI/Box.hpp>
-
-#include "IRenderable.hpp"
-#include "ITickable.hpp"
+#include "Gui.hpp"
 
 namespace mazemaze {
 
 class GuiState;
 class Game;
+class StarSky;
 
-class MainMenu {
+class MainMenu : public Gui {
 public:
     MainMenu();
-    ~MainMenu();
-
-    void handleEvent(sf::Event event);
-    void show(bool show);
-    void tick(float deltatime);
-    void render();
-    void back();
-    void backTo(unsigned int destState);
-
-    void setState(unsigned int state, bool back = false);
-    unsigned int getState() const;
+    ~MainMenu() override;
 
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();
     void stopGame();
 
-    void exit();
-    bool isWantExit();
-
 private:
-    sfg::Desktop desktop;
+    Game* game = nullptr;
+    StarSky* starSky;
 
-    IRenderable* backgroundRenderable = nullptr;
-    ITickable* backgroundTickable = nullptr;
-
-    std::vector<GuiState*> states;
-    std::stack<unsigned int> stateStack;
-    unsigned int state;
-
-    bool wantExit = false;
-
-    inline void setupStarSky();
-    void updateTickableAndRenderable(Game* game);
+    void setupGame();
 };
 
 }
