@@ -15,33 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <SFGUI/Label.hpp>
-
-#include "../MenuState.hpp"
+#include "Empty.hpp"
 
 namespace mazemaze {
-
-class Game;
-class MainMenu;
-
 namespace menu_states {
 
-class Win : public MenuState {
-public:
-    explicit Win(sfg::Desktop* desktop, Game* game);
-    ~Win() override;
+Empty::Empty(sfg::Desktop* desktop) : GuiState(desktop) {
 
-    void show(bool show) override;
+}
 
-private:
-    sfg::Label::Ptr winNoteTimeLabel;
-    sfg::Label::Ptr winNoteSizeLabel;
-    Game* game;
-
-    void updateLabels(Game* game);
-};
+Empty::~Empty() = default;
 
 }
 }

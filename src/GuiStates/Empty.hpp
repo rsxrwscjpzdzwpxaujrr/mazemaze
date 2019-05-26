@@ -17,20 +17,15 @@
 
 #pragma once
 
-#include <SFGUI/Widgets.hpp>
-
-#include "../MenuState.hpp"
+#include "../GuiState.hpp"
 
 namespace mazemaze {
-
-class MainMenu;
-
 namespace menu_states {
 
-class NewGame : public MenuState {
+class Empty : public GuiState {
 public:
-    explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~NewGame();
+    explicit Empty(sfg::Desktop* desktop);
+    ~Empty() override;
 };
 
 }

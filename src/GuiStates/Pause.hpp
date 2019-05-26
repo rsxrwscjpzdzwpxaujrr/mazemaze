@@ -17,20 +17,19 @@
 
 #pragma once
 
-#include "SFML/Graphics.hpp"
-
-#include "../MenuState.hpp"
+#include "../GuiState.hpp"
 
 namespace mazemaze {
 
+class Game;
 class MainMenu;
 
 namespace menu_states {
 
-class Options : public MenuState {
+class Pause : public GuiState {
 public:
-    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~Options() override;
+    explicit Pause(sfg::Desktop* desktop, MainMenu* mainMenu, Game* game);
+    ~Pause() override;
 };
 
 }

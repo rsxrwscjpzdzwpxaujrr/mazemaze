@@ -37,8 +37,8 @@ target_sources(
     src/main.cpp
     src/MainMenu.cpp
     src/MainMenu.hpp
-    src/MenuState.cpp
-    src/MenuState.hpp
+    src/GuiState.cpp
+    src/GuiState.hpp
     src/Maze.cpp
     src/Maze.hpp
     src/MazeRenderer.cpp
@@ -53,18 +53,18 @@ target_sources(
     src/Loader.hpp
     src/FpsCalculator.cpp
     src/FpsCalculator.hpp
-    src/MenuStates/Empty.cpp
-    src/MenuStates/Empty.hpp
-    src/MenuStates/Main.cpp
-    src/MenuStates/Main.hpp
-    src/MenuStates/Options.cpp
-    src/MenuStates/Options.hpp
-    src/MenuStates/Pause.cpp
-    src/MenuStates/Pause.hpp
-    src/MenuStates/Win.cpp
-    src/MenuStates/Win.hpp
-    src/MenuStates/NewGame.cpp
-    src/MenuStates/NewGame.hpp)
+    src/GuiStates/Empty.cpp
+    src/GuiStates/Empty.hpp
+    src/GuiStates/Main.cpp
+    src/GuiStates/Main.hpp
+    src/GuiStates/Options.cpp
+    src/GuiStates/Options.hpp
+    src/GuiStates/Pause.cpp
+    src/GuiStates/Pause.hpp
+    src/GuiStates/Win.cpp
+    src/GuiStates/Win.hpp
+    src/GuiStates/NewGame.cpp
+    src/GuiStates/NewGame.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 

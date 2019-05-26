@@ -17,29 +17,27 @@
 
 #pragma once
 
-#include "../MenuState.hpp"
+#include <SFML/Window/Event.hpp>
+
+#include <SFGUI/Widgets.hpp>
+#include <SFGUI/Box.hpp>
 
 namespace mazemaze {
 
-class Game;
-class MainMenu;
-
-namespace menu_states {
-
-class Main : public MenuState {
+class GuiState {
 public:
-    explicit Main(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~Main() override;
+    explicit GuiState(sfg::Desktop* desktop);
+    virtual ~GuiState();
 
-    void show(bool show) override;
-    void updateButtons(bool saveExists);
+    virtual void center(sf::Event event);
+    virtual void center();
+    virtual void show(bool show);
+    virtual void tick(float deltatime);
+    virtual sfg::Container::Ptr getMainContainer();
 
-private:
-    sfg::Button::Ptr buttonResume;
-    sfg::Button::Ptr buttonNewGame;
-    sfg::Button::Ptr buttonOptions;
-    sfg::Button::Ptr buttonExit;
+protected:
+    sfg::Desktop *desktop;
+    sfg::Box::Ptr box;
 };
 
-}
 }

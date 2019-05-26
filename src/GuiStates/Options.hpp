@@ -15,16 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Empty.hpp"
+#pragma once
+
+#include "SFML/Graphics.hpp"
+
+#include "../GuiState.hpp"
 
 namespace mazemaze {
+
+class MainMenu;
+
 namespace menu_states {
 
-Empty::Empty(sfg::Desktop* desktop) : MenuState(desktop) {
-
-}
-
-Empty::~Empty() = default;
+class Options : public GuiState {
+public:
+    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
+    ~Options() override;
+};
 
 }
 }

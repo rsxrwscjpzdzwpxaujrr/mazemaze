@@ -15,22 +15,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MenuState.hpp"
+#include "GuiState.hpp"
 
 #include "GraphicEngine.hpp"
 
 namespace mazemaze {
 
-MenuState::MenuState(sfg::Desktop* desktop) : desktop(desktop) {
+GuiState::GuiState(sfg::Desktop* desktop) : desktop(desktop) {
     box = sfg::Box::Create();
 }
 
-MenuState::~MenuState() {
+GuiState::~GuiState() {
     desktop->Remove(getMainContainer());
 }
 
 void
-MenuState::center(sf::Event event) {
+GuiState::center(sf::Event event) {
     sf::Vector2f boxSize = box->GetRequisition();
     sf::Vector2f windowSize = sf::Vector2f(event.size.width, event.size.height);
 
@@ -38,7 +38,7 @@ MenuState::center(sf::Event event) {
 }
 
 void
-MenuState::center() {
+GuiState::center() {
     GraphicEngine* graphicEngine = GraphicEngine::getInstance();
 
     sf::Vector2f buttonSize = getMainContainer()->GetRequisition();
@@ -48,15 +48,15 @@ MenuState::center() {
 }
 
 void
-MenuState::show(bool show) {
+GuiState::show(bool show) {
     getMainContainer()->Show(show);
 }
 
-void MenuState::tick(float deltatime) {
+void GuiState::tick(float deltatime) {
 
 }
 
-sfg::Container::Ptr MenuState::getMainContainer() {
+sfg::Container::Ptr GuiState::getMainContainer() {
     return box;
 }
 

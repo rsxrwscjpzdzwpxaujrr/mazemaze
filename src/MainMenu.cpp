@@ -26,12 +26,12 @@
 #include "Game.hpp"
 #include "Loader.hpp"
 
-#include "MenuStates/Empty.hpp"
-#include "MenuStates/Main.hpp"
-#include "MenuStates/Options.hpp"
-#include "MenuStates/Pause.hpp"
-#include "MenuStates/Win.hpp"
-#include "MenuStates/NewGame.hpp"
+#include "GuiStates/Empty.hpp"
+#include "GuiStates/Main.hpp"
+#include "GuiStates/Options.hpp"
+#include "GuiStates/Pause.hpp"
+#include "GuiStates/Win.hpp"
+#include "GuiStates/NewGame.hpp"
 
 namespace mazemaze {
 

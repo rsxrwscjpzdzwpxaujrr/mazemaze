@@ -59,7 +59,7 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
     });
 }
 
-NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
+NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : GuiState(desktop) {
     auto backButton          = Button::Create(L"Back");
     auto startButton         = Button::Create(L"Start");
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);

@@ -50,7 +50,7 @@ initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr but
     });
 }
 
-Main::Main(Desktop* desktop, MainMenu* mainMenu) : MenuState(desktop) {
+Main::Main(Desktop* desktop, MainMenu* mainMenu) : GuiState(desktop) {
     buttonResume  = Button::Create(L"Resume");
     buttonNewGame = Button::Create(L"New Game");
     buttonOptions = Button::Create(L"Options");
@@ -71,7 +71,7 @@ Main::~Main() = default;
 
 void
 Main::show(bool show) {
-    MenuState::show(show);
+    GuiState::show(show);
 
     if (show)
         updateButtons(fopen("sav", "r"));

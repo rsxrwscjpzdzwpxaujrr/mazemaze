@@ -28,7 +28,7 @@ using namespace sfg;
 namespace mazemaze {
 namespace menu_states {
 
-Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : MenuState(desktop) {
+Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : GuiState(desktop) {
     auto buttonResume  = Button::Create(L"Resume");
     auto buttonOptions = Button::Create(L"Options");
     auto buttonExit    = Button::Create(L"Exit to main menu");

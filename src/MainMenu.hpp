@@ -27,7 +27,7 @@
 
 namespace mazemaze {
 
-class MenuState;
+class GuiState;
 class Game;
 
 class MainMenu {
@@ -58,7 +58,7 @@ private:
     IRenderable* backgroundRenderable = nullptr;
     ITickable* backgroundTickable = nullptr;
 
-    std::vector<MenuState*> states;
+    std::vector<GuiState*> states;
     std::stack<unsigned int> stateStack;
     unsigned int state;
 
