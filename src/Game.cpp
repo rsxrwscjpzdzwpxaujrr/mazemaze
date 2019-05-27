@@ -30,6 +30,7 @@
 namespace mazemaze {
 
 Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
+        gui::Background(this, this),
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),

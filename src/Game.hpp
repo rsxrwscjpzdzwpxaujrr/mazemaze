@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "Gui/Background.hpp"
+
 #include "Maze.hpp"
 #include "MazeRenderer.hpp"
 #include "Player.hpp"
@@ -32,7 +34,7 @@ class MainMenu;
 
 }
 
-class Game : public IRenderable, public ITickable {
+class Game : public gui::Background {
 public:
     explicit Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight);
     ~Game() override;

@@ -47,6 +47,8 @@ target_sources(
     src/Saver.hpp
     src/FpsCalculator.cpp
     src/FpsCalculator.hpp
+    src/Gui/Background.cpp
+    src/Gui/Background.hpp
     src/Gui/MainMenu.cpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.cpp

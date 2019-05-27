@@ -15,34 +15,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "Gui.hpp"
+#include "Background.hpp"
 
 namespace mazemaze {
-
-class Game;
-class StarSky;
-
 namespace gui {
 
-class State;
+Background::Background(ITickable* tickable, IRenderable* renderable) :
+    tickable(tickable),
+    renderable(renderable) {}
 
-class MainMenu : public Gui {
-public:
-    MainMenu();
-    ~MainMenu() override;
+Background::~Background() = default;
 
-    void newGame(int mazeWidth, int mazeHeight);
-    void resumeGame();
-    void stopGame();
+void
+Background::tick(float deltaTime) {
+    tickable->tick(deltaTime);
+}
 
-private:
-    Game* game = nullptr;
-    Background* starSkyBackground;
+void
+Background::render() {
+    renderable->render();
+}
 
-    void setupGame();
-};
+ITickable*
+Background::getTickable() const {
+    return tickable;
+}
+
+IRenderable*
+Background::getRenderable() const {
+    return renderable;
+}
 
 }
 }

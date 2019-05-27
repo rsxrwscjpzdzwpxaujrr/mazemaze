@@ -25,6 +25,8 @@
 #include "../IRenderable.hpp"
 #include "../ITickable.hpp"
 
+#include "Background.hpp"
+
 namespace mazemaze {
 
 class Game;
@@ -50,22 +52,20 @@ public:
     void removeState(int state);
 
     void setState(int state, bool back = false);
-    void setBackground(ITickable* tickable, IRenderable* renderable);
+    void setBackground(Background* background);
 
     void exit();
 
     sfg::Desktop* getDesktop();
     int           getState() const;
-    State*     getState(int state);
-    IRenderable*  getBackgroundRenderable() const;
-    ITickable*    getBackgroundTickable() const;
+    State*        getState(int state);
+    Background*   getBackground() const;
     bool          isWantExit() const;
 
 private:
     sfg::Desktop desktop;
 
-    IRenderable* backgroundRenderable = nullptr;
-    ITickable* backgroundTickable = nullptr;
+    Background* background = nullptr;
 
     std::vector<State*> states;
     std::stack<int> stateStack;

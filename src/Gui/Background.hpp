@@ -17,31 +17,26 @@
 
 #pragma once
 
-#include "Gui.hpp"
+#include "../ITickable.hpp"
+#include "../IRenderable.hpp"
 
 namespace mazemaze {
-
-class Game;
-class StarSky;
-
 namespace gui {
 
-class State;
-
-class MainMenu : public Gui {
+class Background : public ITickable, public IRenderable {
 public:
-    MainMenu();
-    ~MainMenu() override;
+    Background(ITickable* tickable, IRenderable* renderable);
+    ~Background() override;
 
-    void newGame(int mazeWidth, int mazeHeight);
-    void resumeGame();
-    void stopGame();
+    void tick(float deltaTime) override;
+    void render() override;
+
+    ITickable*   getTickable() const;
+    IRenderable* getRenderable() const;
 
 private:
-    Game* game = nullptr;
-    Background* starSkyBackground;
-
-    void setupGame();
+    ITickable* tickable;
+    IRenderable* renderable;
 };
 
 }

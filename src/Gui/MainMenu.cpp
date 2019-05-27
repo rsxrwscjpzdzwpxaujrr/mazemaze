@@ -30,8 +30,7 @@
 namespace mazemaze {
 namespace gui {
 
-MainMenu::MainMenu() :
-        starSky(new StarSky(1024, 600.0f, 1.5f, 2.5f)) {
+MainMenu::MainMenu() {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
     addState(new states::Main   (getDesktop(), this));
@@ -41,11 +40,16 @@ MainMenu::MainMenu() :
 
     setState(0);
 
-    setBackground(starSky, starSky);
+    StarSky* starsky = new StarSky(1024, 600.0f, 1.5f, 2.5f);
+
+    starSkyBackground = new Background(starsky, starsky);
+
+    setBackground(starSkyBackground);
 }
 
 MainMenu::~MainMenu() {
-    delete starSky;
+    delete starSkyBackground->getTickable();
+    delete starSkyBackground;
 
     if (game != nullptr)
         delete game;
@@ -80,12 +84,12 @@ MainMenu::stopGame() {
     removeState(5);
     removeState(4);
 
-    setBackground(starSky, starSky);
+    setBackground(starSkyBackground);
 }
 
 void
 MainMenu::setupGame() {
-    setBackground(game, game);
+    setBackground(game);
 
     addState(new states::Pause(getDesktop(), this, game));
     addState(new states::Win  (getDesktop(), game));

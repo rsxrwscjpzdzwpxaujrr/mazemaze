@@ -43,14 +43,14 @@ void
 Gui::tick(float deltaTime) {
     desktop.Update(deltaTime);
 
-    if (backgroundTickable != nullptr)
-        backgroundTickable->tick(deltaTime);
+    if (background != nullptr)
+        background->tick(deltaTime);
 }
 
 void
 Gui::render() {
-    if (backgroundRenderable != nullptr)
-        backgroundRenderable->render();
+    if (background != nullptr)
+        background->render();
 }
 
 void
@@ -103,9 +103,8 @@ Gui::setState(int state, bool back) {
 }
 
 void
-Gui::setBackground(ITickable* tickable, IRenderable* renderable) {
-    backgroundTickable = tickable;
-    backgroundRenderable = renderable;
+Gui::setBackground(Background* background) {
+    Gui::background = background;
 }
 
 void
@@ -126,16 +125,6 @@ Gui::getState() const {
 State*
 Gui::getState(int state) {
     return states[state];
-}
-
-IRenderable*
-Gui::getBackgroundRenderable() const {
-    return backgroundRenderable;
-}
-
-ITickable*
-Gui::getBackgroundTickable() const {
-    return backgroundTickable;
 }
 
 bool
