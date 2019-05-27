@@ -21,6 +21,8 @@
 
 #include <SFML/OpenGL.hpp>
 
+namespace mazemaze {
+
 Camera::Camera(float x,     float y,   float z,
                float pitch, float yaw, float roll) :
         x(x),         y(y),     z(z),
@@ -100,4 +102,6 @@ Camera::setYaw(float yaw) {
 void
 Camera::setRoll(float roll) {
     Camera::roll = roll;
+}
+
 }

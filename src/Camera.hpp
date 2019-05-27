@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 
 #pragma once
+
+namespace mazemaze {
 
 class Camera {
 public:
@@ -51,3 +53,5 @@ private:
     float yaw;
     float roll;
 };
+
+}
