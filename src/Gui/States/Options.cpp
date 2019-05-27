@@ -109,7 +109,7 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
 }
 
 Options::Options(Desktop* desktop, MainMenu* mainMenu) :
-                      GuiState(desktop) {
+                      State(desktop) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
     auto button             = Button::Create(L"Back");

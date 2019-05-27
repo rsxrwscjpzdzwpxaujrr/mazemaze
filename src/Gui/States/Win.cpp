@@ -30,7 +30,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Win::Win(Desktop* desktop, Game* game) : GuiState (desktop), game(game) {
+Win::Win(Desktop* desktop, Game* game) : State (desktop), game(game) {
     auto buttonExit           = Button::Create(L"Exit to main menu");
     auto label                = Label::Create(L"You won!");
     auto winNoteTimeAlignment = Alignment::Create();

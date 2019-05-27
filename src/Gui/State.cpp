@@ -15,23 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GuiState.hpp"
+#include "State.hpp"
 
 #include "../GraphicEngine.hpp"
 
 namespace mazemaze {
 namespace gui {
 
-GuiState::GuiState(sfg::Desktop* desktop) : desktop(desktop) {
+State::State(sfg::Desktop* desktop) : desktop(desktop) {
     box = sfg::Box::Create();
 }
 
-GuiState::~GuiState() {
+State::~State() {
     desktop->Remove(getMainContainer());
 }
 
 void
-GuiState::center(sf::Event event) {
+State::center(sf::Event event) {
     sf::Vector2f boxSize = box->GetRequisition();
     sf::Vector2f windowSize = sf::Vector2f(event.size.width, event.size.height);
 
@@ -39,7 +39,7 @@ GuiState::center(sf::Event event) {
 }
 
 void
-GuiState::center() {
+State::center() {
     GraphicEngine* graphicEngine = GraphicEngine::getInstance();
 
     sf::Vector2f buttonSize = getMainContainer()->GetRequisition();
@@ -49,17 +49,17 @@ GuiState::center() {
 }
 
 void
-GuiState::show(bool show) {
+State::show(bool show) {
     getMainContainer()->Show(show);
 }
 
 void
-GuiState::tick(float deltatime) {
+State::tick(float deltatime) {
 
 }
 
 sfg::Container::Ptr
-GuiState::getMainContainer() {
+State::getMainContainer() {
     return box;
 }
 

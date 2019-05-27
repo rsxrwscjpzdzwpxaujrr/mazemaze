@@ -17,7 +17,7 @@
 
 #include "Gui.hpp"
 
-#include "GuiState.hpp"
+#include "State.hpp"
 
 namespace mazemaze {
 namespace gui {
@@ -74,7 +74,7 @@ Gui::backTo(int destState) {
 }
 
 int
-Gui::addState(GuiState* state) {
+Gui::addState(State* state) {
     states.emplace_back(state);
     states[states.size() - 1]->show(false);
 
@@ -123,7 +123,7 @@ Gui::getState() const {
     return state;
 }
 
-GuiState*
+State*
 Gui::getState(int state) {
     return states[state];
 }

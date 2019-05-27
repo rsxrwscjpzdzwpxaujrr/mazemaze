@@ -25,10 +25,10 @@
 namespace mazemaze {
 namespace gui {
 
-class GuiState {
+class State {
 public:
-    explicit GuiState(sfg::Desktop* desktop);
-    virtual ~GuiState();
+    explicit State(sfg::Desktop* desktop);
+    virtual ~State();
 
     virtual void center(sf::Event event);
     virtual void center();

@@ -26,7 +26,7 @@ class StarSky;
 
 namespace gui {
 
-class GuiState;
+class State;
 
 class MainMenu : public Gui {
 public:

@@ -53,8 +53,8 @@ target_sources(
     src/Gui/MainMenu.hpp
     src/Gui/Gui.cpp
     src/Gui/Gui.hpp
-    src/Gui/GuiState.cpp
-    src/Gui/GuiState.hpp
+    src/Gui/State.cpp
+    src/Gui/State.hpp
     src/Gui/States/Empty.cpp
     src/Gui/States/Empty.hpp
     src/Gui/States/Main.cpp

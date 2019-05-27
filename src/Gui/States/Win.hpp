@@ -19,7 +19,7 @@
 
 #include <SFGUI/Label.hpp>
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 
@@ -31,7 +31,7 @@ class MainMenu;
 
 namespace states {
 
-class Win : public GuiState {
+class Win : public State {
 public:
     explicit Win(sfg::Desktop* desktop, Game* game);
     ~Win() override;

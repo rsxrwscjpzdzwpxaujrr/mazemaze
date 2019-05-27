@@ -17,13 +17,13 @@
 
 #pragma once
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 namespace gui {
 namespace states {
 
-class Empty : public GuiState {
+class Empty : public State {
 public:
     explicit Empty(sfg::Desktop* desktop);
     ~Empty() override;

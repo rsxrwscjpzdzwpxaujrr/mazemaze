@@ -19,7 +19,7 @@
 
 #include <SFGUI/Widgets.hpp>
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 
@@ -29,7 +29,7 @@ class MainMenu;
 
 namespace states {
 
-class NewGame : public GuiState {
+class NewGame : public State {
 public:
     explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~NewGame();

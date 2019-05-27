@@ -31,7 +31,7 @@ class Game;
 
 namespace gui {
 
-class GuiState;
+class State;
 
 class Gui : public ITickable, public IRenderable {
 public:
@@ -46,7 +46,7 @@ public:
     void back();
     void backTo(int destState);
 
-    int  addState(GuiState* state);
+    int  addState(State* state);
     void removeState(int state);
 
     void setState(int state, bool back = false);
@@ -56,7 +56,7 @@ public:
 
     sfg::Desktop* getDesktop();
     int           getState() const;
-    GuiState*     getState(int state);
+    State*     getState(int state);
     IRenderable*  getBackgroundRenderable() const;
     ITickable*    getBackgroundTickable() const;
     bool          isWantExit() const;
@@ -67,7 +67,7 @@ private:
     IRenderable* backgroundRenderable = nullptr;
     ITickable* backgroundTickable = nullptr;
 
-    std::vector<GuiState*> states;
+    std::vector<State*> states;
     std::stack<int> stateStack;
     int state;
 

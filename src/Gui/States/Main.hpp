@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 
@@ -29,7 +29,7 @@ class MainMenu;
 
 namespace states {
 
-class Main : public GuiState {
+class Main : public State {
 public:
     explicit Main(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~Main() override;

@@ -19,7 +19,7 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 
@@ -29,7 +29,7 @@ class MainMenu;
 
 namespace states {
 
-class Options : public GuiState {
+class Options : public State {
 public:
     explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~Options() override;

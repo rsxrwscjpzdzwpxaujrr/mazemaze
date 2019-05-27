@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "../GuiState.hpp"
+#include "../State.hpp"
 
 namespace mazemaze {
 
@@ -29,7 +29,7 @@ class MainMenu;
 
 namespace states {
 
-class Pause : public GuiState {
+class Pause : public State {
 public:
     explicit Pause(sfg::Desktop* desktop, MainMenu* mainMenu, Game* game);
     ~Pause() override;

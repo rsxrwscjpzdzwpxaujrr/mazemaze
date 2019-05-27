@@ -30,7 +30,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : GuiState(desktop) {
+Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : State(desktop) {
     auto buttonResume  = Button::Create(L"Resume");
     auto buttonOptions = Button::Create(L"Options");
     auto buttonExit    = Button::Create(L"Exit to main menu");
