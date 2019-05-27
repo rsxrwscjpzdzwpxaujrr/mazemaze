@@ -31,7 +31,11 @@ inline void
 initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntry,
             MainMenu* mainMenu) {
     startButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu, sizeEntry] {
-        int mazeSize = std::stoi(sizeEntry->GetText().toWideString());
+        sf::String text = sizeEntry->GetText();
+        int mazeSize = 1;
+
+        if (text.getSize() > 0)
+            mazeSize = std::stoi(sizeEntry->GetText().toWideString());
 
         mainMenu->newGame(mazeSize, mazeSize);
     });
@@ -45,15 +49,20 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
         sf::String newText = L"";
         bool changed = false;
 
-        for (unsigned int i = 0; i < text.getSize(); i++)
-            if (std::isdigit(text[i]))
-                newText = newText + text[i];
-            else
-                changed = true;
+        if (text.getSize() != 0) {
+            for (unsigned int i = 0; i < text.getSize(); i++)
+                if (std::isdigit(text[i]))
+                    newText = newText + text[i];
+                else
+                    changed = true;
 
-        if (text.getSize() == 0 || std::stoi(newText.toWideString()) < 1) {
-            newText = L"1";
-            changed = true;
+            if (newText.getSize() == 0) {
+                newText = L"";
+                changed = true;
+            } else if (std::stoi(newText.toWideString()) < 1) {
+                newText = L"1";
+                changed = true;
+            }
         }
 
         if (changed)
