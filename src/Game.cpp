@@ -33,8 +33,7 @@ Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
-        mainMenu(mainMenu),
-        saver() {}
+        mainMenu(mainMenu) {}
 
 Game::~Game() = default;
 
@@ -66,7 +65,7 @@ Game::tick(float deltaTime) {
         player.tick(deltaTime, window, &maze);
 
         if (time - lastSaveTime >= saveInterval)
-            saver.save(this);
+            Saver::getInstance().save(this);
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
@@ -114,7 +113,7 @@ Game::setPaused(bool paused) {
         if (paused) {
             mainMenu->setState(4);
 
-            saver.save(this);
+            Saver::getInstance().save(this);
         } else
             mainMenu->backTo(2);
     }

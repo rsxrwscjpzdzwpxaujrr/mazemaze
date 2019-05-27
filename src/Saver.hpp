@@ -32,13 +32,21 @@ class Chunk;
 
 class Saver {
 public:
-    explicit Saver();
-    ~Saver();
-
     void save(Game* game);
     Game* load(gui::MainMenu* mainMenu);
 
+    Saver(Saver const&) = delete;
+    void operator= (Saver const&) = delete;
+
+    static Saver& getInstance() {
+        static Saver instance;
+        return instance;
+    }
+
 private:
+    Saver();
+    ~Saver();
+
     std::string filename;
 
     void writeChunk(std::ofstream* stream, Chunk* chunk);

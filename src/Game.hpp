@@ -64,7 +64,6 @@ private:
 
     gui::MainMenu* mainMenu;
 
-    Saver saver;
     float lastSaveTime = 0;
     const float saveInterval = 60.0f;
 
