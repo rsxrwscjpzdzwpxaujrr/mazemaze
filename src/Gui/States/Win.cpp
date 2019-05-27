@@ -82,16 +82,35 @@ Win::show(bool show) {
 
 void
 Win::updateLabels(Game* game) {
+    int time  = static_cast<int>(game->getTime());
+    int secs  = time % 60;
+    int mins  = (time / 60) % 60;
+    int hours = (time / (60 * 60)) % 24;
+    int days  = time / (60 * 60 * 24);
+
+    sf::String timeString(L"Time: ");
+
+    if (days > 0)
+        timeString = timeString + std::to_wstring(days) + L" day ";
+
+    if (hours > 0)
+        timeString = timeString + std::to_wstring(hours) + L" hour ";
+
+    if (mins > 0)
+        timeString = timeString + std::to_wstring(mins) + L" min ";
+
+    if (secs > 0)
+        timeString = timeString + std::to_wstring(secs) + L" sec ";
+
+    winNoteTimeLabel->SetText(timeString);
+
     Maze* maze = game->getMaze();
     sf::String mazeSize =
             std::to_wstring((maze->getWidth() - 1) / 2) +
             L"x" +
             std::to_wstring((maze->getHeight() - 1) / 2);
 
-    int time = static_cast<int>(game->getTime());
-
-    winNoteTimeLabel->SetText(L"Ingame time: " + std::to_wstring(time) + L" sec");
-    winNoteSizeLabel->SetText((sf::String(L"Maze size: ") + mazeSize));
+    winNoteSizeLabel->SetText(sf::String(L"Maze size: ") + mazeSize);
 
     center();
 }
