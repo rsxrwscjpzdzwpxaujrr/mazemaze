@@ -45,8 +45,6 @@ target_sources(
     src/StarSky.hpp
     src/Saver.cpp
     src/Saver.hpp
-    src/Loader.cpp
-    src/Loader.hpp
     src/FpsCalculator.cpp
     src/FpsCalculator.hpp
     src/Gui/MainMenu.cpp

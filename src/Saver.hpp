@@ -18,24 +18,31 @@
 #pragma once
 
 #include <string>
+#include <fstream>
 
 namespace mazemaze {
+namespace gui {
+
+class MainMenu;
+
+}
 
 class Game;
 class Chunk;
 
 class Saver {
 public:
-    explicit Saver(Game* game, std::string filename);
+    explicit Saver();
     ~Saver();
 
-    void save();
+    void save(Game* game);
+    Game* load(gui::MainMenu* mainMenu);
 
 private:
-    Game* game;
     std::string filename;
 
     void writeChunk(std::ofstream* stream, Chunk* chunk);
+    void readChunk(std::istream* stream, Chunk* chunk);
 };
 
 }

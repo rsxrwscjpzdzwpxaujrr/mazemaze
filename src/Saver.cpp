@@ -17,19 +17,17 @@
 
 #include "Saver.hpp"
 
-#include <fstream>
-
 #include "Game.hpp"
 #include "Chunk.hpp"
 
 namespace mazemaze {
 
-Saver::Saver(Game* game, std::string filename) : game(game), filename(filename) {}
+Saver::Saver() : filename("sav") {}
 
 Saver::~Saver() = default;
 
 void
-Saver::save() {
+Saver::save(Game* game) {
     std::ofstream stream;
 
     stream.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
@@ -68,6 +66,52 @@ Saver::save() {
     stream.close();
 }
 
+Game*
+Saver::load(gui::MainMenu* mainMenu) {
+    std::ifstream stream;
+
+    stream.open(filename, std::ios::in | std::ios::binary);
+
+    if (stream.is_open()) {
+        int32_t mazeParams[5];
+
+        stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 5);
+        stream.seekg(0x400);
+
+        Game* game = new Game(mainMenu, (mazeParams[0] / 2), (mazeParams[1] / 2));
+        Maze* maze = game->getMaze();
+
+        maze->setSeed(mazeParams[2]);
+
+        for (int i = 0; i < maze->getChunksCount(); i++)
+            readChunk(&stream, &game->getMaze()->getChunks()[i]);
+
+        std::ios::seekdir dir = stream.cur;
+
+        float time;
+        stream.read(reinterpret_cast<char*>(&time), sizeof (float));
+        game->setTime(time);
+        stream.seekg(0x400, dir);
+
+        Player* player = game->getPlayer();
+        float playerParams[3];
+
+        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 3);
+        player->setX(playerParams[0]);
+        player->setY(playerParams[1]);
+        player->setZ(playerParams[2]);
+        stream.seekg(0x800, dir);
+
+        stream.close();
+
+        game->onLoad();
+
+        return game;
+    }
+
+    return nullptr;
+}
+
 void
 Saver::writeChunk(std::ofstream* stream, Chunk* chunk) {
     const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
@@ -82,6 +126,21 @@ Saver::writeChunk(std::ofstream* stream, Chunk* chunk) {
         }
 
     stream->write(bytes, byteCount);
+}
+
+void
+Saver::readChunk(std::istream* stream, Chunk* chunk) {
+    const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
+    char bytes[byteCount];
+
+    stream->read(bytes, byteCount);
+
+    for (unsigned int i = 0; i < Chunk::SIZE; i++)
+        for (unsigned int j = 0; j < Chunk::SIZE; j++) {
+            unsigned int block = i * Chunk::SIZE + j;
+
+            chunk->setOpened(i, j, (bytes[block / 8] & (1 << block % 8)) != 0);
+        }
 }
 
 }

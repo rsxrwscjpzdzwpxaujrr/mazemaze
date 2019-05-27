@@ -18,7 +18,7 @@
 #include "MainMenu.hpp"
 
 #include "../Game.hpp"
-#include "../Loader.hpp"
+#include "../Saver.hpp"
 
 #include "States/Empty.hpp"
 #include "States/Main.hpp"
@@ -61,8 +61,8 @@ MainMenu::newGame(int mazeWidth, int mazeHeight) {
 
 void
 MainMenu::resumeGame() {
-    Loader loader("sav");
-    game = loader.load(this);
+    Saver saver;
+    game = saver.load(this);
 
     setupGame();
 }
