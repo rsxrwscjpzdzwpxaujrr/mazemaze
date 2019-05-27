@@ -34,6 +34,8 @@ class MainMenu;
 
 }
 
+class Camera;
+
 class Game : public gui::Background {
 public:
     explicit Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight);
@@ -57,6 +59,7 @@ public:
     float getTime() const;
     Maze* getMaze();
     Player* getPlayer();
+    Camera* getCamera() override;
 
 private:
     Maze maze;

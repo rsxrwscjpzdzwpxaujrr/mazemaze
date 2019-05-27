@@ -17,12 +17,17 @@
 
 #include "Background.hpp"
 
+#include "SFML/OpenGL.hpp"
+
+#include "../Camera.hpp"
+
 namespace mazemaze {
 namespace gui {
 
-Background::Background(ITickable* tickable, IRenderable* renderable) :
+Background::Background(ITickable* tickable, IRenderable* renderable, Camera* camera) :
     tickable(tickable),
-    renderable(renderable) {}
+    renderable(renderable),
+    camera(camera) {}
 
 Background::~Background() = default;
 
@@ -33,7 +38,13 @@ Background::tick(float deltaTime) {
 
 void
 Background::render() {
+    glPushMatrix();
+
+    camera->setupRotation();
+    camera->setupTranslation();
     renderable->render();
+
+    glPopMatrix();
 }
 
 ITickable*
@@ -44,6 +55,11 @@ Background::getTickable() const {
 IRenderable*
 Background::getRenderable() const {
     return renderable;
+}
+
+Camera*
+Background::getCamera() {
+    return camera;
 }
 
 }

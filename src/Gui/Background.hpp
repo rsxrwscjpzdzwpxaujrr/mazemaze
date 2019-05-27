@@ -21,22 +21,27 @@
 #include "../IRenderable.hpp"
 
 namespace mazemaze {
+
+class Camera;
+
 namespace gui {
 
 class Background : public ITickable, public IRenderable {
 public:
-    Background(ITickable* tickable, IRenderable* renderable);
+    Background(ITickable* tickable, IRenderable* renderable, Camera* camera);
     ~Background() override;
 
     void tick(float deltaTime) override;
     void render() override;
 
-    ITickable*   getTickable() const;
-    IRenderable* getRenderable() const;
+    ITickable*      getTickable() const;
+    IRenderable*    getRenderable() const;
+    virtual Camera* getCamera();
 
 private:
     ITickable* tickable;
     IRenderable* renderable;
+    Camera* camera;
 };
 
 }

@@ -40,9 +40,10 @@ MainMenu::MainMenu() {
 
     setState(0);
 
-    StarSky* starsky = new StarSky(1024, 600.0f, 1.5f, 2.5f);
+    StarSky* starsky = new StarSky(1024, 600.0f, 0.0f, 0.0f);
 
-    starSkyBackground = new Background(starsky, starsky);
+    starSkyBackground = new Background(starsky, starsky,
+                                       new Camera(0.0f, 0.0f, 0.0f, -1.5f, -2.5f, 0.0f));
 
     setBackground(starSkyBackground);
 }

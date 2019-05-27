@@ -30,7 +30,7 @@
 namespace mazemaze {
 
 Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
-        gui::Background(this, this),
+        gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
@@ -172,6 +172,11 @@ Game::getMaze() {
 Player*
 Game::getPlayer() {
     return &player;
+}
+
+Camera*
+Game::getCamera() {
+    return player.getCamera();
 }
 
 }
