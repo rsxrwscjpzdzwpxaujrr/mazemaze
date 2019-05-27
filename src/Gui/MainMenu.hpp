@@ -17,20 +17,31 @@
 
 #pragma once
 
-#include "SFML/Graphics.hpp"
-
-#include "../GuiState.hpp"
+#include "Gui.hpp"
 
 namespace mazemaze {
 
-class MainMenu;
+class Game;
+class StarSky;
 
-namespace menu_states {
+namespace gui {
 
-class Options : public GuiState {
+class GuiState;
+
+class MainMenu : public Gui {
 public:
-    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~Options() override;
+    MainMenu();
+    ~MainMenu() override;
+
+    void newGame(int mazeWidth, int mazeHeight);
+    void resumeGame();
+    void stopGame();
+
+private:
+    Game* game = nullptr;
+    StarSky* starSky;
+
+    void setupGame();
 };
 
 }

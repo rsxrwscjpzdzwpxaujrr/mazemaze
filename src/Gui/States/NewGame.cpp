@@ -17,13 +17,15 @@
 
 #include "NewGame.hpp"
 
-#include "../Game.hpp"
+#include "../../Game.hpp"
+
 #include "../MainMenu.hpp"
 
 using namespace sfg;
 
 namespace mazemaze {
-namespace menu_states {
+namespace gui {
+namespace states {
 
 inline void
 initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntry,
@@ -108,5 +110,6 @@ NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : GuiState(desktop) {
 
 NewGame::~NewGame() = default;
 
+}
 }
 }

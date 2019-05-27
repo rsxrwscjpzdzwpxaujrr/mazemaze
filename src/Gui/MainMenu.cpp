@@ -17,26 +17,27 @@
 
 #include "MainMenu.hpp"
 
-#include "Game.hpp"
-#include "Loader.hpp"
+#include "../Game.hpp"
+#include "../Loader.hpp"
 
-#include "GuiStates/Empty.hpp"
-#include "GuiStates/Main.hpp"
-#include "GuiStates/Options.hpp"
-#include "GuiStates/Pause.hpp"
-#include "GuiStates/Win.hpp"
-#include "GuiStates/NewGame.hpp"
+#include "States/Empty.hpp"
+#include "States/Main.hpp"
+#include "States/Options.hpp"
+#include "States/Pause.hpp"
+#include "States/Win.hpp"
+#include "States/NewGame.hpp"
 
 namespace mazemaze {
+namespace gui {
 
 MainMenu::MainMenu() :
         starSky(new StarSky(1024, 600.0f, 1.5f, 2.5f)) {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
-    addState(new menu_states::Main   (getDesktop(), this));
-    addState(new menu_states::Options(getDesktop(), this));
-    addState(new menu_states::Empty  (getDesktop()));
-    addState(new menu_states::NewGame(getDesktop(), this));
+    addState(new states::Main   (getDesktop(), this));
+    addState(new states::Options(getDesktop(), this));
+    addState(new states::Empty  (getDesktop()));
+    addState(new states::NewGame(getDesktop(), this));
 
     setState(0);
 
@@ -85,10 +86,11 @@ void
 MainMenu::setupGame() {
     setBackground(game, game);
 
-    addState(new menu_states::Pause(getDesktop(), this, game));
-    addState(new menu_states::Win  (getDesktop(), game));
+    addState(new states::Pause(getDesktop(), this, game));
+    addState(new states::Win  (getDesktop(), game));
 
     setState(2);
 }
 
+}
 }

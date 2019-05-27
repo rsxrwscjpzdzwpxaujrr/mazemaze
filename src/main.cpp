@@ -31,9 +31,10 @@
 #include "Player.hpp"
 #include "StarSky.hpp"
 #include "Game.hpp"
-#include "MainMenu.hpp"
 #include "GraphicEngine.hpp"
 #include "FpsCalculator.hpp"
+
+#include "Gui/MainMenu.hpp"
 
 using namespace mazemaze;
 
@@ -63,7 +64,7 @@ main() {
 
     bool running = true;
 
-    MainMenu mainMenu;
+    gui::MainMenu mainMenu;
 
     sf::Clock deltaClock;
 

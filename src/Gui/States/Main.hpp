@@ -17,21 +17,33 @@
 
 #pragma once
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../GuiState.hpp"
 
 namespace mazemaze {
 
+class Game;
+
+namespace gui {
+
 class MainMenu;
 
-namespace menu_states {
+namespace states {
 
-class NewGame : public GuiState {
+class Main : public GuiState {
 public:
-    explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
-    ~NewGame();
+    explicit Main(sfg::Desktop* desktop, MainMenu* mainMenu);
+    ~Main() override;
+
+    void show(bool show) override;
+    void updateButtons(bool saveExists);
+
+private:
+    sfg::Button::Ptr buttonResume;
+    sfg::Button::Ptr buttonNewGame;
+    sfg::Button::Ptr buttonOptions;
+    sfg::Button::Ptr buttonExit;
 };
 
+}
 }
 }

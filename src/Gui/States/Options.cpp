@@ -22,13 +22,15 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../../GraphicEngine.hpp"
+
 #include "../MainMenu.hpp"
-#include "../GraphicEngine.hpp"
 
 using namespace sfg;
 
 namespace mazemaze {
-namespace menu_states {
+namespace gui {
+namespace states {
 
 inline sf::Vector2f
 getSeparatorRequiredRequisition(float requiredWidth, Box::Ptr current) {
@@ -151,5 +153,6 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
 
 Options::~Options() = default;
 
+}
 }
 }

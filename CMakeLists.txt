@@ -35,12 +35,6 @@ target_sources(
     src/ITickable.cpp
     src/ITickable.hpp
     src/main.cpp
-    src/MainMenu.cpp
-    src/MainMenu.hpp
-    src/Gui.cpp
-    src/Gui.hpp
-    src/GuiState.cpp
-    src/GuiState.hpp
     src/Maze.cpp
     src/Maze.hpp
     src/MazeRenderer.cpp
@@ -55,18 +49,24 @@ target_sources(
     src/Loader.hpp
     src/FpsCalculator.cpp
     src/FpsCalculator.hpp
-    src/GuiStates/Empty.cpp
-    src/GuiStates/Empty.hpp
-    src/GuiStates/Main.cpp
-    src/GuiStates/Main.hpp
-    src/GuiStates/Options.cpp
-    src/GuiStates/Options.hpp
-    src/GuiStates/Pause.cpp
-    src/GuiStates/Pause.hpp
-    src/GuiStates/Win.cpp
-    src/GuiStates/Win.hpp
-    src/GuiStates/NewGame.cpp
-    src/GuiStates/NewGame.hpp)
+    src/Gui/MainMenu.cpp
+    src/Gui/MainMenu.hpp
+    src/Gui/Gui.cpp
+    src/Gui/Gui.hpp
+    src/Gui/GuiState.cpp
+    src/Gui/GuiState.hpp
+    src/Gui/States/Empty.cpp
+    src/Gui/States/Empty.hpp
+    src/Gui/States/Main.cpp
+    src/Gui/States/Main.hpp
+    src/Gui/States/Options.cpp
+    src/Gui/States/Options.hpp
+    src/Gui/States/Pause.cpp
+    src/Gui/States/Pause.hpp
+    src/Gui/States/Win.cpp
+    src/Gui/States/Win.hpp
+    src/Gui/States/NewGame.cpp
+    src/Gui/States/NewGame.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 

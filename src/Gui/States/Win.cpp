@@ -19,14 +19,16 @@
 
 #include <SFGUI/Widgets.hpp>
 
-#include "../Game.hpp"
-#include "../GraphicEngine.hpp"
+#include "../../Game.hpp"
+#include "../../GraphicEngine.hpp"
+
 #include "../MainMenu.hpp"
 
 using namespace sfg;
 
 namespace mazemaze {
-namespace menu_states {
+namespace gui {
+namespace states {
 
 Win::Win(Desktop* desktop, Game* game) : GuiState (desktop), game(game) {
     auto buttonExit           = Button::Create(L"Exit to main menu");
@@ -94,5 +96,6 @@ Win::updateLabels(Game* game) {
     center();
 }
 
+}
 }
 }

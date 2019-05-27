@@ -20,6 +20,7 @@
 #include "GuiState.hpp"
 
 namespace mazemaze {
+namespace gui {
 
 Gui::Gui() {
 
@@ -142,4 +143,5 @@ Gui::isWantExit() const {
     return wantExit;
 }
 
+}
 }

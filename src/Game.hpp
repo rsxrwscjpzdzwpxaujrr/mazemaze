@@ -26,12 +26,15 @@
 #include "ITickable.hpp"
 
 namespace mazemaze {
+namespace gui {
 
 class MainMenu;
 
+}
+
 class Game : public IRenderable, public ITickable {
 public:
-    explicit Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight);
+    explicit Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight);
     ~Game() override;
 
     void newGame();
@@ -59,7 +62,7 @@ private:
     Player player;
     StarSky starSky;
 
-    MainMenu* mainMenu;
+    gui::MainMenu* mainMenu;
 
     Saver saver;
     float lastSaveTime = 0;

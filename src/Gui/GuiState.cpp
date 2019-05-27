@@ -17,9 +17,10 @@
 
 #include "GuiState.hpp"
 
-#include "GraphicEngine.hpp"
+#include "../GraphicEngine.hpp"
 
 namespace mazemaze {
+namespace gui {
 
 GuiState::GuiState(sfg::Desktop* desktop) : desktop(desktop) {
     box = sfg::Box::Create();
@@ -62,4 +63,5 @@ GuiState::getMainContainer() {
     return box;
 }
 
+}
 }

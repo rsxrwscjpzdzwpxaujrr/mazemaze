@@ -19,14 +19,16 @@
 
 #include <SFGUI/Widgets.hpp>
 
-#include "../Game.hpp"
-#include "../GraphicEngine.hpp"
+#include "../../Game.hpp"
+#include "../../GraphicEngine.hpp"
+
 #include "../MainMenu.hpp"
 
 using namespace sfg;
 
 namespace mazemaze {
-namespace menu_states {
+namespace gui {
+namespace states {
 
 Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : GuiState(desktop) {
     auto buttonResume  = Button::Create(L"Resume");
@@ -61,5 +63,6 @@ Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : GuiState(deskto
 
 Pause::~Pause() = default;
 
+}
 }
 }

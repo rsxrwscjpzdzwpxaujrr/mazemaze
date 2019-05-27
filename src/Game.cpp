@@ -23,13 +23,14 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "GraphicEngine.hpp"
-#include "MainMenu.hpp"
 #include "Saver.hpp"
 #include "Loader.hpp"
 
+#include "Gui/MainMenu.hpp"
+
 namespace mazemaze {
 
-Game::Game(MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
+Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),

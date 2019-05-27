@@ -20,9 +20,13 @@
 #include <string>
 
 namespace mazemaze {
+namespace gui {
+
+class MainMenu;
+
+}
 
 class Game;
-class MainMenu;
 class Chunk;
 
 class Loader {
@@ -30,7 +34,7 @@ public:
     explicit Loader(std::string filename);
     ~Loader();
 
-    Game* load(MainMenu* mainMenu);
+    Game* load(gui::MainMenu* mainMenu);
 
 private:
     std::string filename;

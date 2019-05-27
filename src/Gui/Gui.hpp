@@ -22,12 +22,15 @@
 
 #include <SFGUI/Desktop.hpp>
 
-#include "IRenderable.hpp"
-#include "ITickable.hpp"
+#include "../IRenderable.hpp"
+#include "../ITickable.hpp"
 
 namespace mazemaze {
 
 class Game;
+
+namespace gui {
+
 class GuiState;
 
 class Gui : public ITickable, public IRenderable {
@@ -71,4 +74,5 @@ private:
     bool wantExit = false;
 };
 
+}
 }

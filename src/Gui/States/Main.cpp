@@ -19,16 +19,18 @@
 
 #include <SFGUI/Widgets.hpp>
 
-#include "../Game.hpp"
+#include "../../Game.hpp"
+#include "../../GraphicEngine.hpp"
+
 #include "../MainMenu.hpp"
-#include "../GraphicEngine.hpp"
 
 #include "Options.hpp"
 
 using namespace sfg;
 
 namespace mazemaze {
-namespace menu_states {
+namespace gui {
+namespace states {
 
 inline void
 initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr buttonOptions,
@@ -93,5 +95,6 @@ Main::updateButtons(bool saveExists) {
     center();
 }
 
+}
 }
 }

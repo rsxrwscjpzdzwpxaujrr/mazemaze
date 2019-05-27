@@ -17,30 +17,28 @@
 
 #pragma once
 
-#include <SFGUI/Label.hpp>
+#include <SFML/Window/Event.hpp>
 
-#include "../GuiState.hpp"
+#include <SFGUI/Widgets.hpp>
+#include <SFGUI/Box.hpp>
 
 namespace mazemaze {
+namespace gui {
 
-class Game;
-class MainMenu;
-
-namespace menu_states {
-
-class Win : public GuiState {
+class GuiState {
 public:
-    explicit Win(sfg::Desktop* desktop, Game* game);
-    ~Win() override;
+    explicit GuiState(sfg::Desktop* desktop);
+    virtual ~GuiState();
 
-    void show(bool show) override;
+    virtual void center(sf::Event event);
+    virtual void center();
+    virtual void show(bool show);
+    virtual void tick(float deltatime);
+    virtual sfg::Container::Ptr getMainContainer();
 
-private:
-    sfg::Label::Ptr winNoteTimeLabel;
-    sfg::Label::Ptr winNoteSizeLabel;
-    Game* game;
-
-    void updateLabels(Game* game);
+protected:
+    sfg::Desktop *desktop;
+    sfg::Box::Ptr box;
 };
 
 }

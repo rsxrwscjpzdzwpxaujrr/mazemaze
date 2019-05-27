@@ -29,7 +29,7 @@ Loader::Loader(std::string filename) : filename(filename) {}
 Loader::~Loader() = default;
 
 Game*
-Loader::load(MainMenu* mainMenu) {
+Loader::load(gui::MainMenu* mainMenu) {
     std::ifstream stream;
 
     stream.open(filename, std::ios::in | std::ios::binary);

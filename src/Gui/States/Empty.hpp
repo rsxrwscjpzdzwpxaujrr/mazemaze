@@ -17,28 +17,18 @@
 
 #pragma once
 
-#include "Gui.hpp"
+#include "../GuiState.hpp"
 
 namespace mazemaze {
+namespace gui {
+namespace states {
 
-class GuiState;
-class Game;
-class StarSky;
-
-class MainMenu : public Gui {
+class Empty : public GuiState {
 public:
-    MainMenu();
-    ~MainMenu() override;
-
-    void newGame(int mazeWidth, int mazeHeight);
-    void resumeGame();
-    void stopGame();
-
-private:
-    Game* game = nullptr;
-    StarSky* starSky;
-
-    void setupGame();
+    explicit Empty(sfg::Desktop* desktop);
+    ~Empty() override;
 };
 
+}
+}
 }

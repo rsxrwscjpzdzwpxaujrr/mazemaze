@@ -17,27 +17,24 @@
 
 #pragma once
 
-#include <SFML/Window/Event.hpp>
-
 #include <SFGUI/Widgets.hpp>
-#include <SFGUI/Box.hpp>
+
+#include "../GuiState.hpp"
 
 namespace mazemaze {
 
-class GuiState {
+namespace gui {
+
+class MainMenu;
+
+namespace states {
+
+class NewGame : public GuiState {
 public:
-    explicit GuiState(sfg::Desktop* desktop);
-    virtual ~GuiState();
-
-    virtual void center(sf::Event event);
-    virtual void center();
-    virtual void show(bool show);
-    virtual void tick(float deltatime);
-    virtual sfg::Container::Ptr getMainContainer();
-
-protected:
-    sfg::Desktop *desktop;
-    sfg::Box::Ptr box;
+    explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
+    ~NewGame();
 };
 
+}
+}
 }

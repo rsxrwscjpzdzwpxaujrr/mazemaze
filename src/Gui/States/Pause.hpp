@@ -15,16 +15,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Empty.hpp"
+#pragma once
+
+#include "../GuiState.hpp"
 
 namespace mazemaze {
-namespace menu_states {
 
-Empty::Empty(sfg::Desktop* desktop) : GuiState(desktop) {
+class Game;
+
+namespace gui {
+
+class MainMenu;
+
+namespace states {
+
+class Pause : public GuiState {
+public:
+    explicit Pause(sfg::Desktop* desktop, MainMenu* mainMenu, Game* game);
+    ~Pause() override;
+};
 
 }
-
-Empty::~Empty() = default;
-
 }
 }

@@ -17,16 +17,35 @@
 
 #pragma once
 
+#include <SFGUI/Label.hpp>
+
 #include "../GuiState.hpp"
 
 namespace mazemaze {
-namespace menu_states {
 
-class Empty : public GuiState {
+class Game;
+
+namespace gui {
+
+class MainMenu;
+
+namespace states {
+
+class Win : public GuiState {
 public:
-    explicit Empty(sfg::Desktop* desktop);
-    ~Empty() override;
+    explicit Win(sfg::Desktop* desktop, Game* game);
+    ~Win() override;
+
+    void show(bool show) override;
+
+private:
+    sfg::Label::Ptr winNoteTimeLabel;
+    sfg::Label::Ptr winNoteSizeLabel;
+    Game* game;
+
+    void updateLabels(Game* game);
 };
 
+}
 }
 }
