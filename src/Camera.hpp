@@ -21,12 +21,14 @@ namespace mazemaze {
 
 class Camera {
 public:
-    Camera(float x,     float y,    float z,
-           float pitch, float yaw, float roll);
+    Camera(float  x,     float  y,        float  z,
+           float  pitch, float  yaw,      float  roll,
+           double fov,   double nearDist, double farDist);
     ~Camera();
 
     void setupRotation();
     void setupTranslation();
+    void setupPerspective();
 
     float getX() const;
     float getY() const;
@@ -36,6 +38,8 @@ public:
     float getYaw() const;
     float getRoll() const;
 
+    double getFov() const;
+
     void setX(float x);
     void setY(float y);
     void setZ(float z);
@@ -43,6 +47,8 @@ public:
     void setPitch(float pitch);
     void setYaw(float yaw);
     void setRoll(float roll);
+
+    void setFov(double fov);
 
 private:
     float x;
@@ -52,6 +58,10 @@ private:
     float pitch;
     float yaw;
     float roll;
+
+    double fov;
+    double nearDist;
+    double farDist;
 };
 
 }

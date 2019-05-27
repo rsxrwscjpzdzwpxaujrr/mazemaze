@@ -81,6 +81,8 @@ void
 Game::render() {
     glPushMatrix();
 
+    player.getCamera()->setupPerspective();
+
     player.getCamera()->setupRotation();
     starSky.render();
 

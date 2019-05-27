@@ -96,18 +96,6 @@ GraphicEngine::setStates() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    double ratio = width / static_cast<double>(height);
-    double fov = 100.0;
-    double near_val = 0.001;
-    double far = 100.0;
-
-    glLoadIdentity();
-    glViewport(0, 0, width, height);
-    glFrustum(-ratio * near_val, ratio * near_val,
-              -1.0   * near_val, 1.0   * near_val,
-              (ratio * near_val) / tan(fov * (M_PI / 360.0)),
-              far);
 }
 
 void

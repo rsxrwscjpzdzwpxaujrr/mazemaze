@@ -29,7 +29,9 @@
 namespace mazemaze {
 
 Player::Player(float x, float y, float z) :
-        camera(x, 0.0f, z, 0.0f, 0.0f, 0.0f),
+        camera(x,     0.0f,  z,
+               0.0f,  0.0f,  0.0f,
+               100.0, 0.001, 100.0),
         x(x), y(y), z(z) {
     camera.setY(y + height);
 }

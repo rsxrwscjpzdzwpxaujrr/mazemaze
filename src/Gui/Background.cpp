@@ -40,8 +40,10 @@ void
 Background::render() {
     glPushMatrix();
 
+    camera->setupPerspective();
     camera->setupRotation();
     camera->setupTranslation();
+
     renderable->render();
 
     glPopMatrix();

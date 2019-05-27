@@ -21,12 +21,16 @@
 
 #include <SFML/OpenGL.hpp>
 
+#include "GraphicEngine.hpp"
+
 namespace mazemaze {
 
-Camera::Camera(float x,     float y,   float z,
-               float pitch, float yaw, float roll) :
-        x(x),         y(y),     z(z),
-        pitch(pitch), yaw(yaw), roll(roll) {}
+Camera::Camera(float  x,     float  y,        float  z,
+               float  pitch, float  yaw,      float  roll,
+               double fov,   double nearDist, double farDist) :
+        x(x),         y(y),               z(z),
+        pitch(pitch), yaw(yaw),           roll(roll),
+        fov(fov),     nearDist(nearDist), farDist(farDist) {}
 
 Camera::~Camera() = default;
 
@@ -42,6 +46,17 @@ Camera::setupRotation() {
 void
 Camera::setupTranslation() {
     glTranslatef(-x, -y, -z);
+}
+
+void
+Camera::setupPerspective() {
+    double ratio = GraphicEngine::getInstance().getWidth() /
+                   static_cast<double>(GraphicEngine::getInstance().getHeight());
+
+    glFrustum(-ratio * nearDist, ratio * nearDist,
+              -1.0   * nearDist, 1.0   * nearDist,
+              (ratio * nearDist) / tan(fov * (M_PI / 360.0)),
+              farDist);
 }
 
 float
@@ -74,6 +89,11 @@ Camera::getRoll() const {
     return roll;
 }
 
+double
+Camera::getFov() const {
+    return fov;
+}
+
 void
 Camera::setX(float x) {
     Camera::x = x;
@@ -102,6 +122,11 @@ Camera::setYaw(float yaw) {
 void
 Camera::setRoll(float roll) {
     Camera::roll = roll;
+}
+
+void
+Camera::setFov(double fov) {
+    Camera::fov = fov;
 }
 
 }
