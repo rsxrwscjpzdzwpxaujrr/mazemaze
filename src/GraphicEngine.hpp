@@ -39,10 +39,13 @@ public:
     bool getFullscreen() const;
     bool getVsync() const;
 
-    static GraphicEngine* getInstance();
-
     GraphicEngine(GraphicEngine const&) = delete;
     void operator= (GraphicEngine const&) = delete;
+
+    static GraphicEngine& getInstance() {
+        static GraphicEngine instance;
+        return instance;
+    }
 
 private:
     GraphicEngine();

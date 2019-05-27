@@ -40,10 +40,9 @@ State::center(sf::Event event) {
 
 void
 State::center() {
-    GraphicEngine* graphicEngine = GraphicEngine::getInstance();
-
     sf::Vector2f buttonSize = getMainContainer()->GetRequisition();
-    sf::Vector2f windowSize = static_cast<sf::Vector2f>(graphicEngine->getWindow()->getSize());
+    sf::Vector2f windowSize =
+            static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow()->getSize());
 
     getMainContainer()->SetPosition((windowSize - buttonSize) / 2.0f);
 }

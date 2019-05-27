@@ -67,7 +67,7 @@ inline void
 initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
             CheckButton::Ptr vsyncCheck, Button::Ptr backButton, MainMenu* mainMenu) {
     fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([fullscreenCheck] () {
-        GraphicEngine::getInstance()->setFullscreen(fullscreenCheck->IsActive());
+        GraphicEngine::getInstance().setFullscreen(fullscreenCheck->IsActive());
     });
 
     antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([antialiasingCombo] () {
@@ -80,11 +80,11 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
         if (antialiasing == 1)
             antialiasing = 0;
 
-        GraphicEngine::getInstance()->setAntialiasing(antialiasing);
+        GraphicEngine::getInstance().setAntialiasing(antialiasing);
     });
 
     vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([vsyncCheck] () {
-        GraphicEngine::getInstance()->setVsync(vsyncCheck->IsActive());
+        GraphicEngine::getInstance().setVsync(vsyncCheck->IsActive());
     });
 
     backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] () {

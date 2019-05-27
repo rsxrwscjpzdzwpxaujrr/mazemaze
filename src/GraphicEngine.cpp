@@ -169,14 +169,4 @@ GraphicEngine::getVsync() const {
     return vsync;
 }
 
-GraphicEngine*
-GraphicEngine::getInstance() {
-    static GraphicEngine* instance;
-
-    if (!instance)
-        instance = new GraphicEngine();
-
-    return instance;
-}
-
 }

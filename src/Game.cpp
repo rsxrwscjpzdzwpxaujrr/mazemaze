@@ -59,7 +59,7 @@ Game::tick(float deltaTime) {
 
     oldPauseKeyState = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
-    sf::RenderWindow* window = GraphicEngine::getInstance()->getWindow();
+    sf::RenderWindow* window = GraphicEngine::getInstance().getWindow();
     window->setMouseCursorVisible(paused || won);
 
     if (!(paused || won)) {

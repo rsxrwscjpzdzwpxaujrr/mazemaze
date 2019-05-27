@@ -56,8 +56,7 @@ main() {
 
     sfg::SFGUI sfgui;
 
-    GraphicEngine* graphicEngine = GraphicEngine::getInstance();
-    graphicEngine->openWindow(startWindowWidth, startWindowHeight, false);
+    GraphicEngine::getInstance().openWindow(startWindowWidth, startWindowHeight, false);
 
     float frameDeltaTime = 1.0f / 60.0f;
     FpsCalculator fpsCalculator(showFps, 0.5f);
@@ -69,7 +68,7 @@ main() {
     sf::Clock deltaClock;
 
     while (running) {
-        sf::RenderWindow* window = graphicEngine->getWindow();
+        sf::RenderWindow* window = GraphicEngine::getInstance().getWindow();
 
         sf::Event event{};
 
@@ -88,8 +87,8 @@ main() {
 
         mainMenu.tick(frameDeltaTime);
 
-        graphicEngine->update();
-        graphicEngine->setStates();
+        GraphicEngine::getInstance().update();
+        GraphicEngine::getInstance().setStates();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
