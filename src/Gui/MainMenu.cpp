@@ -73,6 +73,8 @@ MainMenu::stopGame() {
 
     delete game;
 
+    game = nullptr;
+
     delete getState(5);
     delete getState(4);
 
