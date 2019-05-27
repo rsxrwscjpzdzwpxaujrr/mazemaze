@@ -45,7 +45,7 @@ MainMenu::MainMenu() {
     starSkyBackground = new Background(starsky, starsky,
                                        new Camera(0.0f,  0.0f,  0.0f,
                                                   -1.5f, -2.5f, 0.0f,
-                                                  100.0, 10.0,  100.0));
+                                                  110.0, 10.0,  100.0));
 
     setBackground(starSkyBackground);
 }
