@@ -7,7 +7,7 @@ Window {
     Padding: 16.0f;
     Spacing: 16.0f;
     Gap: 16.0f;
-    FontSize: 30.0f;
+    FontSize: 28.0f;
     FontName: data/Noto-Sans-R.ttf;
 }
 
@@ -79,7 +79,7 @@ ComboBox:ACTIVE {
 }
 
 Label {
-    FontSize: 21.0f;
+    FontSize: 19.0f;
 }
 
 Label.win {
@@ -89,12 +89,12 @@ Label.win {
 
 Label.optionsGroup {
     FontName: data/Noto-Sans-M.ttf;
-    FontSize: 30.0f;
+    FontSize: 28.0f;
 }
 
 Label.newGameMazeSize {
     FontName: data/Noto-Sans-M.ttf;
-    FontSize: 25.0f;
+    FontSize: 23.0f;
 }
 
 Entry {
