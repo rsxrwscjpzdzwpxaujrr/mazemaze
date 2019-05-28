@@ -17,7 +17,7 @@
 
 #include <cmath>
 #include <iostream>
-#include <cstdlib>
+#include <gettext.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
@@ -51,6 +51,11 @@ showFps(float fps) {
 
 int
 main() {
+    setlocale(LC_ALL, "");
+    bindtextdomain("messages", "./locale");
+    textdomain("messages");
+    bind_textdomain_codeset("messages", "UTF-8");
+
     const int startWindowWidth = 854;
     const int startWindowHeight = 480;
 

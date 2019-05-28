@@ -26,4 +26,16 @@
 
 !/data
 !/data/**
+
+!/locale/
+/locale/*
+!/locale/CMakeLists.txt
+!/locale/*.pot
+!/locale/??
+/locale/??/*
+!/locale/??/LC_MESSAGES
+/locale/??/LC_MESSAGES/*.mo
+
+!/include
+
 !/sfgui

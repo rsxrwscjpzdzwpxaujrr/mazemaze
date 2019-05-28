@@ -19,6 +19,7 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../../utils.hpp"
 #include "../../Game.hpp"
 #include "../../GraphicEngine.hpp"
 
@@ -31,9 +32,9 @@ namespace gui {
 namespace states {
 
 Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : State(desktop) {
-    auto buttonResume  = Button::Create(L"Resume");
-    auto buttonOptions = Button::Create(L"Options");
-    auto buttonExit    = Button::Create(L"Exit to main menu");
+    auto buttonResume  = Button::Create(pgtx("pause", "Resume"));
+    auto buttonOptions = Button::Create(pgtx("pause", "Options"));
+    auto buttonExit    = Button::Create(pgtx("pause", "Exit to main menu"));
 
     buttonResume->GetSignal(Widget::OnLeftClick).Connect([game] {
         game->setPaused(false);

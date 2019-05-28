@@ -33,6 +33,11 @@ namespace gui {
 MainMenu::MainMenu() {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
+    //Костыль
+    sf::String str(L"АБВГҐДЕЁЄЖЗИЇЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭEЮЯабвгґдеёєжзиїйклмнопрстуфхцчшщъыьэeюя");
+    sfg::Button::Create(str);
+    sfg::Label::Create(str);
+
     addState(new states::Main   (getDesktop(), this));
     addState(new states::Options(getDesktop(), this));
     addState(new states::Empty  (getDesktop()));

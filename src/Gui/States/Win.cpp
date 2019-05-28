@@ -19,6 +19,7 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../../utils.hpp"
 #include "../../Game.hpp"
 #include "../../GraphicEngine.hpp"
 
@@ -31,8 +32,8 @@ namespace gui {
 namespace states {
 
 Win::Win(Desktop* desktop, Game* game) : State (desktop), game(game) {
-    auto buttonExit           = Button::Create(L"Exit to main menu");
-    auto label                = Label::Create(L"You won!");
+    auto buttonExit           = Button::Create(pgtx("win", "Exit to main menu"));
+    auto label                = Label::Create(pgtx("win", "You won!"));
     auto winNoteTimeAlignment = Alignment::Create();
     auto winNoteSizeAlignment = Alignment::Create();
 
@@ -88,19 +89,19 @@ Win::updateLabels(Game* game) {
     int hours = (time / (60 * 60)) % 24;
     int days  = time / (60 * 60 * 24);
 
-    sf::String timeString(L"Time: ");
+    sf::String timeString(pgtx("win", "Time: "));
 
     if (days > 0)
-        timeString = timeString + std::to_wstring(days) + L" day ";
+        timeString = timeString + npgtxf("win", "%d day ", "%d days ", days);
 
     if (hours > 0)
-        timeString = timeString + std::to_wstring(hours) + L" hour ";
+        timeString = timeString + npgtxf("win", "%d hour ", "%d hours ", hours);
 
     if (mins > 0)
-        timeString = timeString + std::to_wstring(mins) + L" min ";
+        timeString = timeString + npgtxf("win", "%d min ", "%d mins ", mins);
 
     if (secs > 0)
-        timeString = timeString + std::to_wstring(secs) + L" sec ";
+        timeString = timeString + npgtxf("win", "%d sec ", "%d secs ", secs);
 
     winNoteTimeLabel->SetText(timeString);
 
@@ -110,7 +111,7 @@ Win::updateLabels(Game* game) {
             L"x" +
             std::to_wstring((maze->getHeight() - 1) / 2);
 
-    winNoteSizeLabel->SetText(sf::String(L"Maze size: ") + mazeSize);
+    winNoteSizeLabel->SetText(sf::String(pgtx("win", "Maze size: ")) + mazeSize);
 
     center();
 }

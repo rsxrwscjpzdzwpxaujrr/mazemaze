@@ -17,6 +17,7 @@
 
 #include "NewGame.hpp"
 
+#include "../../utils.hpp"
 #include "../../Game.hpp"
 
 #include "../MainMenu.hpp"
@@ -71,15 +72,15 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
 }
 
 NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
-    auto backButton          = Button::Create(L"Back");
-    auto startButton         = Button::Create(L"Start");
+    auto backButton          = Button::Create(pgtx("new_game", "Back"));
+    auto startButton         = Button::Create(pgtx("new_game", "Start"));
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
     auto separatorHorizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
     auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
     auto sizeEntry           = Entry::Create(L"10");
     auto window              = Window::Create(Window::Style::BACKGROUND);
     auto windowBox           = Box::Create(Box::Orientation::VERTICAL);
-    auto mazeSizeLabel       = Label::Create(L"Enter maze size");
+    auto mazeSizeLabel       = Label::Create(pgtx("new_game", "Enter maze size"));
 
     separatorHorizontal->SetRequisition({20.0f, 0.0f});
     separatorVertical->SetRequisition({0.0f, 20.0f});

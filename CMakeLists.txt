@@ -47,6 +47,8 @@ target_sources(
     src/Saver.hpp
     src/FpsCalculator.cpp
     src/FpsCalculator.hpp
+    src/utils.hpp
+    src/utils.cpp
     src/Gui/Background.cpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.cpp
@@ -69,10 +71,13 @@ target_sources(
     src/Gui/States/NewGame.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_NLS=1)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
@@ -89,3 +94,5 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         -Wno-conversion
         -Wno-switch-enum)
 endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+add_subdirectory(locale)

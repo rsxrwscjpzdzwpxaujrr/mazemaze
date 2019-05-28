@@ -22,6 +22,7 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../../utils.hpp"
 #include "../../GraphicEngine.hpp"
 
 #include "../MainMenu.hpp"
@@ -97,7 +98,7 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
     int maxAntialiasing;
     glGetIntegerv(GL_SAMPLES_ARB, &maxAntialiasing);
 
-    antialiasingCombo->AppendItem(L"No");
+    antialiasingCombo->AppendItem(pgtx("options", "No"));
 
     if (maxAntialiasing >= 2)
         antialiasingCombo->AppendItem(L"2x");
@@ -112,12 +113,12 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
                       State(desktop) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
-    auto button             = Button::Create(L"Back");
+    auto button             = Button::Create(pgtx("options", "Back"));
     auto windowBox          = Box::Create(Box::Orientation::VERTICAL);
     auto fullscreenCheck    = CheckButton::Create(L"");
     auto vsyncCheck         = CheckButton::Create(L"");
     auto antialiasingCombo  = ComboBox::Create();
-    auto graphicsGroupLabel = Label::Create(L"Graphics");
+    auto graphicsGroupLabel = Label::Create(pgtx("options", "Graphics"));
     auto separator          = Separator::Create();
 
     scroll->SetScrollbarPolicy(ScrolledWindow::ScrollbarPolicy::HORIZONTAL_AUTOMATIC |
@@ -126,9 +127,9 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
     graphicsGroupLabel->SetClass("optionsGroup");
 
     windowBox->Pack(graphicsGroupLabel);
-    windowBox->Pack(addToOptionsList(L"Fullscreen", fullscreenCheck));
-    windowBox->Pack(addToOptionsList(L"Antialiasing", antialiasingCombo));
-    windowBox->Pack(addToOptionsList(L"V-Sync", vsyncCheck));
+    windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));
+    windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
+    windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));
 
     initAntialiasingCombo(antialiasingCombo);
 

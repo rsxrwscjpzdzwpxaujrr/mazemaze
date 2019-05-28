@@ -19,6 +19,7 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../../utils.hpp"
 #include "../../Game.hpp"
 #include "../../GraphicEngine.hpp"
 
@@ -53,10 +54,10 @@ initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr but
 }
 
 Main::Main(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
-    buttonResume  = Button::Create(L"Resume");
-    buttonNewGame = Button::Create(L"New Game");
-    buttonOptions = Button::Create(L"Options");
-    buttonExit    = Button::Create(L"Exit");
+    buttonResume  = Button::Create(pgtx("main", "Resume"));
+    buttonNewGame = Button::Create(pgtx("main", "New Game"));
+    buttonOptions = Button::Create(pgtx("main", "Options"));
+    buttonExit    = Button::Create(pgtx("main", "Exit"));
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
