@@ -142,14 +142,30 @@ Player::setZ(float z) {
 
 void
 Player::tryMove(Maze* maze, float x, float y, float z) {
-    if (maze->getOpened(x, Player::z))
+    if (!checkCollision(maze, x, Player::z))
         Player::x = x;
 
     if (y > 0.0f && y < 1.0f)
         Player::y = y;
 
-    if (maze->getOpened(Player::x, z))
+    if (!checkCollision(maze, Player::x, z))
         Player::z = z;
+}
+
+bool
+Player::checkCollision(Maze* maze, float x, float y) {
+    bool intersects = false;
+
+    for (int i = static_cast<int>(x) - 1; i <= x + 1; i++)
+        for (int j = static_cast<int>(y) - 1; j <= y + 1; j++)
+            if (!maze->getOpened(i, j)) {
+                float deltaX = x - std::max<float>(i, std::min<float>(x, i + 1.0f));
+                float deltaY = y - std::max<float>(j, std::min<float>(y, j + 1.0f));
+
+                intersects |= (deltaX * deltaX + deltaY * deltaY) < (width * width);
+            }
+
+    return intersects;
 }
 
 }
