@@ -25,6 +25,8 @@ Chunk::Chunk() {
             opened[j][i] = false;
 }
 
+Chunk::~Chunk() = default;
+
 bool
 Chunk::getOpened(unsigned int x, unsigned int y) {
     if (inBound(x) && inBound(y))

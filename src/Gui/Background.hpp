@@ -28,7 +28,7 @@ namespace gui {
 
 class Background : public ITickable, public IRenderable {
 public:
-    Background(ITickable* tickable, IRenderable* renderable, Camera* camera);
+    explicit Background(ITickable* tickable, IRenderable* renderable, Camera* camera);
     ~Background() override;
 
     void tick(float deltaTime) override;

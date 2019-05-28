@@ -21,9 +21,9 @@ namespace mazemaze {
 
 class Camera {
 public:
-    Camera(float  x,     float  y,        float  z,
-           float  pitch, float  yaw,      float  roll,
-           double fov,   double nearDist, double farDist);
+    explicit Camera(float  x,     float  y,        float  z,
+                    float  pitch, float  yaw,      float  roll,
+                    double fov,   double nearDist, double farDist);
     ~Camera();
 
     void setupRotation();

@@ -24,6 +24,7 @@ public:
     static const unsigned int SIZE = 32;
 
     Chunk();
+    ~Chunk();
 
     void setOpened(unsigned int x, unsigned int y, bool opened);
 
