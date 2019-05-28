@@ -18,7 +18,6 @@
 #include "Player.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include <SFML/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -42,45 +41,49 @@ void
 Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     float mouseSensitivity = 0.001f;
 
-    int intx = static_cast<int>(x);
-    int intz = static_cast<int>(z);
-
     float M_PIf   = static_cast<float>(M_PI);
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
     float yaw   = camera.getYaw();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if (maze->getOpened(static_cast<int>(x + cosf(yaw) * speed * deltaTime), intz))
-            x += cosf(yaw) * speed * deltaTime;
+    float moveVectorX = 0.0f;
+    float moveVectorZ = 0.0f;
+    float moveAngle;
 
-        if (maze->getOpened(intx, static_cast<int>(z + sinf(yaw) * speed * deltaTime)))
-            z += sinf(yaw) * speed * deltaTime;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        moveAngle = yaw;
+
+        moveVectorX += cosf(moveAngle);
+        moveVectorZ += sinf(moveAngle);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if (maze->getOpened(static_cast<int>(x + cosf(yaw + M_PI_2f) * speed * deltaTime), intz))
-            x += cosf(yaw + M_PI_2f) * speed * deltaTime;
+        moveAngle = yaw + M_PI_2f;
 
-        if (maze->getOpened(intx, static_cast<int>(z + sinf(yaw + M_PI_2f) * speed * deltaTime)))
-            z += sinf(yaw + M_PI_2f) * speed * deltaTime;
+        moveVectorX += cosf(moveAngle);
+        moveVectorZ += sinf(moveAngle);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if (maze->getOpened(static_cast<int>(x + cosf(yaw + M_PIf) * speed * deltaTime), intz))
-            x += cosf(yaw + M_PIf) * speed * deltaTime;
+        moveAngle = yaw + M_PIf;
 
-        if (maze->getOpened(intx, static_cast<int>(z + sinf(yaw + M_PIf) * speed * deltaTime)))
-            z += sinf(yaw + M_PIf) * speed * deltaTime;
+        moveVectorX += cosf(moveAngle);
+        moveVectorZ += sinf(moveAngle);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if (maze->getOpened(static_cast<int>(x + cosf(yaw + M_PI_2f + M_PIf) * speed * deltaTime), intz))
-            x += cosf(yaw + M_PI_2f + M_PIf) * speed * deltaTime;
+        moveAngle = yaw + M_PI_2f + M_PIf;
 
-        if (maze->getOpened(intx, static_cast<int>(z + sinf(yaw + M_PI_2f + M_PIf) * speed * deltaTime)))
-            z += sinf(yaw + M_PI_2f + M_PIf) * speed * deltaTime;
+        moveVectorX += cosf(moveAngle);
+        moveVectorZ += sinf(moveAngle);
+    }
+
+    if (moveVectorX != 0.0f || moveVectorZ != 0.0f) {
+        float newx = x + moveVectorX * speed * deltaTime;
+        float newz = z + moveVectorZ * speed * deltaTime;
+
+        tryMove(maze, newx, y, newz);
     }
 
     sf::Vector2u windowHalfSize = window->getSize();
@@ -135,6 +138,18 @@ Player::setY(float y) {
 void
 Player::setZ(float z) {
     Player::z = z;
+}
+
+void
+Player::tryMove(Maze* maze, float x, float y, float z) {
+    if (maze->getOpened(x, Player::z))
+        Player::x = x;
+
+    if (y > 0.0f && y < 1.0f)
+        Player::y = y;
+
+    if (maze->getOpened(Player::x, z))
+        Player::z = z;
 }
 
 }

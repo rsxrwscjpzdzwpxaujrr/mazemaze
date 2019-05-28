@@ -50,6 +50,8 @@ private:
     float z;
     float speed = 3.0f;
     float height = 0.5f;
+
+    void tryMove(Maze* maze, float x, float y, float z);
 };
 
 }
