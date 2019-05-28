@@ -38,7 +38,7 @@ public:
     void stopGame();
 
 private:
-    Game* game = nullptr;
+    Game* game;
     Background* starSkyBackground;
 
     void setupGame();

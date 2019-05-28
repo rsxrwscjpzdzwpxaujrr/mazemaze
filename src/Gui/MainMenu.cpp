@@ -30,7 +30,7 @@
 namespace mazemaze {
 namespace gui {
 
-MainMenu::MainMenu() {
+MainMenu::MainMenu() : game(nullptr) {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
     //Костыль

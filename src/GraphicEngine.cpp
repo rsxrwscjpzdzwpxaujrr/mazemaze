@@ -27,6 +27,7 @@ namespace mazemaze {
 GraphicEngine::GraphicEngine() :
         oldWindowPos(-1, -1),
         oldWindowSize(0, 0),
+        vsync(false),
         icon(new sf::Image()) {
     icon->loadFromFile("data/icon.png");
 

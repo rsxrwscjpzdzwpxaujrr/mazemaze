@@ -20,8 +20,12 @@
 namespace mazemaze {
 
 FpsCalculator::FpsCalculator(std::function<void (float)> onUpdate, float updateInterval) :
-    onUpdate(onUpdate),
-    updateInterval(updateInterval) {}
+        onUpdate(onUpdate),
+        updateInterval(updateInterval),
+        timePassed(0.0f),
+        deltaSum(0.0f),
+        deltaCount(0.0f),
+        lastFps(0.0f) {}
 
 FpsCalculator::~FpsCalculator() = default;
 

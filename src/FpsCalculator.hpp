@@ -37,11 +37,11 @@ public:
 private:
     std::function<void (float)> onUpdate;
     float updateInterval;
-    float timePassed = 0.0f;
+    float timePassed;
 
-    float deltaSum = 0.0f;
-    float deltaCount = 0.0f;
-    float lastFps = 0.0f;
+    float deltaSum;
+    float deltaCount;
+    float lastFps;
 };
 
 }

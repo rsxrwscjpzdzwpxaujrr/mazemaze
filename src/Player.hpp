@@ -48,9 +48,9 @@ private:
     float x;
     float y;
     float z;
-    float speed = 3.0f;
-    float height = 0.5f;
-    float width = 0.05f;
+    float speed;
+    float height;
+    float width;
 
     void tryMove(Maze* maze, float x, float y, float z);
     bool checkCollision(Maze* maze, float x, float y);

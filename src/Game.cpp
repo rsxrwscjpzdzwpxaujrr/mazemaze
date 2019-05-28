@@ -34,7 +34,14 @@ Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
-        mainMenu(mainMenu) {}
+        mainMenu(mainMenu),
+        lastSaveTime(0.0f),
+        saveInterval(60.0f),
+        paused(false),
+        won(false),
+        oldPauseKeyState(false),
+        time(0.0f),
+        wantExit(false) {}
 
 Game::~Game() = default;
 

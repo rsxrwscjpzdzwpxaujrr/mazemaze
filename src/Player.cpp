@@ -31,7 +31,10 @@ Player::Player(float x, float y, float z) :
         camera(x,     0.0f,  z,
                0.0f,  0.0f,  0.0f,
                100.0, 0.005, 100.0),
-        x(x), y(y), z(z) {
+        x(x), y(y), z(z),
+        speed(3.0f),
+        height(0.5f),
+        width(0.05f) {
     camera.setY(y + height);
 }
 

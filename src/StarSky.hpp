@@ -40,13 +40,13 @@ private:
     float* starsZ;
     int* starSize;
 
-    float distance = 90.0f;
+    float distance;
 
     float pitch;
     float yaw;
     float roll;
 
-    float time = 0.0f;
+    float time;
     float timeSpeed;
 
     unsigned int drawList;

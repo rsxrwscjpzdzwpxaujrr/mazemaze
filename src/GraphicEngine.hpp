@@ -60,7 +60,7 @@ private:
     int height;
     bool needReopen;
     bool fullscreen;
-    bool vsync = false;
+    bool vsync;
     sf::ContextSettings settings;
     sf::VideoMode videoMode;
 

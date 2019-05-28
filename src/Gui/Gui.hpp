@@ -65,13 +65,13 @@ public:
 private:
     sfg::Desktop desktop;
 
-    Background* background = nullptr;
+    Background* background;
 
     std::vector<State*> states;
     std::stack<int> stateStack;
     int state;
 
-    bool wantExit = false;
+    bool wantExit;
 };
 
 }

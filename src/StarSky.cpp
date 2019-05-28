@@ -26,8 +26,10 @@ namespace mazemaze {
 
 StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
         starCount(starCount),
+        distance(90.0f),
         pitch(pitch),
         yaw(yaw),
+        time(0.0f),
         timeSpeed(timeSpeed) {
     starsX = new float[static_cast<unsigned int>(starCount)];
     starsY = new float[static_cast<unsigned int>(starCount)];

@@ -22,9 +22,8 @@
 namespace mazemaze {
 namespace gui {
 
-Gui::Gui() {
-
-}
+Gui::Gui() : background(nullptr),
+             wantExit(false) {}
 
 Gui::~Gui() = default;
 

@@ -69,14 +69,14 @@ private:
 
     gui::MainMenu* mainMenu;
 
-    float lastSaveTime = 0;
-    const float saveInterval = 60.0f;
+    float lastSaveTime;
+    const float saveInterval;
 
-    bool paused = false;
-    bool won = false;
-    bool oldPauseKeyState = false;
-    float time = 0.0f;
-    bool wantExit = false;
+    bool paused;
+    bool won;
+    bool oldPauseKeyState;
+    float time;
+    bool wantExit;
 };
 
 }
