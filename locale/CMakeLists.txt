@@ -1,6 +1,6 @@
 add_custom_target(compile-translation ALL DEPENDS)
 
-set(LINGUAS ru)
+set(LINGUAS ru uk)
 
 set(DOMAIN messages)
 
