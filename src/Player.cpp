@@ -92,7 +92,13 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
 
     sf::Vector2i cursor = sf::Mouse::getPosition(*window);
 
-    pitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * mouseSensitivity;
+    float newPitch = pitch;
+
+    newPitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * mouseSensitivity;
+
+    if (newPitch > -M_PI_2f && newPitch < M_PI_2f)
+        pitch = newPitch;
+
     yaw   += (cursor.x - static_cast<int>(windowHalfSize.x)) * mouseSensitivity;
 
     camera.setPitch(pitch);
