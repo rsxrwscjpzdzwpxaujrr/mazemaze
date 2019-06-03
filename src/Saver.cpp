@@ -35,6 +35,7 @@ Saver::save(Game* game) {
     if (stream.is_open()) {
         Maze*   maze   = game->getMaze();
         Player* player = game->getPlayer();
+        Camera* camera = player->getCamera();
         Chunk*  chunks = maze->getChunks();
 
         int32_t mazeParams[] {maze->getWidth(),
@@ -57,9 +58,12 @@ Saver::save(Game* game) {
 
         float playerParams[] {player->getX(),
                               player->getY(),
-                              player->getZ()};
+                              player->getZ(),
+                              camera->getPitch(),
+                              camera->getYaw(),
+                              camera->getRoll()};
 
-        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 3);
+        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
         stream.seekp(0x800, dir);
     }
 
@@ -94,12 +98,16 @@ Saver::load(gui::MainMenu* mainMenu) {
         stream.seekg(0x400, dir);
 
         Player* player = game->getPlayer();
-        float playerParams[3];
+        Camera* camera = player->getCamera();
+        float playerParams[6];
 
-        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 3);
+        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
         player->setX(playerParams[0]);
         player->setY(playerParams[1]);
         player->setZ(playerParams[2]);
+        camera->setPitch(playerParams[3]);
+        camera->setYaw  (playerParams[4]);
+        camera->setRoll (playerParams[5]);
         stream.seekg(0x800, dir);
 
         stream.close();
