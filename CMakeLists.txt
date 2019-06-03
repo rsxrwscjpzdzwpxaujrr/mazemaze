@@ -5,17 +5,22 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 project(mazemaze)
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
+
 find_package(OpenGL REQUIRED)
 find_package(SFML COMPONENTS window graphics system REQUIRED)
-find_package(SFGUI QUIET)
+find_package(SFGUI QUIET MODULE)
 
-if (SFGUI_FOUND)
-    message(STATUS "Found SFGUI in " ${SFGUI_DIR})
-else (SFGUI_FOUND)
+if (NOT SFGUI_FOUND)
     set(SFGUI_BUILD_EXAMPLES OFF CACHE BOOL "Build examples." FORCE)
 
-    add_subdirectory(sfgui)
-endif (SFGUI_FOUND)
+    if (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
+        message(STATUS "Found SFGUI submodule in " ${CMAKE_CURRENT_LIST_DIR}/sfgui)
+        add_subdirectory(sfgui)
+    else (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
+        message(FATAL "SFGUI not found")
+    endif (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
+endif (NOT SFGUI_FOUND)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
@@ -73,7 +78,7 @@ target_sources(
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
-target_link_libraries(${PROJECT_NAME} SFGUI)
+target_link_libraries(${PROJECT_NAME} ${SFGUI_LIBRARY})
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 

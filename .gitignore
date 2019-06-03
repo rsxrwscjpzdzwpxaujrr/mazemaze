@@ -6,6 +6,8 @@
 !/COPYING
 !/screenshot.png
 
+!/cmake/
+
 !/src/
 /src/*
 
