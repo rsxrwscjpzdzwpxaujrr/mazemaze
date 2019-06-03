@@ -7,6 +7,7 @@ project(mazemaze)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 
+find_package(Intl REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
 find_package(SFML COMPONENTS window graphics system REQUIRED)
 find_package(SFGUI QUIET MODULE)
@@ -75,9 +76,11 @@ target_sources(
     src/Gui/States/NewGame.cpp
     src/Gui/States/NewGame.hpp)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
+target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${SFGUI_LIBRARY})
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
