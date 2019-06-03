@@ -72,8 +72,10 @@ Game::tick(float deltaTime) {
     if (!(paused || won)) {
         player.tick(deltaTime, window, &maze);
 
-        if (time - lastSaveTime >= saveInterval)
+        if (time - lastSaveTime >= saveInterval) {
             Saver::getInstance().save(this);
+            lastSaveTime = time;
+        }
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
