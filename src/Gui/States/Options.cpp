@@ -93,6 +93,10 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
     });
 }
 
+#ifndef GL_SAMPLES_ARB
+#   define GL_SAMPLES_ARB 0x80A9
+#endif
+
 inline void
 initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
     int maxAntialiasing;
