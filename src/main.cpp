@@ -74,6 +74,9 @@ main() {
     sf::Clock deltaClock;
 
     while (running) {
+        GraphicEngine::getInstance().update();
+        GraphicEngine::getInstance().setStates();
+
         sf::RenderWindow* window = GraphicEngine::getInstance().getWindow();
 
         sf::Event event{};
@@ -92,9 +95,6 @@ main() {
         }
 
         mainMenu.tick(frameDeltaTime);
-
-        GraphicEngine::getInstance().update();
-        GraphicEngine::getInstance().setStates();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
