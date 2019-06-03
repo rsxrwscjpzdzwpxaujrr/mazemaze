@@ -64,6 +64,12 @@ MainMenu::~MainMenu() {
 }
 
 void
+MainMenu::onEvent(sf::Event event) {
+    if (event.type == sf::Event::LostFocus && game != nullptr)
+        game->setPaused(true);
+}
+
+void
 MainMenu::newGame(int mazeWidth, int mazeHeight) {
     game = new Game(this, mazeWidth, mazeHeight);
     game->newGame();

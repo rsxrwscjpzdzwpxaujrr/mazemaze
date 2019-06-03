@@ -41,6 +41,7 @@ public:
     ~Gui() override;
 
     void handleEvent(sf::Event event);
+    virtual void onEvent(sf::Event event);
 
     void tick(float deltaTime) override;
     void render() override;

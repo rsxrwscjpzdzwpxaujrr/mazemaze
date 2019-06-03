@@ -33,6 +33,8 @@ public:
     MainMenu();
     ~MainMenu() override;
 
+    void onEvent(sf::Event event) override;
+
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();
     void stopGame();

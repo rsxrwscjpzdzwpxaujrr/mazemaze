@@ -35,7 +35,14 @@ Gui::handleEvent(sf::Event event) {
         }
     }
 
+    onEvent(event);
+
     desktop.HandleEvent(event);
+}
+
+void
+Gui::onEvent(sf::Event event) {
+
 }
 
 void
