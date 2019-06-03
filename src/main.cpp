@@ -17,6 +17,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <cstdio>
 #include <gettext.h>
 
 #include <SFML/Graphics.hpp>
