@@ -119,7 +119,7 @@ Game::render() {
 
 void
 Game::setPaused(bool paused) {
-    if (Game::paused != paused) {
+    if (Game::paused != paused && !(paused && Game::won)) {
         Game::paused = paused;
 
         if (paused) {
