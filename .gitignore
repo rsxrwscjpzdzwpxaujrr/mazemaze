@@ -38,6 +38,6 @@
 !/locale/??/LC_MESSAGES
 /locale/??/LC_MESSAGES/*.mo
 
-!/include
+!/lib
 
 !/sfgui
