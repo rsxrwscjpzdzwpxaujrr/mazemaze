@@ -27,12 +27,14 @@ namespace mazemaze {
 GraphicEngine::GraphicEngine() :
         oldWindowPos(-1, -1),
         oldWindowSize(0, 0),
+        maxAntialiasing(-1),
         vsync(false),
         icon(new sf::Image()) {
     icon->loadFromFile("data/icon.png");
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
+    getMaxAntialiasing();
 }
 
 GraphicEngine::~GraphicEngine() {
@@ -146,6 +148,25 @@ GraphicEngine::getWidth() const {
 int
 GraphicEngine::getHeight() const {
     return height;
+}
+
+unsigned int
+GraphicEngine::getMaxAntialiasing() {
+    if (maxAntialiasing <= 0){
+        sf::ContextSettings settings;
+        sf::VideoMode videoMode = sf::VideoMode(16, 16);
+        sf::Uint32 style = sf::Style::None;
+        settings.antialiasingLevel = 16;
+
+        sf::RenderWindow win(videoMode, sf::String(), style, settings);
+
+        settings = win.getSettings();
+        win.close();
+
+        maxAntialiasing = settings.antialiasingLevel;
+    }
+
+    return maxAntialiasing;
 }
 
 bool

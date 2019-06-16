@@ -36,6 +36,7 @@ public:
     sf::RenderWindow* getWindow() const;
     int getWidth() const;
     int getHeight() const;
+    unsigned int getMaxAntialiasing();
     bool getFullscreen() const;
     bool getVsync() const;
 
@@ -58,6 +59,7 @@ private:
 
     int width;
     int height;
+    int maxAntialiasing;
     bool needReopen;
     bool fullscreen;
     bool vsync;

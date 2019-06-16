@@ -93,22 +93,14 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
     });
 }
 
-#ifndef GL_SAMPLES_ARB
-#   define GL_SAMPLES_ARB 0x80A9
-#endif
-
 inline void
 initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
-    int maxAntialiasing;
-    glGetIntegerv(GL_SAMPLES_ARB, &maxAntialiasing);
+    int maxAntialiasing = GraphicEngine::getInstance().getMaxAntialiasing();
 
     antialiasingCombo->AppendItem(pgtx("options", "No"));
 
-    if (maxAntialiasing >= 2)
-        antialiasingCombo->AppendItem(L"2x");
-
-    if (maxAntialiasing >= 4)
-        antialiasingCombo->AppendItem(L"4x");
+    for (int i = 2; i <= maxAntialiasing; i *= 2)
+        antialiasingCombo->AppendItem(format("%dx", i));
 
     antialiasingCombo->SelectItem(0);
 }
