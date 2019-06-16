@@ -123,6 +123,13 @@ GraphicEngine::setAntialiasing(unsigned int antialiasing) {
     if (antialiasing != settings.antialiasingLevel) {
         oldWindowPos = window->getPosition();
 
+        if (fullscreen)
+            videoMode = sf::VideoMode::getDesktopMode();
+        else {
+            sf::Vector2u windowSize = window->getSize();
+            videoMode = sf::VideoMode(windowSize.x, windowSize.y);
+        }
+
         settings.antialiasingLevel = antialiasing;
         needReopen = true;
     }
