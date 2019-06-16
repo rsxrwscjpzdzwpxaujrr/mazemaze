@@ -34,7 +34,9 @@ MainMenu::MainMenu() : game(nullptr) {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
     //Костыль
-    sf::String str(L"АБВГҐДЕЁЄЖЗИЇЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭEЮЯабвгґдеёєжзиїйклмнопрстуфхцчшщъыьэeюя");
+    sf::String str(L"АӘБВГҐҒДЕЁЄЖЗИЇЙКҚЛМНҢОӨПРСТУҰҮФХҺЦЧШЩЪЫІЬЭEЮЯ\
+                     аәбвгґғдеёєжзиїйкқлмнңоөпрстуұүфхһцчшщъыіьэeюя");
+
     sfg::Button::Create(str);
     sfg::Label::Create(str);
 
