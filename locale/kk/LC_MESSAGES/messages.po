@@ -1,0 +1,149 @@
+# Copyright (C) 2019 Мира Странная
+# This file is distributed under the same license as the mazemaze package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mazemaze 0.2-dev\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-28 21:01+0400\n"
+"PO-Revision-Date: 2019-06-10 15:24+0400\n"
+"Last-Translator: Нұртас Тоқтар\n"
+"Language-Team: \n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#: src/Gui/States/Main.cpp:57
+msgctxt "main"
+msgid "Resume"
+msgstr "Жалғастыру"
+
+#: src/Gui/States/Main.cpp:58
+msgctxt "main"
+msgid "New Game"
+msgstr "Жаңа ойын"
+
+#: src/Gui/States/Main.cpp:59
+msgctxt "main"
+msgid "Options"
+msgstr "Опциялар"
+
+#: src/Gui/States/Main.cpp:60
+msgctxt "main"
+msgid "Exit"
+msgstr "Шығу"
+
+#: src/Gui/States/Options.cpp:101
+msgctxt "options"
+msgid "No"
+msgstr "Жоқ"
+
+#: src/Gui/States/Options.cpp:116
+msgctxt "options"
+msgid "Back"
+msgstr "Артқа"
+
+#: src/Gui/States/Options.cpp:121
+msgctxt "options"
+msgid "Graphics"
+msgstr "Графика"
+
+#: src/Gui/States/Options.cpp:130
+msgctxt "options"
+msgid "Fullscreen"
+msgstr "Толық экран"
+
+#: src/Gui/States/Options.cpp:131
+msgctxt "options"
+msgid "Antialiasing"
+msgstr "Антиалиасинг"
+
+#: src/Gui/States/Options.cpp:132
+msgctxt "options"
+msgid "V-Sync"
+msgstr "V-Sync"
+
+#: src/Gui/States/Pause.cpp:35
+msgctxt "pause"
+msgid "Resume"
+msgstr "Жалғастыру"
+
+#: src/Gui/States/Pause.cpp:36
+msgctxt "pause"
+msgid "Options"
+msgstr "Опциялар"
+
+#: src/Gui/States/Pause.cpp:37
+msgctxt "pause"
+msgid "Exit to main menu"
+msgstr "Басты мәзір"
+
+#: src/Gui/States/Win.cpp:35
+msgctxt "win"
+msgid "Exit to main menu"
+msgstr "Басты мәзір"
+
+#: src/Gui/States/Win.cpp:36
+msgctxt "win"
+msgid "You won!"
+msgstr "Жеңіс!"
+
+#: src/Gui/States/Win.cpp:92
+msgctxt "win"
+msgid "Time: "
+msgstr "Уақыт: "
+
+#: src/Gui/States/Win.cpp:95
+#, c-format
+msgctxt "win"
+msgid "%d day "
+msgid_plural "%d days "
+msgstr[0] "%d күн "
+msgstr[1] "%d күн "
+
+#: src/Gui/States/Win.cpp:98
+#, c-format
+msgctxt "win"
+msgid "%d hour "
+msgid_plural "%d hours "
+msgstr[0] "%d сағ "
+msgstr[1] "%d сағ "
+
+#: src/Gui/States/Win.cpp:101
+#, c-format
+msgctxt "win"
+msgid "%d min "
+msgid_plural "%d mins "
+msgstr[0] "%d мин "
+msgstr[1] "%d мин "
+
+#: src/Gui/States/Win.cpp:104
+#, c-format
+msgctxt "win"
+msgid "%d sec "
+msgid_plural "%d secs "
+msgstr[0] "%d сек "
+msgstr[1] "%d сек "
+
+#: src/Gui/States/Win.cpp:114
+msgctxt "win"
+msgid "Maze size: "
+msgstr "Лабиринттің өлшемі: "
+
+#: src/Gui/States/NewGame.cpp:75
+msgctxt "new_game"
+msgid "Back"
+msgstr "Артқа"
+
+#: src/Gui/States/NewGame.cpp:76
+msgctxt "new_game"
+msgid "Start"
+msgstr "Бастау"
+
+#: src/Gui/States/NewGame.cpp:83
+msgctxt "new_game"
+msgid "Enter maze size"
+msgstr "Лабиринт өлшемін еңгізіңіз"

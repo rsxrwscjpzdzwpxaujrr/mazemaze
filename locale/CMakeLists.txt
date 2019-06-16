@@ -1,7 +1,7 @@
 add_custom_target(translation ALL DEPENDS)
 add_custom_target(update-translation-templates)
 
-set(LINGUAS ru uk)
+set(LINGUAS ru uk kk)
 
 set(DOMAIN messages)
 
