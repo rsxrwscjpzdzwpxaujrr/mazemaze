@@ -17,6 +17,7 @@
 
 #include "utils.hpp"
 
+#include <cstdarg>
 #include <vector>
 
 namespace mazemaze {
