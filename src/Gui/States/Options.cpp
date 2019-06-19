@@ -67,6 +67,7 @@ Options::initSignals(CheckButton::Ptr fullscreenCheck,
             ComboBox::Ptr antialiasingCombo,
             ComboBox::Ptr langCombo,
             CheckButton::Ptr vsyncCheck,
+            CheckButton::Ptr autosaveCheck,
             Button::Ptr backButton,
             MainMenu* mainMenu,
             Settings* settings) {
@@ -97,6 +98,10 @@ Options::initSignals(CheckButton::Ptr fullscreenCheck,
         settings->setVsync(vsyncCheck->IsActive());
     });
 
+    autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([autosaveCheck, settings] () {
+        settings->setAutosave(autosaveCheck->IsActive());
+    });
+
     backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] () {
         mainMenu->back();
     });
@@ -117,6 +122,7 @@ Options::initOptions(CheckButton::Ptr fullscreenCheck,
                      ComboBox::Ptr antialiasingCombo,
                      ComboBox::Ptr langCombo,
                      CheckButton::Ptr vsyncCheck,
+                     CheckButton::Ptr autosaveCheck,
                      Settings* settings) {
     fullscreenCheck->SetActive(settings->getFullscreen());
 
@@ -145,6 +151,7 @@ Options::initOptions(CheckButton::Ptr fullscreenCheck,
             langCombo->SelectItem(i);
 
     vsyncCheck->SetActive(settings->getVsync());
+    autosaveCheck->SetActive(settings->getAutosave());
 }
 
 Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
@@ -160,6 +167,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     auto graphicsGroupLabel = Label::Create(pgtx("options", "Graphics"));
     auto otherGroupLabel    = Label::Create(pgtx("options", "Other"));
     auto langCombo          = ComboBox::Create();
+    auto autosaveCheck      = CheckButton::Create(L"");
     auto separator          = Separator::Create();
     auto groupSeparator1    = Separator::Create();
     auto groupSeparator2    = Separator::Create();
@@ -174,6 +182,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
 
     windowBox->Pack(otherGroupLabel);
     windowBox->Pack(addToOptionsList(pgtx("options", "Language"), langCombo));
+    windowBox->Pack(addToOptionsList(pgtx("options", "Autosave"), autosaveCheck));
     windowBox->Pack(groupSeparator1);
     windowBox->Pack(graphicsGroupLabel);
     windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));
@@ -197,10 +206,21 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
 
     desktop->Add(box);
 
-    initSignals(fullscreenCheck, antialiasingCombo, langCombo, vsyncCheck, button, mainMenu,
-                                                                                   settings);
+    initSignals(fullscreenCheck,
+                antialiasingCombo,
+                langCombo,
+                vsyncCheck,
+                autosaveCheck,
+                button,
+                mainMenu,
+                settings);
 
-    initOptions(fullscreenCheck, antialiasingCombo, langCombo, vsyncCheck, settings);
+    initOptions(fullscreenCheck,
+                antialiasingCombo,
+                langCombo,
+                vsyncCheck,
+                autosaveCheck,
+                settings);
 
     center();
 }

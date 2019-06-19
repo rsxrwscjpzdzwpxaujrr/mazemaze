@@ -46,6 +46,7 @@ private:
                      sfg::ComboBox::Ptr antialiasingCombo,
                      sfg::ComboBox::Ptr langCombo,
                      sfg::CheckButton::Ptr vsyncCheck,
+                     sfg::CheckButton::Ptr autosaveCheck,
                      sfg::Button::Ptr backButton,
                      MainMenu* mainMenu,
                      Settings* settings);
@@ -54,6 +55,7 @@ private:
                      sfg::ComboBox::Ptr antialiasingCombo,
                      sfg::ComboBox::Ptr langCombo,
                      sfg::CheckButton::Ptr vsyncCheck,
+                     sfg::CheckButton::Ptr autosaveCheck,
                      Settings* settings);
 };
 
