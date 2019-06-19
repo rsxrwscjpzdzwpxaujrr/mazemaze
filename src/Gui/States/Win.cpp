@@ -17,6 +17,8 @@
 
 #include "Win.hpp"
 
+#include <string>
+
 #include <SFGUI/Widgets.hpp>
 
 #include "../../utils.hpp"

@@ -74,8 +74,13 @@ Saver::save(Game* game) {
 
 void
 Saver::deleteSave(Game* game) {
-    if (fopen(filename.c_str(), "r"))
+    if (saveExists())
         std::remove(filename.c_str());
+}
+
+bool
+Saver::saveExists() {
+    return fopen(filename.c_str(), "r");
 }
 
 Game*

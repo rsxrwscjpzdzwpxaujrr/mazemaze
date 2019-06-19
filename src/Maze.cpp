@@ -180,7 +180,8 @@ Maze::getChunks() const {
     return chunks;
 }
 
-int Maze::getChunksCount() const {
+int
+Maze::getChunksCount() const {
     return chunksX * chunksY;
 }
 

@@ -28,10 +28,9 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-inline void
-initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntry,
-            MainMenu* mainMenu) {
-    startButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu, sizeEntry] {
+void
+NewGame::initSignals(MainMenu* mainMenu) {
+    startButton->GetSignal(Widget::OnLeftClick).Connect([this, mainMenu] {
         sf::String text = sizeEntry->GetText();
         int mazeSize = 1;
 
@@ -45,7 +44,7 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
         mainMenu->back();
     });
 
-    sizeEntry->GetSignal(Entry::OnTextChanged).Connect([sizeEntry] {
+    sizeEntry->GetSignal(Entry::OnTextChanged).Connect([this] {
         sf::String text = sizeEntry->GetText();
         sf::String newText = L"";
         bool changed = false;
@@ -71,13 +70,14 @@ initSignals(Button::Ptr startButton, Button::Ptr backButton, Entry::Ptr sizeEntr
     });
 }
 
-NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
-    auto backButton          = Button::Create(pgtx("new_game", "Back"));
-    auto startButton         = Button::Create(pgtx("new_game", "Start"));
+NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) :
+        State(desktop),
+        backButton(Button::Create(pgtx("new_game", "Back"))),
+        startButton(Button::Create(pgtx("new_game", "Start"))),
+        sizeEntry(Entry::Create(L"10")) {
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
     auto separatorHorizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
     auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
-    auto sizeEntry           = Entry::Create(L"10");
     auto window              = Window::Create(Window::Style::BACKGROUND);
     auto windowBox           = Box::Create(Box::Orientation::VERTICAL);
     auto mazeSizeLabel       = Label::Create(pgtx("new_game", "Enter maze size"));
@@ -113,7 +113,7 @@ NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
 
     desktop->Add(box);
 
-    initSignals(startButton, backButton, sizeEntry, mainMenu);
+    initSignals(mainMenu);
 
     center();
 }

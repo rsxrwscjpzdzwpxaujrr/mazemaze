@@ -119,8 +119,7 @@ void
 Settings::writeConfig() {
     libconfig::Config config;
 
-    try
-    {
+    try {
         config.readFile(configFile.c_str());
     } catch(const libconfig::FileIOException) {
 
@@ -159,15 +158,14 @@ Settings::writeConfig() {
     graphics["fullscreen"] = getFullscreen();
     graphics["vsync"] = getVsync();
 
-    config.writeFile("config.cfg");
+    config.writeFile(configFile.c_str());
 }
 
 bool
 Settings::readConfig() {
     libconfig::Config config;
 
-    try
-    {
+    try {
         config.readFile(configFile.c_str());
     } catch(const libconfig::FileIOException) {
         return false;

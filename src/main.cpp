@@ -18,6 +18,7 @@
 #include <cmath>
 #include <iostream>
 #include <cstdio>
+#include <string>
 #include <gettext.h>
 
 #include <SFML/Graphics.hpp>

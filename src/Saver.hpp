@@ -35,6 +35,7 @@ class Saver {
 public:
     void save(Game* game);
     void deleteSave(Game* game);
+    bool saveExists();
     Game* load(gui::MainMenu* mainMenu, Settings* setiings);
 
     Saver(Saver const&) = delete;

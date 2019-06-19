@@ -22,6 +22,7 @@
 #include "../../utils.hpp"
 #include "../../Game.hpp"
 #include "../../GraphicEngine.hpp"
+#include "../../Saver.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -61,7 +62,7 @@ Main::Main(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
 
     initSignals(buttonResume, buttonNewGame, buttonOptions, buttonExit, mainMenu);
 
-    updateButtons(fopen("sav", "r"));
+    updateButtons(Saver::getInstance().saveExists());
 }
 
 Main::~Main() = default;
@@ -71,7 +72,7 @@ Main::show(bool show) {
     State::show(show);
 
     if (show)
-        updateButtons(fopen("sav", "r"));
+        updateButtons(Saver::getInstance().saveExists());
 }
 
 void

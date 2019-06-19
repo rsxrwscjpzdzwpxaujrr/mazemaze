@@ -159,7 +159,7 @@ GraphicEngine::getHeight() const {
 
 unsigned int
 GraphicEngine::getMaxAntialiasing() {
-    if (maxAntialiasing <= 0){
+    if (maxAntialiasing <= 0) {
         sf::ContextSettings settings;
         sf::VideoMode videoMode = sf::VideoMode(16, 16);
         sf::Uint32 style = sf::Style::None;

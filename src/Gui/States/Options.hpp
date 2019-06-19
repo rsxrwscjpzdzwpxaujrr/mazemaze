@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 
 #include <SFGUI/Widgets.hpp>
@@ -42,21 +44,21 @@ private:
     int langsCount;
     std::string* langCodes;
 
-    void initSignals(sfg::CheckButton::Ptr fullscreenCheck,
-                     sfg::ComboBox::Ptr antialiasingCombo,
-                     sfg::ComboBox::Ptr langCombo,
-                     sfg::CheckButton::Ptr vsyncCheck,
-                     sfg::CheckButton::Ptr autosaveCheck,
-                     sfg::Button::Ptr backButton,
-                     MainMenu* mainMenu,
-                     Settings* settings);
+    Settings* settings;
 
-    void initOptions(sfg::CheckButton::Ptr fullscreenCheck,
-                     sfg::ComboBox::Ptr antialiasingCombo,
-                     sfg::ComboBox::Ptr langCombo,
-                     sfg::CheckButton::Ptr vsyncCheck,
-                     sfg::CheckButton::Ptr autosaveCheck,
-                     Settings* settings);
+    sfg::Button::Ptr      backButton;
+    sfg::CheckButton::Ptr fullscreenCheck;
+    sfg::CheckButton::Ptr vsyncCheck;
+    sfg::ComboBox::Ptr    antialiasingCombo;
+    sfg::ComboBox::Ptr    langCombo;
+    sfg::CheckButton::Ptr autosaveCheck;
+
+    sf::Vector2f getSeparatorRequiredRequisition(float requiredWidth, sfg::Box::Ptr current);
+    sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
+
+    void initSignals(MainMenu* mainMenu);
+    void initAntialiasingCombo();
+    void initOptions();
 };
 
 }

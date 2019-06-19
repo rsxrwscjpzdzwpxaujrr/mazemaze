@@ -18,6 +18,7 @@
 #include "Player.hpp"
 
 #include <cmath>
+#include <algorithm>
 
 #include <SFML/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>

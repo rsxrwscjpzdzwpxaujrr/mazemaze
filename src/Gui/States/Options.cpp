@@ -31,16 +31,16 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-inline sf::Vector2f
-getSeparatorRequiredRequisition(float requiredWidth, Box::Ptr current) {
+sf::Vector2f
+Options::getSeparatorRequiredRequisition(float requiredWidth, Box::Ptr current) {
     float fullscreenBoxWidth = current->GetRequisition().x;
     float separatorWidth = requiredWidth - fullscreenBoxWidth;
 
     return {separatorWidth, 0.0f};
 }
 
-inline Box::Ptr
-addToOptionsList(const sf::String& label, Widget::Ptr widget) {
+Box::Ptr
+Options::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
     auto alignment1 = Alignment::Create();
     auto alignment2 = Alignment::Create();
     auto box        = Box::Create();
@@ -63,19 +63,12 @@ addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 }
 
 void
-Options::initSignals(CheckButton::Ptr fullscreenCheck,
-            ComboBox::Ptr antialiasingCombo,
-            ComboBox::Ptr langCombo,
-            CheckButton::Ptr vsyncCheck,
-            CheckButton::Ptr autosaveCheck,
-            Button::Ptr backButton,
-            MainMenu* mainMenu,
-            Settings* settings) {
-    fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([fullscreenCheck, settings] () {
+Options::initSignals(MainMenu* mainMenu) {
+    fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings->setFullscreen(fullscreenCheck->IsActive());
     });
 
-    antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([antialiasingCombo, settings] () {
+    antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
         int item = antialiasingCombo->GetSelectedItem();
         unsigned int antialiasing = 1;
 
@@ -88,17 +81,17 @@ Options::initSignals(CheckButton::Ptr fullscreenCheck,
         settings->setAntialiasing(antialiasing);
     });
 
-    langCombo->GetSignal(ComboBox::OnSelect).Connect([langCombo, settings, this] () {
+    langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
         std::string langCode;
 
         settings->setLang(langCodes[langCombo->GetSelectedItem()]);
     });
 
-    vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([vsyncCheck, settings] () {
+    vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings->setVsync(vsyncCheck->IsActive());
     });
 
-    autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([autosaveCheck, settings] () {
+    autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings->setAutosave(autosaveCheck->IsActive());
     });
 
@@ -107,8 +100,8 @@ Options::initSignals(CheckButton::Ptr fullscreenCheck,
     });
 }
 
-inline void
-initAntialiasingCombo(ComboBox::Ptr antialiasingCombo, Settings* settings) {
+void
+Options::initAntialiasingCombo() {
     int maxAntialiasing = settings->getMaxAntialiasing();
 
     antialiasingCombo->AppendItem(pgtx("options", "No"));
@@ -118,15 +111,10 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo, Settings* settings) {
 }
 
 void
-Options::initOptions(CheckButton::Ptr fullscreenCheck,
-                     ComboBox::Ptr antialiasingCombo,
-                     ComboBox::Ptr langCombo,
-                     CheckButton::Ptr vsyncCheck,
-                     CheckButton::Ptr autosaveCheck,
-                     Settings* settings) {
+Options::initOptions() {
     fullscreenCheck->SetActive(settings->getFullscreen());
 
-    initAntialiasingCombo(antialiasingCombo, settings);
+    initAntialiasingCombo();
 
     unsigned int antialiasing = settings->getAntialiasing();
 
@@ -155,19 +143,20 @@ Options::initOptions(CheckButton::Ptr fullscreenCheck,
 }
 
 Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
-            State(desktop),
-            langsCount(4) {
+        State(desktop),
+        langsCount(4),
+        settings(settings),
+        backButton       (Button::Create(pgtx("options", "Back"))),
+        fullscreenCheck  (CheckButton::Create(L"")),
+        vsyncCheck       (CheckButton::Create(L"")),
+        antialiasingCombo(ComboBox::Create()),
+        langCombo        (ComboBox::Create()),
+        autosaveCheck    (CheckButton::Create(L"")) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
-    auto button             = Button::Create(pgtx("options", "Back"));
     auto windowBox          = Box::Create(Box::Orientation::VERTICAL);
-    auto fullscreenCheck    = CheckButton::Create(L"");
-    auto vsyncCheck         = CheckButton::Create(L"");
-    auto antialiasingCombo  = ComboBox::Create();
     auto graphicsGroupLabel = Label::Create(pgtx("options", "Graphics"));
     auto otherGroupLabel    = Label::Create(pgtx("options", "Other"));
-    auto langCombo          = ComboBox::Create();
-    auto autosaveCheck      = CheckButton::Create(L"");
     auto separator          = Separator::Create();
     auto groupSeparator1    = Separator::Create();
     auto groupSeparator2    = Separator::Create();
@@ -202,25 +191,12 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     box = Box::Create(Box::Orientation::VERTICAL);
     box->SetSpacing(20.0f);
     box->Pack(window);
-    box->Pack(button);
+    box->Pack(backButton);
 
     desktop->Add(box);
 
-    initSignals(fullscreenCheck,
-                antialiasingCombo,
-                langCombo,
-                vsyncCheck,
-                autosaveCheck,
-                button,
-                mainMenu,
-                settings);
-
-    initOptions(fullscreenCheck,
-                antialiasingCombo,
-                langCombo,
-                vsyncCheck,
-                autosaveCheck,
-                settings);
+    initSignals(mainMenu);
+    initOptions();
 
     center();
 }

@@ -33,6 +33,13 @@ class NewGame : public State {
 public:
     explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
     ~NewGame();
+
+private:
+    sfg::Button::Ptr backButton;
+    sfg::Button::Ptr startButton;
+    sfg::Entry::Ptr  sizeEntry;
+
+    void initSignals(MainMenu *mainMenu);
 };
 
 }
