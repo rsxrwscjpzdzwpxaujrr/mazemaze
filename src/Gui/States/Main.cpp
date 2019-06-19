@@ -76,6 +76,8 @@ Main::show(bool show) {
 
 void
 Main::updateButtons(bool saveExists) {
+    desktop->Remove(box);
+
     box = Box::Create(Box::Orientation::VERTICAL);
 
     box->SetSpacing(20.0f);
