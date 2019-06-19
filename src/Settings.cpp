@@ -18,17 +18,25 @@
 #include "Settings.hpp"
 
 #include <cstdlib>
+#include <libconfig.h++>
 
 #include "GraphicEngine.hpp"
 
 namespace mazemaze {
 
-Settings::Settings() : lang(getenv("LANGUAGE")),
-                       antialiasing(0),
-                       autosave(true),
-                       autosaveTime(30.0f) {}
+Settings::Settings(bool readConfig) : configFile("config.cfg") {
+    if (readConfig)
+        if (!Settings::readConfig()) {
+            lang = getenv("LANGUAGE");
+            antialiasing = 0;
+            autosave = true;
+            autosaveTime = 30.0f;
+        }
+}
 
-Settings::~Settings() = default;
+Settings::~Settings() {
+    writeConfig();
+};
 
 std::string
 Settings::getLang() const {
@@ -97,6 +105,81 @@ Settings::setAutosave(bool autosave) {
 void
 Settings::setAutosaveTime(float autosaveTime) {
     Settings::autosaveTime = autosaveTime;
+}
+
+void
+Settings::writeConfig() {
+    libconfig::Config config;
+
+    try
+    {
+        config.readFile(configFile.c_str());
+    } catch(const libconfig::FileIOException) {
+
+    }
+
+    libconfig::Setting& root = config.getRoot();
+
+    if(!root.exists("lang"))
+        root.add("lang", libconfig::Setting::TypeString);
+
+    if(!root.exists("autosave"))
+        root.add("autosave", libconfig::Setting::TypeBoolean);
+
+    if(!root.exists("autosaveTime"))
+        root.add("autosaveTime", libconfig::Setting::TypeFloat);
+
+    root["lang"] = getLang();
+    root["autosave"] = getAutosave();
+    root["autosaveTime"] = getAutosaveTime();
+
+    if(!root.exists("graphics"))
+        root.add("graphics", libconfig::Setting::TypeGroup);
+
+    libconfig::Setting& graphics = root["graphics"];
+
+    if(!graphics.exists("antialiasing"))
+        graphics.add("antialiasing", libconfig::Setting::TypeInt);
+
+    if(!graphics.exists("fullscreen"))
+        graphics.add("fullscreen", libconfig::Setting::TypeBoolean);
+
+    if(!graphics.exists("vsync"))
+        graphics.add("vsync", libconfig::Setting::TypeBoolean);
+
+    graphics["antialiasing"] = static_cast<int>(getAntialiasing());
+    graphics["fullscreen"] = getFullscreen();
+    graphics["vsync"] = getVsync();
+
+    config.writeFile("config.cfg");
+}
+
+bool
+Settings::readConfig() {
+    libconfig::Config config;
+
+    try
+    {
+        config.readFile(configFile.c_str());
+    } catch(const libconfig::FileIOException) {
+        return false;
+    } catch(const libconfig::ParseException) {
+        return false;
+    }
+
+    const libconfig::Setting& root = config.getRoot();
+
+    libconfig::Setting& graphics = root["graphics"];
+
+    setAntialiasing(graphics["antialiasing"]);
+    setFullscreen(graphics["fullscreen"]);
+    setVsync(graphics["vsync"]);
+
+    setLang(root["lang"]);
+    setAutosave(root["autosave"]);
+    setAutosaveTime(root["autosaveTime"]);
+
+    return true;
 }
 
 }

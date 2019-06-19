@@ -105,8 +105,29 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo, Settings* settings) {
 
     for (int i = 2; i <= maxAntialiasing; i *= 2)
         antialiasingCombo->AppendItem(format("%dx", i));
+}
 
-    antialiasingCombo->SelectItem(0);
+inline void
+initOptions(CheckButton::Ptr fullscreenCheck,
+            ComboBox::Ptr antialiasingCombo,
+            CheckButton::Ptr vsyncCheck,
+            Settings* settings) {
+    fullscreenCheck->SetActive(settings->getFullscreen());
+
+    initAntialiasingCombo(antialiasingCombo, settings);
+
+    unsigned int antialiasing = settings->getAntialiasing();
+
+    if (antialiasing == 0)
+        antialiasing = 1;
+
+    for (unsigned int i = 0, j = 1; j <= antialiasing; i++, j *= 2)
+        if (j == antialiasing) {
+            antialiasingCombo->SelectItem(i);
+            break;
+        }
+
+    vsyncCheck->SetActive(settings->getVsync());
 }
 
 Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
@@ -131,8 +152,6 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
     windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));
 
-    initAntialiasingCombo(antialiasingCombo, settings);
-
     separator->SetRequisition({440.0f, 0.0f});
     windowBox->Pack(separator);
 
@@ -148,6 +167,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     desktop->Add(box);
 
     initSignals(fullscreenCheck, antialiasingCombo, vsyncCheck, button, mainMenu, settings);
+    initOptions(fullscreenCheck, antialiasingCombo, vsyncCheck, settings);
 
     center();
 }

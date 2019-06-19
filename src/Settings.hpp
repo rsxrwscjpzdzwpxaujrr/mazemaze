@@ -23,7 +23,7 @@ namespace mazemaze {
 
 class Settings {
 public:
-    Settings();
+    explicit Settings(bool readConfig=true);
     ~Settings();
 
     std::string  getLang() const;
@@ -42,10 +42,15 @@ public:
     void setAutosaveTime(float autosaveTime);
 
 private:
+    std::string configFile;
+
     std::string lang;
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;
+
+    void writeConfig();
+    bool readConfig();
 };
 
 }
