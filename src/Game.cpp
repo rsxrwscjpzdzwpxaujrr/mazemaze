@@ -137,6 +137,8 @@ void
 Game::setWantExit() {
     wantExit = true;
 
+    Saver::getInstance().save(this);
+
     mainMenu->stopGame();
 }
 
