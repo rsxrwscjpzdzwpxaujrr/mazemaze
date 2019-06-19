@@ -17,6 +17,8 @@
 
 #include "Saver.hpp"
 
+#include <cstdio>
+
 #include "Game.hpp"
 #include "Chunk.hpp"
 
@@ -68,6 +70,12 @@ Saver::save(Game* game) {
     }
 
     stream.close();
+}
+
+void
+Saver::deleteSave(Game* game) {
+    if (fopen(filename.c_str(), "r"))
+        std::remove(filename.c_str());
 }
 
 Game*
