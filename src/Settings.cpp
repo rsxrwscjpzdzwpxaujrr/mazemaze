@@ -24,10 +24,11 @@
 
 namespace mazemaze {
 
-Settings::Settings(bool readConfig) : configFile("config.cfg") {
+Settings::Settings(bool readConfig) : configFile("config.cfg"),
+                                      langenvchar(new char[12]) {
     if (readConfig)
         if (!Settings::readConfig()) {
-            lang = getenv("LANGUAGE");
+            setLang(getenv("LANGUAGE"));
             antialiasing = 0;
             autosave = true;
             autosaveTime = 30.0f;
@@ -36,6 +37,8 @@ Settings::Settings(bool readConfig) : configFile("config.cfg") {
 
 Settings::~Settings() {
     writeConfig();
+
+    delete [] langenvchar;
 };
 
 std::string
@@ -77,7 +80,12 @@ void
 Settings::setLang(const std::string &lang) {
     Settings::lang = lang;
 
-    putenv(const_cast<char*>(("LANGUAGE=" + lang).c_str()));
+    std::string langenvstring = "LANGUAGE=" + lang;
+
+    langenvstring.copy(langenvchar, 12 * sizeof (char));
+    langenvchar[11] = '\0';
+
+    putenv(langenvchar);
 }
 
 void
