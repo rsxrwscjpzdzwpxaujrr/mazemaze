@@ -59,12 +59,6 @@ Main::Main(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
     buttonOptions = Button::Create(pgtx("main", "Options"));
     buttonExit    = Button::Create(pgtx("main", "Exit"));
 
-    box = Box::Create(Box::Orientation::VERTICAL);
-
-    box->SetSpacing(20.0f);
-
-    desktop->Add(box);
-
     initSignals(buttonResume, buttonNewGame, buttonOptions, buttonExit, mainMenu);
 
     updateButtons(fopen("sav", "r"));
@@ -82,16 +76,20 @@ Main::show(bool show) {
 
 void
 Main::updateButtons(bool saveExists) {
-    box->RemoveAll();
+    box = Box::Create(Box::Orientation::VERTICAL);
 
-    if (saveExists)
-        box->Pack(buttonResume);
+    box->SetSpacing(20.0f);
 
+    buttonResume->Show(saveExists);
+
+    box->Pack(buttonResume);
     box->Pack(buttonNewGame);
     box->Pack(buttonOptions);
     box->Pack(buttonExit);
 
     box->SetRequisition({300.0f, box->GetRequisition().y});
+
+    desktop->Add(box);
 
     center();
 }
