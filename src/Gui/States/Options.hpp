@@ -23,6 +23,8 @@
 
 namespace mazemaze {
 
+class Settings;
+
 namespace gui {
 
 class MainMenu;
@@ -31,7 +33,7 @@ namespace states {
 
 class Options : public State {
 public:
-    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu);
+    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu, Settings* settings);
     ~Options() override;
 };
 

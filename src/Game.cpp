@@ -24,19 +24,20 @@
 
 #include "GraphicEngine.hpp"
 #include "Saver.hpp"
+#include "Settings.hpp"
 
 #include "Gui/MainMenu.hpp"
 
 namespace mazemaze {
 
-Game::Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight) :
+Game::Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
+        settings(settings),
         mainMenu(mainMenu),
         lastSaveTime(0.0f),
-        saveInterval(60.0f),
         paused(false),
         won(false),
         oldPauseKeyState(false),
@@ -72,7 +73,7 @@ Game::tick(float deltaTime) {
     if (!(paused || won)) {
         player.tick(deltaTime, window, &maze);
 
-        if (time - lastSaveTime >= saveInterval) {
+        if (time - lastSaveTime >= settings->getAutosaveTime() && settings->getAutosave()) {
             Saver::getInstance().save(this);
             lastSaveTime = time;
         }

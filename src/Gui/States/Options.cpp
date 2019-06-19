@@ -23,7 +23,7 @@
 #include <SFGUI/Widgets.hpp>
 
 #include "../../utils.hpp"
-#include "../../GraphicEngine.hpp"
+#include "../../Settings.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -65,13 +65,17 @@ addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 }
 
 inline void
-initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
-            CheckButton::Ptr vsyncCheck, Button::Ptr backButton, MainMenu* mainMenu) {
-    fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([fullscreenCheck] () {
-        GraphicEngine::getInstance().setFullscreen(fullscreenCheck->IsActive());
+initSignals(CheckButton::Ptr fullscreenCheck,
+            ComboBox::Ptr antialiasingCombo,
+            CheckButton::Ptr vsyncCheck,
+            Button::Ptr backButton,
+            MainMenu* mainMenu,
+            Settings* settings) {
+    fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([fullscreenCheck, settings] () {
+        settings->setFullscreen(fullscreenCheck->IsActive());
     });
 
-    antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([antialiasingCombo] () {
+    antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([antialiasingCombo, settings] () {
         int item = antialiasingCombo->GetSelectedItem();
         unsigned int antialiasing = 1;
 
@@ -81,11 +85,11 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
         if (antialiasing == 1)
             antialiasing = 0;
 
-        GraphicEngine::getInstance().setAntialiasing(antialiasing);
+        settings->setAntialiasing(antialiasing);
     });
 
-    vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([vsyncCheck] () {
-        GraphicEngine::getInstance().setVsync(vsyncCheck->IsActive());
+    vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([vsyncCheck, settings] () {
+        settings->setVsync(vsyncCheck->IsActive());
     });
 
     backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] () {
@@ -94,8 +98,8 @@ initSignals(CheckButton::Ptr fullscreenCheck, ComboBox::Ptr antialiasingCombo,
 }
 
 inline void
-initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
-    int maxAntialiasing = GraphicEngine::getInstance().getMaxAntialiasing();
+initAntialiasingCombo(ComboBox::Ptr antialiasingCombo, Settings* settings) {
+    int maxAntialiasing = settings->getMaxAntialiasing();
 
     antialiasingCombo->AppendItem(pgtx("options", "No"));
 
@@ -105,8 +109,8 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo) {
     antialiasingCombo->SelectItem(0);
 }
 
-Options::Options(Desktop* desktop, MainMenu* mainMenu) :
-                      State(desktop) {
+Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
+            State(desktop) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
     auto button             = Button::Create(pgtx("options", "Back"));
@@ -127,7 +131,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
     windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
     windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));
 
-    initAntialiasingCombo(antialiasingCombo);
+    initAntialiasingCombo(antialiasingCombo, settings);
 
     separator->SetRequisition({440.0f, 0.0f});
     windowBox->Pack(separator);
@@ -143,7 +147,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu) :
 
     desktop->Add(box);
 
-    initSignals(fullscreenCheck, antialiasingCombo, vsyncCheck, button, mainMenu);
+    initSignals(fullscreenCheck, antialiasingCombo, vsyncCheck, button, mainMenu, settings);
 
     center();
 }

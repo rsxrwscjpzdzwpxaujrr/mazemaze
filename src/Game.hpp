@@ -35,10 +35,11 @@ class MainMenu;
 }
 
 class Camera;
+class Settings;
 
 class Game : public gui::Background {
 public:
-    explicit Game(gui::MainMenu* mainMenu, int mazeWidth, int mazeHeight);
+    explicit Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeHeight);
     ~Game() override;
 
     void newGame();
@@ -66,11 +67,11 @@ private:
     MazeRenderer mazeRenderer;
     Player player;
     StarSky starSky;
+    Settings* settings;
 
     gui::MainMenu* mainMenu;
 
     float lastSaveTime;
-    const float saveInterval;
 
     bool paused;
     bool won;

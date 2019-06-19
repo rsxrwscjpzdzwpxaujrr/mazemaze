@@ -23,6 +23,7 @@ namespace mazemaze {
 
 class Game;
 class StarSky;
+class Settings;
 
 namespace gui {
 
@@ -42,6 +43,7 @@ public:
 private:
     Game* game;
     Background* starSkyBackground;
+    Settings* settings;
 
     void setupGame();
 };

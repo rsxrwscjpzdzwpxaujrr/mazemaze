@@ -19,6 +19,7 @@
 
 #include "../Game.hpp"
 #include "../Saver.hpp"
+#include "../Settings.hpp"
 
 #include "States/Empty.hpp"
 #include "States/Main.hpp"
@@ -30,7 +31,8 @@
 namespace mazemaze {
 namespace gui {
 
-MainMenu::MainMenu() : game(nullptr) {
+MainMenu::MainMenu() : game(nullptr),
+                       settings(new Settings()) {
     getDesktop()->LoadThemeFromFile("data/style.theme");
 
     //Костыль
@@ -41,7 +43,7 @@ MainMenu::MainMenu() : game(nullptr) {
     sfg::Label::Create(str);
 
     addState(new states::Main   (getDesktop(), this));
-    addState(new states::Options(getDesktop(), this));
+    addState(new states::Options(getDesktop(), this, settings));
     addState(new states::Empty  (getDesktop()));
     addState(new states::NewGame(getDesktop(), this));
 
@@ -60,6 +62,7 @@ MainMenu::MainMenu() : game(nullptr) {
 MainMenu::~MainMenu() {
     delete starSkyBackground->getTickable();
     delete starSkyBackground;
+    delete settings;
 
     if (game != nullptr)
         delete game;
@@ -73,7 +76,7 @@ MainMenu::onEvent(sf::Event event) {
 
 void
 MainMenu::newGame(int mazeWidth, int mazeHeight) {
-    game = new Game(this, mazeWidth, mazeHeight);
+    game = new Game(this, settings, mazeWidth, mazeHeight);
     game->newGame();
 
     setupGame();
@@ -81,7 +84,7 @@ MainMenu::newGame(int mazeWidth, int mazeHeight) {
 
 void
 MainMenu::resumeGame() {
-    game = Saver::getInstance().load(this);
+    game = Saver::getInstance().load(this, settings);
 
     setupGame();
 }

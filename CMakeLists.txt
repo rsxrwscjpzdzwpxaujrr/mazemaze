@@ -49,6 +49,8 @@ target_sources(
     src/Player.hpp
     src/StarSky.cpp
     src/StarSky.hpp
+    src/Settings.cpp
+    src/Settings.hpp
     src/Saver.cpp
     src/Saver.hpp
     src/FpsCalculator.cpp

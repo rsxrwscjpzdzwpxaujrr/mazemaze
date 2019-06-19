@@ -18,40 +18,34 @@
 #pragma once
 
 #include <string>
-#include <fstream>
 
 namespace mazemaze {
-namespace gui {
 
-class MainMenu;
-
-}
-
-class Game;
-class Chunk;
-class Settings;
-
-class Saver {
+class Settings {
 public:
-    void save(Game* game);
-    Game* load(gui::MainMenu* mainMenu, Settings* setiings);
+    Settings();
+    ~Settings();
 
-    Saver(Saver const&) = delete;
-    void operator= (Saver const&) = delete;
+    std::string  getLang() const;
+    unsigned int getAntialiasing() const;
+    unsigned int getMaxAntialiasing();
+    bool         getFullscreen();
+    bool         getVsync();
+    bool         getAutosave() const;
+    float        getAutosaveTime() const;
 
-    static Saver& getInstance() {
-        static Saver instance;
-        return instance;
-    }
+    void setLang(const std::string &lang);
+    void setAntialiasing(unsigned int antialiasing);
+    void setFullscreen(bool fullscreen);
+    void setVsync(bool vsync);
+    void setAutosave(bool autosave);
+    void setAutosaveTime(float autosaveTime);
 
 private:
-    Saver();
-    ~Saver();
-
-    std::string filename;
-
-    void writeChunk(std::ofstream* stream, Chunk* chunk);
-    void readChunk(std::istream* stream, Chunk* chunk);
+    std::string lang;
+    unsigned int antialiasing;
+    bool autosave;
+    float autosaveTime;
 };
 
 }

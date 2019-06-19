@@ -71,7 +71,7 @@ Saver::save(Game* game) {
 }
 
 Game*
-Saver::load(gui::MainMenu* mainMenu) {
+Saver::load(gui::MainMenu* mainMenu, Settings* settings) {
     std::ifstream stream;
 
     stream.open(filename, std::ios::in | std::ios::binary);
@@ -82,7 +82,7 @@ Saver::load(gui::MainMenu* mainMenu) {
         stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 5);
         stream.seekg(0x400);
 
-        Game* game = new Game(mainMenu, (mazeParams[0] / 2), (mazeParams[1] / 2));
+        Game* game = new Game(mainMenu, settings, (mazeParams[0] / 2), (mazeParams[1] / 2));
         Maze* maze = game->getMaze();
 
         maze->setSeed(mazeParams[2]);
