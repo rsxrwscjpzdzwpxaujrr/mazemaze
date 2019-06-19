@@ -2,7 +2,7 @@ Mazemaze
 ========
 Simple 3D OpenGL first-person maze game.
 
-Depends on SFML and SFGUI packages.
+Depends on libconfig, SFML and SFGUI packages.
 
 ![](screenshot.png)
 
