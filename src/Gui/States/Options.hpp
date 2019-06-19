@@ -17,7 +17,9 @@
 
 #pragma once
 
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
+
+#include <SFGUI/Widgets.hpp>
 
 #include "../State.hpp"
 
@@ -35,6 +37,24 @@ class Options : public State {
 public:
     explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu, Settings* settings);
     ~Options() override;
+
+private:
+    int langsCount;
+    std::string* langCodes;
+
+    void initSignals(sfg::CheckButton::Ptr fullscreenCheck,
+                     sfg::ComboBox::Ptr antialiasingCombo,
+                     sfg::ComboBox::Ptr langCombo,
+                     sfg::CheckButton::Ptr vsyncCheck,
+                     sfg::Button::Ptr backButton,
+                     MainMenu* mainMenu,
+                     Settings* settings);
+
+    void initOptions(sfg::CheckButton::Ptr fullscreenCheck,
+                     sfg::ComboBox::Ptr antialiasingCombo,
+                     sfg::ComboBox::Ptr langCombo,
+                     sfg::CheckButton::Ptr vsyncCheck,
+                     Settings* settings);
 };
 
 }

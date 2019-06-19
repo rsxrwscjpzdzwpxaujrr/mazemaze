@@ -20,8 +20,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../../utils.hpp"
 #include "../../Settings.hpp"
 
@@ -64,9 +62,10 @@ addToOptionsList(const sf::String& label, Widget::Ptr widget) {
     return box;
 }
 
-inline void
-initSignals(CheckButton::Ptr fullscreenCheck,
+void
+Options::initSignals(CheckButton::Ptr fullscreenCheck,
             ComboBox::Ptr antialiasingCombo,
+            ComboBox::Ptr langCombo,
             CheckButton::Ptr vsyncCheck,
             Button::Ptr backButton,
             MainMenu* mainMenu,
@@ -88,6 +87,12 @@ initSignals(CheckButton::Ptr fullscreenCheck,
         settings->setAntialiasing(antialiasing);
     });
 
+    langCombo->GetSignal(ComboBox::OnSelect).Connect([langCombo, settings, this] () {
+        std::string langCode;
+
+        settings->setLang(langCodes[langCombo->GetSelectedItem()]);
+    });
+
     vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([vsyncCheck, settings] () {
         settings->setVsync(vsyncCheck->IsActive());
     });
@@ -107,11 +112,12 @@ initAntialiasingCombo(ComboBox::Ptr antialiasingCombo, Settings* settings) {
         antialiasingCombo->AppendItem(format("%dx", i));
 }
 
-inline void
-initOptions(CheckButton::Ptr fullscreenCheck,
-            ComboBox::Ptr antialiasingCombo,
-            CheckButton::Ptr vsyncCheck,
-            Settings* settings) {
+void
+Options::initOptions(CheckButton::Ptr fullscreenCheck,
+                     ComboBox::Ptr antialiasingCombo,
+                     ComboBox::Ptr langCombo,
+                     CheckButton::Ptr vsyncCheck,
+                     Settings* settings) {
     fullscreenCheck->SetActive(settings->getFullscreen());
 
     initAntialiasingCombo(antialiasingCombo, settings);
@@ -127,11 +133,23 @@ initOptions(CheckButton::Ptr fullscreenCheck,
             break;
         }
 
+    langCombo->AppendItem(L"English");
+    langCombo->AppendItem(L"Русский");
+    langCombo->AppendItem(L"Українська");
+    langCombo->AppendItem(L"Қазақша");
+
+    std::string lang = settings->getLang();
+
+    for (int i = 0; i < langsCount; i++)
+        if (langCodes[i] == lang)
+            langCombo->SelectItem(i);
+
     vsyncCheck->SetActive(settings->getVsync());
 }
 
 Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
-            State(desktop) {
+            State(desktop),
+            langsCount(4) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
     auto button             = Button::Create(pgtx("options", "Back"));
@@ -140,18 +158,31 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     auto vsyncCheck         = CheckButton::Create(L"");
     auto antialiasingCombo  = ComboBox::Create();
     auto graphicsGroupLabel = Label::Create(pgtx("options", "Graphics"));
+    auto otherGroupLabel    = Label::Create(pgtx("options", "Other"));
+    auto langCombo          = ComboBox::Create();
     auto separator          = Separator::Create();
+    auto groupSeparator1    = Separator::Create();
+    auto groupSeparator2    = Separator::Create();
+
+    langCodes = new std::string[langsCount] {"en", "ru", "uk", "kk"};
 
     scroll->SetScrollbarPolicy(ScrolledWindow::ScrollbarPolicy::HORIZONTAL_AUTOMATIC |
                                ScrolledWindow::ScrollbarPolicy::VERTICAL_ALWAYS);
 
     graphicsGroupLabel->SetClass("optionsGroup");
+    otherGroupLabel->SetClass("optionsGroup");
 
+    windowBox->Pack(otherGroupLabel);
+    windowBox->Pack(addToOptionsList(pgtx("options", "Language"), langCombo));
+    windowBox->Pack(groupSeparator1);
     windowBox->Pack(graphicsGroupLabel);
     windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));
     windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
-    windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));
+    windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));  
+    windowBox->Pack(groupSeparator2);
 
+    groupSeparator1->SetRequisition({0.0f, 40.0f});
+    groupSeparator2->SetRequisition({0.0f, 80.0f});
     separator->SetRequisition({440.0f, 0.0f});
     windowBox->Pack(separator);
 
@@ -166,13 +197,17 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
 
     desktop->Add(box);
 
-    initSignals(fullscreenCheck, antialiasingCombo, vsyncCheck, button, mainMenu, settings);
-    initOptions(fullscreenCheck, antialiasingCombo, vsyncCheck, settings);
+    initSignals(fullscreenCheck, antialiasingCombo, langCombo, vsyncCheck, button, mainMenu,
+                                                                                   settings);
+
+    initOptions(fullscreenCheck, antialiasingCombo, langCombo, vsyncCheck, settings);
 
     center();
 }
 
-Options::~Options() = default;
+Options::~Options() {
+    delete [] langCodes;
+};
 
 }
 }
