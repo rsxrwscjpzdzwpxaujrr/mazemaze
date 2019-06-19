@@ -49,6 +49,8 @@ void
 Gui::tick(float deltaTime) {
     desktop.Update(deltaTime);
 
+    states[state]->tick(deltaTime);
+
     if (background != nullptr)
         background->tick(deltaTime);
 }
