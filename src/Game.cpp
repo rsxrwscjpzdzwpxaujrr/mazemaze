@@ -126,7 +126,8 @@ Game::setPaused(bool paused) {
         if (paused) {
             mainMenu->setState(4);
 
-            Saver::getInstance().save(this);
+            if (settings->getAutosave())
+                Saver::getInstance().save(this);
         } else
             mainMenu->backTo(2);
     }
