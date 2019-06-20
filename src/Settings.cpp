@@ -28,7 +28,12 @@ Settings::Settings(bool readConfig) : configFile("config.cfg"),
                                       langenvchar(new char[12]) {
     if (readConfig)
         if (!Settings::readConfig()) {
-            setLang(getenv("LANGUAGE"));
+            char* defaultLang = getenv("LANGUAGE");
+
+            if (defaultLang == nullptr)
+                defaultLang = const_cast<char*>("en");
+
+            setLang(defaultLang);
             antialiasing = 0;
             autosave = true;
             autosaveTime = 30.0f;
