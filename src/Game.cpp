@@ -33,6 +33,7 @@ namespace mazemaze {
 Game::Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
+        mazeRenderer(&maze),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
         settings(settings),
@@ -55,7 +56,7 @@ Game::newGame() {
 void
 Game::onLoad() {
     lastSaveTime = time;
-    mazeRenderer.update(&maze);
+    mazeRenderer.update();
     setPaused(false);
     setWon(false);
 }
@@ -97,7 +98,7 @@ Game::render() {
     starSky.render();
 
     player.getCamera()->setupTranslation();
-    mazeRenderer.render();
+    mazeRenderer.render(player.getX(), player.getZ());
 
     glPopMatrix();
 

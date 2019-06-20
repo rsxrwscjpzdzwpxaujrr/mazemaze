@@ -38,6 +38,8 @@ public:
     int getExitY() const;
     Chunk* getChunks() const;
     int getChunksCount() const;
+    unsigned int getChunksX() const;
+    unsigned int getChunksY() const;
 
     void setSeed(unsigned int seed);
 

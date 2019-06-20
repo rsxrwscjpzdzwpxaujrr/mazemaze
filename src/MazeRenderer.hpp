@@ -23,14 +23,17 @@ namespace mazemaze {
 
 class MazeRenderer {
 public:
-    MazeRenderer();
+    MazeRenderer(Maze* maze);
     ~MazeRenderer();
 
-    void update(Maze* maze);
-    void render();
+    void update();
+    void render(float playerX, float playerY);
 
 private:
     unsigned int drawList;
+    Maze* maze;
+    unsigned int chunksX;
+    unsigned int chunksY;
 };
 
 }

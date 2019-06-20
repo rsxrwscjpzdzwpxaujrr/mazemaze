@@ -17,88 +17,122 @@
 
 #include "MazeRenderer.hpp"
 
+#include <algorithm>
+
 #include <SFML/OpenGL.hpp>
+
+#include "Chunk.hpp"
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer() = default;
+MazeRenderer::MazeRenderer(Maze* maze) : maze(maze) {}
 
 MazeRenderer::~MazeRenderer() {
-    glDeleteLists(drawList, 1);
+    glDeleteLists(drawList, maze->getChunksCount());
 }
 
-void MazeRenderer::update(Maze* maze) {
-    drawList = glGenLists(1);
+void MazeRenderer::update() {
+    drawList = glGenLists(maze->getChunksCount());
 
-    glNewList(drawList, GL_COMPILE);
+    for (int i = 0; i < maze->getChunksCount(); i++) {
+        glNewList(drawList + i, GL_COMPILE);
 
-    int mazeWidth = maze->getWidth();
-    int mazeHeight = maze->getHeight();
+        glPushMatrix();
 
-    glBegin(GL_QUADS);
+        int chunkX = (i % maze->getChunksX()) * Chunk::SIZE;
+        int chunkY = (i / maze->getChunksX()) * Chunk::SIZE;
 
-    glColor3f(1.0f, 0.0f, 1.0f);
+        glTranslatef(chunkX, 0.0, chunkY);
 
-    glVertex3i(0, 0, mazeHeight);
-    glVertex3i(mazeWidth, 0, mazeHeight);
-    glVertex3i(mazeWidth, 0, 0);
-    glVertex3i(0, 0, 0);
+        glBegin(GL_QUADS);
 
-    for (int i = 0; i < mazeHeight; i++)
-        for (int j = 0; j < mazeWidth; j++)
-            if (maze->getOpened(j, i)) {
-                if (!maze->getOpened(j + 1, i)) {
-                    glColor3f(1.0f, 0.0f, 0.0f);
+        glColor3f(1.0f, 0.0f, 1.0f);
 
-                    glVertex3i(j + 1, 0, i + 1);
-                    glVertex3i(j + 1, 1, i + 1);
-                    glVertex3i(j + 1, 1, i);
-                    glVertex3i(j + 1, 0, i);
+        int endX = Chunk::SIZE;
+        int endY = Chunk::SIZE;
+
+        if (chunkX + Chunk::SIZE > maze->getWidth())
+            endX = maze->getWidth() % Chunk::SIZE;
+
+        if (chunkY + Chunk::SIZE > maze->getHeight())
+            endY = maze->getHeight() % Chunk::SIZE;
+
+        glVertex3i(0,    0, endY);
+        glVertex3i(endX, 0, endY);
+        glVertex3i(endX, 0, 0);
+        glVertex3i(0,    0, 0);
+
+        for (unsigned int j = 0; j < Chunk::SIZE; j++)
+            for (unsigned int k = 0; k < Chunk::SIZE; k++)
+                if     ((chunkX + j < maze->getWidth()) &&
+                        (chunkY + k < maze->getHeight())) {
+                    if (maze->getOpened(j + chunkX, k + chunkY)) {
+                        if (!maze->getOpened(j + 1 + chunkX, k + chunkY)) {
+                            glColor3f(1.0f, 0.0f, 0.0f);
+
+                            glVertex3i(j + 1, 0, k + 1);
+                            glVertex3i(j + 1, 1, k + 1);
+                            glVertex3i(j + 1, 1, k);
+                            glVertex3i(j + 1, 0, k);
+                        }
+
+                        if (!maze->getOpened(j - 1 + chunkX, k + chunkY)) {
+                            glColor3f(0.0f, 1.0f, 1.0f);
+
+                            glVertex3i(j, 0, k);
+                            glVertex3i(j, 1, k);
+                            glVertex3i(j, 1, k + 1);
+                            glVertex3i(j, 0, k + 1);
+                        }
+
+                        if (!maze->getOpened(j + chunkX, k + 1 + chunkY)) {
+                            glColor3f(0.0f, 0.0f, 1.0f);
+
+                            glVertex3i(j, 0, k + 1);
+                            glVertex3i(j, 1, k + 1);
+                            glVertex3i(j + 1, 1, k + 1);
+                            glVertex3i(j + 1, 0, k + 1);
+                        }
+
+                        if (!maze->getOpened(j + chunkX, k - 1 + chunkY)) {
+                            glColor3f(1.0f, 1.0f, 0.0f);
+
+                            glVertex3i(j + 1, 0, k);
+                            glVertex3i(j + 1, 1, k);
+                            glVertex3i(j, 1, k);
+                            glVertex3i(j, 0, k);
+                        }
+                    } else {
+                        glColor3f(0.0f, 1.0f, 0.0f);
+
+                        glVertex3i(j, 1, k);
+                        glVertex3i(j, 1, k + 1);
+                        glVertex3i(j + 1, 1, k + 1);
+                        glVertex3i(j + 1, 1, k);
+                    }
                 }
 
-                if (!maze->getOpened(j - 1, i)) {
-                    glColor3f(0.0f, 1.0f, 1.0f);
+        glEnd();
 
-                    glVertex3i(j, 0, i);
-                    glVertex3i(j, 1, i);
-                    glVertex3i(j, 1, i + 1);
-                    glVertex3i(j, 0, i + 1);
-                }
+        glPopMatrix();
 
-                if (!maze->getOpened(j, i + 1)) {
-                    glColor3f(0.0f, 0.0f, 1.0f);
-
-                    glVertex3i(j, 0, i + 1);
-                    glVertex3i(j, 1, i + 1);
-                    glVertex3i(j + 1, 1, i + 1);
-                    glVertex3i(j + 1, 0, i + 1);
-                }
-
-                if (!maze->getOpened(j, i - 1)) {
-                    glColor3f(1.0f, 1.0f, 0.0f);
-
-                    glVertex3i(j + 1, 0, i);
-                    glVertex3i(j + 1, 1, i);
-                    glVertex3i(j, 1, i);
-                    glVertex3i(j, 0, i);
-                }
-            } else {
-                glColor3f(0.0f, 1.0f, 0.0f);
-
-                glVertex3i(j, 1, i);
-                glVertex3i(j, 1, i + 1);
-                glVertex3i(j + 1, 1, i + 1);
-                glVertex3i(j + 1, 1, i);
-            }
-
-    glEnd();
-
-    glEndList();
+        glEndList();
+    }
 }
 
 void
-MazeRenderer::render() {
-    glCallList(drawList);
+MazeRenderer::render(float playerX, float playerY) {
+    for (int i = 0; i < maze->getChunksCount(); i++) {
+        int chunkX = (i % maze->getChunksX());
+        int chunkY = (i / maze->getChunksX());
+
+        int pX = static_cast<int>(playerX) / Chunk::SIZE;
+        int pY = static_cast<int>(playerY) / Chunk::SIZE;
+
+        if     (((chunkX >= pX - 1 && chunkX <= pX + 1) && chunkY == pY) ||
+                ((chunkY >= pY - 1 && chunkY <= pY + 1) && chunkX == pX))
+            glCallList(drawList + i);
+    }
 }
 
 }

@@ -185,6 +185,16 @@ Maze::getChunksCount() const {
     return chunksX * chunksY;
 }
 
+unsigned int
+Maze::getChunksX() const {
+    return chunksX;
+}
+
+unsigned int
+Maze::getChunksY() const {
+    return chunksY;
+}
+
 void
 Maze::setSeed(unsigned int seed) {
     Maze::seed = seed;
