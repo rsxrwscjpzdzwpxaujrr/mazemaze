@@ -14,14 +14,22 @@ find_package(SFML COMPONENTS window graphics system REQUIRED)
 find_package(SFGUI QUIET MODULE)
 
 if (NOT SFGUI_FOUND)
-    set(SFGUI_BUILD_EXAMPLES OFF CACHE BOOL "Build examples." FORCE)
+    if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
+        message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
 
-    if (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
-        message(STATUS "Found SFGUI submodule in " ${CMAKE_CURRENT_LIST_DIR}/sfgui)
+        set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
+        set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
+
+        set(OLD_CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+        set(CMAKE_BUILD_TYPE "")
         add_subdirectory(sfgui)
-    else (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
+        set(CMAKE_BUILD_TYPE ${OLD_CMAKE_BUILD_TYPE})
+
+        set(SFGUI_LIBRARY     ${CMAKE_BINARY_DIR}/sfgui/lib/libSFGUI.a)
+        set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
+    else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
         message(FATAL "SFGUI not found")
-    endif (EXISTS ${CMAKE_CURRENT_LIST_DIR}/sfgui/CMakeLists.txt)
+    endif (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
 endif (NOT SFGUI_FOUND)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
