@@ -94,7 +94,7 @@ Maze::generate(unsigned int seed) {
     std::stack<sf::Vector2i> generators;
     sf::Vector2i currentGenerator(1, 1);
 
-    setOpened(currentGenerator.x, currentGenerator.x, true);
+    setOpened(currentGenerator.x, currentGenerator.y, true);
     generators.emplace(currentGenerator);
 
     std::mt19937 randGen(seed);
@@ -139,7 +139,7 @@ Maze::getOpened(int x, int y) {
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 
-    return chunks[((uy / Chunk::SIZE) * chunksY) + (ux / Chunk::SIZE)]
+    return chunks[((uy / Chunk::SIZE) * chunksX) + (ux / Chunk::SIZE)]
            .getOpened(ux % Chunk::SIZE, uy % Chunk::SIZE);
 }
 
@@ -151,7 +151,7 @@ Maze::setOpened(int x, int y, bool opened) {
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 
-    chunks[((uy / Chunk::SIZE) * chunksY) + (ux / Chunk::SIZE)]
+    chunks[((uy / Chunk::SIZE) * chunksX) + (ux / Chunk::SIZE)]
             .setOpened(ux % Chunk::SIZE, uy % Chunk::SIZE, opened);
 }
 
