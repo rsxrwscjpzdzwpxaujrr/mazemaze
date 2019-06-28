@@ -152,14 +152,19 @@ Player::setZ(float z) {
 
 void
 Player::tryMove(Maze* maze, float x, float y, float z) {
-    if (!checkCollision(maze, x, Player::z))
-        Player::x = x;
-
-    if (y > 0.0f && y < 1.0f)
+    if (!(y < 0.0f && Player::y > 0.0f))
         Player::y = y;
 
-    if (!checkCollision(maze, Player::x, z))
+    if (y >= 0.0f && y <= 1.0f) {
+        if (!checkCollision(maze, x, Player::z))
+            Player::x = x;
+
+        if (!checkCollision(maze, Player::x, z))
+            Player::z = z;
+    } else {
+        Player::x = x;
         Player::z = z;
+    }
 }
 
 bool
