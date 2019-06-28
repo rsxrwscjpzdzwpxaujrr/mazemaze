@@ -123,10 +123,13 @@ Settings::setAutosaveTime(float autosaveTime) {
 void
 Settings::writeConfig() {
     libconfig::Config config;
+    config.setAutoConvert(true);
 
     try {
         config.readFile(configFile.c_str());
     } catch(const libconfig::FileIOException) {
+
+    } catch(const libconfig::ParseException) {
 
     }
 
@@ -169,6 +172,7 @@ Settings::writeConfig() {
 bool
 Settings::readConfig() {
     libconfig::Config config;
+    config.setAutoConvert(true);
 
     try {
         config.readFile(configFile.c_str());
