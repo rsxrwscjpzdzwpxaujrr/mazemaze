@@ -20,12 +20,9 @@ if (NOT SFGUI_FOUND)
         set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
         set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
 
-        set(OLD_CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
-        set(CMAKE_BUILD_TYPE "")
         add_subdirectory(sfgui)
-        set(CMAKE_BUILD_TYPE ${OLD_CMAKE_BUILD_TYPE})
 
-        set(SFGUI_LIBRARY     ${CMAKE_BINARY_DIR}/sfgui/lib/libSFGUI.a)
+        set(SFGUI_LIBRARY     SFGUI)
         set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
     else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
         message(FATAL "SFGUI not found")
