@@ -31,43 +31,23 @@
 namespace mazemaze {
 
 Settings::Settings(bool readConfig) : configFile("config.cfg") {
-    if (readConfig)
-        if (!Settings::readConfig()) {
-            char* envLang = getenv("LANGUAGE");
-            std::string defaultLang;
+    if (readConfig) {
+        if(Settings::readConfig())
+            return;
+    }
 
-            if (envLang == nullptr) {
-#ifdef WIN32
-                char* tempLang = new char[3];
+    char* envLang = getenv("LANGUAGE");
+    std::string defaultLang;
 
-                GetLocaleInfo(LOCALE_USER_DEFAULT,
-                              LOCALE_SISO639LANGNAME,
-                              tempLang,
-                              sizeof(tempLang) / sizeof(char));
+    if (envLang == nullptr)
+        defaultLang = getSystemLang();
+    else
+        defaultLang = envLang;
 
-                defaultLang = tempLang;
-                delete tempLang;
-#else
-                std::smatch match;
-                std::string locale(std::locale("").name());
-                std::regex  regex("([a-z]{2,3})(?:_)");
-
-                std::regex_search(locale, match, regex);
-
-                if (!match.empty())
-                    defaultLang = match[1].str();
-                else
-                    defaultLang = "en";
-#endif
-            } else {
-                defaultLang = envLang;
-            }
-
-            setLang(defaultLang);
-            antialiasing = 0;
-            autosave = true;
-            autosaveTime = 30.0f;
-        }
+    setLang(defaultLang);
+    antialiasing = 0;
+    autosave = true;
+    autosaveTime = 30.0f;
 }
 
 Settings::~Settings() {
@@ -142,6 +122,41 @@ Settings::setAutosave(bool autosave) {
 void
 Settings::setAutosaveTime(float autosaveTime) {
     Settings::autosaveTime = autosaveTime;
+}
+
+
+std::string
+Settings::getSystemLang() {
+    std::string systemLang;
+
+#ifdef WIN32
+
+    char* tempLang = new char[3];
+
+    GetLocaleInfo(LOCALE_USER_DEFAULT,
+                  LOCALE_SISO639LANGNAME,
+                  tempLang,
+                  sizeof(tempLang) / sizeof(char));
+
+    defaultLang = tempLang;
+    delete tempLang;
+
+#else
+
+    std::smatch match;
+    std::string locale(std::locale("").name());
+    std::regex  regex("([a-z]{2,3})(?:_)");
+
+    std::regex_search(locale, match, regex);
+
+    if (!match.empty())
+        systemLang = match[1].str();
+    else
+        systemLang = "en";
+
+#endif
+
+    return systemLang;
 }
 
 void

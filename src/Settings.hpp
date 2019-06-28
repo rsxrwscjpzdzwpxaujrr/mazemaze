@@ -50,6 +50,8 @@ private:
     bool autosave;
     float autosaveTime;
 
+    std::string getSystemLang();
+
     void writeConfig();
     bool readConfig();
 };
