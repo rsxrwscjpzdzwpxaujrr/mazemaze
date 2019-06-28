@@ -17,8 +17,6 @@
 
 #include <cmath>
 #include <iostream>
-#include <cstdio>
-#include <string>
 #include <gettext.h>
 
 #include <SFML/Graphics.hpp>
@@ -28,6 +26,7 @@
 #include <SFGUI/Button.hpp>
 #include <SFGUI/Desktop.hpp>
 
+#include "utils.hpp"
 #include "Maze.hpp"
 #include "MazeRenderer.hpp"
 #include "Player.hpp"
@@ -42,13 +41,7 @@ using namespace mazemaze;
 
 void
 showFps(float fps) {
-    std::string s(16, '\0');
-    int written = std::snprintf(&s[0], s.size(),
-            "\rFPS: %.2f        ", fps);
-
-    s.resize(written);
-
-    std::cout << s << std::flush;
+    std::cout << format("\rFPS: %.2f        ", fps) << std::flush;
 }
 
 int
