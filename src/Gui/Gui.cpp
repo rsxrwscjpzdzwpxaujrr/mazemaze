@@ -25,7 +25,10 @@ namespace gui {
 Gui::Gui() : background(nullptr),
              wantExit(false) {}
 
-Gui::~Gui() = default;
+Gui::~Gui() {
+    for (size_t i = 0; i < states.size(); i++)
+        delete states[i];
+};
 
 void
 Gui::handleEvent(sf::Event event) {

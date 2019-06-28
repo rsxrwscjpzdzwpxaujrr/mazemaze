@@ -88,6 +88,11 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
 
 StarSky::~StarSky() {
     glDeleteLists(drawList, 1);
+
+    delete [] starsX;
+    delete [] starsY;
+    delete [] starsZ;
+    delete [] starSize;
 }
 
 void

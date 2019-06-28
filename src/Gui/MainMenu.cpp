@@ -61,6 +61,7 @@ MainMenu::MainMenu() : game(nullptr),
 
 MainMenu::~MainMenu() {
     delete starSkyBackground->getTickable();
+    delete starSkyBackground->getCamera();
     delete starSkyBackground;
     delete settings;
 
