@@ -20,18 +20,48 @@
 #include <cstdlib>
 #include <libconfig.h++>
 
+#ifdef WIN32
+# include <windows.h>
+#else
+# include <regex>
+#endif
+
 #include "GraphicEngine.hpp"
 
 namespace mazemaze {
 
-Settings::Settings(bool readConfig) : configFile("config.cfg"),
-                                      langenvchar(new char[12]) {
+Settings::Settings(bool readConfig) : configFile("config.cfg") {
     if (readConfig)
         if (!Settings::readConfig()) {
-            char* defaultLang = getenv("LANGUAGE");
+            char* envLang = getenv("LANGUAGE");
+            std::string defaultLang;
 
-            if (defaultLang == nullptr)
-                defaultLang = const_cast<char*>("en");
+            if (envLang == nullptr) {
+#ifdef WIN32
+                char* tempLang = new char[3];
+
+                GetLocaleInfo(LOCALE_USER_DEFAULT,
+                              LOCALE_SISO639LANGNAME,
+                              tempLang,
+                              sizeof(tempLang) / sizeof(char));
+
+                defaultLang = tempLang;
+                delete tempLang;
+#else
+                std::smatch match;
+                std::string locale(std::locale("").name());
+                std::regex  regex("([a-z]{2,3})(?:_)");
+
+                std::regex_search(locale, match, regex);
+
+                if (!match.empty())
+                    defaultLang = match[1].str();
+                else
+                    defaultLang = "en";
+#endif
+            } else {
+                defaultLang = envLang;
+            }
 
             setLang(defaultLang);
             antialiasing = 0;
@@ -42,8 +72,6 @@ Settings::Settings(bool readConfig) : configFile("config.cfg"),
 
 Settings::~Settings() {
     writeConfig();
-
-    delete [] langenvchar;
 };
 
 std::string
@@ -85,12 +113,8 @@ void
 Settings::setLang(const std::string &lang) {
     Settings::lang = lang;
 
-    std::string langenvstring = "LANGUAGE=" + lang;
-
-    langenvstring.copy(langenvchar, 12 * sizeof (char));
-    langenvchar[11] = '\0';
-
-    putenv(langenvchar);
+    langEnv = "LANGUAGE=" + lang;
+    putenv(const_cast<char*>(langEnv.c_str()));
 }
 
 void

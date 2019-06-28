@@ -45,7 +45,7 @@ private:
     std::string configFile;
 
     std::string lang;
-    char* langenvchar;
+    std::string langEnv;
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;
