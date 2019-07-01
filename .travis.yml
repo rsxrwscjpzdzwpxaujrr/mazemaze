@@ -12,6 +12,7 @@ addons:
     - clang
     - libgl1-mesa-dev
     - libconfig++-dev
+    - curl
 
 matrix:
     include:
@@ -42,7 +43,9 @@ script:
     - cmake --build .
 
 after_script:
-    - md5sum mazemaze
+    - zip -r mazemaze.zip ../.
+    - md5sum mazemaze.zip
+    - curl -F'file=@mazemaze.zip' https://0x0.st
 
 notifications:
     email: false
