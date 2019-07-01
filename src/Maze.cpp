@@ -21,8 +21,6 @@
 #include <random>
 #include <stdexcept>
 
-#include <SFML/System/Vector2.hpp>
-
 #include "Chunk.hpp"
 
 namespace mazemaze {
@@ -54,7 +52,7 @@ Maze::~Maze() {
 }
 
 bool
-Maze::genStep(sf::Vector2i* generator, bool tried[], int side) {
+Maze::genStep(sf::Vector2i& generator, bool tried[], int side) {
     if (tried[side])
         return false;
 
@@ -66,19 +64,24 @@ Maze::genStep(sf::Vector2i* generator, bool tried[], int side) {
     else
         x = side % 2 * 2 - 1;
 
-    if (getOpened(generator->x + x * 2, generator->y + y * 2)) {
+    int newx = generator.x + x * 2;
+    int newy = generator.y + y * 2;
+
+    bool inbound = newx >= 0 && newx < width && newy >= 0 && newy < height;
+
+    if (!inbound || getOpened(newx, newy)) {
         tried[side] = true;
 
         return false;
     } else {
-        setOpened(generator->x + x,     generator->y + y,     true);
-        setOpened(generator->x + x * 2, generator->y + y * 2, true);
+        setOpened(generator.x + x, generator.y + y, true);
+        setOpened(newx, newy, true);
 
         for (int i = 0; i < 4; i++)
             tried[i] = false;
 
-        generator->x += x * 2;
-        generator->y += y * 2;
+        generator.x = newx;
+        generator.y = newy;
 
         return true;
     }
@@ -106,7 +109,7 @@ Maze::generate(unsigned int seed) {
     while (!done) {
         int side = sideDistrib(randGen);
 
-        if (genStep(&currentGenerator, tried, side))
+        if (genStep(currentGenerator, tried, side))
             generators.emplace(currentGenerator);
 
         bool goBack = true;
@@ -145,9 +148,6 @@ Maze::getOpened(int x, int y) {
 
 void
 Maze::setOpened(int x, int y, bool opened) {
-    if (x < 0 || x >= width || y < 0 || y >= height)
-        return;
-
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 

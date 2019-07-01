@@ -57,10 +57,10 @@ public:
 
     void exit();
 
-    sfg::Desktop* getDesktop();
+    sfg::Desktop& getDesktop();
     int           getState() const;
-    State*        getState(int state);
-    Background*   getBackground() const;
+    State&        getState(int state);
+    Background&   getBackground() const;
     bool          isWantExit() const;
 
 private:

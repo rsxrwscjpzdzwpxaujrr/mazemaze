@@ -18,7 +18,6 @@
 #include "Settings.hpp"
 
 #include <cstdlib>
-#include <libconfig.h++>
 
 #ifdef WIN32
 # include <windows.h>
@@ -30,7 +29,12 @@
 
 namespace mazemaze {
 
-Settings::Settings(bool readConfig) : configFile("config.cfg") {
+Settings::Settings(bool readConfig) :
+        configFile("config.cfg"),
+        fallbackLang("en"),
+        supportedLangsCount(4),
+        supportedLangs(new std::string[supportedLangsCount]
+                       {"en", "ru", "uk", "kk"}) {
     if (readConfig) {
         if(Settings::readConfig())
             return;
@@ -52,6 +56,7 @@ Settings::Settings(bool readConfig) : configFile("config.cfg") {
 
 Settings::~Settings() {
     writeConfig();
+    delete [] supportedLangs;
 };
 
 std::string
@@ -65,17 +70,17 @@ Settings::getAntialiasing() const {
 }
 
 unsigned int
-Settings::getMaxAntialiasing() {
+Settings::getMaxAntialiasing() const {
     return GraphicEngine::getInstance().getMaxAntialiasing();
 }
 
 bool
-Settings::getFullscreen() {
+Settings::getFullscreen() const {
     return GraphicEngine::getInstance().getFullscreen();
 }
 
 bool
-Settings::getVsync() {
+Settings::getVsync() const {
     return GraphicEngine::getInstance().getVsync();
 }
 
@@ -89,12 +94,34 @@ Settings::getAutosaveTime() const {
     return autosaveTime;
 }
 
+const std::string*
+Settings::getSupportedLangs() const {
+    return supportedLangs;
+}
+
+int
+Settings::getSupportedLangsCount() const {
+    return supportedLangsCount;
+}
+
 void
 Settings::setLang(const std::string &lang) {
-    Settings::lang = lang;
+    bool fallback = true;
 
-    langEnv = "LANGUAGE=" + lang;
-    putenv(const_cast<char*>(langEnv.c_str()));
+    for (int i = 0; i < supportedLangsCount; i++)
+        if (supportedLangs[i] == lang) {
+            fallback = false;
+            break;
+        }
+
+    if (fallback)
+        setLang(fallbackLang);
+    else {
+        Settings::lang = lang;
+
+        langEnv = "LANGUAGE=" + lang;
+        putenv(const_cast<char*>(langEnv.c_str()));
+    }
 }
 
 void
@@ -138,7 +165,7 @@ Settings::getSystemLang() {
                   tempLang,
                   sizeof(tempLang) / sizeof(char));
 
-    defaultLang = tempLang;
+    systemLang = tempLang;
     delete tempLang;
 
 #else
@@ -152,7 +179,7 @@ Settings::getSystemLang() {
     if (!match.empty())
         systemLang = match[1].str();
     else
-        systemLang = "en";
+        systemLang = fallbackLang;
 
 #endif
 
@@ -161,69 +188,55 @@ Settings::getSystemLang() {
 
 void
 Settings::writeConfig() {
-    libconfig::Config config;
+    using namespace libconfig;
+
+    Config config;
     config.setAutoConvert(true);
 
     try {
         config.readFile(configFile.c_str());
-    } catch(const libconfig::FileIOException) {
+    } catch(const FileIOException&) {
 
-    } catch(const libconfig::ParseException) {
+    } catch(const ParseException&) {
 
     }
 
-    libconfig::Setting& root = config.getRoot();
+    Setting& root = config.getRoot();
 
-    if(!root.exists("lang"))
-        root.add("lang", libconfig::Setting::TypeString);
-
-    if(!root.exists("autosave"))
-        root.add("autosave", libconfig::Setting::TypeBoolean);
-
-    if(!root.exists("autosaveTime"))
-        root.add("autosaveTime", libconfig::Setting::TypeFloat);
-
-    root["lang"] = getLang();
-    root["autosave"] = getAutosave();
-    root["autosaveTime"] = getAutosaveTime();
+    addAndSet(root, Setting::TypeString,  "lang",         getLang());
+    addAndSet(root, Setting::TypeBoolean, "autosave",     getAutosave());
+    addAndSet(root, Setting::TypeFloat,   "autosaveTime", getAutosaveTime());
 
     if(!root.exists("graphics"))
-        root.add("graphics", libconfig::Setting::TypeGroup);
+        root.add("graphics", Setting::TypeGroup);
 
-    libconfig::Setting& graphics = root["graphics"];
+    Setting& graphics = root["graphics"];
 
-    if(!graphics.exists("antialiasing"))
-        graphics.add("antialiasing", libconfig::Setting::TypeInt);
-
-    if(!graphics.exists("fullscreen"))
-        graphics.add("fullscreen", libconfig::Setting::TypeBoolean);
-
-    if(!graphics.exists("vsync"))
-        graphics.add("vsync", libconfig::Setting::TypeBoolean);
-
-    graphics["antialiasing"] = static_cast<int>(getAntialiasing());
-    graphics["fullscreen"] = getFullscreen();
-    graphics["vsync"] = getVsync();
+    addAndSet(graphics, Setting::TypeInt,     "antialiasing", static_cast<int>(getAntialiasing()));
+    addAndSet(graphics, Setting::TypeBoolean, "fullscreen",   getFullscreen());
+    addAndSet(graphics, Setting::TypeBoolean, "vsync",        getVsync());
 
     config.writeFile(configFile.c_str());
 }
 
 bool
 Settings::readConfig() {
-    libconfig::Config config;
+    using namespace libconfig;
+
+    Config config;
     config.setAutoConvert(true);
 
     try {
         config.readFile(configFile.c_str());
-    } catch(const libconfig::FileIOException) {
+    } catch(const FileIOException&) {
         return false;
-    } catch(const libconfig::ParseException) {
+    } catch(const ParseException&) {
         return false;
     }
 
-    const libconfig::Setting& root = config.getRoot();
+    const Setting& root = config.getRoot();
 
-    libconfig::Setting& graphics = root["graphics"];
+    Setting& graphics = root["graphics"];
 
     setAntialiasing(graphics["antialiasing"]);
     setFullscreen(graphics["fullscreen"]);
@@ -234,6 +247,22 @@ Settings::readConfig() {
     setAutosaveTime(root["autosaveTime"]);
 
     return true;
+}
+
+template<class T>
+libconfig::Setting&
+Settings::addAndSet(libconfig::Setting& parent,
+                    libconfig::Setting::Type type,
+                    const char* name,
+                    T value) {
+    using namespace libconfig;
+
+    if(!parent.exists(name))
+        parent.add(name, type);
+
+    Setting& setting = parent[name];
+    setting = value;
+    return setting;
 }
 
 }

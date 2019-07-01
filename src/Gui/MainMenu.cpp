@@ -31,21 +31,21 @@
 namespace mazemaze {
 namespace gui {
 
-MainMenu::MainMenu() : game(nullptr),
-                       settings(new Settings()) {
-    getDesktop()->LoadThemeFromFile("data/style.theme");
+MainMenu::MainMenu(Settings& settings) : game(nullptr),
+                                         settings(settings) {
+    getDesktop().LoadThemeFromFile("data/style.theme");
 
     //Костыль
-    sf::String str(L"АӘБВГҐҒДЕЁЄЖЗИЇЙКҚЛМНҢОӨПРСТУҰҮФХҺЦЧШЩЪЫІЬЭEЮЯ\
-                     аәбвгґғдеёєжзиїйкқлмнңоөпрстуұүфхһцчшщъыіьэeюя");
+    const sf::String str(L"АӘБВГҐҒДЕЁЄЖЗИЇЙКҚЛМНҢОӨПРСТУҰҮФХҺЦЧШЩЪЫІЬЭEЮЯ\
+                           аәбвгґғдеёєжзиїйкқлмнңоөпрстуұүфхһцчшщъыіьэeюя");
 
     sfg::Button::Create(str);
     sfg::Label::Create(str);
 
-    addState(new states::Main   (getDesktop(), this));
-    addState(new states::Options(getDesktop(), this, settings));
+    addState(new states::Main   (getDesktop(), *this));
+    addState(new states::Options(getDesktop(), *this, settings));
     addState(new states::Empty  (getDesktop()));
-    addState(new states::NewGame(getDesktop(), this));
+    addState(new states::NewGame(getDesktop(), *this));
 
     setState(0);
 
@@ -63,7 +63,6 @@ MainMenu::~MainMenu() {
     delete starSkyBackground->getTickable();
     delete starSkyBackground->getCamera();
     delete starSkyBackground;
-    delete settings;
 
     if (game != nullptr)
         delete game;
@@ -77,7 +76,7 @@ MainMenu::onEvent(sf::Event event) {
 
 void
 MainMenu::newGame(int mazeWidth, int mazeHeight) {
-    game = new Game(this, settings, mazeWidth, mazeHeight);
+    game = new Game(*this, settings, mazeWidth, mazeHeight);
     game->newGame();
 
     setupGame();
@@ -85,7 +84,7 @@ MainMenu::newGame(int mazeWidth, int mazeHeight) {
 
 void
 MainMenu::resumeGame() {
-    game = Saver::getInstance().load(this, settings);
+    game = Saver::getInstance().load(*this, settings);
 
     setupGame();
 }
@@ -98,9 +97,6 @@ MainMenu::stopGame() {
 
     game = nullptr;
 
-    delete getState(5);
-    delete getState(4);
-
     removeState(5);
     removeState(4);
 
@@ -111,8 +107,8 @@ void
 MainMenu::setupGame() {
     setBackground(game);
 
-    addState(new states::Pause(getDesktop(), this, game));
-    addState(new states::Win  (getDesktop(), game));
+    addState(new states::Pause(getDesktop(), *this, *game));
+    addState(new states::Win  (getDesktop(), *game));
 
     setState(2);
 }

@@ -94,6 +94,7 @@ Gui::addState(State* state) {
 
 void
 Gui::removeState(int state) {
+    delete states[state];
     states.erase(states.begin() + state);
 }
 
@@ -123,9 +124,9 @@ Gui::exit() {
     wantExit = true;
 }
 
-sfg::Desktop*
+sfg::Desktop&
 Gui::getDesktop() {
-    return &desktop;
+    return desktop;
 }
 
 int
@@ -133,9 +134,9 @@ Gui::getState() const {
     return state;
 }
 
-State*
+State&
 Gui::getState(int state) {
-    return states[state];
+    return *states[state];
 }
 
 bool

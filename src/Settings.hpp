@@ -18,6 +18,7 @@
 #pragma once
 
 #include <string>
+#include <libconfig.h++>
 
 namespace mazemaze {
 
@@ -28,11 +29,14 @@ public:
 
     std::string  getLang() const;
     unsigned int getAntialiasing() const;
-    unsigned int getMaxAntialiasing();
-    bool         getFullscreen();
-    bool         getVsync();
+    unsigned int getMaxAntialiasing() const;
+    bool         getFullscreen() const;
+    bool         getVsync() const;
     bool         getAutosave() const;
     float        getAutosaveTime() const;
+
+    const std::string* getSupportedLangs() const;
+    int getSupportedLangsCount() const;
 
     void setLang(const std::string &lang);
     void setAntialiasing(unsigned int antialiasing);
@@ -46,6 +50,9 @@ private:
 
     std::string lang;
     std::string langEnv;
+    const std::string fallbackLang;
+    int supportedLangsCount;
+    const std::string* const supportedLangs;
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;
@@ -54,6 +61,12 @@ private:
 
     void writeConfig();
     bool readConfig();
+
+    template <class T>
+    libconfig::Setting& addAndSet(libconfig::Setting& parent,
+                                  libconfig::Setting::Type type,
+                                  const char* name,
+                                  T value);
 };
 
 }

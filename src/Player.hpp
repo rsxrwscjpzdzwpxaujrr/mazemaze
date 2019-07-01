@@ -30,9 +30,9 @@ public:
     explicit Player(float x, float y, float z);
     ~Player();
 
-    void tick(float deltaTime, sf::Window* window, Maze* maze);
+    void tick(float deltaTime, sf::Window& window, Maze& maze);
 
-    Camera* getCamera();
+    Camera& getCamera();
 
     float getX() const;
     float getY() const;
@@ -52,8 +52,8 @@ private:
     float height;
     float width;
 
-    void tryMove(Maze* maze, float x, float y, float z);
-    bool checkCollision(Maze* maze, float x, float y);
+    void tryMove(Maze& maze, float x, float y, float z);
+    bool checkCollision(Maze& maze, float x, float y);
 };
 
 }

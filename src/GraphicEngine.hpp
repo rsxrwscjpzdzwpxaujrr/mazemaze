@@ -33,10 +33,10 @@ public:
     void setAntialiasing(unsigned int antialiasing);
     void setVsync(bool vsync);
 
-    sf::RenderWindow* getWindow() const;
+    sf::RenderWindow& getWindow() const;
     int getWidth() const;
     int getHeight() const;
-    unsigned int getMaxAntialiasing();
+    unsigned int getMaxAntialiasing() const;
     bool getFullscreen() const;
     bool getVsync() const;
 
@@ -59,14 +59,16 @@ private:
 
     int width;
     int height;
-    int maxAntialiasing;
     bool needReopen;
     bool fullscreen;
     bool vsync;
+    unsigned int maxAntialiasing;
     sf::ContextSettings settings;
     sf::VideoMode videoMode;
 
-    sf::Image* icon;
+    sf::Image icon;
+
+    unsigned int calcMaxAntialiasing();
 };
 
 }

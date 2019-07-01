@@ -20,14 +20,13 @@
 #include <SFML/Window/Event.hpp>
 
 #include <SFGUI/Widgets.hpp>
-#include <SFGUI/Box.hpp>
 
 namespace mazemaze {
 namespace gui {
 
 class State {
 public:
-    explicit State(sfg::Desktop* desktop);
+    explicit State(sfg::Desktop& desktop);
     virtual ~State();
 
     virtual void center(sf::Event event);
@@ -37,7 +36,7 @@ public:
     virtual sfg::Container::Ptr getMainContainer();
 
 protected:
-    sfg::Desktop *desktop;
+    sfg::Desktop& desktop;
     sfg::Box::Ptr box;
 };
 

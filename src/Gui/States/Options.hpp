@@ -19,10 +19,6 @@
 
 #include <string>
 
-#include <SFML/Graphics.hpp>
-
-#include <SFGUI/Widgets.hpp>
-
 #include "../State.hpp"
 
 namespace mazemaze {
@@ -37,14 +33,11 @@ namespace states {
 
 class Options : public State {
 public:
-    explicit Options(sfg::Desktop* desktop, MainMenu* mainMenu, Settings* settings);
+    explicit Options(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
     ~Options() override;
 
 private:
-    int langsCount;
-    std::string* langCodes;
-
-    Settings* settings;
+    Settings& settings;
 
     sfg::Button::Ptr      backButton;
     sfg::CheckButton::Ptr fullscreenCheck;
@@ -56,7 +49,7 @@ private:
     sf::Vector2f getSeparatorRequiredRequisition(float requiredWidth, sfg::Box::Ptr current);
     sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
 
-    void initSignals(MainMenu* mainMenu);
+    void initSignals(MainMenu& mainMenu);
     void initAntialiasingCombo();
     void initOptions();
 };

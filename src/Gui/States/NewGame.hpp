@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../State.hpp"
 
 namespace mazemaze {
@@ -31,7 +29,7 @@ namespace states {
 
 class NewGame : public State {
 public:
-    explicit NewGame(sfg::Desktop* desktop, MainMenu* mainMenu);
+    explicit NewGame(sfg::Desktop& desktop, MainMenu& mainMenu);
     ~NewGame();
 
 private:
@@ -39,7 +37,7 @@ private:
     sfg::Button::Ptr startButton;
     sfg::Entry::Ptr  sizeEntry;
 
-    void initSignals(MainMenu *mainMenu);
+    void initSignals(MainMenu& mainMenu);
 };
 
 }

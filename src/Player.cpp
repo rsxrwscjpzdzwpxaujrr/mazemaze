@@ -42,7 +42,7 @@ Player::Player(float x, float y, float z) :
 Player::~Player() = default;
 
 void
-Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
+Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
     float mouseSensitivity = 0.001f;
 
     float M_PIf   = static_cast<float>(M_PI);
@@ -90,11 +90,11 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
         tryMove(maze, newx, y, newz);
     }
 
-    sf::Vector2u windowHalfSize = window->getSize();
+    sf::Vector2u windowHalfSize = window.getSize();
     windowHalfSize.x /= 2;
     windowHalfSize.y /= 2;
 
-    sf::Vector2i cursor = sf::Mouse::getPosition(*window);
+    sf::Vector2i cursor = sf::Mouse::getPosition(window);
 
     float newPitch = pitch;
 
@@ -112,12 +112,12 @@ Player::tick(float deltaTime, sf::Window* window, Maze* maze) {
     camera.setY(y + height);
     camera.setZ(z);
 
-    sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), *window);
+    sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), window);
 }
 
-Camera*
+Camera&
 Player::getCamera() {
-    return &camera;
+    return camera;
 }
 
 float
@@ -151,7 +151,7 @@ Player::setZ(float z) {
 }
 
 void
-Player::tryMove(Maze* maze, float x, float y, float z) {
+Player::tryMove(Maze& maze, float x, float y, float z) {
     if (!(y < 0.0f && Player::y > 0.0f))
         Player::y = y;
 
@@ -168,12 +168,12 @@ Player::tryMove(Maze* maze, float x, float y, float z) {
 }
 
 bool
-Player::checkCollision(Maze* maze, float x, float y) {
+Player::checkCollision(Maze& maze, float x, float y) {
     bool intersects = false;
 
     for (int i = static_cast<int>(x) - 1; i <= x + 1; i++)
         for (int j = static_cast<int>(y) - 1; j <= y + 1; j++)
-            if (!maze->getOpened(i, j)) {
+            if (!maze.getOpened(i, j)) {
                 float deltaX = x - std::max<float>(i, std::min<float>(x, i + 1.0f));
                 float deltaY = y - std::max<float>(j, std::min<float>(y, j + 1.0f));
 

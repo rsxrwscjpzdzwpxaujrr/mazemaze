@@ -30,10 +30,10 @@
 
 namespace mazemaze {
 
-Game::Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeHeight) :
+Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
-        mazeRenderer(&maze),
+        mazeRenderer(maze),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
         settings(settings),
@@ -45,7 +45,7 @@ Game::Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeH
         time(0.0f),
         wantExit(false) {}
 
-Game::~Game() = default;
+Game::~Game() {};
 
 void
 Game::newGame() {
@@ -68,14 +68,14 @@ Game::tick(float deltaTime) {
 
     oldPauseKeyState = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
-    sf::RenderWindow* window = GraphicEngine::getInstance().getWindow();
-    window->setMouseCursorVisible(paused || won);
+    sf::RenderWindow& window = GraphicEngine::getInstance().getWindow();
+    window.setMouseCursorVisible(paused || won);
 
     if (!(paused || won)) {
-        player.tick(deltaTime, window, &maze);
+        player.tick(deltaTime, window, maze);
 
-        if (time - lastSaveTime >= settings->getAutosaveTime() && settings->getAutosave()) {
-            Saver::getInstance().save(this);
+        if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave()) {
+            Saver::getInstance().save(*this);
             lastSaveTime = time;
         }
 
@@ -92,12 +92,12 @@ void
 Game::render() {
     glPushMatrix();
 
-    player.getCamera()->setupPerspective();
+    player.getCamera().setupPerspective();
 
-    player.getCamera()->setupRotation();
+    player.getCamera().setupRotation();
     starSky.render();
 
-    player.getCamera()->setupTranslation();
+    player.getCamera().setupTranslation();
     mazeRenderer.render(player.getX(), player.getZ());
 
     glPopMatrix();
@@ -125,12 +125,12 @@ Game::setPaused(bool paused) {
         Game::paused = paused;
 
         if (paused) {
-            mainMenu->setState(4);
+            mainMenu.setState(4);
 
-            if (settings->getAutosave())
-                Saver::getInstance().save(this);
+            if (settings.getAutosave())
+                Saver::getInstance().save(*this);
         } else
-            mainMenu->backTo(2);
+            mainMenu.backTo(2);
     }
 }
 
@@ -139,11 +139,11 @@ Game::setWantExit() {
     wantExit = true;
 
     if (won)
-        Saver::getInstance().deleteSave(this);
+        Saver::getInstance().deleteSave(*this);
     else
-        Saver::getInstance().save(this);
+        Saver::getInstance().save(*this);
 
-    mainMenu->stopGame();
+    mainMenu.stopGame();
 }
 
 void
@@ -152,9 +152,9 @@ Game::setWon(bool won) {
         Game::won = won;
 
         if (won)
-            mainMenu->setState(5);
+            mainMenu.setState(5);
         else
-            mainMenu->backTo(2);
+            mainMenu.backTo(2);
     }
 }
 
@@ -183,19 +183,19 @@ Game::getTime() const {
     return time;
 }
 
-Maze*
+Maze&
 Game::getMaze() {
-    return &maze;
+    return maze;
 }
 
-Player*
+Player&
 Game::getPlayer() {
-    return &player;
+    return player;
 }
 
 Camera*
 Game::getCamera() {
-    return player.getCamera();
+    return &player.getCamera();
 }
 
 }

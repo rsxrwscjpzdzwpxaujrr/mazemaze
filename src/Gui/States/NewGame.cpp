@@ -18,7 +18,6 @@
 #include "NewGame.hpp"
 
 #include "../../utils.hpp"
-#include "../../Game.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -29,23 +28,23 @@ namespace gui {
 namespace states {
 
 void
-NewGame::initSignals(MainMenu* mainMenu) {
-    startButton->GetSignal(Widget::OnLeftClick).Connect([this, mainMenu] {
-        sf::String text = sizeEntry->GetText();
+NewGame::initSignals(MainMenu& mainMenu) {
+    startButton->GetSignal(Widget::OnLeftClick).Connect([this, &mainMenu] {
+        const sf::String text = sizeEntry->GetText();
         int mazeSize = 1;
 
         if (text.getSize() > 0)
             mazeSize = std::stoi(sizeEntry->GetText().toWideString());
 
-        mainMenu->newGame(mazeSize, mazeSize);
+        mainMenu.newGame(mazeSize, mazeSize);
     });
 
-    backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->back();
+    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.back();
     });
 
     sizeEntry->GetSignal(Entry::OnTextChanged).Connect([this] {
-        sf::String text = sizeEntry->GetText();
+        const sf::String text = sizeEntry->GetText();
         sf::String newText = L"";
         bool changed = false;
 
@@ -70,7 +69,7 @@ NewGame::initSignals(MainMenu* mainMenu) {
     });
 }
 
-NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) :
+NewGame::NewGame(Desktop& desktop, MainMenu& mainMenu) :
         State(desktop),
         backButton(Button::Create(pgtx("new_game", "Back"))),
         startButton(Button::Create(pgtx("new_game", "Start"))),
@@ -111,7 +110,7 @@ NewGame::NewGame(Desktop* desktop, MainMenu* mainMenu) :
     box->Pack(separatorVertical);
     box->Pack(buttonBox);
 
-    desktop->Add(box);
+    desktop.Add(box);
 
     initSignals(mainMenu);
 

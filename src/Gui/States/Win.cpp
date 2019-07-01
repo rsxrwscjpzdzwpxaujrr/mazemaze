@@ -19,11 +19,8 @@
 
 #include <string>
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../../utils.hpp"
 #include "../../Game.hpp"
-#include "../../GraphicEngine.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -33,7 +30,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Win::Win(Desktop* desktop, Game* game) : State (desktop), game(game) {
+Win::Win(Desktop& desktop, Game& game) : State (desktop), game(game) {
     auto buttonExit           = Button::Create(pgtx("win", "Exit to main menu"));
     auto label                = Label::Create(pgtx("win", "You won!"));
     auto winNoteTimeAlignment = Alignment::Create();
@@ -64,10 +61,10 @@ Win::Win(Desktop* desktop, Game* game) : State (desktop), game(game) {
     box->SetSpacing(20.0f);
     box->SetRequisition({400.0f, box->GetRequisition().y});
 
-    desktop->Add(box);
+    desktop.Add(box);
 
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([game] {
-        game->setWantExit();
+    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&game] {
+        game.setWantExit();
     });
 
     center();
@@ -84,8 +81,8 @@ Win::show(bool show) {
 }
 
 void
-Win::updateLabels(Game* game) {
-    int time  = static_cast<int>(game->getTime());
+Win::updateLabels(Game& game) {
+    int time  = static_cast<int>(game.getTime());
     int secs  = time % 60;
     int mins  = (time / 60) % 60;
     int hours = (time / (60 * 60)) % 24;
@@ -107,11 +104,10 @@ Win::updateLabels(Game* game) {
 
     winNoteTimeLabel->SetText(timeString);
 
-    Maze* maze = game->getMaze();
-    sf::String mazeSize =
-            std::to_wstring((maze->getWidth() - 1) / 2) +
-            L"x" +
-            std::to_wstring((maze->getHeight() - 1) / 2);
+    Maze& maze = game.getMaze();
+    const sf::String mazeSize = std::to_wstring((maze.getWidth()  - 1) / 2) +
+                                L"x" +
+                                std::to_wstring((maze.getHeight() - 1) / 2);
 
     winNoteSizeLabel->SetText(sf::String(pgtx("win", "Maze size: ")) + mazeSize);
 

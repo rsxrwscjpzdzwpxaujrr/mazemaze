@@ -22,12 +22,12 @@
 namespace mazemaze {
 namespace gui {
 
-State::State(sfg::Desktop* desktop) : desktop(desktop) {
+State::State(sfg::Desktop& desktop) : desktop(desktop) {
     box = sfg::Box::Create();
 }
 
 State::~State() {
-    desktop->Remove(getMainContainer());
+    desktop.Remove(getMainContainer());
 }
 
 void
@@ -42,7 +42,7 @@ void
 State::center() {
     sf::Vector2f buttonSize = getMainContainer()->GetRequisition();
     sf::Vector2f windowSize =
-            static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow()->getSize());
+            static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
 
     getMainContainer()->SetPosition((windowSize - buttonSize) / 2.0f);
 }

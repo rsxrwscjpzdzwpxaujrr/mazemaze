@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <array>
+
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
 
@@ -34,11 +36,14 @@ public:
     void setTime(float time);
 
 private:
+    struct Star {
+        float x;
+        float y;
+        float z;
+        int size;
+    };
+
     int starCount;
-    float* starsX;
-    float* starsY;
-    float* starsZ;
-    int* starSize;
 
     float distance;
 
@@ -50,6 +55,10 @@ private:
     float timeSpeed;
 
     unsigned int drawList;
+
+    Star* stars;
+
+    void compile();
 };
 
 }

@@ -17,11 +17,7 @@
 
 #include "Main.hpp"
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../../utils.hpp"
-#include "../../Game.hpp"
-#include "../../GraphicEngine.hpp"
 #include "../../Saver.hpp"
 
 #include "../MainMenu.hpp"
@@ -34,33 +30,13 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-inline void
-initSignals(Button::Ptr buttonResume, Button::Ptr buttonNewGame, Button::Ptr buttonOptions,
-            Button::Ptr buttonExit, MainMenu* mainMenu) {
-    buttonResume->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->resumeGame();
-    });
-
-    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->setState(3);
-    });
-
-    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->setState(1);
-    });
-
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->exit();
-    });
-}
-
-Main::Main(Desktop* desktop, MainMenu* mainMenu) : State(desktop) {
+Main::Main(Desktop& desktop, MainMenu& mainMenu) : State(desktop) {
     buttonResume  = Button::Create(pgtx("main", "Resume"));
     buttonNewGame = Button::Create(pgtx("main", "New Game"));
     buttonOptions = Button::Create(pgtx("main", "Options"));
     buttonExit    = Button::Create(pgtx("main", "Exit"));
 
-    initSignals(buttonResume, buttonNewGame, buttonOptions, buttonExit, mainMenu);
+    initSignals(mainMenu);
 
     updateButtons(Saver::getInstance().saveExists());
 }
@@ -77,7 +53,7 @@ Main::show(bool show) {
 
 void
 Main::updateButtons(bool saveExists) {
-    desktop->Remove(box);
+    desktop.Remove(box);
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
@@ -92,9 +68,28 @@ Main::updateButtons(bool saveExists) {
 
     box->SetRequisition({300.0f, box->GetRequisition().y});
 
-    desktop->Add(box);
+    desktop.Add(box);
 
     center();
+}
+
+void
+Main::initSignals(MainMenu& mainMenu) {
+    buttonResume->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.resumeGame();
+    });
+
+    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.setState(3);
+    });
+
+    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.setState(1);
+    });
+
+    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.exit();
+    });
 }
 
 }

@@ -31,7 +31,7 @@ namespace states {
 
 class Main : public State {
 public:
-    explicit Main(sfg::Desktop* desktop, MainMenu* mainMenu);
+    explicit Main(sfg::Desktop& desktop, MainMenu& mainMenu);
     ~Main() override;
 
     void show(bool show) override;
@@ -42,6 +42,8 @@ private:
     sfg::Button::Ptr buttonNewGame;
     sfg::Button::Ptr buttonOptions;
     sfg::Button::Ptr buttonExit;
+
+    void initSignals(MainMenu& mainMenu);
 };
 
 }

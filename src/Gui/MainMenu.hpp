@@ -31,7 +31,7 @@ class State;
 
 class MainMenu : public Gui {
 public:
-    MainMenu();
+    explicit MainMenu(Settings& settings);
     ~MainMenu() override;
 
     void onEvent(sf::Event event) override;
@@ -43,7 +43,7 @@ public:
 private:
     Game* game;
     Background* starSkyBackground;
-    Settings* settings;
+    Settings& settings;
 
     void setupGame();
 };

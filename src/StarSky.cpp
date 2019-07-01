@@ -30,69 +30,47 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
         pitch(pitch),
         yaw(yaw),
         time(0.0f),
-        timeSpeed(timeSpeed) {
-    starsX = new float[static_cast<unsigned int>(starCount)];
-    starsY = new float[static_cast<unsigned int>(starCount)];
-    starsZ = new float[static_cast<unsigned int>(starCount)];
-    starSize = new int[static_cast<unsigned int>(starCount)];
-
-    float randX;
-    float randY;
-    float randZ;
-    float distance;
-    int sizeRand;
-
-    drawList = glGenLists(1);
-    glNewList(drawList, GL_COMPILE);
-
+        timeSpeed(timeSpeed),
+        stars(new Star[starCount]) {
     std::mt19937 randGen(0);
     std::uniform_real_distribution<float> coordInterval(-1.0, 1.0);
     std::uniform_int_distribution<> sizeInterval(0, 11);
 
-    for (int i = 0; i < starCount; i++) {
-        randX = coordInterval(randGen);
-        randY = coordInterval(randGen);
-        randZ = coordInterval(randGen);
-        sizeRand = sizeInterval(randGen);
+    for (int i = 0; i < starCount;) {
+        float randX = coordInterval(randGen);
+        float randY = coordInterval(randGen);
+        float randZ = coordInterval(randGen);
+        int sizeRand = sizeInterval(randGen);
 
-        distance = std::sqrt(randX * randX + randY * randY + randZ * randZ);
+        float distance = std::sqrt(randX * randX + randY * randY + randZ * randZ);
 
-        if (distance > 1.0f) {
-            i--;
-            continue;
+        if (distance <= 1.0f) {
+            Star& star = stars[i];
+
+            star.x = randX / distance;
+            star.y = randY / distance;
+            star.z = randZ / distance;
+
+            if      (sizeRand <= 7)
+                star.size = 1;
+
+            else if (sizeRand <= 10)
+                star.size = 2;
+
+            else
+                star.size = 3;
+
+            i++;
         }
-
-        starsX[i] = randX / distance;
-        starsY[i] = randY / distance;
-        starsZ[i] = randZ / distance;
-
-        if (sizeRand <= 7) {
-            starSize[i] = 1;
-            glColor4f(0.33f, 0.33f, 0.33f, 1.0f);
-        } else if (sizeRand <= 10) {
-            starSize[i] = 2;
-            glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-        } else {
-            starSize[i] = 3;
-            glColor4f(0.75f, 0.75f, 0.75f, 1.0f);
-        }
-
-        glPointSize(starSize[i]);
-        glBegin(GL_POINTS);
-        glVertex3f(starsX[i], starsY[i], starsZ[i]);
-        glEnd();
     }
 
-    glEndList();
+    compile();
 }
 
 StarSky::~StarSky() {
     glDeleteLists(drawList, 1);
 
-    delete [] starsX;
-    delete [] starsY;
-    delete [] starsZ;
-    delete [] starSize;
+    delete [] stars;
 }
 
 void
@@ -120,6 +98,32 @@ StarSky::tick(float deltatime) {
 void
 StarSky::setTime(float time) {
     StarSky::time = time;
+}
+
+void
+StarSky::compile() {
+    drawList = glGenLists(1);
+    glNewList(drawList, GL_COMPILE);
+
+    for (int i = 0; i < starCount; i++) {
+        Star& star = stars[i];
+
+        if      (star.size == 1)
+            glColor3f(0.33f, 0.33f, 0.33f);
+
+        else if (star.size == 2)
+            glColor3f(0.5f,  0.5f,  0.5f);
+
+        else if (star.size == 3)
+            glColor3f(0.75f, 0.75f, 0.75f);
+
+        glPointSize(star.size);
+        glBegin(GL_POINTS);
+        glVertex3f(star.x, star.y, star.z);
+        glEnd();
+    }
+
+    glEndList();
 }
 
 }

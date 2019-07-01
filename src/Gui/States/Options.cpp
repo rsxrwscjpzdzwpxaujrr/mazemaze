@@ -17,9 +17,6 @@
 
 #include "Options.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <SFML/OpenGL.hpp>
-
 #include "../../utils.hpp"
 #include "../../Settings.hpp"
 
@@ -63,9 +60,9 @@ Options::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 }
 
 void
-Options::initSignals(MainMenu* mainMenu) {
+Options::initSignals(MainMenu& mainMenu) {
     fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings->setFullscreen(fullscreenCheck->IsActive());
+        settings.setFullscreen(fullscreenCheck->IsActive());
     });
 
     antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
@@ -78,31 +75,31 @@ Options::initSignals(MainMenu* mainMenu) {
         if (antialiasing == 1)
             antialiasing = 0;
 
-        settings->setAntialiasing(antialiasing);
+        settings.setAntialiasing(antialiasing);
     });
 
     langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        std::string langCode;
+        const std::string* const langCodes = settings.getSupportedLangs();
 
-        settings->setLang(langCodes[langCombo->GetSelectedItem()]);
+        settings.setLang(langCodes[langCombo->GetSelectedItem()]);
     });
 
     vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings->setVsync(vsyncCheck->IsActive());
+        settings.setVsync(vsyncCheck->IsActive());
     });
 
     autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings->setAutosave(autosaveCheck->IsActive());
+        settings.setAutosave(autosaveCheck->IsActive());
     });
 
-    backButton->GetSignal(Widget::OnLeftClick).Connect([mainMenu] () {
-        mainMenu->back();
+    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
+        mainMenu.back();
     });
 }
 
 void
 Options::initAntialiasingCombo() {
-    int maxAntialiasing = settings->getMaxAntialiasing();
+    int maxAntialiasing = settings.getMaxAntialiasing();
 
     antialiasingCombo->AppendItem(pgtx("options", "No"));
 
@@ -112,11 +109,11 @@ Options::initAntialiasingCombo() {
 
 void
 Options::initOptions() {
-    fullscreenCheck->SetActive(settings->getFullscreen());
+    fullscreenCheck->SetActive(settings.getFullscreen());
 
     initAntialiasingCombo();
 
-    unsigned int antialiasing = settings->getAntialiasing();
+    unsigned int antialiasing = settings.getAntialiasing();
 
     if (antialiasing == 0)
         antialiasing = 1;
@@ -132,19 +129,19 @@ Options::initOptions() {
     langCombo->AppendItem(L"Українська");
     langCombo->AppendItem(L"Қазақша");
 
-    std::string lang = settings->getLang();
+    std::string lang = settings.getLang();
+    const std::string* const langCodes = settings.getSupportedLangs();
 
-    for (int i = 0; i < langsCount; i++)
+    for (int i = 0; i < settings.getSupportedLangsCount(); i++)
         if (langCodes[i] == lang)
             langCombo->SelectItem(i);
 
-    vsyncCheck->SetActive(settings->getVsync());
-    autosaveCheck->SetActive(settings->getAutosave());
+    vsyncCheck->SetActive(settings.getVsync());
+    autosaveCheck->SetActive(settings.getAutosave());
 }
 
-Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
+Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
         State(desktop),
-        langsCount(4),
         settings(settings),
         backButton       (Button::Create(pgtx("options", "Back"))),
         fullscreenCheck  (CheckButton::Create(L"")),
@@ -160,8 +157,6 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     auto separator          = Separator::Create();
     auto groupSeparator1    = Separator::Create();
     auto groupSeparator2    = Separator::Create();
-
-    langCodes = new std::string[langsCount] {"en", "ru", "uk", "kk"};
 
     scroll->SetScrollbarPolicy(ScrolledWindow::ScrollbarPolicy::HORIZONTAL_AUTOMATIC |
                                ScrolledWindow::ScrollbarPolicy::VERTICAL_ALWAYS);
@@ -193,7 +188,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     box->Pack(window);
     box->Pack(backButton);
 
-    desktop->Add(box);
+    desktop.Add(box);
 
     initSignals(mainMenu);
     initOptions();
@@ -201,9 +196,7 @@ Options::Options(Desktop* desktop, MainMenu* mainMenu, Settings* settings) :
     center();
 }
 
-Options::~Options() {
-    delete [] langCodes;
-};
+Options::~Options() = default;
 
 }
 }

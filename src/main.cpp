@@ -34,15 +34,11 @@
 #include "Game.hpp"
 #include "GraphicEngine.hpp"
 #include "FpsCalculator.hpp"
+#include "Settings.hpp"
 
 #include "Gui/MainMenu.hpp"
 
 using namespace mazemaze;
-
-void
-showFps(float fps) {
-    std::cout << format("\rFPS: %.2f        ", fps) << std::flush;
-}
 
 int
 main() {
@@ -54,28 +50,30 @@ main() {
     const int startWindowWidth = 854;
     const int startWindowHeight = 480;
 
+    float frameDeltaTime = 1.0f / 60.0f;
+
+    Settings settings;
     sfg::SFGUI sfgui;
+    FpsCalculator fpsCalculator([] (float fps) {
+        std::cout << format("\rFPS: %.2f        ", fps) << std::flush;
+    }, 0.5f);
 
     GraphicEngine::getInstance().openWindow(startWindowWidth, startWindowHeight, false);
 
-    float frameDeltaTime = 1.0f / 60.0f;
-    FpsCalculator fpsCalculator(showFps, 0.5f);
+    gui::MainMenu mainMenu(settings);
+    sf::Clock deltaClock;
 
     bool running = true;
-
-    gui::MainMenu mainMenu;
-
-    sf::Clock deltaClock;
 
     while (running) {
         GraphicEngine::getInstance().update();
         GraphicEngine::getInstance().setStates();
 
-        sf::RenderWindow* window = GraphicEngine::getInstance().getWindow();
+        sf::RenderWindow& window = GraphicEngine::getInstance().getWindow();
 
         sf::Event event{};
 
-        while (window->pollEvent(event)) {
+        while (window.pollEvent(event)) {
             mainMenu.handleEvent(event);
 
             switch (event.type) {
@@ -94,9 +92,9 @@ main() {
 
         mainMenu.render();
 
-        window->resetGLStates();
-        sfgui.Display(*window);
-        window->display();
+        window.resetGLStates();
+        sfgui.Display(window);
+        window.display();
 
         running &= !mainMenu.isWantExit();
 

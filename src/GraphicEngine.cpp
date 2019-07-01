@@ -25,21 +25,19 @@
 namespace mazemaze {
 
 GraphicEngine::GraphicEngine() :
+        window(nullptr),
         oldWindowPos(-1, -1),
         oldWindowSize(0, 0),
-        maxAntialiasing(-1),
+        maxAntialiasing(calcMaxAntialiasing()),
         vsync(false),
-        icon(new sf::Image()) {
-    icon->loadFromFile("data/icon.png");
+        icon(sf::Image()) {
+    icon.loadFromFile("data/icon.png");
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
-    getMaxAntialiasing();
 }
 
-GraphicEngine::~GraphicEngine() {
-    delete icon;
-}
+GraphicEngine::~GraphicEngine() = default;
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
@@ -51,11 +49,9 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
     else
         style = sf::Style::Default;
 
-    if (fullscreen) {
-        window = new sf::RenderWindow(videoMode, windowName, style, settings);
-    } else {
-        window = new sf::RenderWindow(videoMode, windowName, style, settings);
+    window = new sf::RenderWindow(videoMode, windowName, style, settings);
 
+    if (!fullscreen) {
         if (oldWindowPos != sf::Vector2i(-1, -1))
             window->setPosition(oldWindowPos);
 
@@ -64,8 +60,8 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
 
     settings = window->getSettings();
 
-    sf::Vector2u iconSize = icon->getSize();
-    window->setIcon(iconSize.x, iconSize.y, icon->getPixelsPtr());
+    sf::Vector2u iconSize = icon.getSize();
+    window->setIcon(iconSize.x, iconSize.y, icon.getPixelsPtr());
 
     setVsync(vsync);
 }
@@ -121,17 +117,20 @@ GraphicEngine::setFullscreen(bool fullscreen) {
 void
 GraphicEngine::setAntialiasing(unsigned int antialiasing) {
     if (antialiasing != settings.antialiasingLevel) {
-        oldWindowPos = window->getPosition();
+        if (window != nullptr) {
+            oldWindowPos = window->getPosition();
 
-        if (fullscreen)
-            videoMode = sf::VideoMode::getDesktopMode();
-        else {
-            sf::Vector2u windowSize = window->getSize();
-            videoMode = sf::VideoMode(windowSize.x, windowSize.y);
+            if (fullscreen)
+                videoMode = sf::VideoMode::getDesktopMode();
+            else {
+                sf::Vector2u windowSize = window->getSize();
+                videoMode = sf::VideoMode(windowSize.x, windowSize.y);
+            }
+
+            needReopen = true;
         }
 
         settings.antialiasingLevel = antialiasing;
-        needReopen = true;
     }
 }
 
@@ -139,12 +138,13 @@ void
 GraphicEngine::setVsync(bool vsync) {
     GraphicEngine::vsync = vsync;
 
-    window->setVerticalSyncEnabled(vsync);
+    if (window != nullptr)
+        window->setVerticalSyncEnabled(vsync);
 }
 
-sf::RenderWindow*
+sf::RenderWindow&
 GraphicEngine::getWindow() const {
-    return window;
+    return *window;
 }
 
 int
@@ -158,21 +158,7 @@ GraphicEngine::getHeight() const {
 }
 
 unsigned int
-GraphicEngine::getMaxAntialiasing() {
-    if (maxAntialiasing <= 0) {
-        sf::ContextSettings settings;
-        sf::VideoMode videoMode = sf::VideoMode(16, 16);
-        sf::Uint32 style = sf::Style::None;
-        settings.antialiasingLevel = 16;
-
-        sf::RenderWindow win(videoMode, sf::String(), style, settings);
-
-        settings = win.getSettings();
-        win.close();
-
-        maxAntialiasing = settings.antialiasingLevel;
-    }
-
+GraphicEngine::getMaxAntialiasing() const {
     return maxAntialiasing;
 }
 
@@ -184,6 +170,21 @@ GraphicEngine::getFullscreen() const {
 bool
 GraphicEngine::getVsync() const {
     return vsync;
+}
+
+unsigned int
+GraphicEngine::calcMaxAntialiasing() {
+    sf::ContextSettings settings;
+    sf::VideoMode videoMode = sf::VideoMode(16, 16);
+    sf::Uint32 style = sf::Style::None;
+    settings.antialiasingLevel = 16;
+
+    sf::RenderWindow win(videoMode, sf::String(), style, settings);
+
+    settings = win.getSettings();
+    win.close();
+
+    return settings.antialiasingLevel;
 }
 
 }

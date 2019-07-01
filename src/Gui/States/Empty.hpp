@@ -25,7 +25,7 @@ namespace states {
 
 class Empty : public State {
 public:
-    explicit Empty(sfg::Desktop* desktop);
+    explicit Empty(sfg::Desktop& desktop);
     ~Empty() override;
 };
 

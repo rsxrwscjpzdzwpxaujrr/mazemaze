@@ -29,21 +29,12 @@ Chunk::~Chunk() = default;
 
 bool
 Chunk::getOpened(unsigned int x, unsigned int y) {
-    if (inBound(x) && inBound(y))
-        return opened[x][y];
-    else
-        return true;
+    return opened[x][y];
 }
 
 void
 Chunk::setOpened(unsigned int x, unsigned int y, bool opened) {
-    if (inBound(x) && inBound(y))
-        Chunk::opened[x][y] = opened;
-}
-
-bool
-Chunk::inBound(unsigned int i) {
-    return i < SIZE;
+    Chunk::opened[x][y] = opened;
 }
 
 }

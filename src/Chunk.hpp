@@ -27,13 +27,10 @@ public:
     ~Chunk();
 
     void setOpened(unsigned int x, unsigned int y, bool opened);
-
     bool getOpened(unsigned int x, unsigned int y);
 
 private:
     bool opened[SIZE][SIZE];
-
-    bool inBound(unsigned int i);
 };
 
 }

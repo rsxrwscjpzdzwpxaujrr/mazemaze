@@ -21,7 +21,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Empty::Empty(sfg::Desktop* desktop) : State(desktop) {
+Empty::Empty(sfg::Desktop& desktop) : State(desktop) {
 
 }
 

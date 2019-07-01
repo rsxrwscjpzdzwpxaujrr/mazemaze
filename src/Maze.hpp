@@ -45,7 +45,8 @@ public:
 
 private:
     void setOpened(int x, int y, bool opened);
-    bool genStep(sf::Vector2i* generator, bool tried[], int side);
+    void getStartSite();
+    bool genStep(sf::Vector2i& generator, bool tried[], int side);
 
     int width;
     int height;

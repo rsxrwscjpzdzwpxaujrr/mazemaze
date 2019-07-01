@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <SFGUI/Label.hpp>
-
 #include "../State.hpp"
 
 namespace mazemaze {
@@ -33,7 +31,7 @@ namespace states {
 
 class Win : public State {
 public:
-    explicit Win(sfg::Desktop* desktop, Game* game);
+    explicit Win(sfg::Desktop& desktop, Game& game);
     ~Win() override;
 
     void show(bool show) override;
@@ -41,9 +39,9 @@ public:
 private:
     sfg::Label::Ptr winNoteTimeLabel;
     sfg::Label::Ptr winNoteSizeLabel;
-    Game* game;
+    Game& game;
 
-    void updateLabels(Game* game);
+    void updateLabels(Game& game);
 };
 
 }

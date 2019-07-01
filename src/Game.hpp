@@ -39,7 +39,7 @@ class Settings;
 
 class Game : public gui::Background {
 public:
-    explicit Game(gui::MainMenu* mainMenu, Settings* settings, int mazeWidth, int mazeHeight);
+    explicit Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight);
     ~Game() override;
 
     void newGame();
@@ -58,8 +58,8 @@ public:
     bool isWantExit() const;
 
     float getTime() const;
-    Maze* getMaze();
-    Player* getPlayer();
+    Maze& getMaze();
+    Player& getPlayer();
     Camera* getCamera() override;
 
 private:
@@ -67,9 +67,9 @@ private:
     MazeRenderer mazeRenderer;
     Player player;
     StarSky starSky;
-    Settings* settings;
+    Settings& settings;
 
-    gui::MainMenu* mainMenu;
+    gui::MainMenu& mainMenu;
 
     float lastSaveTime;
 

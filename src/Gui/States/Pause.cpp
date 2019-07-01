@@ -17,11 +17,8 @@
 
 #include "Pause.hpp"
 
-#include <SFGUI/Widgets.hpp>
-
 #include "../../utils.hpp"
 #include "../../Game.hpp"
-#include "../../GraphicEngine.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -31,21 +28,21 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : State(desktop) {
+Pause::Pause(Desktop& desktop, MainMenu& mainMenu, Game& game) : State(desktop) {
     auto buttonResume  = Button::Create(pgtx("pause", "Resume"));
     auto buttonOptions = Button::Create(pgtx("pause", "Options"));
     auto buttonExit    = Button::Create(pgtx("pause", "Exit to main menu"));
 
-    buttonResume->GetSignal(Widget::OnLeftClick).Connect([game] {
-        game->setPaused(false);
+    buttonResume->GetSignal(Widget::OnLeftClick).Connect([&game] {
+        game.setPaused(false);
     });
 
-    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([mainMenu] {
-        mainMenu->setState(1);
+    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
+        mainMenu.setState(1);
     });
 
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([game] {
-        game->setWantExit();
+    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&game] {
+        game.setWantExit();
     });
 
     box = Box::Create(Box::Orientation::VERTICAL);
@@ -57,7 +54,7 @@ Pause::Pause(Desktop* desktop, MainMenu* mainMenu, Game* game) : State(desktop) 
     box->SetSpacing(20.0f);
     box->SetRequisition({400.0f, box->GetRequisition().y});
 
-    desktop->Add(box);
+    desktop.Add(box);
 
     center();
 }
