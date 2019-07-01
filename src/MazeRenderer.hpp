@@ -32,8 +32,6 @@ public:
 private:
     unsigned int drawList;
     Maze& maze;
-    unsigned int chunksX;
-    unsigned int chunksY;
 
     void compileChunk(int num);
     void renderChunk(int num);
