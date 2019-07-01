@@ -5,6 +5,7 @@
 !/README.md
 !/COPYING
 !/screenshot.png
+!/.travis.yml
 
 !/cmake/
 

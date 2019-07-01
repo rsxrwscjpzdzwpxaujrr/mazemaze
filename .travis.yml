@@ -1,0 +1,48 @@
+language: cpp
+
+addons:
+    apt_packages:
+    - cmake
+    - libxrandr-dev
+    - libudev-dev
+    - libopenal-dev
+    - libflac-dev
+    - libvorbis-dev
+    - g++
+    - clang
+    - libgl1-mesa-dev
+    - libconfig++-dev
+
+matrix:
+    include:
+        - name: "Linux GCC"
+          compiler: gcc
+          sudo:     required
+          os:       linux
+          dist:     xenial
+
+before_install:
+    - git clone https://github.com/SFML/SFML.git
+    - cd SFML
+    - mkdir build
+    - cd build
+    - cmake ..
+    - cmake --build .
+
+install:
+    - sudo make install
+
+before_script:
+    - cd ../..
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
+
+script:
+    - cmake --build .
+
+after_script:
+    - md5sum mazemaze
+
+notifications:
+    email: false
