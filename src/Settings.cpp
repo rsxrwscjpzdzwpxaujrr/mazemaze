@@ -166,7 +166,7 @@ Settings::getSystemLang() {
                   sizeof(tempLang) / sizeof(char));
 
     systemLang = tempLang;
-    delete tempLang;
+    delete [] tempLang;
 
 #else
 
