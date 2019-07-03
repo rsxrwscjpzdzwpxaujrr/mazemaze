@@ -17,8 +17,6 @@
 
 #include "MazeRenderer.hpp"
 
-#include <algorithm>
-
 #include <SFML/OpenGL.hpp>
 
 #include "Chunk.hpp"
@@ -37,7 +35,8 @@ MazeRenderer::~MazeRenderer() {
     delete [] compiled;
 }
 
-void MazeRenderer::update(float playerX, float playerY) {
+void
+MazeRenderer::update(float playerX, float playerY) {
     for (int i = 0; i < 16; i++)
         visible[i] = -1;
 

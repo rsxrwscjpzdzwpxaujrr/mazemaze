@@ -28,8 +28,8 @@ GraphicEngine::GraphicEngine() :
         window(nullptr),
         oldWindowPos(-1, -1),
         oldWindowSize(0, 0),
-        maxAntialiasing(calcMaxAntialiasing()),
         vsync(false),
+        maxAntialiasing(calcMaxAntialiasing()),
         icon(sf::Image()) {
     icon.loadFromFile("data/icon.png");
 
