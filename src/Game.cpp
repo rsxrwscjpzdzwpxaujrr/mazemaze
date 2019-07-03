@@ -28,12 +28,14 @@
 
 #include "Gui/MainMenu.hpp"
 
+#include "MazeRenderers/Classic.hpp"
+
 namespace mazemaze {
 
 Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
-        mazeRenderer(maze),
+        mazeRenderer(new renderers::Classic(maze)),
         player(1.5f, 0.0f, 1.5f),
         starSky(1024, 0.0f, 1.5f, 0.7f),
         settings(settings),
@@ -45,7 +47,9 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
         time(0.0f),
         wantExit(false) {}
 
-Game::~Game() {};
+Game::~Game() {
+    delete mazeRenderer;
+};
 
 void
 Game::newGame() {
@@ -78,7 +82,7 @@ Game::tick(float deltaTime) {
             lastSaveTime = time;
         }
 
-        mazeRenderer.update(player.getX(), player.getZ());
+        mazeRenderer->update(player.getX(), player.getZ());
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
@@ -99,7 +103,7 @@ Game::render() {
     starSky.render();
 
     player.getCamera().setupTranslation();
-    mazeRenderer.render();
+    mazeRenderer->render();
 
     glPopMatrix();
 

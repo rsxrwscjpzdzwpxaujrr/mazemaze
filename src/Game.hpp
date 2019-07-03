@@ -64,7 +64,7 @@ public:
 
 private:
     Maze maze;
-    MazeRenderer mazeRenderer;
+    MazeRenderer* mazeRenderer;
     Player player;
     StarSky starSky;
     Settings& settings;

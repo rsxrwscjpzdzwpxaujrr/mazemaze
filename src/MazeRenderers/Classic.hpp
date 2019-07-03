@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,27 +17,22 @@
 
 #pragma once
 
-#include "Maze.hpp"
+#include "../MazeRenderer.hpp"
 
 namespace mazemaze {
 
-class MazeRenderer {
+class Maze;
+
+namespace renderers {
+
+class Classic : public MazeRenderer {
 public:
-    explicit MazeRenderer(Maze& maze);
-    virtual ~MazeRenderer() = 0;
+    Classic(Maze& maze);
+    ~Classic() override;
 
-    void update(float playerX, float playerY);
-    void render();
-
-protected:
-    int visible[16];
-    Maze& maze;
-    bool* compiled;
-    unsigned int drawList;
-
-    virtual void enableChunk(int num);
-    virtual void compileChunk(int num) = 0;
-    virtual void renderChunk(int num);
+private:
+    void compileChunk(int num) override;
 };
 
+}
 }

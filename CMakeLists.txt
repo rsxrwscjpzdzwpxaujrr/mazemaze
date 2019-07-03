@@ -82,7 +82,9 @@ target_sources(
     src/Gui/States/Win.cpp
     src/Gui/States/Win.hpp
     src/Gui/States/NewGame.cpp
-    src/Gui/States/NewGame.hpp)
+    src/Gui/States/NewGame.hpp
+    src/MazeRenderers/Classic.cpp
+    src/MazeRenderers/Classic.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
