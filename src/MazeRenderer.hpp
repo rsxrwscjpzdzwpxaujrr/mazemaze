@@ -26,13 +26,16 @@ public:
     explicit MazeRenderer(Maze& maze);
     ~MazeRenderer();
 
-    void update();
-    void render(float playerX, float playerY);
+    void update(float playerX, float playerY);
+    void render();
 
 private:
-    unsigned int drawList;
+    int visible[16];
     Maze& maze;
+    bool* compiled;
+    unsigned int drawList;
 
+    void enableChunk(int num);
     void compileChunk(int num);
     void renderChunk(int num);
 };

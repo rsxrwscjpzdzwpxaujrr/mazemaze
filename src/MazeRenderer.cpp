@@ -25,21 +25,22 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Maze& maze) : maze(maze) {}
+MazeRenderer::MazeRenderer(Maze& maze) :
+        visible{-1},
+        maze(maze),
+        compiled(new bool[maze.getChunksCount()] {false}),
+        drawList(glGenLists(maze.getChunksCount())) {}
 
 MazeRenderer::~MazeRenderer() {
     glDeleteLists(drawList, maze.getChunksCount());
+
+    delete [] compiled;
 }
 
-void MazeRenderer::update() {
-    drawList = glGenLists(maze.getChunksCount());
+void MazeRenderer::update(float playerX, float playerY) {
+    for (int i = 0; i < 16; i++)
+        visible[i] = -1;
 
-    for (int i = 0; i < maze.getChunksCount(); i++)
-        compileChunk(i);
-}
-
-void
-MazeRenderer::render(float playerX, float playerY) {
     for (int i = 0; i < maze.getChunksCount(); i++) {
         int chunkX = (i % maze.getChunksX());
         int chunkY = (i / maze.getChunksX());
@@ -49,7 +50,30 @@ MazeRenderer::render(float playerX, float playerY) {
 
         if     (((chunkX >= pX - 1 && chunkX <= pX + 1) && chunkY == pY) ||
                 ((chunkY >= pY - 1 && chunkY <= pY + 1) && chunkX == pX))
-            renderChunk(i);
+            enableChunk(i);
+    }
+}
+
+void
+MazeRenderer::render() {
+    for (int i = 0; i < 16; i++) {
+        if (visible[i] != -1)
+            renderChunk(visible[i]);
+        else
+            break;
+    }
+}
+
+void
+MazeRenderer::enableChunk(int num) {
+    if (!compiled[num])
+        compileChunk(num);
+
+    for (int i = 0; i < 16; i++) {
+        if (visible[i] == -1) {
+            visible[i] = num;
+            break;
+        }
     }
 }
 
@@ -134,6 +158,8 @@ MazeRenderer::compileChunk(int num) {
     glPopMatrix();
 
     glEndList();
+
+    compiled[num] = true;
 }
 
 void

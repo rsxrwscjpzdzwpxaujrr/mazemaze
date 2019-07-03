@@ -56,7 +56,6 @@ Game::newGame() {
 void
 Game::onLoad() {
     lastSaveTime = time;
-    mazeRenderer.update();
     setPaused(false);
     setWon(false);
 }
@@ -79,6 +78,8 @@ Game::tick(float deltaTime) {
             lastSaveTime = time;
         }
 
+        mazeRenderer.update(player.getX(), player.getZ());
+
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
             setWon(true);
@@ -98,7 +99,7 @@ Game::render() {
     starSky.render();
 
     player.getCamera().setupTranslation();
-    mazeRenderer.render(player.getX(), player.getZ());
+    mazeRenderer.render();
 
     glPopMatrix();
 
