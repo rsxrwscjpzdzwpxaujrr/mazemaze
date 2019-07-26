@@ -17,16 +17,17 @@
 
 #pragma once
 
-#include "Maze.hpp"
-
 namespace mazemaze {
+
+class Maze;
+class Game;
 
 class MazeRenderer {
 public:
-    explicit MazeRenderer(Maze& maze);
+    explicit MazeRenderer(Game& game);
     virtual ~MazeRenderer() = 0;
 
-    void update(float playerX, float playerY);
+    void tick(float deltaTime, float playerX, float playerY);
     void render();
 
 protected:
@@ -35,6 +36,7 @@ protected:
     bool* compiled;
     unsigned int drawList;
 
+    virtual void onTick(float deltaTime) = 0;
     virtual void enableChunk(int num);
     virtual void compileChunk(int num) = 0;
     virtual void renderChunk(int num);

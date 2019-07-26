@@ -20,12 +20,13 @@
 #include <SFML/OpenGL.hpp>
 
 #include "Chunk.hpp"
+#include "Game.hpp"
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Maze& maze) :
+MazeRenderer::MazeRenderer(Game& game) :
         visible{-1},
-        maze(maze),
+        maze(game.getMaze()),
         compiled(new bool[maze.getChunksCount()] {false}),
         drawList(glGenLists(maze.getChunksCount())) {}
 
@@ -36,7 +37,7 @@ MazeRenderer::~MazeRenderer() {
 }
 
 void
-MazeRenderer::update(float playerX, float playerY) {
+MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
     for (int i = 0; i < 16; i++)
         visible[i] = -1;
 
@@ -51,6 +52,8 @@ MazeRenderer::update(float playerX, float playerY) {
                 ((chunkY >= pY - 1 && chunkY <= pY + 1) && chunkX == pX))
             enableChunk(i);
     }
+
+    onTick(deltaTime);
 }
 
 void

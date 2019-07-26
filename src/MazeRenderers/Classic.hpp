@@ -18,20 +18,26 @@
 #pragma once
 
 #include "../MazeRenderer.hpp"
+#include "../StarSky.hpp"
 
 namespace mazemaze {
 
-class Maze;
+class Game;
 
 namespace renderers {
 
 class Classic : public MazeRenderer {
 public:
-    Classic(Maze& maze);
+    Classic(Game& game);
     ~Classic() override;
 
 private:
+    StarSky starSky;
+    Game& game;
+
     void compileChunk(int num) override;
+    void onTick(float deltaTime) override;
+    void renderChunk(int num) override;
 };
 
 }

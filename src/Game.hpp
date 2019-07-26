@@ -22,7 +22,6 @@
 #include "Maze.hpp"
 #include "MazeRenderer.hpp"
 #include "Player.hpp"
-#include "StarSky.hpp"
 #include "Saver.hpp"
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
@@ -66,7 +65,6 @@ private:
     Maze maze;
     MazeRenderer* mazeRenderer;
     Player player;
-    StarSky starSky;
     Settings& settings;
 
     gui::MainMenu& mainMenu;

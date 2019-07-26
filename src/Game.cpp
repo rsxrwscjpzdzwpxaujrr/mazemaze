@@ -35,9 +35,8 @@ namespace mazemaze {
 Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
-        mazeRenderer(new renderers::Classic(maze)),
+        mazeRenderer(new renderers::Classic(*this)),
         player(1.5f, 0.0f, 1.5f),
-        starSky(1024, 0.0f, 1.5f, 0.7f),
         settings(settings),
         mainMenu(mainMenu),
         lastSaveTime(0.0f),
@@ -82,14 +81,13 @@ Game::tick(float deltaTime) {
             lastSaveTime = time;
         }
 
-        mazeRenderer->update(player.getX(), player.getZ());
+        mazeRenderer->tick(deltaTime, player.getX(), player.getZ());
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
             setWon(true);
 
         time += deltaTime;
-        starSky.setTime(time);
     }
 }
 
@@ -100,7 +98,6 @@ Game::render() {
     player.getCamera().setupPerspective();
 
     player.getCamera().setupRotation();
-    starSky.render();
 
     player.getCamera().setupTranslation();
     mazeRenderer->render();

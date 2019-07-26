@@ -20,11 +20,15 @@
 #include <SFML/OpenGL.hpp>
 
 #include "../Chunk.hpp"
+#include "../Game.hpp"
 
 namespace mazemaze {
 namespace renderers {
 
-Classic::Classic(Maze& maze) : MazeRenderer(maze) {}
+Classic::Classic(Game& game) :
+        MazeRenderer(game),
+        starSky(1024, 0.0f, 1.5f, 0.7f),
+        game(game) {}
 
 Classic::~Classic() = default;
 
@@ -111,6 +115,18 @@ Classic::compileChunk(int num) {
     glEndList();
 
     compiled[num] = true;
+}
+
+void
+Classic::onTick(float deltaTime) {
+    starSky.setTime(game.getTime());
+}
+
+void
+Classic::renderChunk(int num) {
+    MazeRenderer::renderChunk(num);
+
+    starSky.render();
 }
 
 }
