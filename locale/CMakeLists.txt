@@ -3,7 +3,7 @@ add_custom_target(update-translation-templates)
 
 set(LINGUAS ru uk kk)
 
-set(DOMAIN messages)
+set(DOMAIN ${PROJECT_NAME})
 
 set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/messages.pot)
 
