@@ -20,6 +20,9 @@
 #include "../Game.hpp"
 #include "../Saver.hpp"
 #include "../Settings.hpp"
+#include "../StarSky.hpp"
+
+#include "Background.hpp"
 
 #include "States/Empty.hpp"
 #include "States/Main.hpp"
