@@ -23,7 +23,7 @@ namespace mazemaze {
 
 class Skybox : public IRenderable {
 public:
-    Skybox(int size, float red, float green, float blue);
+    explicit Skybox(int size, float red, float green, float blue);
     ~Skybox() override;
 
 public:
