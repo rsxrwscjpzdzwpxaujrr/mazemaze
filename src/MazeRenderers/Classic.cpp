@@ -21,6 +21,7 @@
 
 #include "../Chunk.hpp"
 #include "../Game.hpp"
+#include "../Camera.hpp"
 
 namespace mazemaze {
 namespace renderers {
@@ -124,9 +125,13 @@ Classic::onTick(float deltaTime) {
 
 void
 Classic::renderChunk(int num) {
+    Camera& camera = game.getPlayer().getCamera();
+
     MazeRenderer::renderChunk(num);
 
+    glTranslatef(camera.getX(), camera.getY(), camera.getZ());
     starSky.render();
+    glTranslatef(-camera.getX(), -camera.getY(), -camera.getZ());
 }
 
 }
