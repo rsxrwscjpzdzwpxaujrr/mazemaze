@@ -105,6 +105,8 @@ Game::render() {
     glPopMatrix();
 
     if (paused || won) {
+        glDisable(GL_DEPTH_TEST);
+
         glBegin(GL_QUADS);
 
         glColor4f(0x2D / 255.0f,
@@ -112,12 +114,14 @@ Game::render() {
                   0x2D / 255.0f,
                   0xB0 / 255.0f);
 
-        glVertex3f(1.0f, -1.0f, -0.002f);
-        glVertex3f(1.0f, 1.0f, -0.002f);
-        glVertex3f(-1.0f, 1.0f, -0.002f);
-        glVertex3f(-1.0f, -1.0f, -0.002f);
+        glVertex3f(100.0f, -100.0f, -1.0f);
+        glVertex3f(100.0f, 100.0f, -1.0f);
+        glVertex3f(-100.0f, 100.0f, -1.0f);
+        glVertex3f(-100.0f, -100.0f, -1.0f);
 
         glEnd();
+
+        glDisable(GL_DEPTH_TEST);
     }
 }
 
