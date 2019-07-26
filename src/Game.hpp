@@ -51,6 +51,7 @@ public:
     void setWon(bool won);
     void setTime(float time);
     void setWantExit();
+    void setRenderer(int id);
 
     bool isPaused() const;
     bool isWon() const;
@@ -60,10 +61,12 @@ public:
     Maze& getMaze();
     Player& getPlayer();
     Camera* getCamera() override;
+    MazeRenderer& getRenderer();
 
 private:
     Maze maze;
-    MazeRenderer* mazeRenderer;
+    int mazeRenderer;
+    MazeRenderer* mazeRenderers[16];
     Player player;
     Settings& settings;
 

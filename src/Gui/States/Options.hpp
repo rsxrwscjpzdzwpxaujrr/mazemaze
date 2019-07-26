@@ -45,6 +45,7 @@ private:
     sfg::ComboBox::Ptr    antialiasingCombo;
     sfg::ComboBox::Ptr    langCombo;
     sfg::CheckButton::Ptr autosaveCheck;
+    sfg::ComboBox::Ptr    styleCombo;
 
     sf::Vector2f getSeparatorRequiredRequisition(float requiredWidth, sfg::Box::Ptr current);
     sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);

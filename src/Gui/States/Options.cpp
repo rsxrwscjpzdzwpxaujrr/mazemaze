@@ -95,6 +95,10 @@ Options::initSignals(MainMenu& mainMenu) {
     backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
         mainMenu.back();
     });
+
+    styleCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
+        settings.setRenderer(styleCombo->GetSelectedItem());
+    });
 }
 
 void
@@ -138,6 +142,10 @@ Options::initOptions() {
 
     vsyncCheck->SetActive(settings.getVsync());
     autosaveCheck->SetActive(settings.getAutosave());
+
+    styleCombo->AppendItem(pgtx("options", "Classic"));
+    styleCombo->AppendItem(pgtx("options", "Gray"));
+    styleCombo->SelectItem(0);
 }
 
 Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
@@ -148,7 +156,8 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
         vsyncCheck       (CheckButton::Create(L"")),
         antialiasingCombo(ComboBox::Create()),
         langCombo        (ComboBox::Create()),
-        autosaveCheck    (CheckButton::Create(L"")) {
+        autosaveCheck    (CheckButton::Create(L"")),
+        styleCombo       (ComboBox::Create()) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
     auto windowBox          = Box::Create(Box::Orientation::VERTICAL);
@@ -172,6 +181,7 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
     windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));
     windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
     windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));  
+    windowBox->Pack(addToOptionsList(pgtx("options", "Style"), styleCombo));
     windowBox->Pack(groupSeparator2);
 
     groupSeparator1->SetRequisition({0.0f, 40.0f});

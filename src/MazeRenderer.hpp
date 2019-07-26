@@ -27,15 +27,19 @@ public:
     explicit MazeRenderer(Game& game);
     virtual ~MazeRenderer() = 0;
 
+    void enable();
+    void disable();
     void tick(float deltaTime, float playerX, float playerY);
     void render();
 
 protected:
-    int visible[16];
+    int* visible;
     Maze& maze;
     bool* compiled;
     unsigned int drawList;
 
+    virtual void onEnable();
+    virtual void onDisable();
     virtual void onTick(float deltaTime) = 0;
     virtual void enableChunk(int num);
     virtual void compileChunk(int num) = 0;

@@ -29,13 +29,15 @@
 #include "Gui/MainMenu.hpp"
 
 #include "MazeRenderers/Classic.hpp"
+#include "MazeRenderers/Gray.hpp"
 
 namespace mazemaze {
 
 Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
-        mazeRenderer(new renderers::Classic(*this)),
+        mazeRenderer(0),
+        mazeRenderers{nullptr},
         player(1.5f, 0.0f, 1.5f),
         settings(settings),
         mainMenu(mainMenu),
@@ -44,10 +46,19 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
         won(false),
         oldPauseKeyState(false),
         time(0.0f),
-        wantExit(false) {}
+        wantExit(false) {
+    mazeRenderers[0] = new renderers::Classic(*this);
+    mazeRenderers[1] = new renderers::Gray(*this);
+
+    mazeRenderers[mazeRenderer]->enable();
+}
 
 Game::~Game() {
-    delete mazeRenderer;
+    mazeRenderers[mazeRenderer]->disable();
+
+    for (int i = 0; i < 16; i++)
+        if (mazeRenderers[i] != nullptr)
+            delete mazeRenderers[i];
 };
 
 void
@@ -73,6 +84,8 @@ Game::tick(float deltaTime) {
     sf::RenderWindow& window = GraphicEngine::getInstance().getWindow();
     window.setMouseCursorVisible(paused || won);
 
+    setRenderer(settings.getRenderer());
+
     if (!(paused || won)) {
         player.tick(deltaTime, window, maze);
 
@@ -81,7 +94,7 @@ Game::tick(float deltaTime) {
             lastSaveTime = time;
         }
 
-        mazeRenderer->tick(deltaTime, player.getX(), player.getZ());
+        mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
@@ -100,7 +113,7 @@ Game::render() {
     player.getCamera().setupRotation();
 
     player.getCamera().setupTranslation();
-    mazeRenderer->render();
+    mazeRenderers[mazeRenderer]->render();
 
     glPopMatrix();
 
@@ -150,6 +163,17 @@ Game::setWantExit() {
         Saver::getInstance().save(*this);
 
     mainMenu.stopGame();
+}
+
+void
+Game::setRenderer(int id) {
+    if (id != mazeRenderer) {
+        mazeRenderers[mazeRenderer]->disable();
+        mazeRenderer = id;
+        mazeRenderers[mazeRenderer]->enable();
+
+        mazeRenderers[mazeRenderer]->tick(0.0f, player.getX(), player.getY());
+    }
 }
 
 void

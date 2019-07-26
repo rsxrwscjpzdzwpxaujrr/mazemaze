@@ -22,6 +22,8 @@
 
 namespace mazemaze {
 
+class Game;
+
 class Settings {
 public:
     explicit Settings(bool readConfig=true);
@@ -34,6 +36,7 @@ public:
     bool         getVsync() const;
     bool         getAutosave() const;
     float        getAutosaveTime() const;
+    int          getRenderer() const;
 
     const std::string* getSupportedLangs() const;
     int getSupportedLangsCount() const;
@@ -44,6 +47,7 @@ public:
     void setVsync(bool vsync);
     void setAutosave(bool autosave);
     void setAutosaveTime(float autosaveTime);
+    void setRenderer(int id);
 
 private:
     std::string configFile;
@@ -56,6 +60,7 @@ private:
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;
+    int renderer;
 
     std::string getSystemLang();
 

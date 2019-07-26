@@ -26,6 +26,7 @@
 #endif
 
 #include "GraphicEngine.hpp"
+#include "Game.hpp"
 
 namespace mazemaze {
 
@@ -34,7 +35,8 @@ Settings::Settings(bool readConfig) :
         fallbackLang("en"),
         supportedLangsCount(4),
         supportedLangs(new std::string[supportedLangsCount]
-                       {"en", "ru", "uk", "kk"}) {
+                       {"en", "ru", "uk", "kk"}),
+        renderer(0) {
     if (readConfig) {
         if(Settings::readConfig())
             return;
@@ -94,6 +96,11 @@ Settings::getAutosaveTime() const {
     return autosaveTime;
 }
 
+int
+Settings::getRenderer() const {
+    return renderer;
+}
+
 const std::string*
 Settings::getSupportedLangs() const {
     return supportedLangs;
@@ -151,6 +158,10 @@ Settings::setAutosaveTime(float autosaveTime) {
     Settings::autosaveTime = autosaveTime;
 }
 
+void
+Settings::setRenderer(int id) {
+    renderer = id;
+}
 
 std::string
 Settings::getSystemLang() {
@@ -215,6 +226,7 @@ Settings::writeConfig() {
     addAndSet(graphics, Setting::TypeInt,     "antialiasing", static_cast<int>(getAntialiasing()));
     addAndSet(graphics, Setting::TypeBoolean, "fullscreen",   getFullscreen());
     addAndSet(graphics, Setting::TypeBoolean, "vsync",        getVsync());
+    addAndSet(graphics, Setting::TypeInt,     "style",        getRenderer());
 
     config.writeFile(configFile.c_str());
 }
@@ -241,6 +253,7 @@ Settings::readConfig() {
     setAntialiasing(graphics["antialiasing"]);
     setFullscreen(graphics["fullscreen"]);
     setVsync(graphics["vsync"]);
+    setRenderer(graphics["style"]);
 
     setLang(root["lang"]);
     setAutosave(root["autosave"]);

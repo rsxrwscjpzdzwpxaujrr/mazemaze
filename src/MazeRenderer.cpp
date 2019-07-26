@@ -24,15 +24,26 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Game& game) :
-        visible{-1},
-        maze(game.getMaze()),
-        compiled(new bool[maze.getChunksCount()] {false}),
-        drawList(glGenLists(maze.getChunksCount())) {}
+MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()) {}
 
-MazeRenderer::~MazeRenderer() {
+MazeRenderer::~MazeRenderer() = default;
+
+void
+MazeRenderer::enable() {
+    visible  = new int[16] {-1};
+    compiled = new bool[maze.getChunksCount()] {false};
+    drawList = glGenLists(maze.getChunksCount());
+
+    onEnable();
+}
+
+void
+MazeRenderer::disable() {
+    onDisable();
+
     glDeleteLists(drawList, maze.getChunksCount());
 
+    delete [] visible;
     delete [] compiled;
 }
 
@@ -64,6 +75,14 @@ MazeRenderer::render() {
         else
             break;
     }
+}
+
+void
+MazeRenderer::onEnable() {
+}
+
+void
+MazeRenderer::onDisable() {
 }
 
 void

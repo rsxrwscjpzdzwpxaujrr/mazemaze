@@ -29,11 +29,17 @@ namespace renderers {
 Gray::Gray(Game& game) :
         MazeRenderer(game),
         game(game),
-        skybox(50, 0.67f, 0.85f, 1.0f) {
+        skybox(50, 0.67f, 0.85f, 1.0f) {}
+
+Gray::~Gray() = default;
+
+void
+Gray::onEnable() {
     glEnable(GL_LIGHT0);
 }
 
-Gray::~Gray() {
+void
+Gray::onDisable() {
     glDisable(GL_LIGHT0);
 }
 
