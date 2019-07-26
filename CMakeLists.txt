@@ -63,6 +63,8 @@ target_sources(
     src/FpsCalculator.hpp
     src/utils.hpp
     src/utils.cpp
+    src/Skybox.cpp
+    src/Skybox.hpp
     src/Gui/Background.cpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.cpp
@@ -84,7 +86,9 @@ target_sources(
     src/Gui/States/NewGame.cpp
     src/Gui/States/NewGame.hpp
     src/MazeRenderers/Classic.cpp
-    src/MazeRenderers/Classic.hpp)
+    src/MazeRenderers/Classic.hpp
+    src/MazeRenderers/Gray.cpp
+    src/MazeRenderers/Gray.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})

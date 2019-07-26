@@ -53,10 +53,16 @@ Camera::setupPerspective() {
     double ratio = GraphicEngine::getInstance().getWidth() /
                    static_cast<double>(GraphicEngine::getInstance().getHeight());
 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
     glFrustum(-ratio * nearDist, ratio * nearDist,
               -1.0   * nearDist, 1.0   * nearDist,
               (ratio * nearDist) / tan(fov * (M_PI / 360.0)),
               farDist);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 float
