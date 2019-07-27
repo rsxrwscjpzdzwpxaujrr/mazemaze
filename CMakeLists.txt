@@ -11,7 +11,7 @@ find_package(Intl REQUIRED MODULE)
 find_package(Config++ REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
 find_package(SFML COMPONENTS window graphics system REQUIRED)
-find_package(SFGUI QUIET MODULE)
+find_package(SFGUI 0.4 QUIET MODULE)
 
 if (NOT SFGUI_FOUND)
     if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
