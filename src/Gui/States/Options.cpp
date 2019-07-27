@@ -145,7 +145,7 @@ Options::initOptions() {
 
     styleCombo->AppendItem(pgtx("options", "Classic"));
     styleCombo->AppendItem(pgtx("options", "Gray"));
-    styleCombo->SelectItem(0);
+    styleCombo->SelectItem(settings.getRenderer());
 }
 
 Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
