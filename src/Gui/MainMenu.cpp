@@ -24,7 +24,7 @@
 
 #include "Background.hpp"
 
-#include "States/Empty.hpp"
+#include "States/Hud.hpp"
 #include "States/Main.hpp"
 #include "States/Options.hpp"
 #include "States/Pause.hpp"
@@ -47,7 +47,7 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
 
     addState(new states::Main   (getDesktop(), *this));
     addState(new states::Options(getDesktop(), *this, settings));
-    addState(new states::Empty  (getDesktop()));
+    addState(new states::Hud    (getDesktop(), settings));
     addState(new states::NewGame(getDesktop(), *this));
 
     setState(0);

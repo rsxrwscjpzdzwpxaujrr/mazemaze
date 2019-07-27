@@ -101,6 +101,11 @@ Settings::getRenderer() const {
     return renderer;
 }
 
+bool
+Settings::getShowFps() const {
+    return showFps;
+}
+
 const std::string*
 Settings::getSupportedLangs() const {
     return supportedLangs;
@@ -163,6 +168,11 @@ Settings::setRenderer(int id) {
     renderer = id;
 }
 
+void
+Settings::setShowFps(bool showFps) {
+    Settings::showFps = showFps;
+}
+
 std::string
 Settings::getSystemLang() {
     std::string systemLang;
@@ -217,6 +227,7 @@ Settings::writeConfig() {
     addAndSet(root, Setting::TypeString,  "lang",         getLang());
     addAndSet(root, Setting::TypeBoolean, "autosave",     getAutosave());
     addAndSet(root, Setting::TypeFloat,   "autosaveTime", getAutosaveTime());
+    addAndSet(root, Setting::TypeBoolean, "showFps",      getShowFps());
 
     if(!root.exists("graphics"))
         root.add("graphics", Setting::TypeGroup);
@@ -258,6 +269,7 @@ Settings::readConfig() {
     setLang(root["lang"]);
     setAutosave(root["autosave"]);
     setAutosaveTime(root["autosaveTime"]);
+    setShowFps(root["showFps"]);
 
     return true;
 }

@@ -97,6 +97,11 @@ Label.newGameMazeSize {
     FontSize: 23.0f;
 }
 
+Label.fps {
+    FontName: data/Noto-Mono-R.ttf;
+    FontSize: 19.0f;
+}
+
 Entry {
     FontSize: 21.0f;
     BackgroundColor: #3D3D3DFF;

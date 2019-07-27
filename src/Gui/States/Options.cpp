@@ -99,6 +99,10 @@ Options::initSignals(MainMenu& mainMenu) {
     styleCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
         settings.setRenderer(styleCombo->GetSelectedItem());
     });
+
+    showFpsCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.setShowFps(showFpsCheck->IsActive());
+    });
 }
 
 void
@@ -146,6 +150,8 @@ Options::initOptions() {
     styleCombo->AppendItem(pgtx("options", "Classic"));
     styleCombo->AppendItem(pgtx("options", "Gray"));
     styleCombo->SelectItem(settings.getRenderer());
+
+    showFpsCheck->SetActive(settings.getShowFps());
 }
 
 Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
@@ -157,7 +163,8 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
         antialiasingCombo(ComboBox::Create()),
         langCombo        (ComboBox::Create()),
         autosaveCheck    (CheckButton::Create(L"")),
-        styleCombo       (ComboBox::Create()) {
+        styleCombo       (ComboBox::Create()),
+        showFpsCheck     (CheckButton::Create(L"")) {
     auto window             = Window::Create(Window::Style::BACKGROUND);
     auto scroll             = ScrolledWindow::Create(Adjustment::Create(), Adjustment::Create());
     auto windowBox          = Box::Create(Box::Orientation::VERTICAL);
@@ -176,6 +183,7 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
     windowBox->Pack(otherGroupLabel);
     windowBox->Pack(addToOptionsList(pgtx("options", "Language"), langCombo));
     windowBox->Pack(addToOptionsList(pgtx("options", "Autosave"), autosaveCheck));
+    windowBox->Pack(addToOptionsList(pgtx("options", "Show FPS"), showFpsCheck));
     windowBox->Pack(groupSeparator1);
     windowBox->Pack(graphicsGroupLabel);
     windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));

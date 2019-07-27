@@ -19,14 +19,25 @@
 
 #include "../State.hpp"
 
+#include "../../FpsCalculator.hpp"
+#include "../../Settings.hpp"
+
 namespace mazemaze {
 namespace gui {
 namespace states {
 
-class Empty : public State {
+class Hud : public State {
 public:
-    explicit Empty(sfg::Desktop& desktop);
-    ~Empty() override;
+    explicit Hud(sfg::Desktop& desktop, Settings& settings);
+    ~Hud() override;
+
+private:
+    sfg::Label::Ptr fpsLabel;
+    Settings& settings;
+    FpsCalculator fpsCalculator;
+
+    void tick(float deltaTime) override;
+    void center(sf::Event event) override;
 };
 
 }

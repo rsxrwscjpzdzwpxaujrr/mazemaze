@@ -46,6 +46,7 @@ private:
     sfg::ComboBox::Ptr    langCombo;
     sfg::CheckButton::Ptr autosaveCheck;
     sfg::ComboBox::Ptr    styleCombo;
+    sfg::CheckButton::Ptr showFpsCheck;
 
     sf::Vector2f getSeparatorRequiredRequisition(float requiredWidth, sfg::Box::Ptr current);
     sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);

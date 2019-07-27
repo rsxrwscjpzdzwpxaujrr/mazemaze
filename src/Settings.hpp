@@ -37,6 +37,7 @@ public:
     bool         getAutosave() const;
     float        getAutosaveTime() const;
     int          getRenderer() const;
+    bool         getShowFps() const;
 
     const std::string* getSupportedLangs() const;
     int getSupportedLangsCount() const;
@@ -48,6 +49,7 @@ public:
     void setAutosave(bool autosave);
     void setAutosaveTime(float autosaveTime);
     void setRenderer(int id);
+    void setShowFps(bool showFps);
 
 private:
     std::string configFile;
@@ -61,6 +63,7 @@ private:
     bool autosave;
     float autosaveTime;
     int renderer;
+    bool showFps;
 
     std::string getSystemLang();
 

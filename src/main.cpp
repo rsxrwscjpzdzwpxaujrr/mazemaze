@@ -26,7 +26,6 @@
 #include <SFGUI/Button.hpp>
 #include <SFGUI/Desktop.hpp>
 
-#include "utils.hpp"
 #include "Maze.hpp"
 #include "MazeRenderer.hpp"
 #include "Player.hpp"
@@ -54,9 +53,6 @@ main() {
 
     Settings settings;
     sfg::SFGUI sfgui;
-    FpsCalculator fpsCalculator([] (float fps) {
-        std::cout << format("\rFPS: %.2f        ", fps) << std::flush;
-    }, 0.5f);
 
     GraphicEngine::getInstance().openWindow(startWindowWidth, startWindowHeight, false);
 
@@ -100,8 +96,6 @@ main() {
 
         frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
         deltaClock.restart();
-
-        fpsCalculator.tick(frameDeltaTime);
     }
 
     std::cout << std::endl;
