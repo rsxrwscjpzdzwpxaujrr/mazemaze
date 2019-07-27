@@ -55,32 +55,45 @@ Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
     float moveVectorZ = 0.0f;
     float moveAngle;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    bool move[] {sf::Keyboard::isKeyPressed(sf::Keyboard::D),
+                 sf::Keyboard::isKeyPressed(sf::Keyboard::S),
+                 sf::Keyboard::isKeyPressed(sf::Keyboard::A),
+                 sf::Keyboard::isKeyPressed(sf::Keyboard::W)};
+
+    if (move[0]) {
         moveAngle = yaw;
 
         moveVectorX += cosf(moveAngle);
         moveVectorZ += sinf(moveAngle);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+    if (move[1]) {
         moveAngle = yaw + M_PI_2f;
 
         moveVectorX += cosf(moveAngle);
         moveVectorZ += sinf(moveAngle);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    if (move[2]) {
         moveAngle = yaw + M_PIf;
 
         moveVectorX += cosf(moveAngle);
         moveVectorZ += sinf(moveAngle);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+    if (move[3]) {
         moveAngle = yaw + M_PI_2f + M_PIf;
 
         moveVectorX += cosf(moveAngle);
         moveVectorZ += sinf(moveAngle);
+    }
+
+    if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
+        float factor = 1.0f / std::sqrt((moveVectorX * moveVectorX) +
+                                        (moveVectorZ * moveVectorZ));
+
+        moveVectorX *= factor;
+        moveVectorZ *= factor;
     }
 
     if (moveVectorX != 0.0f || moveVectorZ != 0.0f) {
