@@ -54,6 +54,7 @@ private:
 
     void tryMove(Maze& maze, float x, float y, float z);
     bool checkCollision(Maze& maze, float x, float y);
+    void sumVector(float angle, float& vecX, float& vecY);
 };
 
 }

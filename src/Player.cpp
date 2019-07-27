@@ -45,7 +45,6 @@ void
 Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
     float mouseSensitivity = 0.001f;
 
-    float M_PIf   = static_cast<float>(M_PI);
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
@@ -60,32 +59,13 @@ Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
                  sf::Keyboard::isKeyPressed(sf::Keyboard::A),
                  sf::Keyboard::isKeyPressed(sf::Keyboard::W)};
 
-    if (move[0]) {
-        moveAngle = yaw;
+    {
+        int i;
+        float j;
 
-        moveVectorX += cosf(moveAngle);
-        moveVectorZ += sinf(moveAngle);
-    }
-
-    if (move[1]) {
-        moveAngle = yaw + M_PI_2f;
-
-        moveVectorX += cosf(moveAngle);
-        moveVectorZ += sinf(moveAngle);
-    }
-
-    if (move[2]) {
-        moveAngle = yaw + M_PIf;
-
-        moveVectorX += cosf(moveAngle);
-        moveVectorZ += sinf(moveAngle);
-    }
-
-    if (move[3]) {
-        moveAngle = yaw + M_PI_2f + M_PIf;
-
-        moveVectorX += cosf(moveAngle);
-        moveVectorZ += sinf(moveAngle);
+        for (i = 0, j = yaw; i < 4; i++, j += M_PI_2f)
+            if (move[i])
+                sumVector(j, moveVectorX, moveVectorZ);
     }
 
     if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
@@ -194,6 +174,12 @@ Player::checkCollision(Maze& maze, float x, float y) {
             }
 
     return intersects;
+}
+
+void
+Player::sumVector(float angle, float& vecX, float& vecY) {
+    vecX += cosf(angle);
+    vecY += sinf(angle);
 }
 
 }
