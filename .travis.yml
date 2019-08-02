@@ -21,6 +21,12 @@ matrix:
           os:       linux
           dist:     xenial
 
+        - name: "Linux Clang"
+          compiler: clang
+          sudo:     required
+          os:       linux
+          dist:     xenial
+
 before_script:
     - git clone https://github.com/SFML/SFML.git
     - cd SFML
