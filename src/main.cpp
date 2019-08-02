@@ -16,23 +16,11 @@
  */
 
 #include <cmath>
-#include <iostream>
 #include <gettext.h>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/OpenGL.hpp>
-
 #include <SFGUI/SFGUI.hpp>
-#include <SFGUI/Button.hpp>
-#include <SFGUI/Desktop.hpp>
 
-#include "Maze.hpp"
-#include "MazeRenderer.hpp"
-#include "Player.hpp"
-#include "StarSky.hpp"
-#include "Game.hpp"
 #include "GraphicEngine.hpp"
-#include "FpsCalculator.hpp"
 #include "Settings.hpp"
 
 #include "Gui/MainMenu.hpp"
@@ -49,56 +37,15 @@ main() {
     const int startWindowWidth = 854;
     const int startWindowHeight = 480;
 
-    float frameDeltaTime = 1.0f / 60.0f;
-
     Settings settings;
     sfg::SFGUI sfgui;
+    GraphicEngine& engine = GraphicEngine::getInstance();
 
-    GraphicEngine::getInstance().openWindow(startWindowWidth, startWindowHeight, false);
+    engine.openWindow(startWindowWidth, startWindowHeight, false);
 
     gui::MainMenu mainMenu(settings);
-    sf::Clock deltaClock;
 
-    bool running = true;
-
-    while (running) {
-        GraphicEngine::getInstance().update();
-        GraphicEngine::getInstance().setStates();
-
-        sf::RenderWindow& window = GraphicEngine::getInstance().getWindow();
-
-        sf::Event event{};
-
-        while (window.pollEvent(event)) {
-            mainMenu.handleEvent(event);
-
-            switch (event.type) {
-                case sf::Event::Closed:
-                    running = false;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        mainMenu.tick(frameDeltaTime);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        mainMenu.render();
-
-        window.resetGLStates();
-        sfgui.Display(window);
-        window.display();
-
-        running &= !mainMenu.isWantExit();
-
-        frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
-        deltaClock.restart();
-    }
-
-    std::cout << std::endl;
+    engine.loop(sfgui, mainMenu);
 
     return 0;
 }

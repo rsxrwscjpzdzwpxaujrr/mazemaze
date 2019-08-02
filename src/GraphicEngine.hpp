@@ -19,6 +19,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <SFGUI/SFGUI.hpp>
+
+#include "Gui/MainMenu.hpp"
+
 namespace mazemaze {
 
 class GraphicEngine {
@@ -26,8 +30,7 @@ public:
     void openWindow(unsigned int width, unsigned int height, bool fullscreen);
     void openWindow(sf::VideoMode videoMode, bool fullscreen);
 
-    void update();
-    void setStates();
+    void loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu);
 
     void setFullscreen(bool fullscreen);
     void setAntialiasing(unsigned int antialiasing);
@@ -68,6 +71,8 @@ private:
 
     sf::Image icon;
 
+    void update();
+    void setStates();
     unsigned int calcMaxAntialiasing();
 };
 

@@ -22,6 +22,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
+#include <SFGUI/SFGUI.hpp>
+
 namespace mazemaze {
 
 GraphicEngine::GraphicEngine() :
@@ -98,6 +100,48 @@ GraphicEngine::setStates() {
     glEnable(GL_COLOR_MATERIAL);
     glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void
+GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
+    sf::Clock deltaClock;
+    float frameDeltaTime = 1.0f / 60.0f;
+    bool running = true;
+
+    while (running) {
+        update();
+        setStates();
+
+        sf::Event event{};
+
+        while (window->pollEvent(event)) {
+            mainMenu.handleEvent(event);
+
+            switch (event.type) {
+                case sf::Event::Closed:
+                    running = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        mainMenu.tick(frameDeltaTime);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        mainMenu.render();
+
+        window->resetGLStates();
+        sfgui.Display(*window);
+        window->display();
+
+        running &= !mainMenu.isWantExit();
+
+        frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
+        deltaClock.restart();
+    }
 }
 
 void
