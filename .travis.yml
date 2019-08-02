@@ -11,7 +11,6 @@ addons:
     - g++
     - clang
     - libgl1-mesa-dev
-    - libconfig++-dev
     - curl
 
 matrix:
@@ -22,19 +21,30 @@ matrix:
           os:       linux
           dist:     xenial
 
-before_install:
+before_script:
     - git clone https://github.com/SFML/SFML.git
     - cd SFML
     - mkdir build
     - cd build
     - cmake ..
     - cmake --build .
-
-install:
     - sudo make install
-
-before_script:
     - cd ../..
+    - git clone https://github.com/TankOs/SFGUI.git
+    - cd SFGUI
+    - mkdir build
+    - cd build
+    - cmake -DSFGUI_BUILD_EXAMPLES=OFF ..
+    - cmake --build .
+    - sudo make install
+    - cd ../..
+    - wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
+    - tar -xzf libconfig-1.7.2.tar.gz
+    - cd libconfig-1.7.2
+    - ./configure
+    - make
+    - sudo make install
+    - cd ..
     - mkdir build
     - cd build
     - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
