@@ -31,7 +31,7 @@ namespace states {
 
 class Options : public State {
 public:
-    explicit Options(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
+    explicit Options(MainMenu& mainMenu, Settings& settings);
     ~Options() override;
 
 private:

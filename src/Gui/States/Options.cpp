@@ -46,7 +46,7 @@ Options::initSignals(MainMenu& mainMenu) {
     });
 }
 
-Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : State(desktop),
+Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
         graphicsButton (Button::Create(pgtx("options", "Graphics"))),
         otherButton    (Button::Create(pgtx("options", "Other"))),
         backButton     (Button::Create(pgtx("options", "Back"))) {
@@ -64,8 +64,8 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : Sta
 
     center();
 
-    graphicsState = mainMenu.addState(new OptionsGraphics(desktop, mainMenu, settings));
-    otherState    = mainMenu.addState(new OptionsOther   (desktop, mainMenu, settings));
+    graphicsState = mainMenu.addState(new OptionsGraphics(mainMenu, settings));
+    otherState    = mainMenu.addState(new OptionsOther   (mainMenu, settings));
 }
 
 Options::~Options() = default;

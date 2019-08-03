@@ -32,7 +32,7 @@ namespace states {
 
 class Main : public State {
 public:
-    explicit Main(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
+    explicit Main(MainMenu& mainMenu, Settings& settings);
     ~Main() override;
 
     void show(bool show) override;

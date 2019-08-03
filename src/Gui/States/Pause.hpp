@@ -31,7 +31,7 @@ namespace states {
 
 class Pause : public State {
 public:
-    explicit Pause(sfg::Desktop& desktop, MainMenu& mainMenu, Game& game);
+    explicit Pause(MainMenu& mainMenu, Game& game);
     ~Pause() override;
 };
 

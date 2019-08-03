@@ -29,7 +29,7 @@ namespace states {
 
 class NewGame : public State {
 public:
-    explicit NewGame(sfg::Desktop& desktop, MainMenu& mainMenu);
+    explicit NewGame(MainMenu& mainMenu);
     ~NewGame();
 
 private:

@@ -31,7 +31,7 @@ namespace states {
 
 class Win : public State {
 public:
-    explicit Win(sfg::Desktop& desktop, Game& game);
+    explicit Win(MainMenu& mainMenu, Game& game);
     ~Win() override;
 
     void show(bool show) override;

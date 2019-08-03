@@ -57,9 +57,9 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
     mazeRenderers[mazeRenderer]->enable();
 
     using namespace gui::states;
-    hudState   = mainMenu.addState(new Hud  (mainMenu.getDesktop(), settings));
-    pauseState = mainMenu.addState(new Pause(mainMenu.getDesktop(), mainMenu, *this));
-    wonState   = mainMenu.addState(new Win  (mainMenu.getDesktop(), *this));
+    hudState   = mainMenu.addState(new Hud  (mainMenu, settings));
+    pauseState = mainMenu.addState(new Pause(mainMenu, *this));
+    wonState   = mainMenu.addState(new Win  (mainMenu, *this));
 
     mainMenu.setState(hudState);
 }

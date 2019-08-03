@@ -117,8 +117,8 @@ OptionsGraphics::initOptions() {
     styleCombo->SelectItem(settings.getRenderer());
 }
 
-OptionsGraphics::OptionsGraphics(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
-        State(desktop),
+OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
+        State(mainMenu.getDesktop()),
         settings(settings),
         backButton       (Button::Create(pgtx("options", "Back"))),
         fullscreenCheck  (CheckButton::Create(L"")),

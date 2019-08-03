@@ -33,7 +33,7 @@ namespace states {
 
 class OptionsGraphics : public State {
 public:
-    explicit OptionsGraphics(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
+    explicit OptionsGraphics(MainMenu& mainMenu, Settings& settings);
     ~OptionsGraphics() override;
 
 private:

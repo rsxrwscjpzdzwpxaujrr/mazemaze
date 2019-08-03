@@ -33,7 +33,7 @@ namespace states {
 
 class OptionsOther : public State {
 public:
-    explicit OptionsOther(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
+    explicit OptionsOther(MainMenu& mainMenu, Settings& settings);
     ~OptionsOther() override;
 
 private:

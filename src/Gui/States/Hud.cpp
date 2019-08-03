@@ -19,6 +19,8 @@
 
 #include <SFGUI/Widgets.hpp>
 
+#include "../MainMenu.hpp"
+
 #include "../../utils.hpp"
 
 using namespace sfg;
@@ -27,8 +29,8 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Hud::Hud(sfg::Desktop& desktop, Settings& settings) :
-        State(desktop),
+Hud::Hud(MainMenu& mainMenu, Settings& settings) :
+        State(mainMenu.getDesktop()),
         settings(settings),
         fpsCalculator([this] (float fps) {
             fpsLabel->SetText(format("%.2f", fps));

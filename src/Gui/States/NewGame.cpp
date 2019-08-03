@@ -69,8 +69,8 @@ NewGame::initSignals(MainMenu& mainMenu) {
     });
 }
 
-NewGame::NewGame(Desktop& desktop, MainMenu& mainMenu) :
-        State(desktop),
+NewGame::NewGame(MainMenu& mainMenu) :
+        State(mainMenu.getDesktop()),
         backButton(Button::Create(pgtx("new_game", "Back"))),
         startButton(Button::Create(pgtx("new_game", "Start"))),
         sizeEntry(Entry::Create(L"10")) {

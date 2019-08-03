@@ -31,7 +31,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Main::Main(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : State(desktop) {
+Main::Main(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()) {
     buttonResume  = Button::Create(pgtx("main", "Resume"));
     buttonNewGame = Button::Create(pgtx("main", "New Game"));
     buttonOptions = Button::Create(pgtx("main", "Options"));
@@ -41,9 +41,9 @@ Main::Main(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : State(des
 
     updateButtons(Saver::getInstance().saveExists());
 
-    Options* options = new Options(desktop, mainMenu, settings);
+    Options* options = new Options(mainMenu, settings);
 
-    newGameState = mainMenu.addState(new NewGame(desktop, mainMenu));
+    newGameState = mainMenu.addState(new NewGame(mainMenu));
     optionsState = mainMenu.addState(options);
 
     mainMenu.setOptionsState(*options, optionsState);

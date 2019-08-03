@@ -24,11 +24,14 @@
 
 namespace mazemaze {
 namespace gui {
+
+class MainMenu;
+
 namespace states {
 
 class Hud : public State {
 public:
-    explicit Hud(sfg::Desktop& desktop, Settings& settings);
+    explicit Hud(MainMenu& mainMenu, Settings& settings);
     ~Hud() override;
 
 private:

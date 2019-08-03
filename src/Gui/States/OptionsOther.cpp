@@ -90,8 +90,8 @@ OptionsOther::initOptions() {
     showFpsCheck->SetActive(settings.getShowFps());
 }
 
-OptionsOther::OptionsOther(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings) :
-        State(desktop),
+OptionsOther::OptionsOther(MainMenu& mainMenu, Settings& settings) :
+        State(mainMenu.getDesktop()),
         settings(settings),
         backButton   (Button::Create(pgtx("options", "Back"))),
         langCombo    (ComboBox::Create()),

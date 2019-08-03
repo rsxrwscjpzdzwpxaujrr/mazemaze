@@ -40,7 +40,7 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
     sfg::Button::Create(str);
     sfg::Label::Create(str);
 
-    mainState = addState(new states::Main(getDesktop(), *this, settings));
+    mainState = addState(new states::Main(*this, settings));
     setState(mainState);
 
     StarSky* starsky = new StarSky(1024, 600.0f, 0.0f, 0.0f);

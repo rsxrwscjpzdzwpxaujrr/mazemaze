@@ -28,7 +28,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Pause::Pause(Desktop& desktop, MainMenu& mainMenu, Game& game) : State(desktop) {
+Pause::Pause(MainMenu& mainMenu, Game& game) : State(mainMenu.getDesktop()) {
     auto buttonResume  = Button::Create(pgtx("pause", "Resume"));
     auto buttonOptions = Button::Create(pgtx("pause", "Options"));
     auto buttonExit    = Button::Create(pgtx("pause", "Exit to main menu"));
