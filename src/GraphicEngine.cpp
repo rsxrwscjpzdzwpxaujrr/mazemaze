@@ -29,7 +29,7 @@ namespace mazemaze {
 GraphicEngine::GraphicEngine() :
         window(nullptr),
         oldWindowPos(-1, -1),
-        oldWindowSize(0, 0),
+        oldWindowSize(854, 480),
         vsync(false),
         maxAntialiasing(calcMaxAntialiasing()),
         icon(sf::Image()) {
@@ -40,6 +40,18 @@ GraphicEngine::GraphicEngine() :
 }
 
 GraphicEngine::~GraphicEngine() = default;
+
+void
+GraphicEngine::openWindow() {
+    sf::VideoMode videoMode;
+
+    if (fullscreen)
+        videoMode = sf::VideoMode::getDesktopMode();
+    else
+        videoMode = sf::VideoMode(oldWindowSize.x, oldWindowSize.y);
+
+    openWindow(videoMode, fullscreen);
+}
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
@@ -149,15 +161,17 @@ GraphicEngine::setFullscreen(bool fullscreen) {
     if (GraphicEngine::fullscreen != fullscreen) {
         GraphicEngine::fullscreen = fullscreen;
 
-        if (fullscreen) {
-            oldWindowPos = window->getPosition();
-            oldWindowSize = window->getSize();
+        if (window != nullptr) {
+            if (fullscreen) {
+                oldWindowPos = window->getPosition();
+                oldWindowSize = window->getSize();
 
-            videoMode = sf::VideoMode::getDesktopMode();
-        } else
-            videoMode = sf::VideoMode(oldWindowSize.x, oldWindowSize.y);
+                videoMode = sf::VideoMode::getDesktopMode();
+            } else
+                videoMode = sf::VideoMode(oldWindowSize.x, oldWindowSize.y);
 
-        needReopen = true;
+            needReopen = true;
+        }
     }
 }
 

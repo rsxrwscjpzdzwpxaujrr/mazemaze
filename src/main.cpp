@@ -34,14 +34,11 @@ main() {
     textdomain("mazemaze");
     bind_textdomain_codeset("mazemaze", "UTF-8");
 
-    const int startWindowWidth = 854;
-    const int startWindowHeight = 480;
-
     Settings settings;
     sfg::SFGUI sfgui;
     GraphicEngine& engine = GraphicEngine::getInstance();
 
-    engine.openWindow(startWindowWidth, startWindowHeight, false);
+    engine.openWindow();
 
     gui::MainMenu mainMenu(settings);
 

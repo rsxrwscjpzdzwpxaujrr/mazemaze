@@ -27,8 +27,7 @@ namespace mazemaze {
 
 class GraphicEngine {
 public:  
-    void openWindow(unsigned int width, unsigned int height, bool fullscreen);
-    void openWindow(sf::VideoMode videoMode, bool fullscreen);
+    void openWindow();
 
     void loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu);
 
@@ -71,6 +70,8 @@ private:
 
     sf::Image icon;
 
+    void openWindow(unsigned int width, unsigned int height, bool fullscreen);
+    void openWindow(sf::VideoMode videoMode, bool fullscreen);
     void update();
     void setStates();
     unsigned int calcMaxAntialiasing();
