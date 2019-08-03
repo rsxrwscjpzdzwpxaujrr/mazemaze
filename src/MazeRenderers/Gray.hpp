@@ -28,7 +28,7 @@ namespace renderers {
 
 class Gray : public MazeRenderer {
 public:
-    Gray(Game& game);
+    explicit Gray(Game& game);
     ~Gray() override;
 
 private:

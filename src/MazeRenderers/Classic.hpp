@@ -28,7 +28,7 @@ namespace renderers {
 
 class Classic : public MazeRenderer {
 public:
-    Classic(Game& game);
+    explicit Classic(Game& game);
     ~Classic() override;
 
 private:
