@@ -19,24 +19,35 @@
 
 #include "../State.hpp"
 
+#include <SFGUI/SFGUI.hpp>
+
 namespace mazemaze {
+
+class Settings;
+
 namespace gui {
 
 class MainMenu;
 
 namespace states {
 
-class Options : public State {
+class OptionsOther : public State {
 public:
-    explicit Options(sfg::Desktop& desktop, MainMenu& mainMenu);
-    ~Options() override;
+    explicit OptionsOther(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
+    ~OptionsOther() override;
 
 private:
-    sfg::Button::Ptr graphicsButton;
-    sfg::Button::Ptr otherButton;
-    sfg::Button::Ptr backButton;
+    Settings& settings;
+
+    sfg::Button::Ptr      backButton;
+    sfg::ComboBox::Ptr    langCombo;
+    sfg::CheckButton::Ptr autosaveCheck;
+    sfg::CheckButton::Ptr showFpsCheck;
+
+    sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
 
     void initSignals(MainMenu& mainMenu);
+    void initOptions();
 };
 
 }

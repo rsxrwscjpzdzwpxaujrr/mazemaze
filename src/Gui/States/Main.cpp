@@ -80,7 +80,7 @@ Main::initSignals(MainMenu& mainMenu) {
     });
 
     buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.setState(3);
+        mainMenu.setState(5);
     });
 
     buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {

@@ -87,11 +87,6 @@ Label.win {
     FontSize: 48.0f;
 }
 
-Label.optionsGroup {
-    FontName: data/Noto-Sans-M.ttf;
-    FontSize: 28.0f;
-}
-
 Label.newGameMazeSize {
     FontName: data/Noto-Sans-M.ttf;
     FontSize: 23.0f;

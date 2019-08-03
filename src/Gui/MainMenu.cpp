@@ -27,6 +27,8 @@
 #include "States/Hud.hpp"
 #include "States/Main.hpp"
 #include "States/Options.hpp"
+#include "States/OptionsGraphics.hpp"
+#include "States/OptionsOther.hpp"
 #include "States/Pause.hpp"
 #include "States/Win.hpp"
 #include "States/NewGame.hpp"
@@ -45,10 +47,12 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
     sfg::Button::Create(str);
     sfg::Label::Create(str);
 
-    addState(new states::Main   (getDesktop(), *this));
-    addState(new states::Options(getDesktop(), *this, settings));
-    addState(new states::Hud    (getDesktop(), settings));
-    addState(new states::NewGame(getDesktop(), *this));
+    addState(new states::Main           (getDesktop(), *this));
+    addState(new states::Options        (getDesktop(), *this));
+    addState(new states::OptionsGraphics(getDesktop(), *this, settings));
+    addState(new states::OptionsOther   (getDesktop(), *this, settings));
+    addState(new states::Hud            (getDesktop(), settings));
+    addState(new states::NewGame        (getDesktop(), *this));
 
     setState(0);
 
@@ -100,8 +104,8 @@ MainMenu::stopGame() {
 
     game = nullptr;
 
-    removeState(5);
-    removeState(4);
+    removeState(7);
+    removeState(6);
 
     setBackground(starSkyBackground);
 }
@@ -113,7 +117,7 @@ MainMenu::setupGame() {
     addState(new states::Pause(getDesktop(), *this, *game));
     addState(new states::Win  (getDesktop(), *game));
 
-    setState(2);
+    setState(4);
 }
 
 }

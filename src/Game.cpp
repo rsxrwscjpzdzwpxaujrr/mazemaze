@@ -144,12 +144,12 @@ Game::setPaused(bool paused) {
         Game::paused = paused;
 
         if (paused) {
-            mainMenu.setState(4);
+            mainMenu.setState(6);
 
             if (settings.getAutosave())
                 Saver::getInstance().save(*this);
         } else
-            mainMenu.backTo(2);
+            mainMenu.backTo(4);
     }
 }
 
@@ -182,9 +182,9 @@ Game::setWon(bool won) {
         Game::won = won;
 
         if (won)
-            mainMenu.setState(5);
+            mainMenu.setState(7);
         else
-            mainMenu.backTo(2);
+            mainMenu.backTo(4);
     }
 }
 
