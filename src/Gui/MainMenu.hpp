@@ -29,6 +29,12 @@ namespace gui {
 
 class State;
 
+namespace states {
+
+class Options;
+
+}
+
 class MainMenu : public Gui {
 public:
     explicit MainMenu(Settings& settings);
@@ -40,10 +46,16 @@ public:
     void resumeGame();
     void stopGame();
 
+    int  getOptionsState() const;
+    void setOptionsState(states::Options& options, int state);
+
 private:
     Game* game;
     Background* starSkyBackground;
     Settings& settings;
+
+    int mainState;
+    int optionsState;
 
     void setupGame();
 };

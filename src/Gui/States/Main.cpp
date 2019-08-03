@@ -22,6 +22,7 @@
 
 #include "../MainMenu.hpp"
 
+#include "NewGame.hpp"
 #include "Options.hpp"
 
 using namespace sfg;
@@ -30,7 +31,7 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Main::Main(Desktop& desktop, MainMenu& mainMenu) : State(desktop) {
+Main::Main(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : State(desktop) {
     buttonResume  = Button::Create(pgtx("main", "Resume"));
     buttonNewGame = Button::Create(pgtx("main", "New Game"));
     buttonOptions = Button::Create(pgtx("main", "Options"));
@@ -39,6 +40,13 @@ Main::Main(Desktop& desktop, MainMenu& mainMenu) : State(desktop) {
     initSignals(mainMenu);
 
     updateButtons(Saver::getInstance().saveExists());
+
+    Options* options = new Options(desktop, mainMenu, settings);
+
+    newGameState = mainMenu.addState(new NewGame(desktop, mainMenu));
+    optionsState = mainMenu.addState(options);
+
+    mainMenu.setOptionsState(*options, optionsState);
 }
 
 Main::~Main() = default;
@@ -79,12 +87,12 @@ Main::initSignals(MainMenu& mainMenu) {
         mainMenu.resumeGame();
     });
 
-    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.setState(5);
+    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
+        mainMenu.setState(newGameState);
     });
 
-    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.setState(1);
+    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
+        mainMenu.setState(optionsState);
     });
 
     buttonExit->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {

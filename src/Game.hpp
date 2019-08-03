@@ -72,6 +72,10 @@ private:
 
     gui::MainMenu& mainMenu;
 
+    int hudState;
+    int pauseState;
+    int wonState;
+
     float lastSaveTime;
 
     bool paused;

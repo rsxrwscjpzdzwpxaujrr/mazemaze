@@ -22,6 +22,9 @@
 
 #include "../MainMenu.hpp"
 
+#include "OptionsGraphics.hpp"
+#include "OptionsOther.hpp"
+
 using namespace sfg;
 
 namespace mazemaze {
@@ -34,17 +37,16 @@ Options::initSignals(MainMenu& mainMenu) {
         mainMenu.back();
     });
 
-    graphicsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.setState(2);
+    graphicsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(graphicsState);
     });
 
-    otherButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.setState(3);
+    otherButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(otherState);
     });
 }
 
-Options::Options(Desktop& desktop, MainMenu& mainMenu) :
-        State(desktop),
+Options::Options(Desktop& desktop, MainMenu& mainMenu, Settings& settings) : State(desktop),
         graphicsButton (Button::Create(pgtx("options", "Graphics"))),
         otherButton    (Button::Create(pgtx("options", "Other"))),
         backButton     (Button::Create(pgtx("options", "Back"))) {
@@ -61,6 +63,9 @@ Options::Options(Desktop& desktop, MainMenu& mainMenu) :
     initSignals(mainMenu);
 
     center();
+
+    graphicsState = mainMenu.addState(new OptionsGraphics(desktop, mainMenu, settings));
+    otherState    = mainMenu.addState(new OptionsOther   (desktop, mainMenu, settings));
 }
 
 Options::~Options() = default;

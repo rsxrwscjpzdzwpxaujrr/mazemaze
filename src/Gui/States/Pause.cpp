@@ -38,7 +38,7 @@ Pause::Pause(Desktop& desktop, MainMenu& mainMenu, Game& game) : State(desktop) 
     });
 
     buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.setState(1);
+        mainMenu.setState(mainMenu.getOptionsState());
     });
 
     buttonExit->GetSignal(Widget::OnLeftClick).Connect([&game] {

@@ -22,6 +22,7 @@
 namespace mazemaze {
 
 class Game;
+class Settings;
 
 namespace gui {
 
@@ -31,7 +32,7 @@ namespace states {
 
 class Main : public State {
 public:
-    explicit Main(sfg::Desktop& desktop, MainMenu& mainMenu);
+    explicit Main(sfg::Desktop& desktop, MainMenu& mainMenu, Settings& settings);
     ~Main() override;
 
     void show(bool show) override;
@@ -42,6 +43,9 @@ private:
     sfg::Button::Ptr buttonNewGame;
     sfg::Button::Ptr buttonOptions;
     sfg::Button::Ptr buttonExit;
+
+    int newGameState;
+    int optionsState;
 
     void initSignals(MainMenu& mainMenu);
 };

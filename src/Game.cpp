@@ -28,6 +28,10 @@
 
 #include "Gui/MainMenu.hpp"
 
+#include "Gui/States/Hud.hpp"
+#include "Gui/States/Pause.hpp"
+#include "Gui/States/Win.hpp"
+
 #include "MazeRenderers/Classic.hpp"
 #include "MazeRenderers/Gray.hpp"
 
@@ -51,9 +55,20 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
     mazeRenderers[1] = new renderers::Gray(*this);
 
     mazeRenderers[mazeRenderer]->enable();
+
+    using namespace gui::states;
+    hudState   = mainMenu.addState(new Hud  (mainMenu.getDesktop(), settings));
+    pauseState = mainMenu.addState(new Pause(mainMenu.getDesktop(), mainMenu, *this));
+    wonState   = mainMenu.addState(new Win  (mainMenu.getDesktop(), *this));
+
+    mainMenu.setState(hudState);
 }
 
 Game::~Game() {
+    mainMenu.removeState(wonState);
+    mainMenu.removeState(pauseState);
+    mainMenu.removeState(hudState);
+
     mazeRenderers[mazeRenderer]->disable();
 
     for (int i = 0; i < 16; i++)
@@ -144,12 +159,12 @@ Game::setPaused(bool paused) {
         Game::paused = paused;
 
         if (paused) {
-            mainMenu.setState(6);
+            mainMenu.setState(pauseState);
 
             if (settings.getAutosave())
                 Saver::getInstance().save(*this);
         } else
-            mainMenu.backTo(4);
+            mainMenu.backTo(hudState);
     }
 }
 
@@ -182,9 +197,9 @@ Game::setWon(bool won) {
         Game::won = won;
 
         if (won)
-            mainMenu.setState(7);
+            mainMenu.setState(wonState);
         else
-            mainMenu.backTo(4);
+            mainMenu.backTo(hudState);
     }
 }
 
