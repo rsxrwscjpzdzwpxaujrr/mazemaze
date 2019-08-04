@@ -34,6 +34,8 @@ public:
     explicit Hud(MainMenu& mainMenu, Settings& settings);
     ~Hud() override;
 
+    void show(bool show) override;
+
 private:
     sfg::Label::Ptr fpsLabel;
     Settings& settings;

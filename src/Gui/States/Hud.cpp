@@ -51,11 +51,14 @@ Hud::Hud(MainMenu& mainMenu, Settings& settings) :
 Hud::~Hud() = default;
 
 void
+Hud::show(bool show) {
+    box->Show(show && settings.getShowFps());
+}
+
+void
 Hud::tick(float deltaTime) {
     if (settings.getShowFps())
         fpsCalculator.tick(deltaTime);
-
-    box->Show(settings.getShowFps());
 }
 
 void
