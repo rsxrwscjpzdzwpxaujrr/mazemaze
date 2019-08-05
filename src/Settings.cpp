@@ -34,8 +34,10 @@ Settings::Settings(bool readConfig) :
         configFile("config.cfg"),
         fallbackLang("en"),
         supportedLangsCount(4),
-        supportedLangs(new std::string[supportedLangsCount]
-                       {"en", "ru", "uk", "kk"}),
+        supportedLangs(new Language[4] {Language(L"English",    "en"),
+                                        Language(L"Русский",    "ru"),
+                                        Language(L"Українська", "uk"),
+                                        Language(L"Қазақша",    "kk")}),
         renderer(0) {
     if (readConfig) {
         if(Settings::readConfig())
@@ -106,7 +108,7 @@ Settings::getShowFps() const {
     return showFps;
 }
 
-const std::string*
+const Settings::Language*
 Settings::getSupportedLangs() const {
     return supportedLangs;
 }
@@ -121,7 +123,7 @@ Settings::setLang(const std::string &lang) {
     bool fallback = true;
 
     for (int i = 0; i < supportedLangsCount; i++)
-        if (supportedLangs[i] == lang) {
+        if (supportedLangs[i].code == lang) {
             fallback = false;
             break;
         }
@@ -130,8 +132,8 @@ Settings::setLang(const std::string &lang) {
         setLang(fallbackLang);
     else {
         Settings::lang = lang;
-
         langEnv = "LANGUAGE=" + lang;
+
         putenv(const_cast<char*>(langEnv.c_str()));
     }
 }

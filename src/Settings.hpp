@@ -26,6 +26,15 @@ class Game;
 
 class Settings {
 public:
+    struct Language {
+        const std::wstring name;
+        const std::string code;
+
+        Language (const wchar_t* name, const char* code) :
+                name(name),
+                code(code) {}
+    };
+
     explicit Settings(bool readConfig=true);
     ~Settings();
 
@@ -39,7 +48,7 @@ public:
     int          getRenderer() const;
     bool         getShowFps() const;
 
-    const std::string* getSupportedLangs() const;
+    const Language* getSupportedLangs() const;
     int getSupportedLangsCount() const;
 
     void setLang(const std::string &lang);
@@ -58,7 +67,7 @@ private:
     std::string langEnv;
     const std::string fallbackLang;
     int supportedLangsCount;
-    const std::string* const supportedLangs;
+    Language* supportedLangs;
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;

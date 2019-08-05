@@ -54,9 +54,9 @@ OptionsOther::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 void
 OptionsOther::initSignals(MainMenu& mainMenu) {
     langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        const std::string* const langCodes = settings.getSupportedLangs();
+        auto langs = settings.getSupportedLangs();
 
-        settings.setLang(langCodes[langCombo->GetSelectedItem()]);
+        settings.setLang(langs[langCombo->GetSelectedItem()].code);
     });
 
     autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
@@ -74,17 +74,15 @@ OptionsOther::initSignals(MainMenu& mainMenu) {
 
 void
 OptionsOther::initOptions() {
-    langCombo->AppendItem(L"English");
-    langCombo->AppendItem(L"Русский");
-    langCombo->AppendItem(L"Українська");
-    langCombo->AppendItem(L"Қазақша");
-
     std::string lang = settings.getLang();
-    const std::string* const langCodes = settings.getSupportedLangs();
+    auto langs = settings.getSupportedLangs();
 
-    for (int i = 0; i < settings.getSupportedLangsCount(); i++)
-      if (langCodes[i] == lang)
-          langCombo->SelectItem(i);
+    for (int i = 0; i < settings.getSupportedLangsCount(); i++) {
+        langCombo->AppendItem(langs[i].name);
+
+        if (langs[i].code == lang)
+            langCombo->SelectItem(i);
+    }
 
     autosaveCheck->SetActive(settings.getAutosave());
     showFpsCheck->SetActive(settings.getShowFps());
