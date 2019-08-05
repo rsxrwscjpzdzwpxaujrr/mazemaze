@@ -18,6 +18,7 @@
 #include "Settings.hpp"
 
 #include <cstdlib>
+#include <gettext.h>
 
 #ifdef WIN32
 # include <windows.h>
@@ -135,6 +136,8 @@ Settings::setLang(const std::string &lang) {
         langEnv = "LANGUAGE=" + lang;
 
         putenv(const_cast<char*>(langEnv.c_str()));
+
+        setlocale(LC_ALL, "");
     }
 }
 

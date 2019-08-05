@@ -53,10 +53,12 @@ OptionsOther::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 
 void
 OptionsOther::initSignals(MainMenu& mainMenu) {
-    langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
+    langCombo->GetSignal(ComboBox::OnSelect).Connect([this, &mainMenu] () {
         auto langs = settings.getSupportedLangs();
 
         settings.setLang(langs[langCombo->GetSelectedItem()].code);
+
+        mainMenu.reopen();
     });
 
     autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {

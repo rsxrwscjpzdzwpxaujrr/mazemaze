@@ -51,6 +51,7 @@ public:
 
     int  addState(State* state);
     void removeState(int state);
+    void removeStates();
 
     void setState(int state, bool back = false);
     void setBackground(Background* background);

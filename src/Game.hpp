@@ -46,6 +46,7 @@ public:
 
     void render() override;
     void tick(float deltaTime) override;
+    void openGui();
 
     void setPaused(bool paused);
     void setWon(bool won);

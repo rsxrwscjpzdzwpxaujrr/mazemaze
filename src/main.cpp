@@ -29,7 +29,6 @@ using namespace mazemaze;
 
 int
 main() {
-    setlocale(LC_ALL, "");
     bindtextdomain("mazemaze", "./locale");
     textdomain("mazemaze");
     bind_textdomain_codeset("mazemaze", "UTF-8");

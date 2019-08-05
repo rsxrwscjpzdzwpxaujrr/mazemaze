@@ -17,6 +17,8 @@
 
 #include "MainMenu.hpp"
 
+#include <stack>
+
 #include "../Game.hpp"
 #include "../Saver.hpp"
 #include "../Settings.hpp"
@@ -92,6 +94,28 @@ MainMenu::stopGame() {
     game = nullptr;
 
     setBackground(starSkyBackground);
+}
+
+void
+MainMenu::reopen() {
+    removeStates();
+
+    std::stack<int> stateStack;
+
+    do {
+        stateStack.push(getState());
+        back();
+    } while (getState() != 0);
+
+    mainState = addState(new states::Main(*this, settings));
+
+    if (game != nullptr)
+        game->openGui();
+
+    while (!stateStack.empty()) {
+        setState(stateStack.top());
+        stateStack.pop();
+    }
 }
 
 int

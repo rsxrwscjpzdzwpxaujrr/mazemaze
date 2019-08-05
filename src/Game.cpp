@@ -56,10 +56,7 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
 
     mazeRenderers[mazeRenderer]->enable();
 
-    using namespace gui::states;
-    hudState   = mainMenu.addState(new Hud  (mainMenu, settings));
-    pauseState = mainMenu.addState(new Pause(mainMenu, *this));
-    wonState   = mainMenu.addState(new Win  (mainMenu, *this));
+    openGui();
 
     mainMenu.setState(hudState);
 }
@@ -117,6 +114,14 @@ Game::tick(float deltaTime) {
 
         time += deltaTime;
     }
+}
+
+void
+Game::openGui() {
+    using namespace gui::states;
+    hudState   = mainMenu.addState(new Hud  (mainMenu, settings));
+    pauseState = mainMenu.addState(new Pause(mainMenu, *this));
+    wonState   = mainMenu.addState(new Win  (mainMenu, *this));
 }
 
 void

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -45,6 +45,7 @@ public:
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();
     void stopGame();
+    void reopen();
 
     int  getOptionsState() const;
     void setOptionsState(states::Options& options, int state);

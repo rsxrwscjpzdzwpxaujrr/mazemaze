@@ -26,8 +26,7 @@ Gui::Gui() : background(nullptr),
              wantExit(false) {}
 
 Gui::~Gui() {
-    for (size_t i = 0; i < states.size(); i++)
-        delete states[i];
+    removeStates();
 };
 
 void
@@ -96,6 +95,14 @@ void
 Gui::removeState(int state) {
     delete states[state];
     states.erase(states.begin() + state);
+}
+
+void
+Gui::removeStates() {
+    for (size_t i = 0; i < states.size(); i++)
+        delete states[i];
+
+    states.clear();
 }
 
 void
