@@ -24,9 +24,13 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()) {}
+MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()),
+                                         deleted(true) {}
 
-MazeRenderer::~MazeRenderer() = default;
+MazeRenderer::~MazeRenderer() {
+    if (!deleted)
+        disable();
+};
 
 void
 MazeRenderer::enable() {
@@ -35,6 +39,8 @@ MazeRenderer::enable() {
     drawList = glGenLists(maze.getChunksCount());
 
     onEnable();
+
+    deleted = false;
 }
 
 void
@@ -45,6 +51,8 @@ MazeRenderer::disable() {
 
     delete [] visible;
     delete [] compiled;
+
+    deleted = true;
 }
 
 void

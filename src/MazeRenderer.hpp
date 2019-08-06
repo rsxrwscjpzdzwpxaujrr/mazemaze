@@ -37,6 +37,7 @@ protected:
     Maze& maze;
     bool* compiled;
     unsigned int drawList;
+    bool deleted;
 
     virtual void onEnable();
     virtual void onDisable();
