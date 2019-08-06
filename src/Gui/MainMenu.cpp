@@ -35,13 +35,6 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          settings(settings) {
     getDesktop().LoadThemeFromFile("data/style.theme");
 
-    //Костыль
-    const sf::String str(L"АӘБВГҐҒДЕЁЄЖЗИЇЙКҚЛМНҢОӨПРСТУҰҮФХҺЦЧШЩЪЫІЬЭEЮЯ\
-                           аәбвгґғдеёєжзиїйкқлмнңоөпрстуұүфхһцчшщъыіьэeюя");
-
-    sfg::Button::Create(str);
-    sfg::Label::Create(str);
-
     mainState = addState(new states::Main(*this, settings));
     setState(mainState);
 

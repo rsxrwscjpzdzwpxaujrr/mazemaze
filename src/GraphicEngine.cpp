@@ -118,6 +118,9 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
     float frameDeltaTime = 1.0f / 60.0f;
     bool running = true;
 
+    sfgui.AddCharacterSet(0x20,  0x80);
+    sfgui.AddCharacterSet(0x400, 0x500);
+
     while (running) {
         update();
         setStates();
