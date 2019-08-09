@@ -42,7 +42,7 @@ private:
     FpsCalculator fpsCalculator;
 
     void tick(float deltaTime) override;
-    void center(sf::Event event) override;
+    void center() override;
 };
 
 }

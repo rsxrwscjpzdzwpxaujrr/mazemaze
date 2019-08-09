@@ -29,8 +29,8 @@ public:
     explicit State(sfg::Desktop& desktop);
     virtual ~State();
 
-    virtual void center(sf::Event event);
     virtual void center();
+    virtual void center(sfg::Widget::Ptr widget);
     virtual void show(bool show);
     virtual void tick(float deltatime);
     virtual sfg::Container::Ptr getMainContainer();

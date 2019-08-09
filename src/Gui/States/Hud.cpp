@@ -62,7 +62,7 @@ Hud::tick(float deltaTime) {
 }
 
 void
-Hud::center(sf::Event event) {
+Hud::center() {
     box->UpdateDrawablePosition();
 }
 

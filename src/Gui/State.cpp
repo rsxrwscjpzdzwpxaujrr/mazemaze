@@ -31,20 +31,17 @@ State::~State() {
 }
 
 void
-State::center(sf::Event event) {
-    sf::Vector2f boxSize = box->GetRequisition();
-    sf::Vector2f windowSize = sf::Vector2f(event.size.width, event.size.height);
-
-    box->SetPosition((windowSize - boxSize) / 2.0f);
+State::center() {
+    center(getMainContainer());
 }
 
 void
-State::center() {
-    sf::Vector2f buttonSize = getMainContainer()->GetRequisition();
+State::center(sfg::Widget::Ptr widget) {
+    sf::Vector2f widgetSize = widget->GetRequisition();
     sf::Vector2f windowSize =
             static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
 
-    getMainContainer()->SetPosition((windowSize - buttonSize) / 2.0f);
+    widget->SetPosition((windowSize - widgetSize) / 2.0f);
 }
 
 void

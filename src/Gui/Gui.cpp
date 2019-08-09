@@ -33,7 +33,7 @@ void
 Gui::handleEvent(sf::Event event) {
     if (event.type == sf::Event::Resized) {
         for (unsigned int i = 0; i < states.size(); i++) {
-            states[i]->center(event);
+            states[i]->center();
         }
     }
 
