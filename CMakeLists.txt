@@ -83,6 +83,10 @@ target_sources(
     src/Gui/States/OptionsGraphics.hpp
     src/Gui/States/OptionsOther.cpp
     src/Gui/States/OptionsOther.hpp
+    src/Gui/States/OptionsControls.cpp
+    src/Gui/States/OptionsControlsKeys.cpp
+    src/Gui/States/OptionsControlsKeyChangeWindow.cpp
+    src/Gui/States/OptionsControls.hpp
     src/Gui/States/Pause.cpp
     src/Gui/States/Pause.hpp
     src/Gui/States/Win.cpp
