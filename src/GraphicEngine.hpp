@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <SFML/Graphics.hpp>
 
 #include <SFGUI/SFGUI.hpp>
@@ -30,6 +32,8 @@ public:
     void openWindow();
 
     void loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu);
+    void waitKey(std::function<void (sf::Keyboard::Key)> onKey);
+    void unwaitKey();
 
     void setFullscreen(bool fullscreen);
     void setAntialiasing(unsigned int antialiasing);
@@ -69,6 +73,8 @@ private:
     sf::VideoMode videoMode;
 
     sf::Image icon;
+
+    std::function<void (sf::Keyboard::Key)> onKeyWaiting;
 
     void openWindow(unsigned int width, unsigned int height, bool fullscreen);
     void openWindow(sf::VideoMode videoMode, bool fullscreen);

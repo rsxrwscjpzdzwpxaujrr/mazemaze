@@ -35,6 +35,8 @@ GraphicEngine::GraphicEngine() :
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
+
+    unwaitKey();
 }
 
 GraphicEngine::~GraphicEngine() = default;
@@ -135,6 +137,10 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
                     running = false;
                     break;
 
+                case sf::Event::KeyReleased:
+                    onKeyWaiting(event.key.code);
+                    break;
+
                 default:
                     break;
             }
@@ -155,6 +161,16 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
         frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
         deltaClock.restart();
     }
+}
+
+void
+GraphicEngine::waitKey(std::function<void (sf::Keyboard::Key)> onKey) {
+    onKeyWaiting = onKey;
+}
+
+void
+GraphicEngine::unwaitKey() {
+    onKeyWaiting = [] (sf::Keyboard::Key) {};
 }
 
 void
