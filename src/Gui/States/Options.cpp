@@ -23,6 +23,7 @@
 #include "../MainMenu.hpp"
 
 #include "OptionsGraphics.hpp"
+#include "OptionsControls.hpp"
 #include "OptionsOther.hpp"
 
 using namespace sfg;
@@ -41,6 +42,10 @@ Options::initSignals(MainMenu& mainMenu) {
         mainMenu.setState(graphicsState);
     });
 
+    controlsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(controlsState);
+    });
+
     otherButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
         mainMenu.setState(otherState);
     });
@@ -48,6 +53,7 @@ Options::initSignals(MainMenu& mainMenu) {
 
 Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
         graphicsButton (Button::Create(pgtx("options", "Graphics"))),
+        controlsButton (Button::Create(pgtx("options", "Controls"))),
         otherButton    (Button::Create(pgtx("options", "Other"))),
         backButton     (Button::Create(pgtx("options", "Back"))) {
     box->SetOrientation(Box::Orientation::VERTICAL);
@@ -55,6 +61,7 @@ Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDes
     box->SetSpacing(20.0f);
 
     box->Pack(graphicsButton);
+    box->Pack(controlsButton);
     box->Pack(otherButton);
     box->Pack(backButton);
 
@@ -65,6 +72,7 @@ Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDes
     center();
 
     graphicsState = mainMenu.addState(new OptionsGraphics(mainMenu, settings));
+    controlsState = mainMenu.addState(new OptionsControls(mainMenu, settings));
     otherState    = mainMenu.addState(new OptionsOther   (mainMenu, settings));
 }
 

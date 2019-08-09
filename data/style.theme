@@ -27,6 +27,16 @@ Button:ACTIVE {
     BackgroundColor: #DCDCDCff;
 }
 
+Button.small {
+    Padding: 8.0f;
+    FontSize: 21.0f;
+}
+
+Button.verySmall {
+    Padding: 6.0f;
+    FontSize: 16.0f;
+}
+
 CheckButton {
     Spacing: 0.0f;
     Padding: 0.0f;

@@ -36,10 +36,12 @@ public:
 
 private:
     sfg::Button::Ptr graphicsButton;
+    sfg::Button::Ptr controlsButton;
     sfg::Button::Ptr otherButton;
     sfg::Button::Ptr backButton;
 
     int graphicsState;
+    int controlsState;
     int otherState;
 
     void initSignals(MainMenu& mainMenu);
