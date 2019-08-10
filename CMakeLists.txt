@@ -25,7 +25,7 @@ if (NOT SFGUI_FOUND)
         set(SFGUI_LIBRARY     SFGUI)
         set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
     else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
-        message(FATAL "SFGUI not found")
+        message(FATAL_ERROR "SFGUI not found")
     endif (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
 endif (NOT SFGUI_FOUND)
 
