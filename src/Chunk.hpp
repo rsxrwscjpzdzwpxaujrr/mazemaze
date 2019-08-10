@@ -21,7 +21,7 @@ namespace mazemaze {
 
 class Chunk {
 public:
-    static const unsigned int SIZE = 32;
+    static const unsigned int SIZE = 16;
 
     Chunk();
     ~Chunk();
