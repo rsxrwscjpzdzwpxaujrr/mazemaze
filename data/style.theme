@@ -2,6 +2,10 @@ Window {
     BackgroundColor: #2D2D2DE0;
 }
 
+Window.light {
+    BackgroundColor: #2F2F2FFF;
+}
+
 * {
     BorderWidth: 0.0f;
     Padding: 16.0f;

@@ -55,6 +55,7 @@ OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& optCtrls) :
 
     cancelButton->SetClass("small");
     okButton->SetClass("small");
+    window->SetClass("light");
 
     window->Add(mainBox);
 
