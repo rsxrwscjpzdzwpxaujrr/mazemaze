@@ -19,6 +19,8 @@
 
 #include "../State.hpp"
 
+#include <string>
+
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
@@ -83,8 +85,8 @@ private:
 
     KeyChangeWindow keyChangeWindow;
 
-    sf::Keyboard::Key* keys;
-    sf::Keyboard::Key selectedKey;
+    sf::Keyboard::Key  selectedKey;
+    std::string*       keyControls;
 
     sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
 

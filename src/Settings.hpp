@@ -18,7 +18,10 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include <libconfig.h++>
+
+#include <SFML/Window/Keyboard.hpp>
 
 namespace mazemaze {
 
@@ -47,6 +50,7 @@ public:
     float        getAutosaveTime() const;
     int          getRenderer() const;
     bool         getShowFps() const;
+    sf::Keyboard::Key getKey(const std::string& control);
 
     const Language* getSupportedLangs() const;
     int getSupportedLangsCount() const;
@@ -59,6 +63,7 @@ public:
     void setAutosaveTime(float autosaveTime);
     void setRenderer(int id);
     void setShowFps(bool showFps);
+    void setKey(const std::string& control, sf::Keyboard::Key key);
 
 private:
     std::string configFile;
@@ -73,6 +78,8 @@ private:
     float autosaveTime;
     int renderer;
     bool showFps;
+
+    std::map<std::string, sf::Keyboard::Key> controls;
 
     std::string getSystemLang();
 

@@ -25,6 +25,8 @@
 #include <SFML/OpenGL.hpp>
 
 #include "Maze.hpp"
+#include "Game.hpp"
+#include "Settings.hpp"
 
 namespace mazemaze {
 
@@ -42,7 +44,7 @@ Player::Player(float x, float y, float z) :
 Player::~Player() = default;
 
 void
-Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
+Player::tick(float deltaTime, sf::Window& window, Game& game) {
     float mouseSensitivity = 0.001f;
 
     float M_PI_2f = static_cast<float>(M_PI_2);
@@ -54,10 +56,12 @@ Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
     float moveVectorZ = 0.0f;
     float moveAngle;
 
-    bool move[] {sf::Keyboard::isKeyPressed(sf::Keyboard::D),
-                 sf::Keyboard::isKeyPressed(sf::Keyboard::S),
-                 sf::Keyboard::isKeyPressed(sf::Keyboard::A),
-                 sf::Keyboard::isKeyPressed(sf::Keyboard::W)};
+    Settings& settings = game.getSettings();
+
+    bool move[] {sf::Keyboard::isKeyPressed(settings.getKey("right")),
+                 sf::Keyboard::isKeyPressed(settings.getKey("down")),
+                 sf::Keyboard::isKeyPressed(settings.getKey("left")),
+                 sf::Keyboard::isKeyPressed(settings.getKey("up"))};
 
     {
         int i;
@@ -80,7 +84,7 @@ Player::tick(float deltaTime, sf::Window& window, Maze& maze) {
         float newx = x + moveVectorX * speed * deltaTime;
         float newz = z + moveVectorZ * speed * deltaTime;
 
-        tryMove(maze, newx, y, newz);
+        tryMove(game.getMaze(), newx, y, newz);
     }
 
     sf::Vector2u windowHalfSize = window.getSize();

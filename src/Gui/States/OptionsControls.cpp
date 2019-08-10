@@ -43,11 +43,11 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
             pgtx("options", "Left")
         }),
         keyChangeWindow(*this),
-        keys(new sf::Keyboard::Key[buttonsCount] {
-            sf::Keyboard::Key::W,
-            sf::Keyboard::Key::S,
-            sf::Keyboard::Key::D,
-            sf::Keyboard::Key::A
+        keyControls(new std::string[buttonsCount] {
+            "up",
+            "down",
+            "right",
+            "left",
         }) {
     auto window          = Window::Create(Window::Style::BACKGROUND);
     auto windowBox       = Box::Create(Box::Orientation::VERTICAL);
@@ -125,7 +125,9 @@ OptionsControls::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
 
 void
 OptionsControls::updateKeyButtonLabel(int button) {
-    keyButtons[button]->SetLabel(getKeyName(keys[button]));
+    std::string control = keyControls[button];
+
+    keyButtons[button]->SetLabel(getKeyName(settings.getKey(control)));
 }
 
 void

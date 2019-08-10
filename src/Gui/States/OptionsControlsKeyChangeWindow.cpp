@@ -19,6 +19,7 @@
 
 #include "../../utils.hpp"
 #include "../../GraphicEngine.hpp"
+#include "../../Settings.hpp"
 
 using namespace sfg;
 
@@ -138,7 +139,9 @@ OptionsControls::KeyChangeWindow::initSignals() {
     });
 
     okButton->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        optCtrls.keys[button] = optCtrls.selectedKey;
+        std::string control = optCtrls.keyControls[button];
+
+        optCtrls.settings.setKey(control, optCtrls.selectedKey);
         optCtrls.updateKeyButtonLabel(button);
         close();
     });

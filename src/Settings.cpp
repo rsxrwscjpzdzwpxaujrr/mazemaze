@@ -57,6 +57,11 @@ Settings::Settings(bool readConfig) :
     antialiasing = 0;
     autosave = true;
     autosaveTime = 30.0f;
+
+    controls["up"]    = sf::Keyboard::W;
+    controls["down"]  = sf::Keyboard::S;
+    controls["right"] = sf::Keyboard::D;
+    controls["left"]  = sf::Keyboard::A;
 }
 
 Settings::~Settings() {
@@ -107,6 +112,11 @@ Settings::getRenderer() const {
 bool
 Settings::getShowFps() const {
     return showFps;
+}
+
+sf::Keyboard::Key
+Settings::getKey(const std::string& control) {
+    return controls[control];
 }
 
 const Settings::Language*
@@ -178,6 +188,11 @@ Settings::setShowFps(bool showFps) {
     Settings::showFps = showFps;
 }
 
+void
+Settings::setKey(const std::string& control, sf::Keyboard::Key key) {
+    controls[control] = key;
+}
+
 std::string
 Settings::getSystemLang() {
     std::string systemLang;
@@ -244,6 +259,15 @@ Settings::writeConfig() {
     addAndSet(graphics, Setting::TypeBoolean, "vsync",        getVsync());
     addAndSet(graphics, Setting::TypeInt,     "style",        getRenderer());
 
+    if(!root.exists("controls"))
+        root.add("controls", Setting::TypeGroup);
+
+    Setting& controls = root["controls"];
+
+    for(auto it = Settings::controls.begin(); it != Settings::controls.end(); it++) {
+        addAndSet(controls, Setting::TypeInt, it->first.c_str(), it->second);
+    }
+
     config.writeFile(configFile.c_str());
 }
 
@@ -264,7 +288,16 @@ Settings::readConfig() {
 
     const Setting& root = config.getRoot();
 
-    Setting& graphics = root["graphics"];
+    const Setting& controls = root["controls"];
+
+    for(auto it = controls.begin(); it != controls.end(); it++) {
+        auto control = it->getName();
+        auto key     = static_cast<sf::Keyboard::Key>(it->operator unsigned int());
+
+        Settings::controls[control] = key;
+    }
+
+    const Setting& graphics = root["graphics"];
 
     setAntialiasing(graphics["antialiasing"]);
     setFullscreen(graphics["fullscreen"]);

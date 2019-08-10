@@ -99,7 +99,7 @@ Game::tick(float deltaTime) {
     setRenderer(settings.getRenderer());
 
     if (!(paused || won)) {
-        player.tick(deltaTime, window, maze);
+        player.tick(deltaTime, window, *this);
 
         if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave()) {
             Saver::getInstance().save(*this);
@@ -246,6 +246,11 @@ Game::getPlayer() {
 Camera*
 Game::getCamera() {
     return &player.getCamera();
+}
+
+Settings&
+Game::getSettings() {
+    return settings;
 }
 
 }

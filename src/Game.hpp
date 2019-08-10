@@ -63,6 +63,7 @@ public:
     Player& getPlayer();
     Camera* getCamera() override;
     MazeRenderer& getRenderer();
+    Settings& getSettings();
 
 private:
     Maze maze;
