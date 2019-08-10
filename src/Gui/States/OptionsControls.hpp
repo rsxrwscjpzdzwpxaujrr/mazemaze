@@ -49,7 +49,7 @@ public:
 private:
     class KeyChangeWindow {
     public:
-        KeyChangeWindow(OptionsControls& optCtrls);
+        explicit KeyChangeWindow(OptionsControls& optCtrls);
         ~KeyChangeWindow();
 
         void tick();
