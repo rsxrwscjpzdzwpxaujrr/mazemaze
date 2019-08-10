@@ -34,6 +34,7 @@
 
 #include "MazeRenderers/Classic.hpp"
 #include "MazeRenderers/Gray.hpp"
+#include "MazeRenderers/Brick.hpp"
 
 namespace mazemaze {
 
@@ -53,6 +54,7 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
         wantExit(false) {
     mazeRenderers[0] = new renderers::Classic(*this);
     mazeRenderers[1] = new renderers::Gray(*this);
+    mazeRenderers[2] = new renderers::Brick(*this);
 
     mazeRenderers[mazeRenderer]->enable();
 

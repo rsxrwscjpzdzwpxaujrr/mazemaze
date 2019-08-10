@@ -112,6 +112,7 @@ GraphicEngine::setStates() {
     glEnable(GL_COLOR_MATERIAL);
     glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glHint(GL_FOG_HINT, GL_FASTEST);
 }
 
 void
