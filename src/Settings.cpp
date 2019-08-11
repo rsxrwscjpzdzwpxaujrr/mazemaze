@@ -148,6 +148,7 @@ Settings::setLang(const std::string &lang) {
         putenv(const_cast<char*>(langEnv.c_str()));
 
         setlocale(LC_ALL, "");
+        setlocale(LC_NUMERIC, "C");
     }
 }
 
