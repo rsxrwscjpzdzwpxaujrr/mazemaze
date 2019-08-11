@@ -154,8 +154,6 @@ Brick::compileChunk(int num) {
             }
         }
 
-    glEnd();
-
     glPopMatrix();
 
     glEndList();
