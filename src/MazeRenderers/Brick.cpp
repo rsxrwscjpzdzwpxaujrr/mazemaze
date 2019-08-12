@@ -134,18 +134,18 @@ Brick::compileChunk(int num) {
     if (y + Chunk::SIZE > maze.getHeight())
         endY = maze.getHeight() % Chunk::SIZE;
 
-    glColor3f(0.5f, 0.5f, 0.5f);
-    glNormal3f(0.0f, 1.0f, 0.0f);
-
-    glBegin(GL_QUADS);
-    glVertex3i(0,    0, endY);
-    glVertex3i(endX, 0, endY);
-    glVertex3i(endX, 0, 0);
-    glVertex3i(0,    0, 0);
-    glEnd();
-
     for (int j = 0; j < endX; j++)
         for (int k = 0; k < endY; k++) {
+            glColor3f(0.5f, 0.5f, 0.5f);
+            glNormal3f(0.0f, 1.0f, 0.0f);
+
+            glBegin(GL_QUADS);
+            glVertex3i(j, 0, k);
+            glVertex3i(j, 0, k + 1);
+            glVertex3i(j + 1, 0, k + 1);
+            glVertex3i(j + 1, 0, k);
+            glEnd();
+
             if (maze.getOpened(j + x, k + y)) {
                 glPushMatrix();
                 glTranslatef(j + 0.5f, 0.0f, k + 0.5f);
