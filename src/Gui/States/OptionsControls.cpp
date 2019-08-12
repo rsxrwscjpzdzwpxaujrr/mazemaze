@@ -37,8 +37,8 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
         backButton   (Button::Create(pgtx("options", "Back"))),
         keyButtons(new Button::Ptr[buttonsCount]),
         keyLabels(new sf::String[buttonsCount] {
-            pgtx("options", "Up"),
-            pgtx("options", "Down"),
+            pgtx("options", "Forward"),
+            pgtx("options", "Backward"),
             pgtx("options", "Right"),
             pgtx("options", "Left")
         }),
