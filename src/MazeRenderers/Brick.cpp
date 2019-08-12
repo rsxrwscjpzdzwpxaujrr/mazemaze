@@ -54,9 +54,9 @@ Brick::compileMesh() {
         objl::Mesh mesh = loader.LoadedMeshes[i];
 
         if (i == 1)
-            glColor3f(0.5f, 0.15f, 0.15f);
+            glColor3f(0.45f, 0.185f, 0.16f);
         else
-            glColor3f(0.5f, 0.5f, 0.5f);
+            glColor3f(0.45f, 0.45f, 0.45f);
 
         for (int j = 0; j < mesh.Indices.size(); j++) {
             objl::Vertex vertex = mesh.Vertices[mesh.Indices[j]];
@@ -172,8 +172,8 @@ Brick::renderChunk(int num) {
 
     Camera& camera = game.getPlayer().getCamera();
 
-    float light0_diffuse[] = {1.0f, 0.9f, 0.8f};
-    float light0_ambient[] = {0.5f, 0.55f, 0.75f};
+    float light0_diffuse[] = {0.5f, 0.45f, 0.4f};
+    float light0_ambient[] = {0.25f, 0.275f, 0.375f};
     float light0_position[] = {0.5f, 0.75f, 0.25f, 0.0f};
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
