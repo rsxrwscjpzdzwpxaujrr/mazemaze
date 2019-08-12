@@ -85,7 +85,11 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
     center();
 }
 
-OptionsControls::~OptionsControls() = default;
+OptionsControls::~OptionsControls() {
+    delete [] keyButtons;
+    delete [] keyLabels;
+    delete [] keyControls;
+};
 
 void
 OptionsControls::show(bool show) {
