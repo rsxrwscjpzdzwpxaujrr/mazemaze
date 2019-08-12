@@ -136,7 +136,7 @@ Brick::compileChunk(int num) {
 
     for (int j = 0; j < endX; j++)
         for (int k = 0; k < endY; k++) {
-            glColor3f(0.5f, 0.5f, 0.5f);
+            glColor3f(0.4f, 0.4f, 0.4f);
             glNormal3f(0.0f, 1.0f, 0.0f);
 
             glBegin(GL_QUADS);
