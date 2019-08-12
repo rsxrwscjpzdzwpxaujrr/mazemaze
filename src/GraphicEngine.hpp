@@ -45,6 +45,7 @@ public:
     unsigned int getMaxAntialiasing() const;
     bool getFullscreen() const;
     bool getVsync() const;
+    bool hasFocus() const;
 
     GraphicEngine(GraphicEngine const&) = delete;
     void operator= (GraphicEngine const&) = delete;
@@ -68,6 +69,7 @@ private:
     bool needReopen;
     bool fullscreen;
     bool vsync;
+    bool focus;
     unsigned int maxAntialiasing;
     sf::ContextSettings settings;
     sf::VideoMode videoMode;

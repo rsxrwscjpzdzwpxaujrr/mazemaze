@@ -29,6 +29,7 @@ GraphicEngine::GraphicEngine() :
         oldWindowPos(-1, -1),
         oldWindowSize(854, 480),
         vsync(false),
+        focus(true),
         maxAntialiasing(calcMaxAntialiasing()),
         icon(sf::Image()) {
     icon.loadFromFile("data/icon.png");
@@ -142,6 +143,14 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
                     onKeyWaiting(event.key.code);
                     break;
 
+                case sf::Event::GainedFocus:
+                    focus = true;
+                    break;
+
+                case sf::Event::LostFocus:
+                    focus = false;
+                    break;
+
                 default:
                     break;
             }
@@ -249,6 +258,11 @@ GraphicEngine::getFullscreen() const {
 bool
 GraphicEngine::getVsync() const {
     return vsync;
+}
+
+bool
+GraphicEngine::hasFocus() const {
+    return focus;
 }
 
 unsigned int

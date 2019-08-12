@@ -90,12 +90,16 @@ Game::onLoad() {
 
 void
 Game::tick(float deltaTime) {
-    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && oldPauseKeyState)
+    GraphicEngine& graphicEngine = GraphicEngine::getInstance();
+
+    if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) &&
+            oldPauseKeyState &&
+            graphicEngine.hasFocus())
         setPaused(!paused);
 
     oldPauseKeyState = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
-    sf::RenderWindow& window = GraphicEngine::getInstance().getWindow();
+    sf::RenderWindow& window = graphicEngine.getWindow();
     window.setMouseCursorVisible(paused || won);
 
     setRenderer(settings.getRenderer());
