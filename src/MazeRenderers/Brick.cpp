@@ -74,6 +74,7 @@ Brick::compileMesh() {
 void
 Brick::onEnable() {
     glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
 
     compileMesh();
 }
@@ -81,6 +82,7 @@ Brick::onEnable() {
 void
 Brick::onDisable() {
     glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
 
     if (meshDrawList != -1)
         glDeleteLists(meshDrawList, 1);
@@ -177,6 +179,17 @@ Brick::renderChunk(int num) {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+
+    float light1_diffuse[] = {0.25f, 0.225f, 0.2f};
+    float light1_ambient[] = {0.0f, 0.0f, 0.0f};
+    float light1_position[] = {camera.getX(), camera.getY(), camera.getZ(), 1.0f};
+
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.4f);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.2f);
 
     float fogColor[4] = {0.5f, 0.5f, 0.5f, 1.0f};
     float g_FogDensity = 0.5f;
