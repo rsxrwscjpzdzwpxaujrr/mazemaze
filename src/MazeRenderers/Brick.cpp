@@ -37,34 +37,70 @@ Brick::Brick(Game& game) :
 Brick::~Brick() = default;
 
 void
-Brick::compileMesh() {
+Brick::compileWalls() {
     objl::Loader loader = objl::Loader();
     loader.LoadFile("data/wall.obj");
 
     if (meshDrawList != -1)
         glDeleteLists(meshDrawList, 1);
 
-    meshDrawList = glGenLists(1);
-
-    glNewList(meshDrawList, GL_COMPILE);
-
-    glBegin(GL_TRIANGLES);
+    meshDrawList = glGenLists(2);
 
     for (int i = 0; i < loader.LoadedMeshes.size(); i++) {
-        objl::Mesh mesh = loader.LoadedMeshes[i];
+        objl::Mesh& mesh = loader.LoadedMeshes[i];
+        bool initialized = false;
+        Angle angleType;
 
-        if (i == 1)
-            glColor3f(0.45f, 0.185f, 0.16f);
-        else
-            glColor3f(0.45f, 0.45f, 0.45f);
-
-        for (int j = 0; j < mesh.Indices.size(); j++) {
-            objl::Vertex vertex = mesh.Vertices[mesh.Indices[j]];
-
-            glNormal3f(vertex.Normal.X, vertex.Normal.Y, vertex.Normal.Z);
-            glVertex3f(vertex.Position.X, vertex.Position.Y, vertex.Position.Z);
+        if (mesh.MeshName == "flat") {
+            angleType = Angle::NO;
+            initialized = true;
+        } else if (mesh.MeshName == "inner") {
+            angleType = Angle::INNER;
+            initialized = true;
         }
+
+        if (initialized)
+            compileWall(mesh, angleType);
     }
+}
+
+void
+Brick::compileWall(objl::Mesh& mesh, Angle angleType) {
+    glNewList(meshDrawList + angleType, GL_COMPILE);
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.45f, 0.185f, 0.16f);
+
+    for (int j = 0; j < mesh.Indices.size(); j++) {
+        objl::Vertex vertex = mesh.Vertices[mesh.Indices[j]];
+
+        glNormal3f(vertex.Normal.X, vertex.Normal.Y, vertex.Normal.Z);
+
+        glVertex3f(vertex.Position.X,
+                   vertex.Position.Y,
+                   vertex.Position.Z);
+    }
+
+    float xOffset;
+
+    if (angleType == Angle::INNER)
+        xOffset = -0.0075f;
+    else
+        xOffset = 0.0f;
+
+    glColor3f(0.45f, 0.45f, 0.45f);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+
+    glVertex3f(xOffset, -0.5, -0.5075f);
+    glVertex3f(xOffset,  0.5, -0.5075f);
+    glVertex3f(0.5,      0.5, -0.5075f);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+
+    glVertex3f(xOffset, -0.5, -0.5075f);
+    glVertex3f(0.5,      0.5, -0.5075f);
+    glVertex3f(0.5,     -0.5, -0.5075f);
 
     glEnd();
 
@@ -72,7 +108,30 @@ Brick::compileMesh() {
 }
 
 void
+Brick::renderWall(Angle leftInner, Angle rightInner, bool flip) {
+    if (flip)
+        glScalef(1.0f, -1.0f, 1.0f);
+
+    glTranslatef(-0.5f, 0.0f, 0.0f);
+
+    if (leftInner == Angle::INNER)
+        glCallList(meshDrawList + 1);
+    else
+        glCallList(meshDrawList);
+
+    glTranslatef(0.5f, 0.0f, 0.0f);
+
+    if (rightInner == Angle::INNER) {
+        glTranslatef(0.5f, 0.0f, 0.0f);
+        glScalef(-1.0f, 1.0f, 1.0f);
+        glCallList(meshDrawList + 1);
+    } else
+        glCallList(meshDrawList);
+}
+
+void
 Brick::onEnable() {
+    glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
@@ -102,11 +161,12 @@ Brick::onEnable() {
     glFogf(GL_FOG_START, 0);
     glFogf(GL_FOG_END, 10.0f);
 
-    compileMesh();
+    compileWalls();
 }
 
 void
 Brick::onDisable() {
+    glDisable(GL_CULL_FACE);
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHT1);
 
@@ -148,34 +208,43 @@ Brick::compileChunk(int num) {
 
             if (maze.getOpened(j + x, k + y)) {
                 glPushMatrix();
-                glTranslatef(j + 0.5f, 0.0f, k + 0.5f);
+                glTranslatef(j + 0.5f, 0.5f, k + 0.5f);
 
-                if (!maze.getOpened(j + 1 + x, k + y)) {
+                int cullFace = GL_BACK;
+
+                bool opened[] = {maze.getOpened(j + 1 + x, k + y),
+                                 maze.getOpened(j - 1 + x, k + y),
+                                 maze.getOpened(j + x, k + 1 + y),
+                                 maze.getOpened(j + x, k - 1 + y)};
+
+                if (!opened[0]) {
                     glPushMatrix();
+
                     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
 
-                    glCallList(meshDrawList);
+                    renderWall(Angle(!opened[3]), Angle(!opened[2]), true);
                     glPopMatrix();
                 }
 
-                if (!maze.getOpened(j - 1 + x, k + y)) {
+                if (!opened[1]) {
                     glPushMatrix();
+
                     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 
-                    glCallList(meshDrawList);
+                    renderWall(Angle(!opened[2]), Angle(!opened[3]), true);
                     glPopMatrix();
                 }
 
-                if (!maze.getOpened(j + x, k + 1 + y)) {
+                if (!opened[2]) {
                     glPushMatrix();
                     glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
 
-                    glCallList(meshDrawList);
+                    renderWall(Angle(!opened[0]), Angle(!opened[1]), false);
                     glPopMatrix();
                 }
 
-                if (!maze.getOpened(j + x, k - 1 + y)) {
-                    glCallList(meshDrawList);
+                if (!opened[3]) {
+                    renderWall(Angle(!opened[1]), Angle(!opened[0]), false);
                 }
 
                 glPopMatrix();

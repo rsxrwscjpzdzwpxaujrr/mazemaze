@@ -107,7 +107,6 @@ GraphicEngine::update() {
 void
 GraphicEngine::setStates() {
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glEnable(GL_NORMALIZE);
     glEnable(GL_COLOR_MATERIAL);

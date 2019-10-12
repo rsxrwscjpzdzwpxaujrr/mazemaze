@@ -20,6 +20,12 @@
 #include "../MazeRenderer.hpp"
 #include "../Skybox.hpp"
 
+namespace objl {
+
+class Mesh;
+
+}
+
 namespace mazemaze {
 
 class Game;
@@ -32,17 +38,25 @@ public:
     ~Brick() override;
 
 private:
+    enum Angle {
+        NO = 0,
+        INNER = 1,
+        OUTER = 2,
+    };
+
     Game& game;
     Skybox skybox;
     int meshDrawList;
 
-    void compileMesh();
+    void compileWalls();
+    void compileWall(objl::Mesh& mesh, Angle angleType);
 
     void onEnable() override;
     void onDisable() override;
     void compileChunk(int num) override;
     void onTick(float deltaTime) override;
     void renderChunk(int num) override;
+    void renderWall(Angle leftInner, Angle rightInner, bool flip);
 };
 
 }
