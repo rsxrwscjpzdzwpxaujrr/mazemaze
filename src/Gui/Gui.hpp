@@ -28,9 +28,6 @@
 #include "Background.hpp"
 
 namespace mazemaze {
-
-class Game;
-
 namespace gui {
 
 class State;
