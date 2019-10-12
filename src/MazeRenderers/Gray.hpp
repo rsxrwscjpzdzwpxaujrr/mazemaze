@@ -35,7 +35,7 @@ private:
     Game& game;
     Skybox skybox;
 
-    void onEnable() override;
+    void setStates() override;
     void onDisable() override;
     void compileChunk(int num) override;
     void onTick(float deltaTime) override;

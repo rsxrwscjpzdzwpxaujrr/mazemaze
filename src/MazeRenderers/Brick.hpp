@@ -51,6 +51,7 @@ private:
     void compileWalls();
     void compileWall(objl::Mesh& mesh, Angle angleType);
 
+    void setStates() override;
     void onEnable() override;
     void onDisable() override;
     void compileChunk(int num) override;

@@ -31,7 +31,8 @@ GraphicEngine::GraphicEngine() :
         vsync(false),
         focus(true),
         maxAntialiasing(calcMaxAntialiasing()),
-        icon(sf::Image()) {
+        icon(sf::Image()),
+        onSetStates([] () {}) {
     icon.loadFromFile("data/icon.png");
 
     settings.depthBits = 24;
@@ -106,6 +107,7 @@ GraphicEngine::update() {
 
 void
 GraphicEngine::setStates() {
+    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_NORMALIZE);
@@ -113,6 +115,8 @@ GraphicEngine::setStates() {
     glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glHint(GL_FOG_HINT, GL_FASTEST);
+
+    onSetStates();
 }
 
 void
@@ -227,6 +231,11 @@ GraphicEngine::setVsync(bool vsync) {
 
     if (window != nullptr)
         window->setVerticalSyncEnabled(vsync);
+}
+
+void
+GraphicEngine::setOnSetStatesCallback(std::function<void ()> onSetStates) {
+    GraphicEngine::onSetStates = onSetStates;
 }
 
 sf::RenderWindow&

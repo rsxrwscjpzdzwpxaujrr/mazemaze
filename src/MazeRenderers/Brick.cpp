@@ -130,8 +130,8 @@ Brick::renderWall(Angle leftInner, Angle rightInner, bool flip) {
 }
 
 void
-Brick::onEnable() {
-    glEnable(GL_CULL_FACE);
+Brick::setStates() {
+    glDisable(GL_CULL_FACE);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
@@ -160,7 +160,10 @@ Brick::onEnable() {
     glFogf(GL_FOG_DENSITY, g_FogDensity);
     glFogf(GL_FOG_START, 0);
     glFogf(GL_FOG_END, 10.0f);
+}
 
+void
+Brick::onEnable() {
     compileWalls();
 }
 

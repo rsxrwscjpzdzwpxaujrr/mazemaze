@@ -38,6 +38,7 @@ public:
     void setFullscreen(bool fullscreen);
     void setAntialiasing(unsigned int antialiasing);
     void setVsync(bool vsync);
+    void setOnSetStatesCallback(std::function<void ()> onSetStates);
 
     sf::RenderWindow& getWindow() const;
     int getWidth() const;
@@ -77,6 +78,7 @@ private:
     sf::Image icon;
 
     std::function<void (sf::Keyboard::Key)> onKeyWaiting;
+    std::function<void ()> onSetStates;
 
     void openWindow(unsigned int width, unsigned int height, bool fullscreen);
     void openWindow(sf::VideoMode videoMode, bool fullscreen);

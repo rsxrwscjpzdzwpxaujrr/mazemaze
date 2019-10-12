@@ -39,6 +39,7 @@ protected:
     unsigned int drawList;
     bool deleted;
 
+    virtual void setStates();
     virtual void onEnable();
     virtual void onDisable();
     virtual void onTick(float deltaTime) = 0;

@@ -17,8 +17,11 @@
 
 #include "MazeRenderer.hpp"
 
+#include <functional>
+
 #include <SFML/OpenGL.hpp>
 
+#include "GraphicEngine.hpp"
 #include "Chunk.hpp"
 #include "Game.hpp"
 
@@ -38,7 +41,12 @@ MazeRenderer::enable() {
     compiled = new bool[maze.getChunksCount()] {false};
     drawList = glGenLists(maze.getChunksCount());
 
+    setStates();
     onEnable();
+
+    GraphicEngine::getInstance().setOnSetStatesCallback([this] {
+        this->setStates();
+    });
 
     deleted = false;
 }
@@ -83,6 +91,10 @@ MazeRenderer::render() {
         else
             break;
     }
+}
+
+void
+MazeRenderer::setStates() {
 }
 
 void

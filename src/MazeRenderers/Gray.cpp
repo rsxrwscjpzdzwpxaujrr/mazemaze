@@ -34,7 +34,7 @@ Gray::Gray(Game& game) :
 Gray::~Gray() = default;
 
 void
-Gray::onEnable() {
+Gray::setStates() {
     glEnable(GL_LIGHT0);
 }
 
