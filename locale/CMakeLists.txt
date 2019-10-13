@@ -4,8 +4,6 @@ find_package(Gettext MODULE)
 find_program(XGETTEXT_EXECUTABLE xgettext)
 
 if (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
-    message(STATUS "Found Gettext " ${GETTEXT_VERSION_STRING})
-
     set(LINGUAS ru uk kk)
 
     set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/messages.pot)
