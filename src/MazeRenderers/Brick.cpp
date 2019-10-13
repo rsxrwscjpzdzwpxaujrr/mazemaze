@@ -42,9 +42,9 @@ Brick::compileWalls() {
     loader.LoadFile("data/wall.obj");
 
     if (meshDrawList != -1)
-        glDeleteLists(meshDrawList, 3);
+        glDeleteLists(meshDrawList, 6);
 
-    meshDrawList = glGenLists(3);
+    meshDrawList = glGenLists(6);
 
     for (int i = 0; i < loader.LoadedMeshes.size(); i++) {
         objl::Mesh& mesh = loader.LoadedMeshes[i];
@@ -62,25 +62,47 @@ Brick::compileWalls() {
             initialized = true;
         }
 
-        if (initialized)
-            compileWall(mesh, angleType);
+        if (initialized) {
+            compileWall(mesh, angleType, false);
+            compileWall(mesh, angleType, true);
+        }
     }
 }
 
 void
-Brick::compileWall(objl::Mesh& mesh, Angle angleType) {
-    glNewList(meshDrawList + angleType, GL_COMPILE);
+Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror) {
+    int drawListOffset;
+    float yCoeff;
+    int j;
+    int jEnd;
+    int jStep;
+
+    if (vMirror) {
+        drawListOffset = 3;
+        yCoeff = -1.0f;
+        j = mesh.Indices.size() - 1;
+        jEnd = -1;
+        jStep = -1;
+    } else {
+        drawListOffset = 0;
+        yCoeff = 1.0f;
+        j = 0;
+        jEnd = mesh.Indices.size();
+        jStep = 1;
+    }
+
+    glNewList(meshDrawList + angleType + drawListOffset, GL_COMPILE);
 
     glBegin(GL_TRIANGLES);
     glColor3f(0.45f, 0.185f, 0.16f);
 
-    for (int j = 0; j < mesh.Indices.size(); j++) {
+    for (; j != jEnd; j += jStep) {
         objl::Vertex vertex = mesh.Vertices[mesh.Indices[j]];
 
-        glNormal3f(vertex.Normal.X, vertex.Normal.Y, vertex.Normal.Z);
+        glNormal3f(vertex.Normal.X, vertex.Normal.Y * yCoeff, vertex.Normal.Z);
 
         glVertex3f(vertex.Position.X,
-                   vertex.Position.Y,
+                   vertex.Position.Y * yCoeff,
                    vertex.Position.Z);
     }
 
@@ -104,15 +126,15 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType) {
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(xOffset, -0.5, -0.5075f);
-    glVertex3f(xOffset,  0.5, -0.5075f);
-    glVertex3f(0.5,      0.5, -0.5075f);
+    glVertex3f(xOffset, -0.5f * yCoeff, -0.5075f);
+    glVertex3f(xOffset,  0.5f * yCoeff, -0.5075f);
+    glVertex3f(0.5f,     0.5f * yCoeff, -0.5075f);
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(xOffset, -0.5, -0.5075f);
-    glVertex3f(0.5,      0.5, -0.5075f);
-    glVertex3f(0.5,     -0.5, -0.5075f);
+    glVertex3f(xOffset, -0.5f * yCoeff, -0.5075f);
+    glVertex3f(0.5f,     0.5f * yCoeff, -0.5075f);
+    glVertex3f(0.5f,    -0.5f * yCoeff, -0.5075f);
 
     glEnd();
 
@@ -129,22 +151,30 @@ Brick::getAngle(bool openeds[]) {
 
 void
 Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
-    if (flip)
-        glScalef(1.0f, -1.0f, 1.0f);
+    int drawListOffset;
+    int drawListAntiOffset;
+
+    if (flip) {
+        drawListOffset = 3;
+        drawListAntiOffset = 0;
+    } else {
+        drawListOffset = 0;
+        drawListAntiOffset = 3;
+    }
 
     glTranslatef(-0.5f, 0.0f, 0.0f);
 
     switch (leftAngle) {
     case Angle::NO:
-        glCallList(meshDrawList);
+        glCallList(meshDrawList + drawListOffset);
         break;
 
     case Angle::INNER:
-        glCallList(meshDrawList + 1);
+        glCallList(meshDrawList + drawListOffset + 1);
         break;
 
     case Angle::OUTER:
-        glCallList(meshDrawList + 2);
+        glCallList(meshDrawList + drawListOffset + 2);
         break;
     }
 
@@ -152,19 +182,19 @@ Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
 
     switch (rightAngle) {
     case Angle::NO:
-        glCallList(meshDrawList);
+        glCallList(meshDrawList + drawListOffset);
         break;
 
     case Angle::INNER:
         glTranslatef(0.5f, 0.0f, 0.0f);
-        glScalef(-1.0f, 1.0f, 1.0f);
-        glCallList(meshDrawList + 1);
+        glScalef(-1.0f, -1.0f, 1.0f);
+        glCallList(meshDrawList + drawListAntiOffset + 1);
         break;
 
     case Angle::OUTER:
         glTranslatef(0.5f, 0.0f, 0.0f);
-        glScalef(-1.0f, 1.0f, 1.0f);
-        glCallList(meshDrawList + 2);
+        glScalef(-1.0f, -1.0f, 1.0f);
+        glCallList(meshDrawList + drawListAntiOffset + 2);
         break;
     }
 }
@@ -209,12 +239,11 @@ Brick::onEnable() {
 
 void
 Brick::onDisable() {
-    glDisable(GL_CULL_FACE);
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHT1);
 
     if (meshDrawList != -1)
-        glDeleteLists(meshDrawList, 1);
+        glDeleteLists(meshDrawList, 6);
 }
 
 void

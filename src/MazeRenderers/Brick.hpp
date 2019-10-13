@@ -49,7 +49,7 @@ private:
     int meshDrawList;
 
     void compileWalls();
-    void compileWall(objl::Mesh& mesh, Angle angleType);
+    void compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror);
 
     Angle getAngle(bool openeds[]);
 
