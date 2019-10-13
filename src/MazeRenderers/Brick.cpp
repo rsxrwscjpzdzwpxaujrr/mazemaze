@@ -126,15 +126,15 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror) {
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(xOffset, -0.5f * yCoeff, -0.5075f);
-    glVertex3f(xOffset,  0.5f * yCoeff, -0.5075f);
-    glVertex3f(0.5f,     0.5f * yCoeff, -0.5075f);
+    glVertex3f(0.5f,     0.5f, -0.5075f);
+    glVertex3f(xOffset,  0.5f, -0.5075f);
+    glVertex3f(xOffset, -0.5f, -0.5075f);
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(xOffset, -0.5f * yCoeff, -0.5075f);
-    glVertex3f(0.5f,     0.5f * yCoeff, -0.5075f);
-    glVertex3f(0.5f,    -0.5f * yCoeff, -0.5075f);
+    glVertex3f(0.5f,    -0.5f, -0.5075f);
+    glVertex3f(0.5f,     0.5f, -0.5075f);
+    glVertex3f(xOffset, -0.5f, -0.5075f);
 
     glEnd();
 
@@ -201,7 +201,6 @@ Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
 
 void
 Brick::setStates() {
-    glDisable(GL_CULL_FACE);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
@@ -281,8 +280,6 @@ Brick::compileChunk(int num) {
             if (maze.getOpened(j + x, k + y)) {
                 glPushMatrix();
                 glTranslatef(j + 0.5f, 0.5f, k + 0.5f);
-
-                int cullFace = GL_BACK;
 
                 bool opened[] = {maze.getOpened(j + 1 + x, k + y),
                                  maze.getOpened(j - 1 + x, k + y),
