@@ -42,9 +42,9 @@ Brick::compileWalls() {
     loader.LoadFile("data/wall.obj");
 
     if (meshDrawList != -1)
-        glDeleteLists(meshDrawList, 1);
+        glDeleteLists(meshDrawList, 3);
 
-    meshDrawList = glGenLists(2);
+    meshDrawList = glGenLists(3);
 
     for (int i = 0; i < loader.LoadedMeshes.size(); i++) {
         objl::Mesh& mesh = loader.LoadedMeshes[i];
@@ -56,6 +56,9 @@ Brick::compileWalls() {
             initialized = true;
         } else if (mesh.MeshName == "inner") {
             angleType = Angle::INNER;
+            initialized = true;
+        } else if (mesh.MeshName == "outer") {
+            angleType = Angle::OUTER;
             initialized = true;
         }
 
@@ -83,10 +86,19 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType) {
 
     float xOffset;
 
-    if (angleType == Angle::INNER)
-        xOffset = -0.0075f;
-    else
+    switch (angleType) {
+    case Angle::NO:
         xOffset = 0.0f;
+        break;
+
+    case Angle::INNER:
+        xOffset = -0.0075f;
+        break;
+
+    case Angle::OUTER:
+        xOffset = 0.0075f;
+        break;
+    }
 
     glColor3f(0.45f, 0.45f, 0.45f);
 
@@ -107,26 +119,54 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType) {
     glEndList();
 }
 
+Brick::Angle
+Brick::getAngle(bool openeds[]) {
+    if (openeds[1])
+        return Angle::OUTER;
+
+    return Angle(!openeds[0]);
+}
+
 void
-Brick::renderWall(Angle leftInner, Angle rightInner, bool flip) {
+Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
     if (flip)
         glScalef(1.0f, -1.0f, 1.0f);
 
     glTranslatef(-0.5f, 0.0f, 0.0f);
 
-    if (leftInner == Angle::INNER)
-        glCallList(meshDrawList + 1);
-    else
+    switch (leftAngle) {
+    case Angle::NO:
         glCallList(meshDrawList);
+        break;
+
+    case Angle::INNER:
+        glCallList(meshDrawList + 1);
+        break;
+
+    case Angle::OUTER:
+        glCallList(meshDrawList + 2);
+        break;
+    }
 
     glTranslatef(0.5f, 0.0f, 0.0f);
 
-    if (rightInner == Angle::INNER) {
+    switch (rightAngle) {
+    case Angle::NO:
+        glCallList(meshDrawList);
+        break;
+
+    case Angle::INNER:
         glTranslatef(0.5f, 0.0f, 0.0f);
         glScalef(-1.0f, 1.0f, 1.0f);
         glCallList(meshDrawList + 1);
-    } else
-        glCallList(meshDrawList);
+        break;
+
+    case Angle::OUTER:
+        glTranslatef(0.5f, 0.0f, 0.0f);
+        glScalef(-1.0f, 1.0f, 1.0f);
+        glCallList(meshDrawList + 2);
+        break;
+    }
 }
 
 void
@@ -225,7 +265,13 @@ Brick::compileChunk(int num) {
 
                     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
 
-                    renderWall(Angle(!opened[3]), Angle(!opened[2]), true);
+                    bool tmpOpened[] = {maze.getOpened(j + 1 + x, k + 1 + y),
+                                        maze.getOpened(j + 1 + x, k - 1 + y)};
+
+                    bool angles[][2] = {{opened[3], tmpOpened[1]},
+                                        {opened[2], tmpOpened[0]}};
+
+                    renderWall(getAngle(angles[0]), getAngle(angles[1]), true);
                     glPopMatrix();
                 }
 
@@ -234,7 +280,13 @@ Brick::compileChunk(int num) {
 
                     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 
-                    renderWall(Angle(!opened[2]), Angle(!opened[3]), true);
+                    bool tmpOpened[] = {maze.getOpened(j - 1 + x, k + 1 + y),
+                                        maze.getOpened(j - 1 + x, k - 1 + y)};
+
+                    bool angles[][2] = {{opened[2], tmpOpened[0]},
+                                        {opened[3], tmpOpened[1]}};
+
+                    renderWall(getAngle(angles[0]), getAngle(angles[1]), true);
                     glPopMatrix();
                 }
 
@@ -242,12 +294,24 @@ Brick::compileChunk(int num) {
                     glPushMatrix();
                     glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
 
-                    renderWall(Angle(!opened[0]), Angle(!opened[1]), false);
+                    bool tmpOpened[] = {maze.getOpened(j + 1 + x, k + 1 + y),
+                                        maze.getOpened(j - 1 + x, k + 1 + y)};
+
+                    bool angles[][2] = {{opened[0], tmpOpened[0]},
+                                        {opened[1], tmpOpened[1]}};
+
+                    renderWall(getAngle(angles[0]), getAngle(angles[1]), false);
                     glPopMatrix();
                 }
 
                 if (!opened[3]) {
-                    renderWall(Angle(!opened[1]), Angle(!opened[0]), false);
+                    bool tmpOpened[] = {maze.getOpened(j + 1 + x, k - 1 + y),
+                                        maze.getOpened(j - 1 + x, k - 1 + y)};
+
+                    bool angles[][2] = {{opened[1], tmpOpened[1]},
+                                        {opened[0], tmpOpened[0]}};
+
+                    renderWall(getAngle(angles[0]), getAngle(angles[1]), false);
                 }
 
                 glPopMatrix();

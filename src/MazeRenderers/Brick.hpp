@@ -51,13 +51,15 @@ private:
     void compileWalls();
     void compileWall(objl::Mesh& mesh, Angle angleType);
 
+    Angle getAngle(bool openeds[]);
+
     void setStates() override;
     void onEnable() override;
     void onDisable() override;
     void compileChunk(int num) override;
     void onTick(float deltaTime) override;
     void renderChunk(int num) override;
-    void renderWall(Angle leftInner, Angle rightInner, bool flip);
+    void renderWall(Angle leftAngle, Angle rightAngle, bool flip);
 };
 
 }
