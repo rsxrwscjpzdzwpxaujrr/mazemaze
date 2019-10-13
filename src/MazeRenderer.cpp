@@ -70,17 +70,36 @@ MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
     for (int i = 0; i < 16; i++)
         visible[i] = -1;
 
-    for (int i = 0; i < maze.getChunksCount(); i++) {
-        int chunkX = (i % maze.getChunksX());
-        int chunkY = (i / maze.getChunksX());
+    int pX = static_cast<int>(playerX) / Chunk::SIZE;
+    int pY = static_cast<int>(playerY) / Chunk::SIZE;
 
-        int pX = static_cast<int>(playerX) / Chunk::SIZE;
-        int pY = static_cast<int>(playerY) / Chunk::SIZE;
+    if (static_cast<int>(playerX) % Chunk::SIZE <= Chunk::SIZE / 2)
+        pX--;
 
-        if     (((chunkX >= pX - 1 && chunkX <= pX + 1) && chunkY == pY) ||
-                ((chunkY >= pY - 1 && chunkY <= pY + 1) && chunkX == pX))
-            enableChunk(i);
-    }
+    if (static_cast<int>(playerY) % Chunk::SIZE <= Chunk::SIZE / 2)
+        pY--;
+
+    int peX = pX + 2;
+    int peY = pY + 2;
+
+    if (pX < 0)
+        pX = 0;
+
+    if (pY < 0)
+        pY = 0;
+
+    if (peX > maze.getChunksX())
+        peX = maze.getChunksX();
+
+    if (peY > maze.getChunksY())
+        peY = maze.getChunksY();
+
+    for (int i = pX; i < peX; i++)
+        for (int j = pY; j < peY; j++) {
+            int chunkNum = i + j * maze.getChunksX();
+
+            enableChunk(chunkNum);
+        }
 
     onTick(deltaTime);
 }
