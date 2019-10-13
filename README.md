@@ -8,7 +8,7 @@ Depends on libconfig, SFML and SFGUI packages.
 
 ### Downloading and Building:
 ```
-$ git clone --recursive https://github.com/mirai65536/mazemaze.git
+$ git clone https://github.com/mirai65536/mazemaze.git
 $ cd mazemaze
 $ cmake .
 $ make

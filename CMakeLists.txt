@@ -16,17 +16,26 @@ find_package(SFGUI 0.4 QUIET MODULE)
 if (NOT SFGUI_FOUND)
     if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
         message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
-
-        set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
-        set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
-
-        add_subdirectory(sfgui)
-
-        set(SFGUI_LIBRARY     SFGUI)
-        set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
     else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
-        message(FATAL_ERROR "SFGUI not found")
+        find_package(Git MODULE)
+
+        if (GIT_FOUND)
+            message(STATUS "Downloaded SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
+            execute_process(COMMAND ${GIT_EXECUTABLE} submodule init
+                            COMMAND ${GIT_EXECUTABLE} submodule update
+                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/sfgui)
+        else (GIT_FOUND)
+            message(FATAL_ERROR "SFGUI not found and can't be downloaded")
+        endif (GIT_FOUND)
     endif (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
+
+    set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
+    set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
+
+    add_subdirectory(sfgui)
+
+    set(SFGUI_LIBRARY     SFGUI)
+    set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
 endif (NOT SFGUI_FOUND)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
