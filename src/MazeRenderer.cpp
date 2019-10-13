@@ -28,7 +28,9 @@
 namespace mazemaze {
 
 MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()),
-                                         deleted(true) {}
+                                         deleted(true),
+                                         oldHcpX(-1),
+                                         oldHcpY(-1) {}
 
 MazeRenderer::~MazeRenderer() {
     if (!deleted)
@@ -67,39 +69,38 @@ MazeRenderer::disable() {
 
 void
 MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
-    for (int i = 0; i < 16; i++)
-        visible[i] = -1;
+    int pX = static_cast<int>(playerX) / (Chunk::SIZE / 2);
+    int pY = static_cast<int>(playerY) / (Chunk::SIZE / 2);
 
-    int pX = static_cast<int>(playerX) / Chunk::SIZE;
-    int pY = static_cast<int>(playerY) / Chunk::SIZE;
+    if (pX != oldHcpX || pY != oldHcpY) {
+        for (int i = 0; i < 16; i++)
+            visible[i] = -1;
 
-    if (static_cast<int>(playerX) % Chunk::SIZE <= Chunk::SIZE / 2)
-        pX--;
+        if (pX % 2 == 0) pX--;
+        if (pY % 2 == 0) pY--;
 
-    if (static_cast<int>(playerY) % Chunk::SIZE <= Chunk::SIZE / 2)
-        pY--;
+        oldHcpX = pX;
+        oldHcpY = pY;
 
-    int peX = pX + 2;
-    int peY = pY + 2;
+        pX /= 2;
+        pY /= 2;
 
-    if (pX < 0)
-        pX = 0;
+        int peX = pX + 2;
+        int peY = pY + 2;
 
-    if (pY < 0)
-        pY = 0;
+        if (pX < 0) pX = 0;
+        if (pY < 0) pY = 0;
 
-    if (peX > maze.getChunksX())
-        peX = maze.getChunksX();
+        if (peX > maze.getChunksX()) peX = maze.getChunksX();
+        if (peY > maze.getChunksY()) peY = maze.getChunksY();
 
-    if (peY > maze.getChunksY())
-        peY = maze.getChunksY();
+        for (int i = pX; i < peX; i++)
+            for (int j = pY; j < peY; j++) {
+                int chunkNum = i + j * maze.getChunksX();
 
-    for (int i = pX; i < peX; i++)
-        for (int j = pY; j < peY; j++) {
-            int chunkNum = i + j * maze.getChunksX();
-
-            enableChunk(chunkNum);
-        }
+                enableChunk(chunkNum);
+            }
+    }
 
     onTick(deltaTime);
 }

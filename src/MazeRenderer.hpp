@@ -39,6 +39,9 @@ protected:
     unsigned int drawList;
     bool deleted;
 
+    int oldHcpX;
+    int oldHcpY;
+
     virtual void setStates();
     virtual void onEnable();
     virtual void onDisable();
