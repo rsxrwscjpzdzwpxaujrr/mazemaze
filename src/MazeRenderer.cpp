@@ -53,6 +53,8 @@ MazeRenderer::enable() {
 
 void
 MazeRenderer::disable() {
+    GraphicEngine::getInstance().setOnSetStatesCallback([] {});
+
     onDisable();
 
     glDeleteLists(drawList, maze.getChunksCount());
