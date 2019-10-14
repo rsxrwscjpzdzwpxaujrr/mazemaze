@@ -73,14 +73,14 @@ MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
     int pY = static_cast<int>(playerY) / (Chunk::SIZE / 2);
 
     if (pX != oldHcpX || pY != oldHcpY) {
+        oldHcpX = pX;
+        oldHcpY = pY;
+
         for (int i = 0; i < 16; i++)
             visible[i] = -1;
 
         if (pX % 2 == 0) pX--;
         if (pY % 2 == 0) pY--;
-
-        oldHcpX = pX;
-        oldHcpY = pY;
 
         pX /= 2;
         pY /= 2;
