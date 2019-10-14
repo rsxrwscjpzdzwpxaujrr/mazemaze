@@ -73,22 +73,16 @@ void
 Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror) {
     int drawListOffset;
     float yCoeff;
-    int j;
-    int jEnd;
-    int jStep;
+    int j, jEnd, jStep;
 
     if (vMirror) {
         drawListOffset = 3;
         yCoeff = -1.0f;
-        j = mesh.Indices.size() - 1;
-        jEnd = -1;
-        jStep = -1;
+        j = mesh.Indices.size() - 1; jEnd = -1; jStep = -1;
     } else {
         drawListOffset = 0;
         yCoeff = 1.0f;
-        j = 0;
-        jEnd = mesh.Indices.size();
-        jStep = 1;
+        j = 0; jEnd = mesh.Indices.size(); jStep = 1;
     }
 
     glNewList(meshDrawList + angleType + drawListOffset, GL_COMPILE);
@@ -151,6 +145,8 @@ Brick::getAngle(bool openeds[]) {
 
 void
 Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
+    glTranslatef(-0.5f, 0.0f, 0.0f);
+
     int drawListOffset;
     int drawListAntiOffset;
 
@@ -161,8 +157,6 @@ Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
         drawListOffset = 0;
         drawListAntiOffset = 3;
     }
-
-    glTranslatef(-0.5f, 0.0f, 0.0f);
 
     switch (leftAngle) {
     case Angle::NO:

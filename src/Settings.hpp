@@ -41,19 +41,18 @@ public:
     explicit Settings(bool readConfig=true);
     ~Settings();
 
-    std::string  getLang() const;
-    unsigned int getAntialiasing() const;
-    unsigned int getMaxAntialiasing() const;
-    bool         getFullscreen() const;
-    bool         getVsync() const;
-    bool         getAutosave() const;
-    float        getAutosaveTime() const;
-    int          getRenderer() const;
-    bool         getShowFps() const;
+    std::string       getLang() const;
+    unsigned int      getAntialiasing() const;
+    unsigned int      getMaxAntialiasing() const;
+    bool              getFullscreen() const;
+    bool              getVsync() const;
+    bool              getAutosave() const;
+    float             getAutosaveTime() const;
+    int               getRenderer() const;
+    bool              getShowFps() const;
     sf::Keyboard::Key getKey(const std::string& control);
-
-    const Language* getSupportedLangs() const;
-    int getSupportedLangsCount() const;
+    const Language*   getSupportedLangs() const;
+    int               getSupportedLangsCount() const;
 
     void setLang(const std::string &lang);
     void setAntialiasing(unsigned int antialiasing);
