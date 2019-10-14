@@ -140,10 +140,16 @@ endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
 option(CMAKE_INSTALL_PREFIX "Install prefix" /opt)
 
+configure_file(mazemaze.desktop.in mazemaze.desktop)
+
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${PROJECT_NAME})
 
 install(DIRECTORY data
         DESTINATION ${PROJECT_NAME})
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mazemaze.desktop
+        DESTINATION ~/.local/share/applications
+        COMPONENT DESKTOP_ENTRY)
 
 add_subdirectory(locale)

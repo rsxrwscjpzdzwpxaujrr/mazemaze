@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Mazemaze
+Comment=Simple maze game
+Path=@CMAKE_INSTALL_PREFIX@/mazemaze
+Exec=@CMAKE_INSTALL_PREFIX@/mazemaze/mazemaze
+Icon=@CMAKE_INSTALL_PREFIX@/mazemaze/data/icon.png
+Terminal=false
+Type=Application
+Categories=Game;
