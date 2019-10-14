@@ -107,12 +107,18 @@ MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
 
 void
 MazeRenderer::render() {
+    int chunks[16];
+    int index = 0;
+
     for (int i = 0; i < 16; i++) {
-        if (visible[i] != -1)
-            renderChunk(visible[i]);
-        else
-            break;
+        if (visible[i] != -1) {
+            chunks[index] = visible[i];
+            index++;
+        } else
+            chunks[index] = -1;
     }
+
+    renderChunks(chunks);
 }
 
 void
@@ -141,8 +147,9 @@ MazeRenderer::enableChunk(int num) {
 }
 
 void
-MazeRenderer::renderChunk(int num) {
-    glCallList(drawList + num);
+MazeRenderer::renderChunks(int chunks[]) {
+    for (; *chunks != -1; chunks++)
+        glCallList(drawList + *chunks);
 }
 
 }

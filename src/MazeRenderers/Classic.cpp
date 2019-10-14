@@ -124,10 +124,10 @@ Classic::onTick(float deltaTime) {
 }
 
 void
-Classic::renderChunk(int num) {
+Classic::renderChunks(int chunks[]) {
     Camera& camera = game.getPlayer().getCamera();
 
-    MazeRenderer::renderChunk(num);
+    MazeRenderer::renderChunks(chunks);
 
     glTranslatef(camera.getX(), camera.getY(), camera.getZ());
     starSky.render();

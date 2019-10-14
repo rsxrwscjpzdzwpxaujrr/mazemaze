@@ -58,7 +58,7 @@ private:
     void onDisable() override;
     void compileChunk(int num) override;
     void onTick(float deltaTime) override;
-    void renderChunk(int num) override;
+    void renderChunks(int chunks[]) override;
     void renderWall(Angle leftAngle, Angle rightAngle, bool flip);
 };
 

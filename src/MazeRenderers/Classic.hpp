@@ -37,7 +37,7 @@ private:
 
     void compileChunk(int num) override;
     void onTick(float deltaTime) override;
-    void renderChunk(int num) override;
+    void renderChunks(int chunks[]) override;
 };
 
 }

@@ -350,7 +350,7 @@ Brick::onTick(float deltaTime) {
 }
 
 void
-Brick::renderChunk(int num) {
+Brick::renderChunks(int chunks[]) {
     Camera& camera = game.getPlayer().getCamera();
 
     float light1_position[] = {camera.getX(), camera.getY(), camera.getZ(), 1.0f};
@@ -360,7 +360,7 @@ Brick::renderChunk(int num) {
     glEnable(GL_FOG);
     glEnable(GL_LIGHTING);
 
-    MazeRenderer::renderChunk(num);
+    MazeRenderer::renderChunks(chunks);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);

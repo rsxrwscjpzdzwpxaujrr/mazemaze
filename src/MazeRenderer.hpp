@@ -48,7 +48,7 @@ protected:
     virtual void onTick(float deltaTime) = 0;
     virtual void enableChunk(int num);
     virtual void compileChunk(int num) = 0;
-    virtual void renderChunk(int num);
+    virtual void renderChunks(int chunks[]);
 };
 
 }

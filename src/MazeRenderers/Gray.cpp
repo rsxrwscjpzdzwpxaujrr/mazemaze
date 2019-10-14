@@ -135,7 +135,7 @@ Gray::onTick(float deltaTime) {
 }
 
 void
-Gray::renderChunk(int num) {
+Gray::renderChunks(int chunks[]) {
     Camera& camera = game.getPlayer().getCamera();
 
     float light0_diffuse[] = {1.0f, 0.9f, 0.8f};
@@ -148,7 +148,7 @@ Gray::renderChunk(int num) {
 
     glEnable(GL_LIGHTING);
 
-    MazeRenderer::renderChunk(num);
+    MazeRenderer::renderChunks(chunks);
 
     glDisable(GL_LIGHTING);
 
