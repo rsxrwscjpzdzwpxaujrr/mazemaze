@@ -138,4 +138,12 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         -Wno-switch-enum)
 endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
+option(CMAKE_INSTALL_PREFIX "Install prefix" /opt)
+
+install(TARGETS ${PROJECT_NAME}
+        RUNTIME DESTINATION ${PROJECT_NAME})
+
+install(DIRECTORY data
+        DESTINATION ${PROJECT_NAME})
+
 add_subdirectory(locale)

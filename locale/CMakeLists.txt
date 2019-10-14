@@ -34,3 +34,7 @@ if (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
 else (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
     message(WARNING "Gettext not found, translations can't be done")
 endif (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
+
+install(DIRECTORY .
+        DESTINATION ${PROJECT_NAME}/locale
+        FILES_MATCHING PATTERN *.mo)
