@@ -54,7 +54,6 @@ Player::tick(float deltaTime, sf::Window& window, Game& game) {
 
     float moveVectorX = 0.0f;
     float moveVectorZ = 0.0f;
-    float moveAngle;
 
     Settings& settings = game.getSettings();
 

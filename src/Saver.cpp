@@ -73,7 +73,7 @@ Saver::save(Game& game) {
 }
 
 void
-Saver::deleteSave(Game& game) {
+Saver::deleteSave(Game&) {
     if (saveExists())
         std::remove(filename.c_str());
 }

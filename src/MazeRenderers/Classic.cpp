@@ -119,7 +119,7 @@ Classic::compileChunk(int num) {
 }
 
 void
-Classic::onTick(float deltaTime) {
+Classic::onTick(float) {
     starSky.setTime(game.getTime());
 }
 

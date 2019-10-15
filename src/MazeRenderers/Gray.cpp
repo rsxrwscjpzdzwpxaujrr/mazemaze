@@ -131,7 +131,7 @@ Gray::compileChunk(int num) {
 }
 
 void
-Gray::onTick(float deltaTime) {
+Gray::onTick(float) {
 }
 
 void

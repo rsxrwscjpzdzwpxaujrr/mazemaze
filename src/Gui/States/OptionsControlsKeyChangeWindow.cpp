@@ -122,7 +122,7 @@ OptionsControls::KeyChangeWindow::close() {
 
 void
 OptionsControls::KeyChangeWindow::initSignals() {
-    GraphicEngine::getInstance().waitKey([this] (sf::Keyboard::Key key) {
+    GraphicEngine::getInstance().waitKey([this] (const sf::Keyboard::Key key) {
         okButton->Show(true);
         buttonSeparator->Show(true);
 

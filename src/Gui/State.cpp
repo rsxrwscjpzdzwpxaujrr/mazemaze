@@ -50,7 +50,7 @@ State::show(bool show) {
 }
 
 void
-State::tick(float deltatime) {
+State::tick(float) {
 
 }
 

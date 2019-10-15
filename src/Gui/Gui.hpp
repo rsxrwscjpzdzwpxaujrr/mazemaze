@@ -37,8 +37,8 @@ public:
     Gui();
     ~Gui() override;
 
-    void handleEvent(sf::Event event);
-    virtual void onEvent(sf::Event event);
+    void handleEvent(const sf::Event& event);
+    virtual void onEvent(const sf::Event& event);
 
     void tick(float deltaTime) override;
     void render() override;

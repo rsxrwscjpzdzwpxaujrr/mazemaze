@@ -73,7 +73,7 @@ Game::~Game() {
     for (int i = 0; i < 16; i++)
         if (mazeRenderers[i] != nullptr)
             delete mazeRenderers[i];
-};
+}
 
 void
 Game::newGame() {

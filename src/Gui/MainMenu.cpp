@@ -58,7 +58,7 @@ MainMenu::~MainMenu() {
 }
 
 void
-MainMenu::onEvent(sf::Event event) {
+MainMenu::onEvent(const sf::Event& event) {
     if (event.type == sf::Event::LostFocus && game != nullptr)
         game->setPaused(true);
 }
@@ -117,7 +117,7 @@ MainMenu::getOptionsState() const {
 }
 
 void
-MainMenu::setOptionsState(states::Options& options, int state) {
+MainMenu::setOptionsState(states::Options&, int state) {
     optionsState = state;
 }
 

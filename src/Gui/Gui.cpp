@@ -27,10 +27,10 @@ Gui::Gui() : background(nullptr),
 
 Gui::~Gui() {
     removeStates();
-};
+}
 
 void
-Gui::handleEvent(sf::Event event) {
+Gui::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
         for (unsigned int i = 0; i < states.size(); i++) {
             states[i]->center();
@@ -43,7 +43,7 @@ Gui::handleEvent(sf::Event event) {
 }
 
 void
-Gui::onEvent(sf::Event event) {
+Gui::onEvent(const sf::Event&) {
 
 }
 

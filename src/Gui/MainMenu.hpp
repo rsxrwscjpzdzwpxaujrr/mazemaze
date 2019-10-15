@@ -40,7 +40,7 @@ public:
     explicit MainMenu(Settings& settings);
     ~MainMenu() override;
 
-    void onEvent(sf::Event event) override;
+    void onEvent(const sf::Event& event) override;
 
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();

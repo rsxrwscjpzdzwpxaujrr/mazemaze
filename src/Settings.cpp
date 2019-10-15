@@ -67,7 +67,7 @@ Settings::Settings(bool readConfig) :
 Settings::~Settings() {
     writeConfig();
     delete [] supportedLangs;
-};
+}
 
 std::string
 Settings::getLang() const {
@@ -198,7 +198,7 @@ std::string
 Settings::getSystemLang() {
     std::string systemLang;
 
-#ifdef WIN32
+#ifdef _WIN32
 
     char* tempLang = new char[3];
 

@@ -32,13 +32,13 @@ public:
     void openWindow();
 
     void loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu);
-    void waitKey(std::function<void (sf::Keyboard::Key)> onKey);
+    void waitKey(std::function<void (const sf::Keyboard::Key)> const& onKey);
     void unwaitKey();
 
     void setFullscreen(bool fullscreen);
     void setAntialiasing(unsigned int antialiasing);
     void setVsync(bool vsync);
-    void setOnSetStatesCallback(std::function<void ()> onSetStates);
+    void setOnSetStatesCallback(std::function<void ()> const& onSetStates);
 
     sf::RenderWindow& getWindow() const;
     int getWidth() const;
@@ -77,7 +77,7 @@ private:
 
     sf::Image icon;
 
-    std::function<void (sf::Keyboard::Key)> onKeyWaiting;
+    std::function<void (const sf::Keyboard::Key)> onKeyWaiting;
     std::function<void ()> onSetStates;
 
     void openWindow(unsigned int width, unsigned int height, bool fullscreen);

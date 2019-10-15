@@ -177,7 +177,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
 }
 
 void
-GraphicEngine::waitKey(std::function<void (sf::Keyboard::Key)> onKey) {
+GraphicEngine::waitKey(std::function<void (const sf::Keyboard::Key)> const& onKey) {
     onKeyWaiting = onKey;
 }
 
@@ -234,7 +234,7 @@ GraphicEngine::setVsync(bool vsync) {
 }
 
 void
-GraphicEngine::setOnSetStatesCallback(std::function<void ()> onSetStates) {
+GraphicEngine::setOnSetStatesCallback(std::function<void ()> const& onSetStates) {
     GraphicEngine::onSetStates = onSetStates;
 }
 

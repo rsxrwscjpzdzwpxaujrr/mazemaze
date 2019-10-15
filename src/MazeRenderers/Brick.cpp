@@ -346,7 +346,7 @@ Brick::compileChunk(int num) {
 }
 
 void
-Brick::onTick(float deltaTime) {
+Brick::onTick(float) {
 }
 
 void

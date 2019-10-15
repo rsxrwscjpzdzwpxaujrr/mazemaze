@@ -35,7 +35,7 @@ MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()),
 MazeRenderer::~MazeRenderer() {
     if (!deleted)
         disable();
-};
+}
 
 void
 MazeRenderer::enable() {

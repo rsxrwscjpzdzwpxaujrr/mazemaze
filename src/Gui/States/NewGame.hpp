@@ -30,7 +30,7 @@ namespace states {
 class NewGame : public State {
 public:
     explicit NewGame(MainMenu& mainMenu);
-    ~NewGame();
+    ~NewGame() override;
 
 private:
     sfg::Button::Ptr backButton;

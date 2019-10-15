@@ -89,7 +89,7 @@ OptionsControls::~OptionsControls() {
     delete [] keyButtons;
     delete [] keyLabels;
     delete [] keyControls;
-};
+}
 
 void
 OptionsControls::show(bool show) {
@@ -100,7 +100,7 @@ OptionsControls::show(bool show) {
 }
 
 void
-OptionsControls::tick(float deltatime) {
+OptionsControls::tick(float) {
     keyChangeWindow.tick();
 }
 
@@ -136,7 +136,7 @@ OptionsControls::updateKeyButtonLabel(int button) {
 
 void
 OptionsControls::initSignals(MainMenu& mainMenu) {
-    backButton->GetSignal(Widget::OnLeftClick).Connect([this, &mainMenu] () {
+    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
         mainMenu.back();
     });
 
