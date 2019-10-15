@@ -122,22 +122,6 @@ target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_NLS=1)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        -Weverything
-        -Wno-c++98-compat
-        -Wno-c++98-compat-pedantic
-        -Wno-unused-macros
-        -Wno-exit-time-destructors
-        -Wno-global-constructors
-        -Wno-gnu-zero-variadic-macro-arguments
-        -Wno-documentation
-        -Wno-shadow
-        -Wno-padded
-        -Wno-conversion
-        -Wno-switch-enum)
-endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "/opt" CACHE PATH "Install prefix" FORCE)
 endif (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
