@@ -29,7 +29,7 @@ public:
 
     void enable();
     void disable();
-    void tick(float deltaTime, float playerX, float playerY);
+    void tick(float deltaTime, float playerX, float playerY, bool force=false);
     void render();
 
 protected:

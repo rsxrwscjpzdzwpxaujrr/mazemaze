@@ -68,11 +68,11 @@ MazeRenderer::disable() {
 }
 
 void
-MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
+MazeRenderer::tick(float deltaTime, float playerX, float playerY, bool force) {
     int pX = static_cast<int>(playerX) / (Chunk::SIZE / 2);
     int pY = static_cast<int>(playerY) / (Chunk::SIZE / 2);
 
-    if (pX != oldHcpX || pY != oldHcpY) {
+    if (pX != oldHcpX || pY != oldHcpY || force) {
         oldHcpX = pX;
         oldHcpY = pY;
 
@@ -107,15 +107,19 @@ MazeRenderer::tick(float deltaTime, float playerX, float playerY) {
 
 void
 MazeRenderer::render() {
-    int chunks[16];
+    int chunks[16 + 1];
     int index = 0;
+
+    chunks[16] = -1;
 
     for (int i = 0; i < 16; i++) {
         if (visible[i] != -1) {
             chunks[index] = visible[i];
             index++;
-        } else
+        } else {
             chunks[index] = -1;
+            break;
+        }
     }
 
     renderChunks(chunks);

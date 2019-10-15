@@ -198,7 +198,7 @@ Game::setRenderer(int id) {
         mazeRenderer = id;
         mazeRenderers[mazeRenderer]->enable();
 
-        mazeRenderers[mazeRenderer]->tick(0.0f, player.getX(), player.getY());
+        mazeRenderers[mazeRenderer]->tick(0.0f, player.getX(), player.getY(), true);
     }
 }
 
