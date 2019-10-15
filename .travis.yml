@@ -53,10 +53,13 @@ before_script:
     - cd ..
     - mkdir build
     - cd build
-    - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
 
 script:
+    - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
     - cmake --build .
+
+after_script:
+    - sudo make install
 
 notifications:
     email: false
