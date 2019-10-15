@@ -138,7 +138,9 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         -Wno-switch-enum)
 endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
-option(CMAKE_INSTALL_PREFIX "Install prefix" /opt)
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "/opt" CACHE PATH "Install prefix" FORCE)
+endif (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 configure_file(mazemaze.desktop.in mazemaze.desktop)
 
