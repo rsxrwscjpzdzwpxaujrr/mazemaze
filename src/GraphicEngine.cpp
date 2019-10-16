@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2018-2019, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
