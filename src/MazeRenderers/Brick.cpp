@@ -30,6 +30,7 @@ namespace renderers {
 
 Brick::Brick(Game& game) :
         MazeRenderer(game),
+        meshCount(10),
         game(game),
         skybox(50, 0.5f, 0.5f, 0.5f),
         meshDrawList(-1) {}
@@ -42,50 +43,58 @@ Brick::compileWalls() {
     loader.LoadFile("data/wall.obj");
 
     if (meshDrawList != -1)
-        glDeleteLists(meshDrawList, 6);
+        glDeleteLists(meshDrawList, meshCount);
 
-    meshDrawList = glGenLists(6);
+    meshDrawList = glGenLists(meshCount);
 
     for (int i = 0; i < loader.LoadedMeshes.size(); i++) {
         objl::Mesh& mesh = loader.LoadedMeshes[i];
         bool initialized = false;
+        bool side = false;
         Angle angleType;
 
         if (mesh.MeshName == "flat") {
             angleType = Angle::NO;
             initialized = true;
-        } else if (mesh.MeshName == "inner") {
+        } else if (mesh.MeshName == "inner_left") {
             angleType = Angle::INNER;
+            side = false;
             initialized = true;
-        } else if (mesh.MeshName == "outer") {
+        } else if (mesh.MeshName == "inner_right") {
+            angleType = Angle::INNER;
+            side = true;
+            initialized = true;
+        } else if (mesh.MeshName == "outer_left") {
             angleType = Angle::OUTER;
+            side = false;
+            initialized = true;
+        } else if (mesh.MeshName == "outer_right") {
+            angleType = Angle::OUTER;
+            side = true;
             initialized = true;
         }
 
         if (initialized) {
-            compileWall(mesh, angleType, false);
-            compileWall(mesh, angleType, true);
+            compileWall(mesh, angleType, false, side);
+            compileWall(mesh, angleType, true,  side);
         }
     }
 }
 
 void
-Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror) {
-    int drawListOffset;
+Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror, bool side) {
     float yCoeff;
     int j, jEnd, jStep;
 
     if (vMirror) {
-        drawListOffset = 3;
         yCoeff = -1.0f;
         j = mesh.Indices.size() - 1; jEnd = -1; jStep = -1;
     } else {
-        drawListOffset = 0;
         yCoeff = 1.0f;
         j = 0; jEnd = mesh.Indices.size(); jStep = 1;
     }
 
-    glNewList(meshDrawList + angleType + drawListOffset, GL_COMPILE);
+    glNewList(getMesh(angleType, vMirror, side), GL_COMPILE);
 
     glBegin(GL_TRIANGLES);
     glColor3f(0.45f, 0.185f, 0.16f);
@@ -100,39 +109,64 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror) {
                    vertex.Position.Z);
     }
 
+    drawMortar(angleType, side);
+
+    glEndList();
+}
+
+void
+Brick::drawMortar(Brick::Angle angleType, bool side) {
+    float xStart = 0.0f;
+    float xEnd = 0.0f;
     float xOffset;
 
-    switch (angleType) {
-    case Angle::NO:
+    if (side)
+        xOffset = 0.5f;
+    else
         xOffset = 0.0f;
-        break;
 
+    float* xChanging;
+
+    if (side)
+        xChanging = &xEnd;
+    else
+        xChanging = &xStart;
+
+    switch (angleType) {
     case Angle::INNER:
-        xOffset = -0.0075f;
+        *xChanging = -0.0075f;
         break;
 
     case Angle::OUTER:
-        xOffset = 0.0075f;
+        *xChanging = 0.0075f;
         break;
     }
+
+    xEnd *= -1.0f;
 
     glColor3f(0.45f, 0.45f, 0.45f);
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(0.5f,     0.5f, -0.5075f);
-    glVertex3f(xOffset,  0.5f, -0.5075f);
-    glVertex3f(xOffset, -0.5f, -0.5075f);
+    glVertex3f(xOffset + xEnd + 0.5f,    0.5f, -0.5075f);
+    glVertex3f(xOffset + xStart,  0.5f, -0.5075f);
+    glVertex3f(xOffset + xStart, -0.5f, -0.5075f);
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
-    glVertex3f(0.5f,    -0.5f, -0.5075f);
-    glVertex3f(0.5f,     0.5f, -0.5075f);
-    glVertex3f(xOffset, -0.5f, -0.5075f);
+    glVertex3f(xOffset + xEnd + 0.5f,   -0.5f, -0.5075f);
+    glVertex3f(xOffset + xEnd + 0.5f,    0.5f, -0.5075f);
+    glVertex3f(xOffset + xStart, -0.5f, -0.5075f);
 
     glEnd();
+}
 
-    glEndList();
+unsigned int
+Brick::getMesh(Brick::Angle angleType, bool vMirror, bool side) {
+    if (angleType == Angle::NO)
+        return meshDrawList + vMirror * (meshCount / 2);
+
+    return meshDrawList + 1 + (angleType - 1) * 2 + side + vMirror * (meshCount / 2);
 }
 
 Brick::Angle
@@ -146,51 +180,12 @@ Brick::getAngle(bool openeds[]) {
 void
 Brick::renderWall(Angle leftAngle, Angle rightAngle, bool flip) {
     glTranslatef(-0.5f, 0.0f, 0.0f);
+    glCallList(getMesh(leftAngle, flip, false));
 
-    int drawListOffset;
-    int drawListAntiOffset;
-
-    if (flip) {
-        drawListOffset = 3;
-        drawListAntiOffset = 0;
-    } else {
-        drawListOffset = 0;
-        drawListAntiOffset = 3;
-    }
-
-    switch (leftAngle) {
-    case Angle::NO:
-        glCallList(meshDrawList + drawListOffset);
-        break;
-
-    case Angle::INNER:
-        glCallList(meshDrawList + drawListOffset + 1);
-        break;
-
-    case Angle::OUTER:
-        glCallList(meshDrawList + drawListOffset + 2);
-        break;
-    }
-
-    glTranslatef(0.5f, 0.0f, 0.0f);
-
-    switch (rightAngle) {
-    case Angle::NO:
-        glCallList(meshDrawList + drawListOffset);
-        break;
-
-    case Angle::INNER:
+    if (rightAngle == Angle::NO)
         glTranslatef(0.5f, 0.0f, 0.0f);
-        glScalef(-1.0f, -1.0f, 1.0f);
-        glCallList(meshDrawList + drawListAntiOffset + 1);
-        break;
 
-    case Angle::OUTER:
-        glTranslatef(0.5f, 0.0f, 0.0f);
-        glScalef(-1.0f, -1.0f, 1.0f);
-        glCallList(meshDrawList + drawListAntiOffset + 2);
-        break;
-    }
+    glCallList(getMesh(rightAngle, flip, true));
 }
 
 void
@@ -236,7 +231,7 @@ Brick::onDisable() {
     glDisable(GL_LIGHT1);
 
     if (meshDrawList != -1)
-        glDeleteLists(meshDrawList, 6);
+        glDeleteLists(meshDrawList, meshCount);
 }
 
 void

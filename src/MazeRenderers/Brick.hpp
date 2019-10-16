@@ -44,12 +44,16 @@ private:
         OUTER = 2,
     };
 
+    const int meshCount;
+
     Game& game;
     Skybox skybox;
     int meshDrawList;
 
     void compileWalls();
-    void compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror);
+    void compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror, bool side);
+    void drawMortar(Angle angleType, bool side);
+    unsigned int getMesh(Angle angleType, bool vMirror, bool side);
 
     Angle getAngle(bool openeds[]);
 
