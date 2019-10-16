@@ -39,9 +39,6 @@ protected:
     unsigned int drawList;
     bool deleted;
 
-    int oldHcpX;
-    int oldHcpY;
-
     virtual void setStates();
     virtual void onEnable();
     virtual void onDisable();
@@ -49,6 +46,10 @@ protected:
     virtual void enableChunk(int num);
     virtual void compileChunk(int num) = 0;
     virtual void renderChunks(int chunks[]);
+
+private:
+    int oldHcpX;
+    int oldHcpY;
 };
 
 }
