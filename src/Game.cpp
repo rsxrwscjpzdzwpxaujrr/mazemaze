@@ -148,10 +148,10 @@ Game::render() {
 
         glBegin(GL_QUADS);
 
-        glColor4f(0x2D / 255.0f,
-                  0x2D / 255.0f,
-                  0x2D / 255.0f,
-                  0xB0 / 255.0f);
+        glColor4f(0x20 / 255.0f,
+                  0x20 / 255.0f,
+                  0x20 / 255.0f,
+                  0xD0 / 255.0f);
 
         glVertex3f(100.0f, -100.0f, -1.0f);
         glVertex3f(100.0f, 100.0f, -1.0f);
