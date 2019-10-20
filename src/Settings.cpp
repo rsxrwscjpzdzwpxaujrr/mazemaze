@@ -57,6 +57,7 @@ Settings::Settings(bool readConfig) :
     antialiasing = 0;
     autosave = true;
     autosaveTime = 30.0f;
+    sensitivity = 0.001f;
 
     controls["up"]    = sf::Keyboard::W;
     controls["down"]  = sf::Keyboard::S;
@@ -129,6 +130,11 @@ Settings::getSupportedLangsCount() const {
     return supportedLangsCount;
 }
 
+float
+Settings::getSensitivity() const {
+    return sensitivity;
+}
+
 void
 Settings::setLang(const std::string &lang) {
     bool fallback = true;
@@ -192,6 +198,11 @@ Settings::setShowFps(bool showFps) {
 void
 Settings::setKey(const std::string& control, sf::Keyboard::Key key) {
     controls[control] = key;
+}
+
+void
+Settings::setSensitivity(float sensitivity) {
+    Settings::sensitivity = sensitivity;
 }
 
 std::string
@@ -269,6 +280,8 @@ Settings::writeConfig() {
         addAndSet(controls, Setting::TypeInt, it->first.c_str(), it->second);
     }
 
+    addAndSet(controls, Setting::TypeFloat, "sensitivity", getSensitivity());
+
     config.writeFile(configFile.c_str());
 }
 
@@ -297,6 +310,8 @@ Settings::readConfig() {
 
         Settings::controls[control] = key;
     }
+
+    setSensitivity(controls["sensitivity"]);
 
     const Setting& graphics = root["graphics"];
 

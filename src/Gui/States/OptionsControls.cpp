@@ -52,12 +52,24 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
     auto window          = Window::Create(Window::Style::BACKGROUND);
     auto windowBox       = Box::Create(Box::Orientation::VERTICAL);
     auto windowAlignment = Alignment::Create();
+    auto scroll          = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
+
+    windowBox->Pack(addToOptionsList(pgtx("options", "Mouse sensitivity"), scroll));
+
+    scroll->SetRequisition({200.0f, 28.0f});
+
+    sensitivityAdjustement = scroll->GetAdjustment();
+
+    sensitivityAdjustement->SetLower(0.0001f);
+    sensitivityAdjustement->SetUpper(0.003f);
+
+    sensitivityAdjustement->SetMinorStep((0.003f - 0.0001f) / 200.0f);
 
     for (int i = 0; i < buttonsCount; i++) {
         keyButtons[i] = Button::Create();
         updateKeyButtonLabel(i);
 
-        keyButtons[i]->SetRequisition({150.0f, 28.0f});
+        keyButtons[i]->SetRequisition({200.0f, 28.0f});
         keyButtons[i]->SetClass("verySmall");
         keyButtons[i]->SetZOrder(0);
 
@@ -94,6 +106,9 @@ OptionsControls::~OptionsControls() {
 void
 OptionsControls::show(bool show) {
     State::show(show);
+
+    if (show)
+        sensitivityAdjustement->SetValue(settings.getSensitivity());
 
     if (!show && keyChangeWindow.isOpened())
         keyChangeWindow.close();
@@ -136,6 +151,10 @@ OptionsControls::updateKeyButtonLabel(int button) {
 
 void
 OptionsControls::initSignals(MainMenu& mainMenu) {
+    sensitivityAdjustement->GetSignal(Adjustment::OnChange).Connect([this] () {
+        settings.setSensitivity(sensitivityAdjustement->GetValue());
+    });
+
     backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
         mainMenu.back();
     });

@@ -53,6 +53,7 @@ public:
     sf::Keyboard::Key getKey(const std::string& control);
     const Language*   getSupportedLangs() const;
     int               getSupportedLangsCount() const;
+    float             getSensitivity() const;
 
     void setLang(const std::string &lang);
     void setAntialiasing(unsigned int antialiasing);
@@ -63,6 +64,7 @@ public:
     void setRenderer(int id);
     void setShowFps(bool showFps);
     void setKey(const std::string& control, sf::Keyboard::Key key);
+    void setSensitivity(float sensitivity);
 
 private:
     std::string configFile;
@@ -77,6 +79,7 @@ private:
     float autosaveTime;
     int renderer;
     bool showFps;
+    float sensitivity;
 
     std::map<std::string, sf::Keyboard::Key> controls;
 

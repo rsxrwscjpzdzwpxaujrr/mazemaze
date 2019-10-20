@@ -45,8 +45,6 @@ Player::~Player() = default;
 
 void
 Player::tick(float deltaTime, sf::Window& window, Game& game) {
-    float mouseSensitivity = 0.001f;
-
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
@@ -93,13 +91,14 @@ Player::tick(float deltaTime, sf::Window& window, Game& game) {
     sf::Vector2i cursor = sf::Mouse::getPosition(window);
 
     float newPitch = pitch;
+    float sensitivity = settings.getSensitivity();
 
-    newPitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * mouseSensitivity;
+    newPitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * sensitivity;
 
     if (newPitch > -M_PI_2f && newPitch < M_PI_2f)
         pitch = newPitch;
 
-    yaw   += (cursor.x - static_cast<int>(windowHalfSize.x)) * mouseSensitivity;
+    yaw   += (cursor.x - static_cast<int>(windowHalfSize.x)) * sensitivity;
 
     camera.setPitch(pitch);
     camera.setYaw(yaw);

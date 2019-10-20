@@ -72,6 +72,11 @@ Scrollbar {
     BackgroundColor: #00000000;
 }
 
+Scale {
+    SliderColor: #3D3D3DFF;
+    TroughColor: #323232FF;
+}
+
 ComboBox {
     FontSize: 16.0f;
     FontName: data/Noto-Sans-M.ttf;

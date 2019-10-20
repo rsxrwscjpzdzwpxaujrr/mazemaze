@@ -25,6 +25,7 @@
 #include <SFML/System.hpp>
 
 #include <SFGUI/Widgets.hpp>
+#include <SFGUI/Adjustment.hpp>
 
 namespace mazemaze {
 
@@ -79,9 +80,10 @@ private:
 
     Settings& settings;
 
-    sfg::Button::Ptr  backButton;
-    sfg::Button::Ptr* keyButtons;
-    sf::String*       keyLabels;
+    sfg::Adjustment::Ptr sensitivityAdjustement;
+    sfg::Button::Ptr     backButton;
+    sfg::Button::Ptr*    keyButtons;
+    sf::String*          keyLabels;
 
     KeyChangeWindow keyChangeWindow;
 
