@@ -54,22 +54,26 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
     auto windowAlignment = Alignment::Create();
     auto scroll          = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
 
+    sf::Vector2f buttonSize         = {200.0f,  28.0f};
+    sf::Vector2f adjustmementBounds = {0.0001f, 0.003f};
+
     windowBox->Pack(addToOptionsList(pgtx("options", "Mouse sensitivity"), scroll));
 
-    scroll->SetRequisition({200.0f, 28.0f});
+    scroll->SetRequisition(buttonSize);
 
     sensitivityAdjustement = scroll->GetAdjustment();
 
-    sensitivityAdjustement->SetLower(0.0001f);
-    sensitivityAdjustement->SetUpper(0.003f);
+    sensitivityAdjustement->SetLower(adjustmementBounds.x);
+    sensitivityAdjustement->SetUpper(adjustmementBounds.y);
 
-    sensitivityAdjustement->SetMinorStep((0.003f - 0.0001f) / 200.0f);
+    sensitivityAdjustement->SetMinorStep(
+        (adjustmementBounds.y - adjustmementBounds.x) / buttonSize.x);
 
     for (int i = 0; i < buttonsCount; i++) {
         keyButtons[i] = Button::Create();
         updateKeyButtonLabel(i);
 
-        keyButtons[i]->SetRequisition({200.0f, 28.0f});
+        keyButtons[i]->SetRequisition(buttonSize);
         keyButtons[i]->SetClass("verySmall");
         keyButtons[i]->SetZOrder(0);
 
