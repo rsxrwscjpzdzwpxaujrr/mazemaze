@@ -23,7 +23,7 @@
 #include "../MainMenu.hpp"
 
 #include "NewGame.hpp"
-#include "Options.hpp"
+#include "OptionsMenu.hpp"
 
 using namespace sfg;
 
@@ -41,7 +41,7 @@ Main::Main(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()
 
     updateButtons(Saver::getInstance().saveExists());
 
-    Options* options = new Options(mainMenu, settings);
+    OptionsMenu* options = new OptionsMenu(mainMenu, settings);
 
     newGameState = mainMenu.addState(new NewGame(mainMenu));
     optionsState = mainMenu.addState(options);

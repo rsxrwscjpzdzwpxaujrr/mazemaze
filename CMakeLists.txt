@@ -86,6 +86,8 @@ target_sources(
     src/Gui/States/Hud.hpp
     src/Gui/States/Main.cpp
     src/Gui/States/Main.hpp
+    src/Gui/States/OptionsMenu.cpp
+    src/Gui/States/OptionsMenu.hpp
     src/Gui/States/Options.cpp
     src/Gui/States/Options.hpp
     src/Gui/States/OptionsGraphics.cpp

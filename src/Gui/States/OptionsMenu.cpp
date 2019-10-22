@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Options.hpp"
+#include "OptionsMenu.hpp"
 
 #include "../../utils.hpp"
 #include "../../Settings.hpp"
@@ -33,63 +33,50 @@ namespace gui {
 namespace states {
 
 void
-Options::initSignals(MainMenu& mainMenu) {
+OptionsMenu::initSignals(MainMenu& mainMenu) {
     backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
         mainMenu.back();
     });
+
+    graphicsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(graphicsState);
+    });
+
+    controlsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(controlsState);
+    });
+
+    otherButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
+        mainMenu.setState(otherState);
+    });
 }
 
-Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
-        settings  (settings),
-        windowBox (Box::Create(Box::Orientation::VERTICAL)),
-        backButton(Button::Create(pgtx("options", "Back"))) {
-    auto window          = Window::Create(Window::Style::BACKGROUND);
-    auto windowAlignment = Alignment::Create();
-
-    windowAlignment->SetScale({1.0f, 0.0f});
-    windowAlignment->SetAlignment({0.0f, 0.0f});
-    windowAlignment->Add(windowBox);
-
-    window->Add(windowAlignment);
-    window->SetRequisition({512.0f, 300.0f});
-
+OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
+        graphicsButton (Button::Create(pgtx("options", "Graphics"))),
+        controlsButton (Button::Create(pgtx("options", "Controls"))),
+        otherButton    (Button::Create(pgtx("options", "Other"))),
+        backButton     (Button::Create(pgtx("options", "Back"))) {
     box->SetOrientation(Box::Orientation::VERTICAL);
     box->SetRequisition({300.0f, box->GetRequisition().y});
     box->SetSpacing(20.0f);
 
-    box->SetOrientation(Box::Orientation::VERTICAL);
-    box->SetSpacing(20.0f);
-    box->Pack(window);
+    box->Pack(graphicsButton);
+    box->Pack(controlsButton);
+    box->Pack(otherButton);
     box->Pack(backButton);
 
     desktop.Add(box);
 
     initSignals(mainMenu);
+
+    center();
+
+    graphicsState = mainMenu.addState(new OptionsGraphics(mainMenu, settings));
+    controlsState = mainMenu.addState(new OptionsControls(mainMenu, settings));
+    otherState    = mainMenu.addState(new OptionsOther   (mainMenu, settings));
 }
 
-Box::Ptr Options::makeOption(const sf::String& label, Widget::Ptr widget) {
-    auto alignment1 = Alignment::Create();
-    auto alignment2 = Alignment::Create();
-    auto box        = Box::Create();
-
-    alignment1->Add(Label::Create(label));
-
-    alignment1->SetScale({0.0f, 0.0f});
-    alignment1->SetAlignment({0.0f, 0.5f});
-
-    alignment2->Add(widget);
-
-    alignment2->SetScale({0.0f, 0.0f});
-    alignment2->SetAlignment({1.0f, 0.5f});
-
-    box->Pack(alignment1);
-    box->Pack(alignment2);
-    box->SetClass("options");
-
-    return box;
-}
-
-Options::~Options() = default;
+OptionsMenu::~OptionsMenu() = default;
 
 }
 }

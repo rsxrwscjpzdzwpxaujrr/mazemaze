@@ -19,6 +19,8 @@
 
 #include "../State.hpp"
 
+#include "Options.hpp"
+
 #include <string>
 
 #include <SFML/Window.hpp>
@@ -37,7 +39,7 @@ class MainMenu;
 
 namespace states {
 
-class OptionsControls : public State {
+class OptionsControls : public Options {
 public:
     static const int buttonsCount;
 
@@ -46,8 +48,6 @@ public:
 
     void show(bool show) override;
     void tick(float deltatime) override;
-
-    void center() override;
 
 private:
     class KeyChangeWindow {
@@ -78,10 +78,7 @@ private:
         void initSignals();
     };
 
-    Settings& settings;
-
     sfg::Adjustment::Ptr sensitivityAdjustement;
-    sfg::Button::Ptr     backButton;
     sfg::Button::Ptr*    keyButtons;
     sf::String*          keyLabels;
 
@@ -90,11 +87,9 @@ private:
     sf::Keyboard::Key  selectedKey;
     std::string*       keyControls;
 
-    sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
-
     void updateKeyButtonLabel(int button);
 
-    void initSignals(MainMenu& mainMenu);
+    void initSignals();
 
     sf::String getKeyName(sf::Keyboard::Key key);
 };

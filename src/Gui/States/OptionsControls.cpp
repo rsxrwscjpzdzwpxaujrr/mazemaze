@@ -32,9 +32,7 @@ namespace states {
 const int OptionsControls::buttonsCount = 4;
 
 OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop()),
-        settings(settings),
-        backButton   (Button::Create(pgtx("options", "Back"))),
+        Options(mainMenu, settings),
         keyButtons(new Button::Ptr[buttonsCount]),
         keyLabels(new sf::String[buttonsCount] {
             pgtx("options", "Forward"),
@@ -49,19 +47,16 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
             "right",
             "left",
         }) {
-    auto window          = Window::Create(Window::Style::BACKGROUND);
-    auto windowBox       = Box::Create(Box::Orientation::VERTICAL);
-    auto windowAlignment = Alignment::Create();
-    auto scroll          = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
+    auto sensitivitySlider = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
 
     sf::Vector2f buttonSize         = {200.0f,  28.0f};
     sf::Vector2f adjustmementBounds = {0.0001f, 0.003f};
 
-    windowBox->Pack(addToOptionsList(pgtx("options", "Mouse sensitivity"), scroll));
+    windowBox->Pack(makeOption(pgtx("options", "Mouse sensitivity"), sensitivitySlider));
 
-    scroll->SetRequisition(buttonSize);
+    sensitivitySlider->SetRequisition(buttonSize);
 
-    sensitivityAdjustement = scroll->GetAdjustment();
+    sensitivityAdjustement = sensitivitySlider->GetAdjustment();
 
     sensitivityAdjustement->SetLower(adjustmementBounds.x);
     sensitivityAdjustement->SetUpper(adjustmementBounds.y);
@@ -77,26 +72,10 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
         keyButtons[i]->SetClass("verySmall");
         keyButtons[i]->SetZOrder(0);
 
-        windowBox->Pack(addToOptionsList(keyLabels[i], keyButtons[i]));
+        windowBox->Pack(makeOption(keyLabels[i], keyButtons[i]));
     }
 
-    windowAlignment->SetScale({1.0f, 0.0f});
-    windowAlignment->SetAlignment({0.0f, 0.0f});
-    windowAlignment->Add(windowBox);
-
-    window->Add(windowAlignment);
-    window->SetRequisition({512.0f, 300.0f});
-
-    box->SetOrientation(Box::Orientation::VERTICAL);
-    box->SetSpacing(20.0f);
-    box->Pack(window);
-    box->Pack(backButton);
-
-    desktop.Add(box);
-
-    initSignals(mainMenu);
-
-    window->SetState(Window::State::INSENSITIVE);
+    initSignals();
 
     center();
 }
@@ -123,29 +102,6 @@ OptionsControls::tick(float) {
     keyChangeWindow.tick();
 }
 
-Box::Ptr
-OptionsControls::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
-    auto alignment1 = Alignment::Create();
-    auto alignment2 = Alignment::Create();
-    auto box        = Box::Create();
-
-    alignment1->Add(Label::Create(label));
-
-    alignment1->SetScale({0.0f, 0.0f});
-    alignment1->SetAlignment({0.0f, 0.5f});
-
-    alignment2->Add(widget);
-
-    alignment2->SetScale({0.0f, 0.0f});
-    alignment2->SetAlignment({1.0f, 0.5f});
-
-    box->Pack(alignment1);
-    box->Pack(alignment2);
-    box->SetClass("options");
-
-    return box;
-}
-
 void
 OptionsControls::updateKeyButtonLabel(int button) {
     std::string control = keyControls[button];
@@ -154,13 +110,9 @@ OptionsControls::updateKeyButtonLabel(int button) {
 }
 
 void
-OptionsControls::initSignals(MainMenu& mainMenu) {
+OptionsControls::initSignals() {
     sensitivityAdjustement->GetSignal(Adjustment::OnChange).Connect([this] () {
         settings.setSensitivity(sensitivityAdjustement->GetValue());
-    });
-
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.back();
     });
 
     for (int i = 0; i < buttonsCount; i++) {
@@ -168,14 +120,6 @@ OptionsControls::initSignals(MainMenu& mainMenu) {
             keyChangeWindow.open(i);
         });
     }
-}
-
-void
-OptionsControls::center() {
-    State::center();
-
-    if (keyChangeWindow.isOpened())
-        State::center(keyChangeWindow.getWindow());
 }
 
 }

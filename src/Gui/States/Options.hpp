@@ -34,15 +34,15 @@ public:
     explicit Options(MainMenu& mainMenu, Settings& settings);
     ~Options() override;
 
-private:
-    sfg::Button::Ptr graphicsButton;
-    sfg::Button::Ptr controlsButton;
-    sfg::Button::Ptr otherButton;
-    sfg::Button::Ptr backButton;
+protected:
+    Settings& settings;
 
-    int graphicsState;
-    int controlsState;
-    int otherState;
+    sfg::Box::Ptr windowBox;
+
+    sfg::Box::Ptr makeOption(const sf::String& label, sfg::Widget::Ptr widget);
+
+private:
+    sfg::Button::Ptr backButton;
 
     void initSignals(MainMenu& mainMenu);
 };

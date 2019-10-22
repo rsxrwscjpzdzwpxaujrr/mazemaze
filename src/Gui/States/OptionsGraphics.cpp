@@ -28,31 +28,8 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Box::Ptr
-OptionsGraphics::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
-    auto alignment1 = Alignment::Create();
-    auto alignment2 = Alignment::Create();
-    auto box        = Box::Create();
-
-    alignment1->Add(Label::Create(label));
-
-    alignment1->SetScale({0.0f, 0.0f});
-    alignment1->SetAlignment({0.0f, 0.5f});
-
-    alignment2->Add(widget);
-
-    alignment2->SetScale({0.0f, 0.0f});
-    alignment2->SetAlignment({1.0f, 0.5f});
-
-    box->Pack(alignment1);
-    box->Pack(alignment2);
-    box->SetClass("options");
-
-    return box;
-}
-
 void
-OptionsGraphics::initSignals(MainMenu& mainMenu) {
+OptionsGraphics::initSignals() {
     fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings.setFullscreen(fullscreenCheck->IsActive());
     });
@@ -72,10 +49,6 @@ OptionsGraphics::initSignals(MainMenu& mainMenu) {
 
     vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings.setVsync(vsyncCheck->IsActive());
-    });
-
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.back();
     });
 
     styleCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
@@ -119,37 +92,17 @@ OptionsGraphics::initOptions() {
 }
 
 OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop()),
-        settings(settings),
-        backButton       (Button::Create(pgtx("options", "Back"))),
+        Options(mainMenu, settings),
         fullscreenCheck  (CheckButton::Create(L"")),
         vsyncCheck       (CheckButton::Create(L"")),
         antialiasingCombo(ComboBox::Create()),
         styleCombo       (ComboBox::Create()) {
-    auto window             = Window::Create(Window::Style::BACKGROUND);
-    auto windowBox          = Box::Create(Box::Orientation::VERTICAL);
-    auto windowAlignment    = Alignment::Create();
+    windowBox->Pack(makeOption(pgtx("options", "Fullscreen"), fullscreenCheck));
+    windowBox->Pack(makeOption(pgtx("options", "Antialiasing"), antialiasingCombo));
+    windowBox->Pack(makeOption(pgtx("options", "V-Sync"), vsyncCheck));
+    windowBox->Pack(makeOption(pgtx("options", "Style"), styleCombo));
 
-    windowBox->Pack(addToOptionsList(pgtx("options", "Fullscreen"), fullscreenCheck));
-    windowBox->Pack(addToOptionsList(pgtx("options", "Antialiasing"), antialiasingCombo));
-    windowBox->Pack(addToOptionsList(pgtx("options", "V-Sync"), vsyncCheck));
-    windowBox->Pack(addToOptionsList(pgtx("options", "Style"), styleCombo));
-
-    windowAlignment->SetScale({1.0f, 0.0f});
-    windowAlignment->SetAlignment({0.0f, 0.0f});
-    windowAlignment->Add(windowBox);
-
-    window->Add(windowAlignment);
-    window->SetRequisition({512.0f, 300.0f});
-
-    box->SetOrientation(Box::Orientation::VERTICAL);
-    box->SetSpacing(20.0f);
-    box->Pack(window);
-    box->Pack(backButton);
-
-    desktop.Add(box);
-
-    initSignals(mainMenu);
+    initSignals();
     initOptions();
 
     center();

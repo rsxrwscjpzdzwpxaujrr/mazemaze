@@ -117,7 +117,7 @@ MainMenu::getOptionsState() const {
 }
 
 void
-MainMenu::setOptionsState(states::Options&, int state) {
+MainMenu::setOptionsState(states::OptionsMenu&, int state) {
     optionsState = state;
 }
 

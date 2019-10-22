@@ -31,7 +31,7 @@ class State;
 
 namespace states {
 
-class Options;
+class OptionsMenu;
 
 }
 
@@ -48,7 +48,7 @@ public:
     void reopen();
 
     int  getOptionsState() const;
-    void setOptionsState(states::Options& options, int state);
+    void setOptionsState(states::OptionsMenu& options, int state);
 
 private:
     Game* game;

@@ -28,29 +28,6 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Box::Ptr
-OptionsOther::addToOptionsList(const sf::String& label, Widget::Ptr widget) {
-    auto alignment1 = Alignment::Create();
-    auto alignment2 = Alignment::Create();
-    auto box        = Box::Create();
-
-    alignment1->Add(Label::Create(label));
-
-    alignment1->SetScale({0.0f, 0.0f});
-    alignment1->SetAlignment({0.0f, 0.5f});
-
-    alignment2->Add(widget);
-
-    alignment2->SetScale({0.0f, 0.0f});
-    alignment2->SetAlignment({1.0f, 0.5f});
-
-    box->Pack(alignment1);
-    box->Pack(alignment2);
-    box->SetClass("options");
-
-    return box;
-}
-
 void
 OptionsOther::initSignals(MainMenu& mainMenu) {
     langCombo->GetSignal(ComboBox::OnSelect).Connect([this, &mainMenu] () {
@@ -63,10 +40,6 @@ OptionsOther::initSignals(MainMenu& mainMenu) {
 
     autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
         settings.setAutosave(autosaveCheck->IsActive());
-    });
-
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.back();
     });
 
     showFpsCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
@@ -90,34 +63,13 @@ OptionsOther::initOptions() {
     showFpsCheck->SetActive(settings.getShowFps());
 }
 
-OptionsOther::OptionsOther(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop()),
-        settings(settings),
-        backButton   (Button::Create(pgtx("options", "Back"))),
+OptionsOther::OptionsOther(MainMenu& mainMenu, Settings& settings) : Options(mainMenu, settings),
         langCombo    (ComboBox::Create()),
         autosaveCheck(CheckButton::Create(L"")),
         showFpsCheck (CheckButton::Create(L"")) {
-    auto window          = Window::Create(Window::Style::BACKGROUND);
-    auto windowBox       = Box::Create(Box::Orientation::VERTICAL);
-    auto windowAlignment = Alignment::Create();
-
-    windowBox->Pack(addToOptionsList(pgtx("options", "Language"), langCombo));
-    windowBox->Pack(addToOptionsList(pgtx("options", "Autosave"), autosaveCheck));
-    windowBox->Pack(addToOptionsList(pgtx("options", "Show FPS"), showFpsCheck));
-
-    windowAlignment->SetScale({1.0f, 0.0f});
-    windowAlignment->SetAlignment({0.0f, 0.0f});
-    windowAlignment->Add(windowBox);
-
-    window->Add(windowAlignment);
-    window->SetRequisition({512.0f, 300.0f});
-
-    box->SetOrientation(Box::Orientation::VERTICAL);
-    box->SetSpacing(20.0f);
-    box->Pack(window);
-    box->Pack(backButton);
-
-    desktop.Add(box);
+    windowBox->Pack(makeOption(pgtx("options", "Language"), langCombo));
+    windowBox->Pack(makeOption(pgtx("options", "Autosave"), autosaveCheck));
+    windowBox->Pack(makeOption(pgtx("options", "Show FPS"), showFpsCheck));
 
     initSignals(mainMenu);
     initOptions();

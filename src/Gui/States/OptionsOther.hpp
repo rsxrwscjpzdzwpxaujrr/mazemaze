@@ -19,6 +19,8 @@
 
 #include "../State.hpp"
 
+#include "Options.hpp"
+
 #include <SFGUI/SFGUI.hpp>
 
 namespace mazemaze {
@@ -31,20 +33,15 @@ class MainMenu;
 
 namespace states {
 
-class OptionsOther : public State {
+class OptionsOther : public Options {
 public:
     explicit OptionsOther(MainMenu& mainMenu, Settings& settings);
     ~OptionsOther() override;
 
 private:
-    Settings& settings;
-
-    sfg::Button::Ptr      backButton;
     sfg::ComboBox::Ptr    langCombo;
     sfg::CheckButton::Ptr autosaveCheck;
     sfg::CheckButton::Ptr showFpsCheck;
-
-    sfg::Box::Ptr addToOptionsList(const sf::String& label, sfg::Widget::Ptr widget);
 
     void initSignals(MainMenu& mainMenu);
     void initOptions();

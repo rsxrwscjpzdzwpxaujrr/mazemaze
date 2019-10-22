@@ -19,10 +19,6 @@
 
 #include "../State.hpp"
 
-#include "Options.hpp"
-
-#include <SFGUI/SFGUI.hpp>
-
 namespace mazemaze {
 
 class Settings;
@@ -33,20 +29,22 @@ class MainMenu;
 
 namespace states {
 
-class OptionsGraphics : public Options {
+class OptionsMenu : public State {
 public:
-    explicit OptionsGraphics(MainMenu& mainMenu, Settings& settings);
-    ~OptionsGraphics() override;
+    explicit OptionsMenu(MainMenu& mainMenu, Settings& settings);
+    ~OptionsMenu() override;
 
 private:
-    sfg::CheckButton::Ptr fullscreenCheck;
-    sfg::CheckButton::Ptr vsyncCheck;
-    sfg::ComboBox::Ptr    antialiasingCombo;
-    sfg::ComboBox::Ptr    styleCombo;
+    sfg::Button::Ptr graphicsButton;
+    sfg::Button::Ptr controlsButton;
+    sfg::Button::Ptr otherButton;
+    sfg::Button::Ptr backButton;
 
-    void initSignals();
-    void initAntialiasingCombo();
-    void initOptions();
+    int graphicsState;
+    int controlsState;
+    int otherState;
+
+    void initSignals(MainMenu& mainMenu);
 };
 
 }
