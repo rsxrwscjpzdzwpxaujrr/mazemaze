@@ -98,7 +98,7 @@ MainMenu::reopen() {
     do {
         stateStack.push(getState());
         back();
-    } while (getState() != 0);
+    } while (getState() != mainState);
 
     mainState = addState(new states::Main(*this, settings));
 
