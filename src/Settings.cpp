@@ -17,11 +17,12 @@
 
 #include "Settings.hpp"
 
-#include <cstdlib>
+#include <stdlib.h>
 #include <gettext.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 # include <windows.h>
+# include "utils.hpp"
 #else
 # include <regex>
 #endif
@@ -31,29 +32,55 @@
 
 namespace mazemaze {
 
+#ifdef _WIN32
+
+int
+setenv(const char *name, const char *value, int overwrite) {
+    int errcode = 0;
+
+    if(!overwrite) {
+        size_t envsize = 0;
+        errcode = getenv_s(&envsize, NULL, 0, name);
+
+        if(errcode || envsize)
+            return errcode;
+    }
+
+    return _putenv_s(name, value);
+}
+
+#endif
+
 Settings::Settings(bool readConfig) :
         configFile("config.cfg"),
-        fallbackLang("en"),
         supportedLangsCount(4),
-        supportedLangs(new Language[4] {Language(L"English",    "en"),
-                                        Language(L"Русский",    "ru"),
-                                        Language(L"Українська", "uk"),
-                                        Language(L"Қазақша",    "kk")}),
+        supportedLangs(new Language[4] {Language(L"English",    "en_US"),
+                                        Language(L"Русский",    "ru_RU"),
+                                        Language(L"Українська", "uk_UA"),
+                                        Language(L"Қазақша",    "kk_KZ")}),
         renderer(0) {
     if (readConfig) {
         if(Settings::readConfig())
             return;
     }
 
-    char* envLang = getenv("LANGUAGE");
-    std::string defaultLang;
+#ifdef _WIN32
 
-    if (envLang == nullptr)
-        defaultLang = getSystemLang();
+    setEnvironment();
+    resetLocales();
+
+#else
+
+    std::string tempLang = resetLocales();
+    int encFound = tempLang.find('.');
+
+    if (encFound != std::string::npos)
+        lang = tempLang.substr(0, encFound);
     else
-        defaultLang = envLang;
+        lang = tempLang;
 
-    setLang(defaultLang);
+#endif
+
     antialiasing = 0;
     autosave = true;
     autosaveTime = 30.0f;
@@ -137,25 +164,11 @@ Settings::getSensitivity() const {
 
 void
 Settings::setLang(const std::string &lang) {
-    bool fallback = true;
+    setenv("LANGUAGE", lang.c_str(), true);
 
-    for (int i = 0; i < supportedLangsCount; i++)
-        if (supportedLangs[i].code == lang) {
-            fallback = false;
-            break;
-        }
+    resetLocales();
 
-    if (fallback)
-        setLang(fallbackLang);
-    else {
-        Settings::lang = lang;
-        langEnv = "LANGUAGE=" + lang;
-
-        putenv(const_cast<char*>(langEnv.c_str()));
-
-        setlocale(LC_ALL, "");
-        setlocale(LC_NUMERIC, "C");
-    }
+    Settings::lang = lang;
 }
 
 void
@@ -206,38 +219,46 @@ Settings::setSensitivity(float sensitivity) {
 }
 
 std::string
-Settings::getSystemLang() {
-    std::string systemLang;
+Settings::resetLocales() {
+    char* resultPtr = setlocale(LC_ALL, "");
+
+    std::string result;
+
+    if (resultPtr != nullptr)
+        result = resultPtr;
+    else
+        result = "";
+
+    setlocale(LC_NUMERIC, "C");
+
+    return result;
+}
 
 #ifdef _WIN32
 
-    char* tempLang = new char[3];
+void
+Settings::setEnvironment() {
+    char* langName = new char[4];
+    char* countryName = new char[4];
 
     GetLocaleInfo(LOCALE_USER_DEFAULT,
                   LOCALE_SISO639LANGNAME,
-                  tempLang,
-                  sizeof(tempLang) / sizeof(char));
+                  langName,
+                  sizeof(langName) / sizeof(char));
 
-    systemLang = tempLang;
-    delete [] tempLang;
+    GetLocaleInfo(LOCALE_USER_DEFAULT,
+                  LOCALE_SISO3166CTRYNAME,
+                  countryName,
+                  sizeof(countryName) / sizeof(char));
 
-#else
+    std::string systemLang = format("%s_%s:%s", langName, countryName, langName);
 
-    std::smatch match;
-    std::string locale(std::locale("").name());
-    std::regex  regex("([a-z]{2,3})(?:_)");
+    setenv("LANGUAGE", systemLang.c_str(), true);
 
-    std::regex_search(locale, match, regex);
-
-    if (!match.empty())
-        systemLang = match[1].str();
-    else
-        systemLang = fallbackLang;
+    lang = format("%s_%s", langName, countryName);
+}
 
 #endif
-
-    return systemLang;
-}
 
 void
 Settings::writeConfig() {

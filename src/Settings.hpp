@@ -70,8 +70,6 @@ private:
     std::string configFile;
 
     std::string lang;
-    std::string langEnv;
-    const std::string fallbackLang;
     int supportedLangsCount;
     Language* supportedLangs;
     unsigned int antialiasing;
@@ -83,7 +81,13 @@ private:
 
     std::map<std::string, sf::Keyboard::Key> controls;
 
-    std::string getSystemLang();
+    std::string resetLocales();
+
+#ifdef _WIN32
+
+    void setEnvironment();
+
+#endif
 
     void writeConfig();
     bool readConfig();
