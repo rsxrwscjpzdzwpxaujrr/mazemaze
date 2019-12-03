@@ -31,6 +31,7 @@ public:
     explicit Player(float x, float y, float z);
     ~Player();
 
+    void start(Maze& maze);
     void tick(float deltaTime, sf::Window& window, Game& game);
 
     Camera& getCamera();

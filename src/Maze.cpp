@@ -18,8 +18,8 @@
 #include "Maze.hpp"
 
 #include <stack>
-#include <random>
 #include <stdexcept>
+#include <algorithm>
 
 #include "Chunk.hpp"
 
@@ -103,6 +103,9 @@ Maze::generate(unsigned int seed) {
     std::mt19937 randGen(seed);
     std::uniform_int_distribution<> sideDistrib(0, 3);
 
+    genExit(randGen);
+    genStart(randGen);
+
     bool done = false;
     bool tried[4] = {false};
 
@@ -155,6 +158,47 @@ Maze::setOpened(int x, int y, bool opened) {
             .setOpened(ux % Chunk::SIZE, uy % Chunk::SIZE, opened);
 }
 
+void
+Maze::genExit(std::mt19937& random) {
+    std::uniform_int_distribution<> distrib(0, 8);
+
+    int number;
+    int angle;
+    bool direction;
+
+    do {
+        number = distrib(random);
+        angle = number / 2;
+        direction = number % 2 == 1;
+
+        exitX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
+        exitY = std::max(std::min(angle / 2 * height, height - 2), 1);
+    } while (exitX == startX && exitY == startY && (width <= 3 && height <= 3));
+
+    int* directedCoord;
+
+    if (direction)
+        directedCoord = &exitX;
+    else
+        directedCoord = &exitY;
+
+    if (*directedCoord == 1)
+        (*directedCoord)--;
+    else
+        (*directedCoord)++;
+}
+
+void
+Maze::genStart(std::mt19937& random) {
+    std::uniform_int_distribution<> distrib(0, 4);
+
+    int number = distrib(random);
+    int angle = number / 2;
+
+    startX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
+    startY = std::max(std::min(angle / 2 * height, height - 2), 1);
+}
+
 int
 Maze::getWidth() const {
     return width;
@@ -167,12 +211,22 @@ Maze::getHeight() const {
 
 int
 Maze::getExitX() const {
-    return width - 1;
+    return exitX;
 }
 
 int
 Maze::getExitY() const {
-    return height - 2;
+    return exitY;
+}
+
+int
+Maze::getStartX() const {
+    return startX;
+}
+
+int
+Maze::getStartY() const {
+    return startY;
 }
 
 Chunk*

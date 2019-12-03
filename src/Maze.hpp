@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <random>
+
 #include <SFML/System/Vector2.hpp>
 
 namespace mazemaze {
@@ -36,6 +38,8 @@ public:
     unsigned int getSeed() const;
     int getExitX() const;
     int getExitY() const;
+    int getStartX() const;
+    int getStartY() const;
     Chunk* getChunks() const;
     int getChunksCount() const;
     unsigned int getChunksX() const;
@@ -45,8 +49,14 @@ public:
 
 private:
     void setOpened(int x, int y, bool opened);
+    void genExit(std::mt19937& random);
+    void genStart(std::mt19937& random);
     bool genStep(sf::Vector2i& generator, bool tried[], int side);
 
+    int exitX;
+    int exitY;
+    int startX;
+    int startY;
     int width;
     int height;
     unsigned int seed;

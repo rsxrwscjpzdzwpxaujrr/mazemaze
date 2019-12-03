@@ -44,6 +44,12 @@ Player::Player(float x, float y, float z) :
 Player::~Player() = default;
 
 void
+Player::start(Maze& maze) {
+    x = maze.getStartX() + 0.5f;
+    z = maze.getStartY() + 0.5f;
+}
+
+void
 Player::tick(float deltaTime, sf::Window& window, Game& game) {
     float M_PI_2f = static_cast<float>(M_PI_2);
 

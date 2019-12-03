@@ -78,6 +78,7 @@ Game::~Game() {
 void
 Game::newGame() {
     maze.generate(static_cast<unsigned int>(std::time(nullptr)));
+    player.start(maze);
     onLoad();
 }
 
