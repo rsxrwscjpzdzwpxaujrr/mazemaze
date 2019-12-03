@@ -173,7 +173,7 @@ Maze::genExit(std::mt19937& random) {
 
         exitX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
         exitY = std::max(std::min(angle / 2 * height, height - 2), 1);
-    } while (exitX == startX && exitY == startY && (width <= 3 && height <= 3));
+    } while (exitX == startX && exitY == startY && !(width <= 3 && height <= 3));
 
     int* directedCoord;
 
