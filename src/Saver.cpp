@@ -44,9 +44,11 @@ Saver::save(Game& game) {
                               maze.getHeight(),
                               static_cast<int32_t>(maze.getSeed()),
                               maze.getExitX(),
-                              maze.getExitY()};
+                              maze.getExitY(),
+                              maze.getStartX(),
+                              maze.getStartY()};
 
-        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 5);
+        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
         stream.seekp(0x400, std::ios::beg);
 
         for (int i = 0; i < maze.getChunksCount(); i++)
