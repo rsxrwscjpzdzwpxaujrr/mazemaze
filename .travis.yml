@@ -32,7 +32,15 @@ before_script:
     - cd SFML
     - mkdir build
     - cd build
-    - cmake ..
+    - >
+      cmake
+      -DSFML_BUILD_EXAMPLES=FALSE
+      -DSFML_BUILD_DOC=FALSE
+      -DSFML_BUILD_AUDIO=FALSE
+      -DSFML_BUILD_GRAPHICS=TRUE
+      -DSFML_BUILD_WINDOW=TRUE
+      -DSFML_BUILD_NETWORK=FALSE
+      ..
     - cmake --build .
     - sudo make install
     - cd ../..
