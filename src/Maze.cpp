@@ -103,8 +103,8 @@ Maze::generate(unsigned int seed) {
     std::mt19937 randGen(seed);
     std::uniform_int_distribution<> sideDistrib(0, 3);
 
-    genExit(randGen);
     genStart(randGen);
+    genExit(randGen);
 
     bool done = false;
     bool tried[4] = {false};
