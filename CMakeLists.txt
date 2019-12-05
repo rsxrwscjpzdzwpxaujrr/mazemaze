@@ -109,7 +109,9 @@ target_sources(
     src/MazeRenderers/Gray.cpp
     src/MazeRenderers/Gray.hpp
     src/MazeRenderers/Brick.cpp
-    src/MazeRenderers/Brick.hpp)
+    src/MazeRenderers/Brick.hpp
+    src/MazeRenderers/NightBrick.cpp
+    src/MazeRenderers/NightBrick.hpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})

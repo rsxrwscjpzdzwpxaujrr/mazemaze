@@ -88,6 +88,7 @@ OptionsGraphics::initOptions() {
     styleCombo->AppendItem(pgtx("options", "Classic"));
     styleCombo->AppendItem(pgtx("options", "Gray"));
     styleCombo->AppendItem(pgtx("options", "Brick"));
+    styleCombo->AppendItem(pgtx("options", "Night Brick"));
     styleCombo->SelectItem(settings.getRenderer());
 }
 

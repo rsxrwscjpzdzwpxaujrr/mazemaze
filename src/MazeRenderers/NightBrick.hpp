@@ -17,14 +17,9 @@
 
 #pragma once
 
-#include "../MazeRenderer.hpp"
-#include "../Skybox.hpp"
+#include "Brick.hpp"
 
-namespace objl {
-
-class Mesh;
-
-}
+#include "../StarSky.hpp"
 
 namespace mazemaze {
 
@@ -32,40 +27,17 @@ class Game;
 
 namespace renderers {
 
-class Brick : public MazeRenderer {
+class NightBrick : public Brick
+{
 public:
-    explicit Brick(Game& game);
-    ~Brick() override;
-
-protected:
-    Game& game;
+    explicit NightBrick(Game& game);
 
 private:
-    enum Angle {
-        NO = 0,
-        INNER = 1,
-        OUTER = 2,
-    };
+    StarSky starSky;
 
-    const int meshCount;
-
-    Skybox skybox;
-    int meshDrawList;
-
-    void compileWalls();
-    void compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror, bool side);
-    void drawMortar(Angle angleType, bool side);
-    unsigned int getMesh(Angle angleType, bool vMirror, bool side);
-
-    Angle getAngle(bool openeds[]);
-
-    void setStates() override;
-    void onEnable() override;
-    void onDisable() override;
-    void compileChunk(int num) override;
     void onTick(float deltaTime) override;
+    void setStates() override;
     void renderChunks(int chunks[]) override;
-    void renderWall(Angle leftAngle, Angle rightAngle, bool flip);
 };
 
 }
