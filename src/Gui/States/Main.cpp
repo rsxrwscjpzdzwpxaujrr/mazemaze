@@ -33,12 +33,11 @@ namespace states {
 
 Main::Main(MainMenu& mainMenu, Settings& settings) :
         State(mainMenu.getDesktop()),
+        buttonResume( Button::Create(pgtx("main", "Resume"))),
+        buttonNewGame(Button::Create(pgtx("main", "New Game"))),
+        buttonOptions(Button::Create(pgtx("main", "Options"))),
+        buttonExit(   Button::Create(pgtx("main", "Exit"))),
         settings(settings) {
-    buttonResume  = Button::Create(pgtx("main", "Resume"));
-    buttonNewGame = Button::Create(pgtx("main", "New Game"));
-    buttonOptions = Button::Create(pgtx("main", "Options"));
-    buttonExit    = Button::Create(pgtx("main", "Exit"));
-
     initSignals(mainMenu);
 
     updateButtons(Saver::getInstance().saveExists(settings));

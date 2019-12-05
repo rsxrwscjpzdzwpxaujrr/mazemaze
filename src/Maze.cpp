@@ -161,14 +161,11 @@ Maze::setOpened(int x, int y, bool opened) {
 void
 Maze::genExit(std::mt19937& random) {
     std::uniform_int_distribution<> distrib(0, 8);
-
-    int number;
-    int angle;
     bool direction;
 
     do {
-        number = distrib(random);
-        angle = number / 2;
+        int number = distrib(random);
+        int angle = number / 2;
         direction = number % 2 == 1;
 
         exitX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
