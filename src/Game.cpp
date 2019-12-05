@@ -111,7 +111,7 @@ Game::tick(float deltaTime) {
         player.tick(deltaTime, window, *this);
 
         if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave()) {
-            Saver::getInstance().save(*this);
+            Saver::getInstance().save(*this, settings);
             lastSaveTime = time;
         }
 
@@ -176,7 +176,7 @@ Game::setPaused(bool paused) {
             mainMenu.setState(pauseState);
 
             if (settings.getAutosave())
-                Saver::getInstance().save(*this);
+                Saver::getInstance().save(*this, settings);
         } else
             mainMenu.backTo(hudState);
     }
@@ -187,9 +187,9 @@ Game::setWantExit() {
     wantExit = true;
 
     if (won)
-        Saver::getInstance().deleteSave(*this);
+        Saver::getInstance().deleteSave(settings);
     else
-        Saver::getInstance().save(*this);
+        Saver::getInstance().save(*this, settings);
 
     mainMenu.stopGame();
 }

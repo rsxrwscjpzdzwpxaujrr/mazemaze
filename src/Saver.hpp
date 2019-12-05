@@ -33,9 +33,9 @@ class Settings;
 
 class Saver {
 public:
-    void save(Game& game);
-    void deleteSave(Game& game);
-    bool saveExists();
+    void save(Game& game, Settings& settings);
+    void deleteSave(Settings& settings);
+    bool saveExists(Settings& settings);
     Game* load(gui::MainMenu& mainMenu, Settings& setiings);
 
     Saver(Saver const&) = delete;
@@ -50,7 +50,7 @@ private:
     Saver();
     ~Saver();
 
-    const std::string filename;
+    std::string getFilename(Settings& settings);
 
     void writeChunk(std::ofstream& stream, Chunk& chunk);
     void readChunk(std::istream& stream, Chunk& chunk);

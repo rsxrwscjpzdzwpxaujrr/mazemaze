@@ -22,9 +22,15 @@
 
 #ifdef _WIN32
 # include <windows.h>
+# include <processenv.h>
+# include <shlobj_core.h>
 # include "utils.hpp"
 #else
 # include <regex>
+# include <wordexp.h>
+# include <errno.h>
+# include <unistd.h>
+# include <sys/stat.h>
 #endif
 
 #include "GraphicEngine.hpp"
@@ -49,16 +55,44 @@ setenv(const char *name, const char *value, int overwrite) {
     return _putenv_s(name, value);
 }
 
+#else
+
+bool
+mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP |  S_IXGRP | S_IROTH | S_IXOTH) {
+    char* p = const_cast<char*>(path);
+
+    while (*p != '\0') {
+        p++;
+
+        while(*p != '\0' && *p != '/')
+            p++;
+
+        char v = *p;
+        *p = '\0';
+
+        if(mkdir(path, mode) == -1 && errno != EEXIST) {
+            *p = v;
+            return false;
+        }
+
+        *p = v;
+    }
+
+    return true;
+}
+
 #endif
 
 Settings::Settings(bool readConfig) :
-        configFile("config.cfg"),
         supportedLangsCount(4),
         supportedLangs(new Language[4] {Language(L"English",    "en_US"),
                                         Language(L"Русский",    "ru_RU"),
                                         Language(L"Українська", "uk_UA"),
                                         Language(L"Қазақша",    "kk_KZ")}),
         renderer(0) {
+    initDataDir();
+    configFile = dataDir + "/config.cfg";
+
     if (readConfig) {
         if(Settings::readConfig())
             return;
@@ -162,6 +196,11 @@ Settings::getSensitivity() const {
     return sensitivity;
 }
 
+std::string
+Settings::getDataDir() const {
+    return dataDir;
+}
+
 void
 Settings::setLang(const std::string &lang) {
     setenv("LANGUAGE", lang.c_str(), true);
@@ -259,6 +298,47 @@ Settings::setEnvironment() {
 }
 
 #endif
+
+void
+Settings::initDataDir() {
+#ifdef _WIN32
+    char* localAppData = new char[256];
+
+    ExpandEnvironmentStringsA("%LOCALAPPDATA%", localAppData, 254);
+
+    dataDir = localAppData;
+
+#else
+
+    const char* xdg_data_home = getenv("XDG_DATA_HOME");
+
+    if (xdg_data_home == nullptr)
+        xdg_data_home = "$HOME/.local/share";
+
+    wordexp_t p;
+    wordexp(xdg_data_home, &p, 0);
+
+    const char* xdg_data_home_exp = p.we_wordv[0];
+
+    dataDir = xdg_data_home_exp;
+
+#endif
+
+    dataDir += PATH_SEPARATOR;
+    dataDir += "mazemaze";
+
+#ifdef _WIN32
+
+    SHCreateDirectoryExA(nullptr, localAppData, nullptr);
+    delete [] localAppData;
+
+#else
+
+    mkdirp(dataDir.c_str());
+    wordfree(&p);
+
+#endif
+}
 
 void
 Settings::writeConfig() {

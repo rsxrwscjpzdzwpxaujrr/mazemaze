@@ -44,6 +44,8 @@ private:
     sfg::Button::Ptr buttonOptions;
     sfg::Button::Ptr buttonExit;
 
+    Settings& settings;
+
     int newGameState;
     int optionsState;
 

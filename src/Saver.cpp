@@ -21,18 +21,19 @@
 
 #include "Game.hpp"
 #include "Chunk.hpp"
+#include "Settings.hpp"
 
 namespace mazemaze {
 
-Saver::Saver() : filename("sav") {}
+Saver::Saver() {}
 
 Saver::~Saver() = default;
 
 void
-Saver::save(Game& game) {
+Saver::save(Game& game, Settings& settings) {
     std::ofstream stream;
 
-    stream.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
+    stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
 
     if (stream.is_open()) {
         Maze&   maze   = game.getMaze();
@@ -75,14 +76,14 @@ Saver::save(Game& game) {
 }
 
 void
-Saver::deleteSave(Game&) {
-    if (saveExists())
-        std::remove(filename.c_str());
+Saver::deleteSave(Settings& settings) {
+    if (saveExists(settings))
+        std::remove(getFilename(settings).c_str());
 }
 
 bool
-Saver::saveExists() {
-    std::FILE* file = fopen(filename.c_str(), "r");
+Saver::saveExists(Settings& settings) {
+    std::FILE* file = fopen(getFilename(settings).c_str(), "r");
     bool exist = file != nullptr;
 
     if (exist)
@@ -95,7 +96,7 @@ Game*
 Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
     std::ifstream stream;
 
-    stream.open(filename, std::ios::in | std::ios::binary);
+    stream.open(getFilename(settings), std::ios::in | std::ios::binary);
 
     if (stream.is_open()) {
         int32_t mazeParams[5];
@@ -139,6 +140,11 @@ Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
     }
 
     return nullptr;
+}
+
+std::string
+Saver::getFilename(Settings& settings) {
+    return settings.getDataDir() + PATH_SEPARATOR + "sav";
 }
 
 void

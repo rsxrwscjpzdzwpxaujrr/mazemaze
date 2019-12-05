@@ -23,6 +23,12 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
+#if defined _WIN32 || defined __CYGWIN__
+# define PATH_SEPARATOR '\\'
+#else
+# define PATH_SEPARATOR '/'
+#endif
+
 namespace mazemaze {
 
 class Game;
@@ -54,6 +60,7 @@ public:
     const Language*   getSupportedLangs() const;
     int               getSupportedLangsCount() const;
     float             getSensitivity() const;
+    std::string       getDataDir() const;
 
     void setLang(const std::string &lang);
     void setAntialiasing(unsigned int antialiasing);
@@ -67,6 +74,7 @@ public:
     void setSensitivity(float sensitivity);
 
 private:
+    std::string dataDir;
     std::string configFile;
 
     std::string lang;
@@ -89,6 +97,7 @@ private:
 
 #endif
 
+    void initDataDir();
     void writeConfig();
     bool readConfig();
 
