@@ -23,7 +23,7 @@
 #ifdef _WIN32
 # include <windows.h>
 # include <processenv.h>
-# include <shlobj_core.h>
+# include <shlobj.h>
 # include "utils.hpp"
 #else
 # include <regex>
@@ -42,15 +42,9 @@ namespace mazemaze {
 
 int
 setenv(const char *name, const char *value, int overwrite) {
-    int errcode = 0;
-
-    if(!overwrite) {
-        size_t envsize = 0;
-        errcode = getenv_s(&envsize, NULL, 0, name);
-
-        if(errcode || envsize)
-            return errcode;
-    }
+    if (!overwrite)
+        if (getenv(name) != nullptr)
+            return 0;
 
     return _putenv_s(name, value);
 }
@@ -307,6 +301,7 @@ Settings::initDataDir() {
     ExpandEnvironmentStringsA("%LOCALAPPDATA%", localAppData, 254);
 
     dataDir = localAppData;
+    delete [] localAppData;
 
 #else
 
@@ -329,8 +324,7 @@ Settings::initDataDir() {
 
 #ifdef _WIN32
 
-    SHCreateDirectoryExA(nullptr, localAppData, nullptr);
-    delete [] localAppData;
+    SHCreateDirectoryExA(nullptr, dataDir.c_str(), nullptr);
 
 #else
 
