@@ -10,10 +10,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 find_package(Intl REQUIRED MODULE)
 find_package(Config++ REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
-find_package(SFML COMPONENTS window graphics system REQUIRED)
-find_package(SFGUI 0.4 QUIET MODULE)
+find_package(SFGUI 0.4 QUIET CONFIG)
 
-if (NOT SFGUI_FOUND)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+if (SFGUI_FOUND)
+    message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")
+else (SFGUI_FOUND)
     if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
         message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
     else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
@@ -34,11 +37,8 @@ if (NOT SFGUI_FOUND)
 
     add_subdirectory(sfgui)
 
-    set(SFGUI_LIBRARY     SFGUI)
-    set(SFGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/sfgui/include/)
-endif (NOT SFGUI_FOUND)
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
+endif (SFGUI_FOUND)
 
 target_sources(
     ${PROJECT_NAME}
@@ -115,12 +115,11 @@ target_sources(
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${SFGUI_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE lib)
 
 target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${CONFIG++_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${SFGUI_LIBRARY})
+target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
