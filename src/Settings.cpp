@@ -58,13 +58,13 @@ mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP |  S_IXGRP | S_IROTH | 
     while (*p != '\0') {
         p++;
 
-        while(*p != '\0' && *p != '/')
+        while (*p != '\0' && *p != '/')
             p++;
 
         char v = *p;
         *p = '\0';
 
-        if(mkdir(path, mode) == -1 && errno != EEXIST) {
+        if (mkdir(path, mode) == -1 && errno != EEXIST) {
             *p = v;
             return false;
         }
