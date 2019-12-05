@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 find_package(Intl REQUIRED MODULE)
 find_package(Config++ REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
-find_package(SFGUI 0.4 QUIET CONFIG)
+find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
