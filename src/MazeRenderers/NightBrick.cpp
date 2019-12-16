@@ -30,8 +30,8 @@ NightBrick::NightBrick(mazemaze::Game& game) :
     starSky(1024, 0.0f, 1.5f, 0.7f) {}
 
 void
-NightBrick::onTick(float deltaTime) {
-    starSky.tick(deltaTime);
+NightBrick::onTick(float) {
+    starSky.setTime(game.getTime());
 }
 
 void
