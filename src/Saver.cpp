@@ -17,15 +17,13 @@
 
 #include "Saver.hpp"
 
-#include <cstdio>
-
 #include "Game.hpp"
 #include "Chunk.hpp"
 #include "Settings.hpp"
 
 namespace mazemaze {
 
-Saver::Saver() {}
+Saver::Saver() : version{1, 0, 0} {}
 
 Saver::~Saver() = default;
 
@@ -40,6 +38,14 @@ Saver::save(Game& game, Settings& settings) {
         Player& player = game.getPlayer();
         Camera& camera = player.getCamera();
         Chunk*  chunks = maze.getChunks();
+        float   time   = game.getTime();
+
+        float playerParams[] {player.getX(),
+                              player.getY(),
+                              player.getZ(),
+                              camera.getPitch(),
+                              camera.getYaw(),
+                              camera.getRoll()};
 
         int32_t mazeParams[] {maze.getWidth(),
                               maze.getHeight(),
@@ -49,30 +55,22 @@ Saver::save(Game& game, Settings& settings) {
                               maze.getStartX(),
                               maze.getStartY()};
 
+        stream.write(version, sizeof (char) * 3);
+        stream.seekp(0x100);
+
+        stream.write(reinterpret_cast<char*>(&time), sizeof (float));
+        stream.seekp(0x200);
+
+        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+        stream.seekp(0x300);
+
         stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
-        stream.seekp(0x400, std::ios::beg);
 
         for (int i = 0; i < maze.getChunksCount(); i++)
             writeChunk(stream, chunks[i]);
 
-        std::ios::seekdir dir = stream.cur;
-
-        float time = game.getTime();
-        stream.write(reinterpret_cast<char*>(&time), sizeof (float));
-        stream.seekp(0x400, dir);
-
-        float playerParams[] {player.getX(),
-                              player.getY(),
-                              player.getZ(),
-                              camera.getPitch(),
-                              camera.getYaw(),
-                              camera.getRoll()};
-
-        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
-        stream.seekp(0x800, dir);
+        stream.close();
     }
-
-    stream.close();
 }
 
 void
@@ -99,40 +97,51 @@ Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
     stream.open(getFilename(settings), std::ios::in | std::ios::binary);
 
     if (stream.is_open()) {
-        int32_t mazeParams[5];
+        char version[3];
+        float time;
+        float playerParams[6];
+        int32_t mazeParams[7];
 
-        stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 5);
-        stream.seekg(0x400);
+        stream.read(version, sizeof (char) * 3);
+        stream.seekg(0x100);
+
+        if (version[0] != Saver::version[0])
+            return nullptr;
+
+        stream.read(reinterpret_cast<char*>(&time), sizeof (float));
+        stream.seekg(0x200);
+
+        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+        stream.seekg(0x300);
+
+        stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 7);
 
         Game* game = new Game(mainMenu, settings, (mazeParams[0] / 2), (mazeParams[1] / 2));
         Maze& maze = game->getMaze();
 
-        maze.setSeed(mazeParams[2]);
-
         for (int i = 0; i < maze.getChunksCount(); i++)
             readChunk(stream, game->getMaze().getChunks()[i]);
 
-        std::ios::seekdir dir = stream.cur;
-
-        float time;
-        stream.read(reinterpret_cast<char*>(&time), sizeof (float));
-        game->setTime(time);
-        stream.seekg(0x400, dir);
+        stream.close();
 
         Player& player = game->getPlayer();
         Camera& camera = player.getCamera();
-        float playerParams[6];
 
-        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+        game->setTime(time);
+
         player.setX(playerParams[0]);
         player.setY(playerParams[1]);
         player.setZ(playerParams[2]);
         camera.setPitch(playerParams[3]);
         camera.setYaw  (playerParams[4]);
         camera.setRoll (playerParams[5]);
-        stream.seekg(0x800, dir);
 
-        stream.close();
+        maze.setSeed(mazeParams[2]);
+
+        maze.setExitX (mazeParams[3]);
+        maze.setExitY (mazeParams[4]);
+        maze.setStartX(mazeParams[5]);
+        maze.setStartY(mazeParams[6]);
 
         game->onLoad();
 
@@ -148,7 +157,7 @@ Saver::getFilename(Settings& settings) {
 }
 
 void
-Saver::writeChunk(std::ofstream& stream, Chunk& chunk) {
+Saver::writeChunk(std::ostream& stream, Chunk& chunk) {
     const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
     char bytes[byteCount] {0};
 

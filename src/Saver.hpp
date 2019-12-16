@@ -47,12 +47,14 @@ public:
     }
 
 private:
+    const char version[3];
+
     Saver();
     ~Saver();
 
     std::string getFilename(Settings& settings);
 
-    void writeChunk(std::ofstream& stream, Chunk& chunk);
+    void writeChunk(std::ostream& stream, Chunk& chunk);
     void readChunk(std::istream& stream, Chunk& chunk);
 };
 

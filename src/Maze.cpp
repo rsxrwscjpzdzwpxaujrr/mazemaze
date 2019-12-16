@@ -137,6 +137,27 @@ Maze::generate(unsigned int seed) {
     Maze::seed = seed;
 }
 
+void
+Maze::setExitX(int exitX) {
+    Maze::exitX = exitX;
+}
+
+void
+Maze::setExitY(int exitY) {
+    Maze::exitY = exitY;
+}
+
+void
+Maze::setStartX(int startX) {
+    Maze::startX = startX;
+}
+
+void
+Maze::setStartY(int startY) {
+    Maze::startY = startY;
+}
+
+
 bool
 Maze::getOpened(int x, int y) {
     if (x < 0 || x >= width || y < 0 || y >= height)

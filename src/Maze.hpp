@@ -32,6 +32,11 @@ public:
 
     void generate(unsigned int seed);
 
+    void setExitX(int exitX);
+    void setExitY(int exitY);
+    void setStartX(int startX);
+    void setStartY(int startY);
+
     bool getOpened(int x, int y);
     int getWidth() const;
     int getHeight() const;
