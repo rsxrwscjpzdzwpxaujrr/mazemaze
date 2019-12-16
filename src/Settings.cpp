@@ -52,7 +52,7 @@ setenv(const char *name, const char *value, int overwrite) {
 #else
 
 bool
-mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP |  S_IXGRP | S_IROTH | S_IXOTH) {
+mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) {
     char* p = const_cast<char*>(path);
 
     while (*p != '\0') {

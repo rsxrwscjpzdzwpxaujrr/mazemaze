@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include <array>
-
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
 
