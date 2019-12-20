@@ -6,7 +6,7 @@ find_program(XGETTEXT_EXECUTABLE xgettext)
 if (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
     set(LINGUAS ru uk kk)
 
-    set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/messages.pot)
+    set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}.pot)
 
     set(XGETTEXT_KEYWORDS --keyword=pgtx:1c,2 --keyword=npgtxf:1c,2,3)
     get_target_property(XGETTEXT_INPUT mazemaze SOURCES)
