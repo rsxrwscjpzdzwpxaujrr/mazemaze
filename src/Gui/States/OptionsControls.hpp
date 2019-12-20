@@ -48,6 +48,7 @@ public:
 
     void show(bool show) override;
     void tick(float deltatime) override;
+    void center();
 
 private:
     class KeyChangeWindow {
@@ -60,6 +61,7 @@ private:
         bool isOpened();
         sfg::Window::Ptr getWindow();
 
+        void center();
         void open(int button);
         void close();
 

@@ -77,6 +77,12 @@ OptionsControls::KeyChangeWindow::tick() {
 }
 
 void
+OptionsControls::KeyChangeWindow::center() {
+    if (opened)
+        static_cast<State>(optCtrls).center(window);
+}
+
+void
 OptionsControls::KeyChangeWindow::open(int button) {
     if (opened)
         return;

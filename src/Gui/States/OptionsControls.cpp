@@ -103,6 +103,13 @@ OptionsControls::tick(float) {
 }
 
 void
+OptionsControls::center() {
+    State::center();
+
+    keyChangeWindow.center();
+}
+
+void
 OptionsControls::updateKeyButtonLabel(int button) {
     std::string control = keyControls[button];
 
