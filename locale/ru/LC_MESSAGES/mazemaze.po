@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mazemaze 0.2-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-28 21:01+0400\n"
+"POT-Creation-Date: 2019-12-21 02:20+0400\n"
 "PO-Revision-Date: 2019-05-28 20:09+0400\n"
 "Last-Translator: Мира Странная <miraityan2004@gmail.com>\n"
 "Language-Team: \n"
@@ -17,87 +17,254 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: src/Gui/States/Main.cpp:57
+#: src/Gui/States/Main.cpp:36
 msgctxt "main"
 msgid "Resume"
 msgstr "Продолжить"
 
-#: src/Gui/States/Main.cpp:58
+#: src/Gui/States/Main.cpp:37
 msgctxt "main"
 msgid "New Game"
 msgstr "Новая игра"
 
-#: src/Gui/States/Main.cpp:59
+#: src/Gui/States/Main.cpp:38
 msgctxt "main"
 msgid "Options"
 msgstr "Настройки"
 
-#: src/Gui/States/Main.cpp:60
+#: src/Gui/States/Main.cpp:39
 msgctxt "main"
 msgid "Exit"
 msgstr "Выход"
 
-#: src/Gui/States/Options.cpp:101
-msgctxt "options"
-msgid "No"
-msgstr "Нет"
-
-#: src/Gui/States/Options.cpp:116
-msgctxt "options"
-msgid "Back"
-msgstr "Назад"
-
-#: src/Gui/States/Options.cpp:121
+#: src/Gui/States/OptionsMenu.cpp:55
 msgctxt "options"
 msgid "Graphics"
 msgstr "Графика"
 
-#: src/Gui/States/Options.cpp:130
+#: src/Gui/States/OptionsMenu.cpp:56
+msgctxt "options"
+msgid "Controls"
+msgstr ""
+
+#: src/Gui/States/OptionsMenu.cpp:57
+msgctxt "options"
+msgid "Other"
+msgstr ""
+
+#: src/Gui/States/OptionsMenu.cpp:58 src/Gui/States/Options.cpp:45
+msgctxt "options"
+msgid "Back"
+msgstr "Назад"
+
+#: src/Gui/States/OptionsGraphics.cpp:63
+msgctxt "options"
+msgid "No"
+msgstr "Нет"
+
+#: src/Gui/States/OptionsGraphics.cpp:88
+msgctxt "options"
+msgid "Classic"
+msgstr ""
+
+#: src/Gui/States/OptionsGraphics.cpp:89
+msgctxt "options"
+msgid "Gray"
+msgstr ""
+
+#: src/Gui/States/OptionsGraphics.cpp:90
+msgctxt "options"
+msgid "Brick"
+msgstr ""
+
+#: src/Gui/States/OptionsGraphics.cpp:91
+msgctxt "options"
+msgid "Night Brick"
+msgstr ""
+
+#: src/Gui/States/OptionsGraphics.cpp:101
 msgctxt "options"
 msgid "Fullscreen"
 msgstr "Полный экран"
 
-#: src/Gui/States/Options.cpp:131
+#: src/Gui/States/OptionsGraphics.cpp:102
 msgctxt "options"
 msgid "Antialiasing"
 msgstr "Сглаживание"
 
-#: src/Gui/States/Options.cpp:132
+#: src/Gui/States/OptionsGraphics.cpp:103
 msgctxt "options"
 msgid "V-Sync"
 msgstr "V-Sync"
 
-#: src/Gui/States/Pause.cpp:35
+#: src/Gui/States/OptionsGraphics.cpp:104
+msgctxt "options"
+msgid "Style"
+msgstr ""
+
+#: src/Gui/States/OptionsOther.cpp:70
+msgctxt "options"
+msgid "Language"
+msgstr ""
+
+#: src/Gui/States/OptionsOther.cpp:71
+msgctxt "options"
+msgid "Autosave"
+msgstr ""
+
+#: src/Gui/States/OptionsOther.cpp:72
+msgctxt "options"
+msgid "Show FPS"
+msgstr ""
+
+#: src/Gui/States/OptionsControls.cpp:38
+msgctxt "options"
+msgid "Forward"
+msgstr ""
+
+#: src/Gui/States/OptionsControls.cpp:39
+#, fuzzy
+msgctxt "options"
+msgid "Backward"
+msgstr "Назад"
+
+#: src/Gui/States/OptionsControls.cpp:40
+msgctxt "options"
+msgid "Right"
+msgstr ""
+
+#: src/Gui/States/OptionsControls.cpp:41
+msgctxt "options"
+msgid "Left"
+msgstr ""
+
+#: src/Gui/States/OptionsControls.cpp:55
+msgctxt "options"
+msgid "Mouse sensitivity"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:143
+msgctxt "options|keys"
+msgid "Left Ctrl"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:146
+msgctxt "options|keys"
+msgid "Left Shift"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:149
+msgctxt "options|keys"
+msgid "Left Alt"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:152
+msgctxt "options|keys"
+msgid "Left System"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:155
+msgctxt "options|keys"
+msgid "Right Ctrl"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:158
+msgctxt "options|keys"
+msgid "Right Shift"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:161
+msgctxt "options|keys"
+msgid "Right Alt"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:164
+msgctxt "options|keys"
+msgid "Right System"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:203
+msgctxt "options|keys"
+msgid "Space"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:245
+msgctxt "options|keys"
+msgid "Arrow Left"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:248
+msgctxt "options|keys"
+msgid "Arrow Right"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:251
+msgctxt "options|keys"
+msgid "Arrow Up"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:254
+msgctxt "options|keys"
+msgid "Arrow Down"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeys.cpp:335
+msgctxt "options|keys"
+msgid "Unknown key"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:34
+msgctxt "options"
+msgid "Cancel"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:35
+msgctxt "options"
+msgid "Ok"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:92
+msgctxt "options"
+msgid "Press new key"
+msgstr ""
+
+#: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:137
+#, c-format
+msgctxt "options"
+msgid "Pressed key is %s"
+msgstr ""
+
+#: src/Gui/States/Pause.cpp:32
 msgctxt "pause"
 msgid "Resume"
 msgstr "Продолжить"
 
-#: src/Gui/States/Pause.cpp:36
+#: src/Gui/States/Pause.cpp:33
 msgctxt "pause"
 msgid "Options"
 msgstr "Настройки"
 
-#: src/Gui/States/Pause.cpp:37
+#: src/Gui/States/Pause.cpp:34
 msgctxt "pause"
+msgid "Exit to main menu"
+msgstr "Выйти в главное меню"
+
+#: src/Gui/States/Win.cpp:34
+msgctxt "win"
 msgid "Exit to main menu"
 msgstr "Выйти в главное меню"
 
 #: src/Gui/States/Win.cpp:35
 msgctxt "win"
-msgid "Exit to main menu"
-msgstr "Выйти в главное меню"
-
-#: src/Gui/States/Win.cpp:36
-msgctxt "win"
 msgid "You won!"
 msgstr "Вы выиграли!"
 
-#: src/Gui/States/Win.cpp:92
+#: src/Gui/States/Win.cpp:91
 msgctxt "win"
 msgid "Time: "
 msgstr "Время: "
 
-#: src/Gui/States/Win.cpp:95
+#: src/Gui/States/Win.cpp:94
 #, c-format
 msgctxt "win"
 msgid "%d day "
@@ -106,7 +273,7 @@ msgstr[0] "%d день "
 msgstr[1] "%d дня "
 msgstr[2] "%d дней "
 
-#: src/Gui/States/Win.cpp:98
+#: src/Gui/States/Win.cpp:97
 #, c-format
 msgctxt "win"
 msgid "%d hour "
@@ -115,7 +282,7 @@ msgstr[0] "%d час "
 msgstr[1] "%d часа "
 msgstr[2] "%d часов "
 
-#: src/Gui/States/Win.cpp:101
+#: src/Gui/States/Win.cpp:100
 #, c-format
 msgctxt "win"
 msgid "%d min "
@@ -124,7 +291,7 @@ msgstr[0] "%d мин. "
 msgstr[1] "%d мин. "
 msgstr[2] "%d мин. "
 
-#: src/Gui/States/Win.cpp:104
+#: src/Gui/States/Win.cpp:103
 #, c-format
 msgctxt "win"
 msgid "%d sec "
@@ -133,22 +300,22 @@ msgstr[0] "%d сек. "
 msgstr[1] "%d сек. "
 msgstr[2] "%d сек. "
 
-#: src/Gui/States/Win.cpp:114
+#: src/Gui/States/Win.cpp:112
 msgctxt "win"
 msgid "Maze size: "
 msgstr "Размер лабиринта: "
 
-#: src/Gui/States/NewGame.cpp:75
+#: src/Gui/States/NewGame.cpp:74
 msgctxt "new_game"
 msgid "Back"
 msgstr "Назад"
 
-#: src/Gui/States/NewGame.cpp:76
+#: src/Gui/States/NewGame.cpp:75
 msgctxt "new_game"
 msgid "Start"
 msgstr "Начать"
 
-#: src/Gui/States/NewGame.cpp:83
+#: src/Gui/States/NewGame.cpp:82
 msgctxt "new_game"
 msgid "Enter maze size"
 msgstr "Введите размер лабиринта"
