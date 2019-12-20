@@ -79,7 +79,7 @@ OptionsControls::KeyChangeWindow::tick() {
 void
 OptionsControls::KeyChangeWindow::center() {
     if (opened)
-        static_cast<State>(optCtrls).center(window);
+        dynamic_cast<State&>(optCtrls).center(window);
 }
 
 void
@@ -97,7 +97,7 @@ OptionsControls::KeyChangeWindow::open(int button) {
     opened = true;
     window->Show(opened);
 
-    dynamic_cast<State&>(optCtrls).center(window);
+    center();
 
     for (int i = 0; i < 4; i++)
         optCtrls.keyButtons[i]->SetState(Widget::State::INSENSITIVE);
@@ -138,6 +138,8 @@ OptionsControls::KeyChangeWindow::initSignals() {
         newText.replace("%s", optCtrls.getKeyName(key));
 
         label->SetText(newText);
+
+        center();
     });
 
     cancelButton->GetSignal(Widget::OnLeftClick).Connect([this] () {

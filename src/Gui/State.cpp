@@ -37,7 +37,7 @@ State::center() {
 
 void
 State::center(sfg::Widget::Ptr widget) {
-    sf::Vector2f widgetSize = widget->GetRequisition();
+    sf::Vector2f widgetSize(widget->GetAllocation().width, widget->GetAllocation().height);
     sf::Vector2f windowSize =
             static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
 
