@@ -48,7 +48,7 @@ public:
 
     void show(bool show) override;
     void tick(float deltatime) override;
-    void center();
+    void center() override;
 
 private:
     class KeyChangeWindow {
