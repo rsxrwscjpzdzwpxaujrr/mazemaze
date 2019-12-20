@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: mazemaze 0.2-dev\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-21 02:20+0400\n"
-"PO-Revision-Date: 2019-05-28 20:09+0400\n"
+"PO-Revision-Date: 2019-12-21 02:04+0400\n"
 "Last-Translator: Мира Странная <miraityan2004@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: src/Gui/States/Main.cpp:36
 msgctxt "main"
@@ -45,12 +45,12 @@ msgstr "Графика"
 #: src/Gui/States/OptionsMenu.cpp:56
 msgctxt "options"
 msgid "Controls"
-msgstr ""
+msgstr "Управление"
 
 #: src/Gui/States/OptionsMenu.cpp:57
 msgctxt "options"
 msgid "Other"
-msgstr ""
+msgstr "Другое"
 
 #: src/Gui/States/OptionsMenu.cpp:58 src/Gui/States/Options.cpp:45
 msgctxt "options"
@@ -65,22 +65,22 @@ msgstr "Нет"
 #: src/Gui/States/OptionsGraphics.cpp:88
 msgctxt "options"
 msgid "Classic"
-msgstr ""
+msgstr "Классический"
 
 #: src/Gui/States/OptionsGraphics.cpp:89
 msgctxt "options"
 msgid "Gray"
-msgstr ""
+msgstr "Серый"
 
 #: src/Gui/States/OptionsGraphics.cpp:90
 msgctxt "options"
 msgid "Brick"
-msgstr ""
+msgstr "Кирпич"
 
 #: src/Gui/States/OptionsGraphics.cpp:91
 msgctxt "options"
 msgid "Night Brick"
-msgstr ""
+msgstr "Ночной кирпич"
 
 #: src/Gui/States/OptionsGraphics.cpp:101
 msgctxt "options"
@@ -100,30 +100,29 @@ msgstr "V-Sync"
 #: src/Gui/States/OptionsGraphics.cpp:104
 msgctxt "options"
 msgid "Style"
-msgstr ""
+msgstr "Стиль"
 
 #: src/Gui/States/OptionsOther.cpp:70
 msgctxt "options"
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 #: src/Gui/States/OptionsOther.cpp:71
 msgctxt "options"
 msgid "Autosave"
-msgstr ""
+msgstr "Автосохранение"
 
 #: src/Gui/States/OptionsOther.cpp:72
 msgctxt "options"
 msgid "Show FPS"
-msgstr ""
+msgstr "Показывать FPS"
 
 #: src/Gui/States/OptionsControls.cpp:38
 msgctxt "options"
 msgid "Forward"
-msgstr ""
+msgstr "Вперёд"
 
 #: src/Gui/States/OptionsControls.cpp:39
-#, fuzzy
 msgctxt "options"
 msgid "Backward"
 msgstr "Назад"
@@ -131,108 +130,108 @@ msgstr "Назад"
 #: src/Gui/States/OptionsControls.cpp:40
 msgctxt "options"
 msgid "Right"
-msgstr ""
+msgstr "Направо"
 
 #: src/Gui/States/OptionsControls.cpp:41
 msgctxt "options"
 msgid "Left"
-msgstr ""
+msgstr "Налево"
 
 #: src/Gui/States/OptionsControls.cpp:55
 msgctxt "options"
 msgid "Mouse sensitivity"
-msgstr ""
+msgstr "Чувствительность мыши"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:143
 msgctxt "options|keys"
 msgid "Left Ctrl"
-msgstr ""
+msgstr "Левый Ctrl"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:146
 msgctxt "options|keys"
 msgid "Left Shift"
-msgstr ""
+msgstr "Левый Shift"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:149
 msgctxt "options|keys"
 msgid "Left Alt"
-msgstr ""
+msgstr "Левый Alt"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:152
 msgctxt "options|keys"
 msgid "Left System"
-msgstr ""
+msgstr "Левый System"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:155
 msgctxt "options|keys"
 msgid "Right Ctrl"
-msgstr ""
+msgstr "Правый Ctrl"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:158
 msgctxt "options|keys"
 msgid "Right Shift"
-msgstr ""
+msgstr "Правый Shift"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:161
 msgctxt "options|keys"
 msgid "Right Alt"
-msgstr ""
+msgstr "Правый Alt"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:164
 msgctxt "options|keys"
 msgid "Right System"
-msgstr ""
+msgstr "Правый System"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:203
 msgctxt "options|keys"
 msgid "Space"
-msgstr ""
+msgstr "Пробел"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:245
 msgctxt "options|keys"
 msgid "Arrow Left"
-msgstr ""
+msgstr "Стрелка влево"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:248
 msgctxt "options|keys"
 msgid "Arrow Right"
-msgstr ""
+msgstr "Стрелка вправо"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:251
 msgctxt "options|keys"
 msgid "Arrow Up"
-msgstr ""
+msgstr "Стрелка вверх"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:254
 msgctxt "options|keys"
 msgid "Arrow Down"
-msgstr ""
+msgstr "Стрелка вниз"
 
 #: src/Gui/States/OptionsControlsKeys.cpp:335
 msgctxt "options|keys"
 msgid "Unknown key"
-msgstr ""
+msgstr "Неизвестная клавиша"
 
 #: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:34
 msgctxt "options"
 msgid "Cancel"
-msgstr ""
+msgstr "Отменить"
 
 #: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:35
 msgctxt "options"
 msgid "Ok"
-msgstr ""
+msgstr "Ок"
 
 #: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:92
 msgctxt "options"
 msgid "Press new key"
-msgstr ""
+msgstr "Нажмите новую клавишу"
 
 #: src/Gui/States/OptionsControlsKeyChangeWindow.cpp:137
 #, c-format
 msgctxt "options"
 msgid "Pressed key is %s"
-msgstr ""
+msgstr "Нажата клавиша %s"
 
 #: src/Gui/States/Pause.cpp:32
 msgctxt "pause"
