@@ -271,8 +271,8 @@ Settings::resetLocales() {
 
 void
 Settings::setEnvironment() {
-    char* langName = new char[4];
-    char* countryName = new char[4];
+    char langName[4];
+    char countryName[4];
 
     GetLocaleInfo(LOCALE_USER_DEFAULT,
                   LOCALE_SISO639LANGNAME,
@@ -296,12 +296,11 @@ Settings::setEnvironment() {
 void
 Settings::initDataDir() {
 #ifdef _WIN32
-    char* localAppData = new char[256];
+    char localAppData[256];
 
     ExpandEnvironmentStringsA("%LOCALAPPDATA%", localAppData, 254);
 
     dataDir = localAppData;
-    delete [] localAppData;
 
 #else
 
