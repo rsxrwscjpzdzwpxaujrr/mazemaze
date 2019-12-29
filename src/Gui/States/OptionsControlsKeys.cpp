@@ -59,7 +59,7 @@ OptionsControls::getKeyName(sf::Keyboard::Key key) {
             return L"J";
 
         case Keyboard::Key::K:
-            return L"J";
+            return L"K";
 
         case Keyboard::Key::L:
             return L"L";
