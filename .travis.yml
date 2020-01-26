@@ -12,6 +12,8 @@ addons:
     - clang
     - libgl1-mesa-dev
     - curl
+    - fakeroot
+    - hashdeep
 
 os: linux
 
@@ -65,9 +67,28 @@ before_script:
 script:
     - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
     - cmake --build .
-
-after_script:
     - sudo make install
+
+before_deploy:
+    - cd ../deb
+    - mkdir opt
+    - cp -r /opt/mazemaze opt
+    - mkdir -p usr/share/applications/
+    - cp ~/.local/share/applications/mazemaze.desktop usr/share/applications/
+    - md5deep -rl opt usr > DEBIAN/md5sums
+    - cat DEBIAN/md5sums
+    - cd ..
+    - fakeroot dpkg-deb --build deb
+    - mv deb.deb mazemaze_0.2_amd64.deb
+
+deploy:
+    provider: releases
+    token: $GITHUB_OAUTH_TOKEN
+    file: mazemaze_0.2_amd64.deb
+    skip_cleanup: true
+    draft: true
+    on:
+        condition: $CC = gcc
 
 notifications:
     email: false
