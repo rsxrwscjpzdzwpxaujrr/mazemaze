@@ -13,18 +13,16 @@ addons:
     - libgl1-mesa-dev
     - curl
 
-matrix:
+os: linux
+
+jobs:
     include:
         - name: "Linux GCC"
           compiler: gcc
-          sudo:     required
-          os:       linux
           dist:     xenial
 
         - name: "Linux Clang"
           compiler: clang
-          sudo:     required
-          os:       linux
           dist:     xenial
 
 before_script:
