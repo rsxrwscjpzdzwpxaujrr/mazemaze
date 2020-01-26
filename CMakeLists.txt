@@ -12,37 +12,7 @@ find_package(Config++ REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-
-if (SFGUI_FOUND)
-    message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")
-else (SFGUI_FOUND)
-    if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
-        message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
-    else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
-        find_package(Git MODULE)
-
-        if (GIT_FOUND)
-            message(STATUS "Downloaded SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
-            execute_process(COMMAND ${GIT_EXECUTABLE} submodule init
-                            COMMAND ${GIT_EXECUTABLE} submodule update
-                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/sfgui)
-        else (GIT_FOUND)
-            message(FATAL_ERROR "SFGUI not found and can't be downloaded")
-        endif (GIT_FOUND)
-    endif (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
-
-    set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
-    set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
-
-    add_subdirectory(sfgui)
-
-    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
-endif (SFGUI_FOUND)
-
-target_sources(
-    ${PROJECT_NAME}
-    PRIVATE
+add_executable(${PROJECT_NAME}
     src/Camera.cpp
     src/Camera.hpp
     src/Chunk.cpp
@@ -112,6 +82,32 @@ target_sources(
     src/MazeRenderers/Brick.hpp
     src/MazeRenderers/NightBrick.cpp
     src/MazeRenderers/NightBrick.hpp)
+
+if (SFGUI_FOUND)
+    message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")
+else (SFGUI_FOUND)
+    if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
+        message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
+    else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
+        find_package(Git MODULE)
+
+        if (GIT_FOUND)
+            message(STATUS "Downloaded SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
+            execute_process(COMMAND ${GIT_EXECUTABLE} submodule init
+                            COMMAND ${GIT_EXECUTABLE} submodule update
+                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/sfgui)
+        else (GIT_FOUND)
+            message(FATAL_ERROR "SFGUI not found and can't be downloaded")
+        endif (GIT_FOUND)
+    endif (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
+
+    set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
+    set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
+
+    add_subdirectory(sfgui)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
+endif (SFGUI_FOUND)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
