@@ -29,22 +29,9 @@ jobs:
           dist:     bionic
 
 before_script:
-    - git clone https://github.com/SFML/SFML.git
-    - cd SFML
-    - mkdir build
-    - cd build
-    - >
-      cmake
-      -DSFML_BUILD_EXAMPLES=FALSE
-      -DSFML_BUILD_DOC=FALSE
-      -DSFML_BUILD_AUDIO=FALSE
-      -DSFML_BUILD_GRAPHICS=TRUE
-      -DSFML_BUILD_WINDOW=TRUE
-      -DSFML_BUILD_NETWORK=FALSE
-      ..
-    - cmake --build .
-    - sudo make install
-    - cd ../..
+    - echo "deb http://us.archive.ubuntu.com/ubuntu/ disco universe" >> /etc/apt/sources.list
+    - sudo apt update
+    - sudo apt install libsfml-dev
     - git clone https://github.com/TankOs/SFGUI.git
     - cd SFGUI
     - sed '138{s/^/#/}' CMakeLists.txt > tmp    # hack to disable SFGUI warnings
