@@ -11,6 +11,7 @@ addons:
     - g++
     - clang
     - libgl1-mesa-dev
+    - libconfig++-dev
     - curl
     - fakeroot
     - hashdeep
@@ -54,13 +55,6 @@ before_script:
     - cmake --build .
     - sudo make install
     - cd ../..
-    - wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
-    - tar -xzf libconfig-1.7.2.tar.gz
-    - cd libconfig-1.7.2
-    - ./configure
-    - make
-    - sudo make install
-    - cd ..
     - mkdir build
     - cd build
 
