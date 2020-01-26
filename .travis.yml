@@ -21,11 +21,11 @@ jobs:
     include:
         - name: "Linux GCC"
           compiler: gcc
-          dist:     xenial
+          dist:     bionic
 
         - name: "Linux Clang"
           compiler: clang
-          dist:     xenial
+          dist:     bionic
 
 before_script:
     - git clone https://github.com/SFML/SFML.git
