@@ -2,6 +2,8 @@
 
 set -x
 
+mkdir deploy
+
 cd deb
 mkdir opt
 cp -r /opt/mazemaze opt
@@ -11,6 +13,8 @@ md5deep -rl opt usr > DEBIAN/md5sums
 cat DEBIAN/md5sums
 cd ..
 fakeroot dpkg-deb --build deb
-mv deb.deb mazemaze_0.2_amd64.deb
+mv deb.deb deploy/mazemaze_0.2_amd64.deb
+
+tar -cvzf deploy/mazemaze-0.2-amd64-bin.tar.gz /opt/mazemaze
 
 set +x

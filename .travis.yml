@@ -40,7 +40,7 @@ before_deploy:
 deploy:
     provider: releases
     token: $GITHUB_OAUTH_TOKEN
-    file: mazemaze_0.2_amd64.deb
+    file: deploy/*
     skip_cleanup: true
     draft: true
     on:
