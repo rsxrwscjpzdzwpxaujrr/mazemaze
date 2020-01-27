@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -xe
 
 mkdir build
 cd build
@@ -9,4 +9,4 @@ cmake --build .
 sudo make install
 cd ..
 
-set +x
+set +xe

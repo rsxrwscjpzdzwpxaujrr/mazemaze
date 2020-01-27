@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -xe
 
 echo "deb http://us.archive.ubuntu.com/ubuntu/ disco universe" >> /etc/apt/sources.list
 sudo apt update
@@ -16,4 +16,4 @@ cmake --build .
 sudo make install
 cd ../..
 
-set +x
+set +xe
