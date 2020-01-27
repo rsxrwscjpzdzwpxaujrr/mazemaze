@@ -16,5 +16,6 @@ fakeroot dpkg-deb --build deb
 mv deb.deb deploy/mazemaze_0.2_amd64.deb
 
 tar -C /opt/ -cvzf deploy/mazemaze-0.2-amd64-bin.tar.gz mazemaze
+md5sum mazemaze-0.2-amd64-bin.tar.gz
 
 set +xe
