@@ -47,3 +47,5 @@
 /deb/DEBIAN/md5sums
 /deb/DEBIAN/usr/share/applications/mazemaze.desktop
 /deb/opt/*
+
+!/scripts
