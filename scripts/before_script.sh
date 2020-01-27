@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 echo "deb http://us.archive.ubuntu.com/ubuntu/ disco universe" >> /etc/apt/sources.list
 sudo apt update
 sudo apt install libsfml-dev
@@ -14,3 +16,4 @@ cmake --build .
 sudo make install
 cd ../..
 
+set +x

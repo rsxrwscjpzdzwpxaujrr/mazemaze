@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 cd deb
 mkdir opt
 cp -r /opt/mazemaze opt
@@ -11,3 +13,4 @@ cd ..
 fakeroot dpkg-deb --build deb
 mv deb.deb mazemaze_0.2_amd64.deb
 
+set +x
