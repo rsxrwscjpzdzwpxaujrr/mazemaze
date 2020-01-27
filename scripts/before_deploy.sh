@@ -15,6 +15,6 @@ cd ..
 fakeroot dpkg-deb --build deb
 mv deb.deb deploy/mazemaze_0.2_amd64.deb
 
-tar -cvzf deploy/mazemaze-0.2-amd64-bin.tar.gz /opt/mazemaze
+tar -C /opt/ -cvzf deploy/mazemaze-0.2-amd64-bin.tar.gz mazemaze
 
 set +x
