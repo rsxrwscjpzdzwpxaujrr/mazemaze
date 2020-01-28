@@ -19,7 +19,6 @@
 
 #include <string>
 #include <map>
-#include <libconfig.h++>
 
 #include <SFML/Window/Keyboard.hpp>
 
@@ -100,12 +99,6 @@ private:
     void initDataDir();
     void writeConfig();
     bool readConfig();
-
-    template <class T>
-    libconfig::Setting& addAndSet(libconfig::Setting& parent,
-                                  libconfig::Setting::Type type,
-                                  const char* name,
-                                  T value);
 };
 
 }

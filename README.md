@@ -2,7 +2,7 @@ Mazemaze [![Build Status](https://travis-ci.org/mirai65536/mazemaze.svg?branch=m
 ========
 Simple 3D OpenGL first-person maze game.
 
-Depends on libconfig, SFML and SFGUI packages.
+Depends on JsonCpp, SFML and SFGUI packages.
 
 ![](screenshot.png)
 

@@ -11,7 +11,7 @@ addons:
     - g++
     - clang
     - libgl1-mesa-dev
-    - libconfig++-dev
+    - libjsoncpp-dev
     - curl
     - fakeroot
     - hashdeep

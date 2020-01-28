@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <gettext.h>
+#include <json/json.h>
 
 #ifdef _WIN32
 # include <windows.h>
@@ -86,7 +87,7 @@ Settings::Settings(bool readConfig) :
         }),
         renderer(0) {
     initDataDir();
-    configFile = dataDir + "/config.cfg";
+    configFile = dataDir + "/config.json";
 
     if (readConfig) {
         if(Settings::readConfig())
@@ -336,107 +337,73 @@ Settings::initDataDir() {
 
 void
 Settings::writeConfig() {
-    using namespace libconfig;
+    std::ofstream ofs(configFile);
 
-    Config config;
-    config.setAutoConvert(true);
+    Json::StyledStreamWriter writer;
+    Json::Value config;
 
-    try {
-        config.readFile(configFile.c_str());
-    } catch(const FileIOException&) {
+    config["lang"] = getLang();
+    config["autosave"] = getAutosave();
+    config["autosaveTime"] = getAutosaveTime();
+    config["showFps"] = getShowFps();
 
-    } catch(const ParseException&) {
+    Json::Value graphics = Json::objectValue;
 
-    }
+    graphics["antialiasing"] = getAntialiasing();
+    graphics["fullscreen"] = getFullscreen();
+    graphics["vsync"] = getVsync();
+    graphics["style"] = getRenderer();
 
-    Setting& root = config.getRoot();
+    config["graphics"] = graphics;
 
-    addAndSet(root, Setting::TypeString,  "lang",         getLang());
-    addAndSet(root, Setting::TypeBoolean, "autosave",     getAutosave());
-    addAndSet(root, Setting::TypeFloat,   "autosaveTime", getAutosaveTime());
-    addAndSet(root, Setting::TypeBoolean, "showFps",      getShowFps());
-
-    if(!root.exists("graphics"))
-        root.add("graphics", Setting::TypeGroup);
-
-    Setting& graphics = root["graphics"];
-
-    addAndSet(graphics, Setting::TypeInt,     "antialiasing", static_cast<int>(getAntialiasing()));
-    addAndSet(graphics, Setting::TypeBoolean, "fullscreen",   getFullscreen());
-    addAndSet(graphics, Setting::TypeBoolean, "vsync",        getVsync());
-    addAndSet(graphics, Setting::TypeInt,     "style",        getRenderer());
-
-    if(!root.exists("controls"))
-        root.add("controls", Setting::TypeGroup);
-
-    Setting& controls = root["controls"];
+    Json::Value controls = Json::objectValue;
 
     for(auto it = Settings::controls.begin(); it != Settings::controls.end(); it++) {
-        addAndSet(controls, Setting::TypeInt, it->first.c_str(), it->second);
+        controls[it->first] = it->second;
     }
 
-    addAndSet(controls, Setting::TypeFloat, "sensitivity", getSensitivity());
+    controls["sensitivity"] = getSensitivity();
 
-    config.writeFile(configFile.c_str());
+    config["controls"] = controls;
+
+    writer.write(ofs, config);
 }
 
 bool
 Settings::readConfig() {
-    using namespace libconfig;
+    std::ifstream ifs(configFile);
 
-    Config config;
-    config.setAutoConvert(true);
+    Json::Reader reader;
+    Json::Value config;
 
-    try {
-        config.readFile(configFile.c_str());
-    } catch(const FileIOException&) {
-        return false;
-    } catch(const ParseException&) {
-        return false;
+    if (reader.parse(ifs, config)) {
+        Json::Value controls = config["controls"];
+
+        for(auto it = controls.begin(); it != controls.end(); it++) {
+            auto control = it.key().asString();
+            auto key     = static_cast<sf::Keyboard::Key>(it->asUInt());
+
+            Settings::controls[control] = key;
+        }
+
+        setSensitivity(controls["sensitivity"].asFloat());
+
+        Json::Value graphics = config["graphics"];
+
+        setAntialiasing(graphics["antialiasing"].asUInt());
+        setFullscreen(graphics["fullscreen"].asBool());
+        setVsync(graphics["vsync"].asBool());
+        setRenderer(graphics["style"].asInt());
+
+        setLang(config["lang"].asString());
+        setAutosave(config["autosave"].asBool());
+        setAutosaveTime(config["autosaveTime"].asFloat());
+        setShowFps(config["showFps"].asBool());
+
+        return reader.good();
     }
 
-    const Setting& root = config.getRoot();
-
-    const Setting& controls = root["controls"];
-
-    for(auto it = controls.begin(); it != controls.end(); it++) {
-        auto control = it->getName();
-        auto key     = static_cast<sf::Keyboard::Key>(it->operator unsigned int());
-
-        Settings::controls[control] = key;
-    }
-
-    setSensitivity(controls["sensitivity"]);
-
-    const Setting& graphics = root["graphics"];
-
-    setAntialiasing(graphics["antialiasing"]);
-    setFullscreen(graphics["fullscreen"]);
-    setVsync(graphics["vsync"]);
-    setRenderer(graphics["style"]);
-
-    setLang(root["lang"]);
-    setAutosave(root["autosave"]);
-    setAutosaveTime(root["autosaveTime"]);
-    setShowFps(root["showFps"]);
-
-    return true;
-}
-
-template<class T>
-libconfig::Setting&
-Settings::addAndSet(libconfig::Setting& parent,
-                    libconfig::Setting::Type type,
-                    const char* name,
-                    T value) {
-    using namespace libconfig;
-
-    if(!parent.exists(name))
-        parent.add(name, type);
-
-    Setting& setting = parent[name];
-    setting = value;
-    return setting;
+    return false;
 }
 
 }

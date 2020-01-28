@@ -8,7 +8,7 @@ project(mazemaze)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 
 find_package(Intl REQUIRED MODULE)
-find_package(Config++ REQUIRED MODULE)
+find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 
@@ -109,12 +109,20 @@ else (SFGUI_FOUND)
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
 
+get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${JSON_INC_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE lib)
 
+if (BUILD_STATIC)
+    target_link_libraries(${PROJECT_NAME} jsoncpp_lib)
+else (BUILD_STATIC)
+    target_link_libraries(${PROJECT_NAME} jsoncpp_lib_static)
+endif (BUILD_STATIC)
+
 target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} ${CONFIG++_LIBRARY})
 target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
