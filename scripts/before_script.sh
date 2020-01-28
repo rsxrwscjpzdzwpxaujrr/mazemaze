@@ -2,15 +2,21 @@
 
 set -xe
 
+export VERSION=0.2
+
 if [[ $WINDOWS = "TRUE" ]]
 then
-    sudo echo "deb http://pkg.mxe.cc/repos/apt bionic main" | sudo tee /etc/apt/sources.list.d/mxeapt.list
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C6BF758A33A3A276
+    sudo echo "deb http://pkg.mxe.cc/repos/apt bionic main" \
+        | sudo tee /etc/apt/sources.list.d/mxeapt.list
+
+    sudo apt-key adv --keyserver keyserver.ubuntu.com \
+        --recv-keys C6BF758A33A3A276
 
     export MXE_TARGET=x86_64-w64-mingw32.static
     export MXE2_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
     export MXE_DIR=/usr/lib/mxe
-    export CMAKE="${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake -DMXE_USE_CCACHE=FALSE"
+    export CMAKE="${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake \
+        -DMXE_USE_CCACHE=FALSE"
 
     sudo apt-get --yes update
     sudo apt-get --yes \
@@ -48,7 +54,9 @@ then
 else
     export CMAKE=cmake
 
-    sudo echo "deb http://us.archive.ubuntu.com/ubuntu/ disco universe" >> /etc/apt/sources.list
+    sudo echo "deb http://us.archive.ubuntu.com/ubuntu/ disco universe" >> \
+        /etc/apt/sources.list
+
     sudo apt-get --yes update
     sudo apt-get --yes install libsfml-dev
 fi
