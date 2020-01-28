@@ -12,7 +12,7 @@ find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 
-add_executable(${PROJECT_NAME}
+set(SOURCES
     src/Camera.cpp
     src/Camera.hpp
     src/Chunk.cpp
@@ -82,6 +82,12 @@ add_executable(${PROJECT_NAME}
     src/MazeRenderers/Brick.hpp
     src/MazeRenderers/NightBrick.cpp
     src/MazeRenderers/NightBrick.hpp)
+
+if (WIN32)
+    set(SOURCES ${SOURCES} win/mazemaze.rc)
+endif (WIN32)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 if (SFGUI_FOUND)
     message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")

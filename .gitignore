@@ -49,3 +49,4 @@
 /deb/opt/*
 
 !/scripts
+!/win
