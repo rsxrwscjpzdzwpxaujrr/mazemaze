@@ -21,7 +21,8 @@ else
     mv deb.deb deploy/mazemaze_0.2_amd64.deb
 
     tar -C /opt/ -cvzf deploy/mazemaze-0.2-amd64-linux.tar.gz mazemaze
-    md5sum deploy/mazemaze-0.2-amd64-linux.tar.gz
 fi
+
+md5deep -rl deploy
 
 set +xe
