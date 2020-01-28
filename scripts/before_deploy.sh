@@ -7,7 +7,7 @@ mkdir deploy
 if [[ $WINDOWS = "TRUE" ]]
 then
     ln -s ${MXE_DIR}/usr/$MXE_TARGET/mazemaze mazemaze
-    zip -r deploy/mazemaze-$VERSION-amd64-windows.zip mazemaze
+    zip -r deploy/mazemaze-${VERSION}-amd64-windows.zip mazemaze
 else
     cd deb
     mkdir opt
@@ -18,9 +18,9 @@ else
     cat DEBIAN/md5sums
     cd ..
     fakeroot dpkg-deb --build deb
-    mv deb.deb deploy/mazemaze_$VERSION_amd64.deb
+    mv deb.deb deploy/mazemaze_${VERSION}_amd64.deb
 
-    tar -C /opt/ -cvzf deploy/mazemaze-$VERSION-amd64-linux.tar.gz mazemaze
+    tar -C /opt/ -cvzf deploy/mazemaze-${VERSION}-amd64-linux.tar.gz mazemaze
 fi
 
 md5deep -rl deploy
