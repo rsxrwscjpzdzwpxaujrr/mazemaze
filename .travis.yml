@@ -45,7 +45,7 @@ jobs:
           - DEPLOY=TRUE
           addons:
               apt_packages:
-              - graphicsmagick-imagemagick-compat
+              - imagemagick
 
 before_script:
     - source scripts/before_script.sh
