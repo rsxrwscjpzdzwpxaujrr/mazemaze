@@ -128,6 +128,10 @@ target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} iconv)
+endif (WIN32)
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_NLS=1)
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
