@@ -23,10 +23,19 @@ jobs:
         - name: "Linux GCC"
           compiler: gcc
           dist:     bionic
+          env:
+          - DEPLOY=TRUE
 
         - name: "Linux Clang"
           compiler: clang
           dist:     bionic
+
+        - name: "Windows static cross-compile"
+          compiler: gcc
+          dist:     bionic
+          env:
+          - WINDOWS=TRUE
+          - DEPLOY=TRUE
 
 before_script:
     - source scripts/before_script.sh
@@ -45,7 +54,7 @@ deploy:
     skip_cleanup: true
     draft: true
     on:
-        condition: $CC = gcc
+        condition: $DEPLOY = TRUE
 
 notifications:
     email: false
