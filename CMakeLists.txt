@@ -109,19 +109,20 @@ else (SFGUI_FOUND)
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
 
-get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+if (BUILD_STATIC)
+    set(JSONCPP_TARGET jsoncpp_lib_static)
+else (BUILD_STATIC)
+    set(JSONCPP_TARGET jsoncpp_lib)
+endif (BUILD_STATIC)
+
+get_target_property(JSON_INC_PATH ${JSONCPP_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${JSON_INC_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE lib)
 
-if (BUILD_STATIC)
-    target_link_libraries(${PROJECT_NAME} jsoncpp_lib)
-else (BUILD_STATIC)
-    target_link_libraries(${PROJECT_NAME} jsoncpp_lib_static)
-endif (BUILD_STATIC)
-
+target_link_libraries(${PROJECT_NAME} ${JSONCPP_TARGET})
 target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
