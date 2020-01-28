@@ -3,18 +3,7 @@ language: cpp
 addons:
     apt_packages:
     - cmake
-    - libxrandr-dev
-    - libudev-dev
-    - libopenal-dev
-    - libflac-dev
-    - libvorbis-dev
-    - g++
-    - clang
-    - libgl1-mesa-dev
-    - libjsoncpp-dev
     - curl
-    - fakeroot
-    - hashdeep
 
 os: linux
 
@@ -25,10 +14,28 @@ jobs:
           dist:     bionic
           env:
           - DEPLOY=TRUE
+          addons:
+              apt_packages:
+              - libxrandr-dev
+              - libudev-dev
+              - g++
+              - libgl1-mesa-dev
+              - libjsoncpp-dev
+              - curl
+              - fakeroot
+              - hashdeep
 
         - name: "Linux Clang"
           compiler: clang
           dist:     bionic
+          addons:
+              apt_packages:
+              - libxrandr-dev
+              - libudev-dev
+              - clang
+              - libgl1-mesa-dev
+              - libjsoncpp-dev
+              - curl
 
         - name: "Windows static cross-compile"
           compiler: gcc
