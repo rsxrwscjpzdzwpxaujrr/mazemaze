@@ -124,7 +124,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE lib)
 
 target_link_libraries(${PROJECT_NAME} ${JSONCPP_TARGET})
 target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} SFGUI)
+target_link_libraries(${PROJECT_NAME} SFGUI::SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
