@@ -51,6 +51,13 @@ then
     $CMAKE --build .
     sudo make install
     cd ../..
+
+    # Icon
+    convert data/icon.png \
+            -colors 256 \
+            -define icon:auto-resize=16,24,32,48,256 \
+            -background transparent \
+            win/icon.ico
 else
     export CMAKE=cmake
 
