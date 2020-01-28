@@ -43,6 +43,9 @@ jobs:
           env:
           - WINDOWS=TRUE
           - DEPLOY=TRUE
+          addons:
+              apt_packages:
+              - graphicsmagick-imagemagick-compat
 
 before_script:
     - source scripts/before_script.sh

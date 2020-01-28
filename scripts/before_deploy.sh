@@ -6,6 +6,13 @@ mkdir deploy
 
 if [[ $WINDOWS = "TRUE" ]]
 then
+    # Icon
+    convert data/icon.png \
+            -colors 256 \
+            -define icon:auto-resize=16,24,32,48,256 \
+            -background transparent \
+            win/icon.ico
+
     ln -s ${MXE_DIR}/usr/$MXE_TARGET/mazemaze mazemaze
     zip -r deploy/mazemaze-$VERSION-amd64-windows.zip mazemaze
 else
