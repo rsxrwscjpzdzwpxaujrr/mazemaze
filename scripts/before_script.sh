@@ -13,8 +13,10 @@ then
         --recv-keys C6BF758A33A3A276
 
     export MXE_TARGET=x86_64-w64-mingw32.static
-    export MXE2_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
+    export MXE_APT_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
     export MXE_DIR=/usr/lib/mxe
+    export MXE_PREFIX=${MXE_DIR}/usr/$MXE_TARGET
+
     export CMAKE="${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake \
         -DMXE_USE_CCACHE=FALSE"
 
@@ -23,13 +25,13 @@ then
         --no-install-suggests \
         --no-install-recommends \
         install \
-        mxe-$MXE2_TARGET-sfml \
-        mxe-$MXE2_TARGET-jsoncpp
-    sudo apt-get --yes remove mxe-$MXE2_TARGET-sfml
+        mxe-$MXE_APT_TARGET-sfml \
+        mxe-$MXE_APT_TARGET-jsoncpp
+    sudo apt-get --yes remove mxe-$MXE_APT_TARGET-sfml
 
     # Hack to fix linking error
-    sudo ln -s ${MXE_DIR}/usr/$MXE_TARGET/lib/libopengl32.a \
-               ${MXE_DIR}/usr/$MXE_TARGET/lib/libOpenGL32.a
+    sudo ln -s $MXE_PREFIX/lib/libopengl32.a \
+               $MXE_PREFIX/lib/libOpenGL32.a
 
     # SFML
 
