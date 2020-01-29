@@ -76,11 +76,11 @@ sed '138{s/^/#/}' CMakeLists.txt > tmp    # hack to disable SFGUI warnings
 mv tmp CMakeLists.txt                     #
 mkdir build
 cd build
-CMAKE_SFGUI_FLAGS="-DSFGUI_BUILD_EXAMPLES=FALSE"
+CMAKE_SFGUI_FLAGS="-DSFGUI_BUILD_EXAMPLES=FALSE  \
+                   -DSFGUI_BUILD_SHARED_LIBS=FALSE"
 if [[ $WINDOWS = "TRUE" ]]
 then
     CMAKE_SFGUI_FLAGS="$CMAKE_SFGUI_FLAGS  \
-        -DSFGUI_BUILD_SHARED_LIBS=FALSE  \
         -DSFGUI_STATIC_STD_LIBS=TRUE  \
         -DSFML_STATIC_LIBRARIES=TRUE  \
         -DSFGUI_BUILD_EXAMPLES=FALSE"
