@@ -30,7 +30,6 @@ jobs:
           compiler: clang
           dist:     bionic
           env:
-          - DEPLOY=TRUE
           - ARCH=x86_64
           addons:
               apt_packages:
@@ -41,13 +40,24 @@ jobs:
               - libjsoncpp-dev
               - curl
 
-        - name: "Windows static cross-compile"
+        - name: "Windows x86_64 static cross-compile"
           compiler: gcc
           dist:     bionic
           env:
           - WINDOWS=TRUE
           - DEPLOY=TRUE
           - ARCH=x86_64
+          addons:
+              apt_packages:
+              - imagemagick
+
+        - name: "Windows i686 static cross-compile"
+          compiler: gcc
+          dist:     bionic
+          env:
+          - WINDOWS=TRUE
+          - DEPLOY=TRUE
+          - ARCH=i686
           addons:
               apt_packages:
               - imagemagick
