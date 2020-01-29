@@ -5,8 +5,6 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 project(mazemaze)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
-
 find_package(Intl REQUIRED MODULE)
 find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
