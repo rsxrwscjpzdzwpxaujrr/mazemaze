@@ -6,10 +6,10 @@ export VERSION=0.2
 
 if [[ $ARCH = "x86_64" ]]
 then
-  export ARCH_HUMAN="64 bit"
+  export ARCH_HUMAN="64bit"
   export APT_ARCH=amd64
 else
-  export ARCH_HUMAN="32 bit"
+  export ARCH_HUMAN="32bit"
   export APT_ARCH=i386
 fi
 

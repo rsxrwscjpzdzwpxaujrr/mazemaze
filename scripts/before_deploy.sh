@@ -7,7 +7,7 @@ mkdir deploy
 if [[ $WINDOWS = "TRUE" ]]
 then
     ln -s ${MXE_DIR}/usr/$MXE_TARGET/mazemaze mazemaze
-    zip -r "deploy/Mazemaze $VERSION Windows $ARCH_HUMAN.zip" mazemaze
+    zip -r deploy/Mazemaze_${VERSION}_Windows_${ARCH_HUMAN}.zip mazemaze
 else
     cd deb
     mkdir opt
@@ -21,7 +21,7 @@ else
     mv deb.deb deploy/mazemaze_${VERSION}_${APT_ARCH}.deb
 
     tar -C /opt/ \
-        -cvzf "deploy/Mazemaze ${VERSION} Linux ${ARCH_HUMAN}.tar.gz" \
+        -cvzf deploy/Mazemaze_${VERSION}_Linux_${ARCH_HUMAN}.tar.gz \
         mazemaze
 fi
 
