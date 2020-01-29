@@ -30,8 +30,8 @@ namespace renderers {
 
 Brick::Brick(Game& game) :
         MazeRenderer(game),
-        meshCount(10),
         game(game),
+        meshCount(10),
         skybox(50, 0.5f, 0.5f, 0.5f),
         meshDrawList(-1) {}
 
@@ -72,6 +72,8 @@ Brick::compileWalls() {
             angleType = Angle::OUTER;
             side = true;
             initialized = true;
+        } else {
+            continue;
         }
 
         if (initialized) {
