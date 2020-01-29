@@ -14,6 +14,7 @@ jobs:
           dist:     bionic
           env:
           - DEPLOY=TRUE
+          - ARCH=x86_64
           addons:
               apt_packages:
               - libxrandr-dev
@@ -28,6 +29,9 @@ jobs:
         - name: "Linux Clang"
           compiler: clang
           dist:     bionic
+          env:
+          - DEPLOY=TRUE
+          - ARCH=x86_64
           addons:
               apt_packages:
               - libxrandr-dev
@@ -43,6 +47,7 @@ jobs:
           env:
           - WINDOWS=TRUE
           - DEPLOY=TRUE
+          - ARCH=x86_64
           addons:
               apt_packages:
               - imagemagick

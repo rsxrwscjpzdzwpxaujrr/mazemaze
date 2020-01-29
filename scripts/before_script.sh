@@ -4,6 +4,15 @@ set -xe
 
 export VERSION=0.2
 
+if [[ $ARCH = "x86_64" ]]
+then
+  export ARCH_HUMAN="64 bit"
+  export APT_ARCH=amd64
+else
+  export ARCH_HUMAN="32 bit"
+  export APT_ARCH=i386
+fi
+
 if [[ $WINDOWS = "TRUE" ]]
 then
     sudo echo "deb http://pkg.mxe.cc/repos/apt bionic main" \
@@ -12,7 +21,7 @@ then
     sudo apt-key adv --keyserver keyserver.ubuntu.com \
         --recv-keys C6BF758A33A3A276
 
-    export MXE_TARGET=x86_64-w64-mingw32.static
+    export MXE_TARGET=$ARCH-w64-mingw32.static
     export MXE_APT_TARGET=$(echo "$MXE_TARGET" | sed 's/_/-/g')
     export MXE_DIR=/usr/lib/mxe
     export MXE_PREFIX=${MXE_DIR}/usr/$MXE_TARGET
