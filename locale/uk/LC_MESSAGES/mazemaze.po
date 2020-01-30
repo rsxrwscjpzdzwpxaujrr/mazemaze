@@ -3,7 +3,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mazemaze 0.2-dev\n"
+"Project-Id-Version: mazemaze 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-21 02:20+0400\n"
 "PO-Revision-Date: 2019-12-21 22:36+0200\n"

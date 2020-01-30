@@ -57,7 +57,7 @@ GraphicEngine::openWindow() {
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
-    const sf::String windowName = L"Mazemaze 0.2-dev";
+    const sf::String windowName = L"Mazemaze 0.2";
     sf::Uint32 style;
 
     if (fullscreen)
