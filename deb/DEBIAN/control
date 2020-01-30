@@ -4,4 +4,4 @@ Maintainer: Miroslava Strannaya <rsxrwscjpzdzwpxaujrr@yahoo.com>
 Architecture: amd64
 Section: games
 Description: Simple 3D OpenGL first-person maze game.
-Depends: libsfml-system2.5, libsfml-graphics2.5, libsfml-window2.5, libconfig++9v5
+Depends: libsfml-system2.5, libsfml-graphics2.5, libsfml-window2.5, libjsoncpp1
