@@ -82,7 +82,7 @@ set(SOURCES
     src/MazeRenderers/NightBrick.hpp)
 
 if (WIN32)
-    set(SOURCES ${SOURCES} win/mazemaze.rc)
+    set(SOURCES ${SOURCES} win/resource.rc)
 endif (WIN32)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
