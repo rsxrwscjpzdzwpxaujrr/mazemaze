@@ -86,9 +86,9 @@ if (WIN32)
 endif (WIN32)
 
 if (WIN32)
-    add_executable(${PROJECT_NAME} ${SOURCES})
-else (WIN32)
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
+else (WIN32)
+    add_executable(${PROJECT_NAME} ${SOURCES})
 endif (WIN32)
 
 if (SFGUI_FOUND)
