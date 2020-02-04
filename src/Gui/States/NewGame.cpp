@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,27 +45,27 @@ NewGame::initSignals(MainMenu& mainMenu) {
 
     sizeEntry->GetSignal(Entry::OnTextChanged).Connect([this] {
         const sf::String text = sizeEntry->GetText();
-        sf::String newText = L"";
-        bool changed = false;
+        bool needOld = false;
 
         if (text.getSize() != 0) {
-            for (unsigned int i = 0; i < text.getSize(); i++)
-                if (std::isdigit(text[i]))
-                    newText = newText + text[i];
-                else
-                    changed = true;
+            needOld = text.getSize() > max_size_chars;
 
-            if (newText.getSize() == 0) {
-                newText = L"";
-                changed = true;
-            } else if (std::stoi(newText.toWideString()) < 1) {
-                newText = L"1";
-                changed = true;
+            if (!needOld) {
+                for (unsigned int i = 0; i < text.getSize(); i++) {
+                    if (!std::isdigit(text[i])) {
+                        needOld = true;
+                        break;
+                    }
+                }
             }
         }
 
-        if (changed)
-            sizeEntry->SetText(newText);
+        if (needOld) {
+            sizeEntry->SetText(oldtext);
+            sizeEntry->SetCursorPosition(oldcursor);
+        }
+
+        oldtext = sizeEntry->GetText();
     });
 }
 
@@ -73,7 +73,9 @@ NewGame::NewGame(MainMenu& mainMenu) :
         State(mainMenu.getDesktop()),
         backButton(Button::Create(pgtx("new_game", "Back"))),
         startButton(Button::Create(pgtx("new_game", "Start"))),
-        sizeEntry(Entry::Create(L"10")) {
+        sizeEntry(Entry::Create(L"10")),
+        oldtext(sizeEntry->GetText()),
+        oldcursor(sizeEntry->GetCursorPosition()) {
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
     auto separatorHorizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
     auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
@@ -115,6 +117,11 @@ NewGame::NewGame(MainMenu& mainMenu) :
     initSignals(mainMenu);
 
     center();
+}
+
+void
+NewGame::tick(float) {
+    oldcursor = sizeEntry->GetCursorPosition();
 }
 
 NewGame::~NewGame() = default;

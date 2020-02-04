@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,13 +29,20 @@ namespace states {
 
 class NewGame : public State {
 public:
+    const char max_size_chars = 4;
+
     explicit NewGame(MainMenu& mainMenu);
     ~NewGame() override;
+
+    void tick(float deltatime) override;
 
 private:
     sfg::Button::Ptr backButton;
     sfg::Button::Ptr startButton;
     sfg::Entry::Ptr  sizeEntry;
+
+    sf::String oldtext;
+    int oldcursor;
 
     void initSignals(MainMenu& mainMenu);
 };
