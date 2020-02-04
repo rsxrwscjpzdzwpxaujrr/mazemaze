@@ -36,10 +36,32 @@ then
         install \
         mxe-$MXE_APT_TARGET-sfml \
         mxe-$MXE_APT_TARGET-jsoncpp
+    sudo apt-get --yes remove mxe-$MXE_APT_TARGET-sfml
 
     # Hack to fix linking error
     sudo ln -s $MXE_PREFIX/lib/libopengl32.a \
                $MXE_PREFIX/lib/libOpenGL32.a
+
+    # SFML
+
+    wget https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
+    unzip SFML-2.5.1-sources.zip
+    cd SFML-2.5.1
+    mkdir build
+    cd build
+    $CMAKE \
+        -DSFML_USE_STATIC_STD_LIBS=TRUE \
+        -BUILD_SHARED_LIBS=FALSE \
+        -DSFML_BUILD_EXAMPLES=FALSE \
+        -DSFML_BUILD_DOC=FALSE \
+        -DSFML_BUILD_AUDIO=FALSE \
+        -DSFML_BUILD_GRAPHICS=TRUE \
+        -DSFML_BUILD_WINDOW=TRUE \
+        -DSFML_BUILD_NETWORK=FALSE \
+        ..
+    $CMAKE --build .
+    sudo make install
+    cd ../..
 
     # Icon
     convert data/icon.png \
