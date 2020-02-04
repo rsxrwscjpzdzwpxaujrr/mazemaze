@@ -116,6 +116,8 @@ Settings::Settings(bool readConfig) :
     autosaveTime = 30.0f;
     sensitivity = 0.001f;
     renderer = 3;
+    showFps = false;
+    setVsync(true);
 
     controls["up"]    = sf::Keyboard::W;
     controls["down"]  = sf::Keyboard::S;
