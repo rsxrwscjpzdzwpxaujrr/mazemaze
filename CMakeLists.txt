@@ -85,7 +85,11 @@ if (WIN32)
     set(SOURCES ${SOURCES} win/resource.rc)
 endif (WIN32)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+if (WIN32)
+    add_executable(${PROJECT_NAME} ${SOURCES})
+else (WIN32)
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
+endif (WIN32)
 
 if (SFGUI_FOUND)
     message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")
