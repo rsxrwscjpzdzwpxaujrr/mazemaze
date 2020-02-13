@@ -12,74 +12,41 @@ find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 
 set(SOURCES
     src/Camera.cpp
-    src/Camera.hpp
     src/Chunk.cpp
-    src/Chunk.hpp
     src/Game.cpp
-    src/Game.hpp
     src/GraphicEngine.cpp
-    src/GraphicEngine.hpp
     src/IRenderable.cpp
-    src/IRenderable.hpp
     src/ITickable.cpp
-    src/ITickable.hpp
     src/main.cpp
     src/Maze.cpp
-    src/Maze.hpp
     src/MazeRenderer.cpp
-    src/MazeRenderer.hpp
     src/Player.cpp
-    src/Player.hpp
     src/StarSky.cpp
-    src/StarSky.hpp
     src/Settings.cpp
-    src/Settings.hpp
     src/Saver.cpp
-    src/Saver.hpp
     src/FpsCalculator.cpp
-    src/FpsCalculator.hpp
-    src/utils.hpp
     src/utils.cpp
     src/Skybox.cpp
-    src/Skybox.hpp
     src/Gui/Background.cpp
-    src/Gui/Background.hpp
     src/Gui/MainMenu.cpp
-    src/Gui/MainMenu.hpp
     src/Gui/Gui.cpp
-    src/Gui/Gui.hpp
     src/Gui/State.cpp
-    src/Gui/State.hpp
     src/Gui/States/Hud.cpp
-    src/Gui/States/Hud.hpp
     src/Gui/States/Main.cpp
-    src/Gui/States/Main.hpp
     src/Gui/States/OptionsMenu.cpp
-    src/Gui/States/OptionsMenu.hpp
     src/Gui/States/Options.cpp
-    src/Gui/States/Options.hpp
     src/Gui/States/OptionsGraphics.cpp
-    src/Gui/States/OptionsGraphics.hpp
     src/Gui/States/OptionsOther.cpp
-    src/Gui/States/OptionsOther.hpp
     src/Gui/States/OptionsControls.cpp
     src/Gui/States/OptionsControlsKeys.cpp
     src/Gui/States/OptionsControlsKeyChangeWindow.cpp
-    src/Gui/States/OptionsControls.hpp
     src/Gui/States/Pause.cpp
-    src/Gui/States/Pause.hpp
     src/Gui/States/Win.cpp
-    src/Gui/States/Win.hpp
     src/Gui/States/NewGame.cpp
-    src/Gui/States/NewGame.hpp
     src/MazeRenderers/Classic.cpp
-    src/MazeRenderers/Classic.hpp
     src/MazeRenderers/Gray.cpp
-    src/MazeRenderers/Gray.hpp
     src/MazeRenderers/Brick.cpp
-    src/MazeRenderers/Brick.hpp
-    src/MazeRenderers/NightBrick.cpp
-    src/MazeRenderers/NightBrick.hpp)
+    src/MazeRenderers/NightBrick.cpp)
 
 if (WIN32)
     set(SOURCES ${SOURCES} win/resource.rc)
