@@ -28,6 +28,7 @@ GraphicEngine::GraphicEngine() :
         window(nullptr),
         oldWindowPos(-1, -1),
         oldWindowSize(854, 480),
+        needReopenEvent(false),
         vsync(false),
         focus(true),
         maxAntialiasing(calcMaxAntialiasing()),
@@ -102,6 +103,7 @@ GraphicEngine::update() {
         openWindow(videoMode, fullscreen);
 
         needReopen = false;
+        needReopenEvent = true;
     }
 }
 
@@ -132,7 +134,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
         update();
         setStates();
 
-        sf::Event event{};
+        sf::Event event;
 
         while (window->pollEvent(event)) {
             mainMenu.handleEvent(event);
@@ -157,6 +159,14 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
                 default:
                     break;
             }
+        }
+
+        if (needReopenEvent) {
+            sf::Event event;
+            event.type = sf::Event::Resized;
+
+            mainMenu.handleEvent(event);
+            needReopenEvent = false;
         }
 
         mainMenu.tick(frameDeltaTime);

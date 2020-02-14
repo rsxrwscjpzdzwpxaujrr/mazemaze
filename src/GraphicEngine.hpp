@@ -68,6 +68,7 @@ private:
     int width;
     int height;
     bool needReopen;
+    bool needReopenEvent;
     bool fullscreen;
     bool vsync;
     bool focus;
