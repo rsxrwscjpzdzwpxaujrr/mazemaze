@@ -121,6 +121,11 @@ install(TARGETS ${PROJECT_NAME}
 install(DIRECTORY data
         DESTINATION ${PROJECT_NAME})
 
+install(FILES data/icon.png
+        DESTINATION ~/.local/share/icons/hicolor/256x256/apps
+        COMPONENT ICON
+        RENAME mazemaze.png)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mazemaze.desktop
         DESTINATION ~/.local/share/applications
         COMPONENT DESKTOP_ENTRY)
