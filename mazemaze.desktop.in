@@ -9,3 +9,4 @@ Icon=mazemaze
 Terminal=false
 Type=Application
 Categories=Game;
+StartupNotify=false
