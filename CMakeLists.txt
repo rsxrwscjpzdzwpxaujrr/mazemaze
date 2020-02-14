@@ -109,25 +109,23 @@ endif (WIN32)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_NLS=1)
 
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "/opt" CACHE PATH "Install prefix" FORCE)
-endif (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+set(MAZEMAZE_INSTALL_DIR "/opt" CACHE PATH "Mazemaze Install directory")
 
 configure_file(mazemaze.desktop.in mazemaze.desktop)
 
 install(TARGETS ${PROJECT_NAME}
-        RUNTIME DESTINATION ${PROJECT_NAME})
+        RUNTIME DESTINATION ${MAZEMAZE_INSTALL_DIR}/${PROJECT_NAME})
 
 install(DIRECTORY data
-        DESTINATION ${PROJECT_NAME})
+        DESTINATION ${MAZEMAZE_INSTALL_DIR}/${PROJECT_NAME})
 
 install(FILES data/icon.png
-        DESTINATION ~/.local/share/icons/hicolor/256x256/apps
+        DESTINATION share/icons/hicolor/256x256/apps
         COMPONENT ICON
         RENAME mazemaze.png)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mazemaze.desktop
-        DESTINATION ~/.local/share/applications
+        DESTINATION share/applications
         COMPONENT DESKTOP_ENTRY)
 
 add_subdirectory(locale)
