@@ -79,6 +79,7 @@ deploy:
     skip_cleanup: true
     draft: true
     on:
+        all_branches: true
         condition: $DEPLOY = TRUE && (-n $TRAVIS_TAG || $FORCE_DEPLOY = TRUE)
 
 notifications:
