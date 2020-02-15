@@ -14,7 +14,7 @@ else
         -DCMAKE_INSTALL_PREFIX=../deb/usr \
         -DMAZEMAZE_INSTALL_DIR=../deb/opt \
         ..
-    make install
+    sudo make install
     cd ../deb
     md5deep -rl opt usr > DEBIAN/md5sums
     cat DEBIAN/md5sums
