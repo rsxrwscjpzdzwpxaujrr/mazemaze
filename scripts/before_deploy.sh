@@ -9,11 +9,13 @@ then
     ln -s ${MXE_DIR}/usr/$MXE_TARGET/mazemaze mazemaze
     zip -r deploy/Mazemaze_${VERSION}_Windows_${ARCH_HUMAN}.zip mazemaze
 else
-    cd deb
-    mkdir opt
-    cp -r /opt/mazemaze opt
-    mkdir -p usr/share/applications/
-    cp ~/.local/share/applications/mazemaze.desktop usr/share/applications/
+    cd build
+    $CMAKE $CMAKE_MAZEMAZE_FLAGS \
+        -DCMAKE_INSTALL_PREFIX=../deb/usr \
+        -DMAZEMAZE_INSTALL_DIR=../deb/opt \
+        ..
+    make install
+    cd ../deb
     md5deep -rl opt usr > DEBIAN/md5sums
     cat DEBIAN/md5sums
     cd ..
