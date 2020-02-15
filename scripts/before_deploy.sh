@@ -6,7 +6,7 @@ mkdir deploy
 
 if [[ $WINDOWS = "TRUE" ]]
 then
-    ln -s ${MXE_DIR}/usr/$MXE_TARGET/mazemaze mazemaze
+    ln -s ${MXE_DIR}/usr/$MXE_TARGET/opt/mazemaze mazemaze
     zip -r deploy/Mazemaze_${VERSION}_Windows_${ARCH_HUMAN}.zip mazemaze
 else
     cd build
