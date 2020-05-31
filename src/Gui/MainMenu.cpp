@@ -23,6 +23,7 @@
 #include "../Saver.hpp"
 #include "../Settings.hpp"
 #include "../StarSky.hpp"
+#include "../path_separator.hpp"
 
 #include "Background.hpp"
 
@@ -33,7 +34,7 @@ namespace gui {
 
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          settings(settings) {
-    getDesktop().LoadThemeFromFile("data/style.theme");
+    getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
     mainState = addState(new states::Main(*this, settings));
     setState(mainState);

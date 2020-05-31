@@ -34,6 +34,7 @@
 # include <sys/stat.h>
 #endif
 
+#include "path_separator.hpp"
 #include "GraphicEngine.hpp"
 #include "Game.hpp"
 
@@ -87,7 +88,7 @@ Settings::Settings(bool readConfig) :
         }),
         renderer(0) {
     initDataDir();
-    configFile = dataDir + "/config.json";
+    configFile = dataDir + PATH_SEPARATOR "config.json";
 
     if (readConfig) {
         if(Settings::readConfig())
@@ -323,8 +324,7 @@ Settings::initDataDir() {
 
 #endif
 
-    dataDir += PATH_SEPARATOR;
-    dataDir += "mazemaze";
+    dataDir += PATH_SEPARATOR "mazemaze";
 
 #ifdef _WIN32
 

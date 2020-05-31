@@ -22,12 +22,6 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#if defined _WIN32 || defined __CYGWIN__
-# define PATH_SEPARATOR '\\'
-#else
-# define PATH_SEPARATOR '/'
-#endif
-
 namespace mazemaze {
 
 class Game;
