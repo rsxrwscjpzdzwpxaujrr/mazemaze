@@ -84,11 +84,7 @@ else (SFGUI_FOUND)
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
 
-if (BUILD_STATIC)
-    set(JSONCPP_TARGET jsoncpp_lib_static)
-else (BUILD_STATIC)
-    set(JSONCPP_TARGET jsoncpp_lib)
-endif (BUILD_STATIC)
+set(JSONCPP_TARGET jsoncpp_lib_static)
 
 get_target_property(JSON_INC_PATH ${JSONCPP_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
 
