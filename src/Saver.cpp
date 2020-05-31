@@ -20,6 +20,7 @@
 #include "Game.hpp"
 #include "Chunk.hpp"
 #include "Settings.hpp"
+#include "path_separator.hpp"
 
 namespace mazemaze {
 
@@ -158,7 +159,7 @@ Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
 
 std::string
 Saver::getFilename(Settings& settings) {
-    return settings.getDataDir() + PATH_SEPARATOR + "sav";
+    return settings.getDataDir() + PATH_SEPARATOR "sav";
 }
 
 void

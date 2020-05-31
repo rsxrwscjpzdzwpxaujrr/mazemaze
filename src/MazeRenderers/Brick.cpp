@@ -22,6 +22,7 @@
 #include "../Chunk.hpp"
 #include "../Game.hpp"
 #include "../Camera.hpp"
+#include "../path_separator.hpp"
 
 #include <OBJ_Loader.h>
 
@@ -40,7 +41,7 @@ Brick::~Brick() = default;
 void
 Brick::compileWalls() {
     objl::Loader loader = objl::Loader();
-    loader.LoadFile("data/wall.obj");
+    loader.LoadFile("data" PATH_SEPARATOR "wall.obj");
 
     if (meshDrawList != -1)
         glDeleteLists(meshDrawList, meshCount);

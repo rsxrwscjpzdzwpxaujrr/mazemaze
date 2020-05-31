@@ -22,6 +22,8 @@
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 
+#include "path_separator.hpp"
+
 namespace mazemaze {
 
 GraphicEngine::GraphicEngine() :
@@ -34,7 +36,7 @@ GraphicEngine::GraphicEngine() :
         maxAntialiasing(calcMaxAntialiasing()),
         icon(sf::Image()),
         onSetStates([] () {}) {
-    icon.loadFromFile("data/icon.png");
+    icon.loadFromFile("data" PATH_SEPARATOR "icon.png");
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
