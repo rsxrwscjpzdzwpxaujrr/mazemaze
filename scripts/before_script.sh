@@ -2,7 +2,7 @@
 
 set -xe
 
-export VERSION=0.2.1
+export VERSION=0.3
 
 if [[ $ARCH = "x86_64" ]]
 then
