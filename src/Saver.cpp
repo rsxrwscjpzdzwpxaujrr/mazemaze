@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,7 +37,6 @@ Saver::save(Game& game, Settings& settings) {
         Maze&   maze   = game.getMaze();
         Player& player = game.getPlayer();
         Camera& camera = player.getCamera();
-        Chunk*  chunks = maze.getChunks();
         float   time   = game.getTime();
 
         float playerParams[] {player.getX(),
@@ -46,14 +45,6 @@ Saver::save(Game& game, Settings& settings) {
                               camera.getPitch(),
                               camera.getYaw(),
                               camera.getRoll()};
-
-        int32_t mazeParams[] {maze.getWidth(),
-                              maze.getHeight(),
-                              static_cast<int32_t>(maze.getSeed()),
-                              maze.getExitX(),
-                              maze.getExitY(),
-                              maze.getStartX(),
-                              maze.getStartY()};
 
         stream.write(version, sizeof (char) * 3);
         stream.seekp(0x100);
@@ -64,10 +55,23 @@ Saver::save(Game& game, Settings& settings) {
         stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
         stream.seekp(0x300);
 
-        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
+        if (!game.isChunksSaved()) {
+            Chunk*  chunks = maze.getChunks();
+            int32_t mazeParams[] {maze.getWidth(),
+                                 maze.getHeight(),
+                                 static_cast<int32_t>(maze.getSeed()),
+                                 maze.getExitX(),
+                                 maze.getExitY(),
+                                 maze.getStartX(),
+                                 maze.getStartY()};
 
-        for (int i = 0; i < maze.getChunksCount(); i++)
-            writeChunk(stream, chunks[i]);
+            stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
+
+            for (int i = 0; i < maze.getChunksCount(); i++)
+                writeChunk(stream, chunks[i]);
+
+            game.setChunksSaved();
+        }
 
         stream.close();
     }
@@ -144,6 +148,7 @@ Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
         maze.setStartY(mazeParams[6]);
 
         game->onLoad();
+        game->setChunksSaved();
 
         return game;
     }

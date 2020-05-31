@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2018-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,7 +52,8 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
         won(false),
         oldPauseKeyState(false),
         time(0.0f),
-        wantExit(false) {
+        wantExit(false),
+        chunksSaved(false) {
     mazeRenderers[0] = new renderers::Classic(*this);
     mazeRenderers[1] = new renderers::Gray(*this);
     mazeRenderers[2] = new renderers::Brick(*this);
@@ -205,6 +206,10 @@ Game::setRenderer(int id) {
     }
 }
 
+void Game::setChunksSaved() {
+    chunksSaved = true;
+}
+
 void
 Game::setWon(bool won) {
     if (Game::won != won) {
@@ -235,6 +240,11 @@ Game::isWon() const {
 bool
 Game::isWantExit() const {
     return wantExit;
+}
+
+bool
+Game::isChunksSaved() const {
+    return chunksSaved;
 }
 
 float
