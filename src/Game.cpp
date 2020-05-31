@@ -83,11 +83,12 @@ Game::newGame() {
     maze.generate(static_cast<unsigned int>(std::time(nullptr)));
     player.start(maze);
     onLoad();
+    Saver::getInstance().save(*this, settings);
+    lastSaveTime = time;
 }
 
 void
 Game::onLoad() {
-    lastSaveTime = time;
     setPaused(false);
     setWon(false);
 }
