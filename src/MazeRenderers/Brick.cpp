@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
