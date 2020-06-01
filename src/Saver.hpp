@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,29 +33,25 @@ class Settings;
 
 class Saver {
 public:
-    void save(Game& game, Settings& settings);
-    void deleteSave(Settings& settings);
-    bool saveExists(Settings& settings);
-    Game* load(gui::MainMenu& mainMenu, Settings& setiings);
+    static const char version[];
 
-    Saver(Saver const&) = delete;
-    void operator= (Saver const&) = delete;
+    static Game* load(gui::MainMenu& mainMenu, Settings& settings);
+    static bool saveExists(Settings& settings);
 
-    static Saver& getInstance() {
-        static Saver instance;
-        return instance;
-    }
-
-private:
-    const char version[3];
-
-    Saver();
+    Saver(Game& game, Settings& settings);
     ~Saver();
 
-    std::string getFilename(Settings& settings);
+    void save();
+    void deleteSave();
 
-    void writeChunk(std::ostream& stream, Chunk& chunk);
-    void readChunk(std::istream& stream, Chunk& chunk);
+private:
+    Game& game;
+    Settings& settings;
+
+    static std::string getFilename(Settings& settings);
+
+    static void writeChunk(std::ostream& stream, Chunk& chunk);
+    static void readChunk(std::istream& stream, Chunk& chunk);
 };
 
 }

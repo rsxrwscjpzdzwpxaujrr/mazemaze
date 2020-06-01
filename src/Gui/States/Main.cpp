@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ Main::Main(MainMenu& mainMenu, Settings& settings) :
         settings(settings) {
     initSignals(mainMenu);
 
-    updateButtons(Saver::getInstance().saveExists(settings));
+    updateButtons(Saver::saveExists(settings));
 
     OptionsMenu* options = new OptionsMenu(mainMenu, settings);
 
@@ -57,7 +57,7 @@ Main::show(bool show) {
     State::show(show);
 
     if (show)
-        updateButtons(Saver::getInstance().saveExists(settings));
+        updateButtons(Saver::saveExists(settings));
 }
 
 void

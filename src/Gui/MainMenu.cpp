@@ -74,7 +74,7 @@ MainMenu::newGame(int mazeWidth, int mazeHeight) {
 
 void
 MainMenu::resumeGame() {
-    game = Saver::getInstance().load(*this, settings);
+    game = Saver::load(*this, settings);
 
     setupGame();
 }

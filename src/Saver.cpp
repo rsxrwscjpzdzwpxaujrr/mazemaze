@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2019-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,72 +24,13 @@
 
 namespace mazemaze {
 
-Saver::Saver() : version{1, 0, 0} {}
+const char Saver::version[] = {1, 0, 0};
+
+Saver::Saver(Game& game, Settings& settings) :
+        game(game),
+        settings(settings) {}
 
 Saver::~Saver() = default;
-
-void
-Saver::save(Game& game, Settings& settings) {
-    std::ofstream stream;
-
-    stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
-
-    if (stream.is_open()) {
-        Maze&   maze   = game.getMaze();
-        Player& player = game.getPlayer();
-        Camera& camera = player.getCamera();
-        Chunk*  chunks = maze.getChunks();
-        float   time   = game.getTime();
-
-        float playerParams[] {player.getX(),
-                              player.getY(),
-                              player.getZ(),
-                              camera.getPitch(),
-                              camera.getYaw(),
-                              camera.getRoll()};
-
-        int32_t mazeParams[] {maze.getWidth(),
-                              maze.getHeight(),
-                              static_cast<int32_t>(maze.getSeed()),
-                              maze.getExitX(),
-                              maze.getExitY(),
-                              maze.getStartX(),
-                              maze.getStartY()};
-
-        stream.write(version, sizeof (char) * 3);
-        stream.seekp(0x100);
-
-        stream.write(reinterpret_cast<char*>(&time), sizeof (float));
-        stream.seekp(0x200);
-
-        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
-        stream.seekp(0x300);
-
-        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
-
-        for (int i = 0; i < maze.getChunksCount(); i++)
-            writeChunk(stream, chunks[i]);
-
-        stream.close();
-    }
-}
-
-void
-Saver::deleteSave(Settings& settings) {
-    if (saveExists(settings))
-        std::remove(getFilename(settings).c_str());
-}
-
-bool
-Saver::saveExists(Settings& settings) {
-    std::FILE* file = fopen(getFilename(settings).c_str(), "r");
-    bool exist = file != nullptr;
-
-    if (exist)
-        fclose(file);
-
-    return exist;
-}
 
 Game*
 Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
@@ -150,6 +91,69 @@ Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
     }
 
     return nullptr;
+}
+
+void
+Saver::save() {
+    std::ofstream stream;
+
+    stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
+
+    if (stream.is_open()) {
+        Maze&   maze   = game.getMaze();
+        Player& player = game.getPlayer();
+        Camera& camera = player.getCamera();
+        Chunk*  chunks = maze.getChunks();
+        float   time   = game.getTime();
+
+        float playerParams[] {player.getX(),
+                              player.getY(),
+                              player.getZ(),
+                              camera.getPitch(),
+                              camera.getYaw(),
+                              camera.getRoll()};
+
+        int32_t mazeParams[] {maze.getWidth(),
+                              maze.getHeight(),
+                              static_cast<int32_t>(maze.getSeed()),
+                              maze.getExitX(),
+                              maze.getExitY(),
+                              maze.getStartX(),
+                              maze.getStartY()};
+
+        stream.write(version, sizeof (char) * 3);
+        stream.seekp(0x100);
+
+        stream.write(reinterpret_cast<char*>(&time), sizeof (float));
+        stream.seekp(0x200);
+
+        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+        stream.seekp(0x300);
+
+        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
+
+        for (int i = 0; i < maze.getChunksCount(); i++)
+            writeChunk(stream, chunks[i]);
+
+        stream.close();
+    }
+}
+
+void
+Saver::deleteSave() {
+    if (saveExists(settings))
+        std::remove(getFilename(settings).c_str());
+}
+
+bool
+Saver::saveExists(Settings& settings) {
+    std::FILE* file = fopen(getFilename(settings).c_str(), "r");
+    bool exist = file != nullptr;
+
+    if (exist)
+        fclose(file);
+
+    return exist;
 }
 
 std::string

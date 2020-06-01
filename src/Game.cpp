@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <miraityan2004@gmail.com>
+ * Copyright (c) 2018-2020, Мира Странная <miraityan2004@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,6 +46,7 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeH
         mazeRenderers{nullptr},
         player(1.5f, 0.0f, 1.5f),
         settings(settings),
+        saver(new Saver(*this, settings)),
         mainMenu(mainMenu),
         lastSaveTime(0.0f),
         paused(false),
@@ -110,10 +111,8 @@ Game::tick(float deltaTime) {
     if (!(paused || won)) {
         player.tick(deltaTime, window, *this);
 
-        if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave()) {
-            Saver::getInstance().save(*this, settings);
-            lastSaveTime = time;
-        }
+        if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave())
+            save();
 
         mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
 
@@ -176,7 +175,7 @@ Game::setPaused(bool paused) {
             mainMenu.setState(pauseState);
 
             if (settings.getAutosave())
-                Saver::getInstance().save(*this, settings);
+                save();
         } else
             mainMenu.backTo(hudState);
     }
@@ -187,9 +186,9 @@ Game::setWantExit() {
     wantExit = true;
 
     if (won)
-        Saver::getInstance().deleteSave(settings);
+        saver->deleteSave();
     else
-        Saver::getInstance().save(*this, settings);
+        save();
 
     mainMenu.stopGame();
 }
@@ -260,6 +259,12 @@ Game::getCamera() {
 Settings&
 Game::getSettings() {
     return settings;
+}
+
+void
+Game::save() {
+    saver->save();
+    lastSaveTime = time;
 }
 
 }
