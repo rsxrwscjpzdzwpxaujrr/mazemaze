@@ -32,7 +32,12 @@ void
 Saver::save(Game& game, Settings& settings) {
     std::ofstream stream;
 
-    stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
+    std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
+
+    if (!game.isChunksSaved())
+        mode |= std::ios::trunc;
+
+    stream.open(getFilename(settings), mode);
 
     if (stream.is_open()) {
         Maze&   maze   = game.getMaze();
