@@ -52,6 +52,7 @@ private:
     Game* game;
     Settings& settings;
     float lastSaveTime;
+    bool virgin;
 
     void saveGame  (std::ostream& stream);
     void savePlayer(std::ostream& stream);

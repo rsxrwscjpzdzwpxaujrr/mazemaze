@@ -36,7 +36,8 @@ const char Saver::version[] = {1, 0, 0};
 Saver::Saver(Settings& settings) :
         game(nullptr),
         settings(settings),
-        lastSaveTime(0.0f) {}
+        lastSaveTime(0.0f),
+        virgin(true) {}
 
 Saver::~Saver() = default;
 
@@ -101,6 +102,8 @@ Saver::load(gui::MainMenu& mainMenu) {
 
     game->onLoad();
 
+    virgin = false;
+
     return game;
 }
 
@@ -112,15 +115,26 @@ Saver::save() {
     std::ofstream stream;
 
     stream.exceptions(std::ios::failbit | std::ios::badbit);
-    stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
+
+    std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
+
+    if (virgin)
+        mode |= std::ios::trunc;
+
+    stream.open(getFilename(settings), mode);
 
     stream.seekp(VERSION_OFFSET);
     stream.write(version, sizeof (char) * 3);
 
     saveGame(stream);
     savePlayer(stream);
-    saveMaze(stream);
-    saveChunks(stream);
+
+    if (virgin) {
+        saveMaze(stream);
+        saveChunks(stream);
+    }
+
+    virgin = false;
 
     stream.close();
 }
