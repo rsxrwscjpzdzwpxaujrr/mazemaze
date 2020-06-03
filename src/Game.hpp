@@ -38,7 +38,7 @@ class Settings;
 
 class Game : public gui::Background {
 public:
-    explicit Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight);
+    explicit Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWidth, int mazeHeight);
     ~Game() override;
 
     void newGame();
@@ -71,7 +71,7 @@ private:
     MazeRenderer* mazeRenderers[16];
     Player player;
     Settings& settings;
-    Saver* saver;
+    Saver& saver;
 
     gui::MainMenu& mainMenu;
 
@@ -79,15 +79,11 @@ private:
     int pauseState;
     int wonState;
 
-    float lastSaveTime;
-
     bool paused;
     bool won;
     bool oldPauseKeyState;
     float time;
     bool wantExit;
-
-    void save();
 };
 
 }

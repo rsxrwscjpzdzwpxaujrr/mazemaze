@@ -21,128 +21,179 @@
 #include "Chunk.hpp"
 #include "Settings.hpp"
 #include "path_separator.hpp"
+#include "utils.hpp"
+
+#define VERSION_OFFSET 0x0
+#define GAME_OFFSET    0x100
+#define PLAYER_OFFSET  0x200
+#define MAZE_OFFSET    0x300
+#define CHUNKS_OFFSET  0x318
 
 namespace mazemaze {
 
 const char Saver::version[] = {1, 0, 0};
 
-Saver::Saver(Game& game, Settings& settings) :
-        game(game),
-        settings(settings) {}
+Saver::Saver(Settings& settings) :
+        game(nullptr),
+        settings(settings),
+        lastSaveTime(0.0f) {}
 
 Saver::~Saver() = default;
 
 Game*
-Saver::load(gui::MainMenu& mainMenu, Settings& settings) {
+Saver::load(gui::MainMenu& mainMenu) {
     std::ifstream stream;
 
     stream.open(getFilename(settings), std::ios::in | std::ios::binary);
+    stream.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
 
-    if (stream.is_open()) {
-        char version[3];
-        float time;
-        float playerParams[6];
-        int32_t mazeParams[7];
+    char version[3];
+    float time;
+    float playerParams[6];
+    int32_t mazeParams[7];
 
-        stream.read(version, sizeof (char) * 3);
-        stream.seekg(0x100);
+    stream.seekg(VERSION_OFFSET);
+    stream.read(version, sizeof (char) * 3);
 
-        if (version[0] != Saver::version[0])
-            return nullptr;
+    if (version[0] != Saver::version[0])
+        throw std::runtime_error(format("Incompatible save version %d.%d.%d", version[0],
+                                                                              version[1],
+                                                                              version[2]));
 
-        stream.read(reinterpret_cast<char*>(&time), sizeof (float));
-        stream.seekg(0x200);
+    stream.seekg(GAME_OFFSET);
+    stream.read(reinterpret_cast<char*>(&time), sizeof (float));
 
-        stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
-        stream.seekg(0x300);
+    stream.seekg(PLAYER_OFFSET);
+    stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
 
-        stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 7);
+    stream.seekg(MAZE_OFFSET);
+    stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 7);
 
-        Game* game = new Game(mainMenu, settings, (mazeParams[0] / 2), (mazeParams[1] / 2));
-        Maze& maze = game->getMaze();
+    game = new Game(mainMenu, settings, *this, (mazeParams[0] / 2), (mazeParams[1] / 2));
 
-        for (int i = 0; i < maze.getChunksCount(); i++)
-            readChunk(stream, game->getMaze().getChunks()[i]);
+    lastSaveTime = time;
+    game->setTime(time);
 
-        stream.close();
+    Maze& maze = game->getMaze();
 
-        Player& player = game->getPlayer();
-        Camera& camera = player.getCamera();
+    stream.seekg(CHUNKS_OFFSET);
+    for (int i = 0; i < maze.getChunksCount(); i++)
+        loadChunk(stream, game->getMaze().getChunks()[i]);
 
-        game->setTime(time);
+    stream.close();
 
-        player.setX(playerParams[0]);
-        player.setY(playerParams[1]);
-        player.setZ(playerParams[2]);
-        camera.setPitch(playerParams[3]);
-        camera.setYaw  (playerParams[4]);
-        camera.setRoll (playerParams[5]);
+    Player& player = game->getPlayer();
+    Camera& camera = player.getCamera();
 
-        maze.setSeed(mazeParams[2]);
+    player.setX(playerParams[0]);
+    player.setY(playerParams[1]);
+    player.setZ(playerParams[2]);
+    camera.setPitch(playerParams[3]);
+    camera.setYaw  (playerParams[4]);
+    camera.setRoll (playerParams[5]);
 
-        maze.setExitX (mazeParams[3]);
-        maze.setExitY (mazeParams[4]);
-        maze.setStartX(mazeParams[5]);
-        maze.setStartY(mazeParams[6]);
+    maze.setSeed(mazeParams[2]);
 
-        game->onLoad();
+    maze.setExitX (mazeParams[3]);
+    maze.setExitY (mazeParams[4]);
+    maze.setStartX(mazeParams[5]);
+    maze.setStartY(mazeParams[6]);
 
-        return game;
-    }
+    game->onLoad();
 
-    return nullptr;
+    return game;
 }
 
 void
 Saver::save() {
+    if (game == nullptr)
+        throw std::logic_error("game is nullptr");
+
     std::ofstream stream;
 
+    stream.exceptions(std::ios::failbit | std::ios::badbit);
     stream.open(getFilename(settings), std::ios::out | std::ios::trunc | std::ios::binary);
 
-    if (stream.is_open()) {
-        Maze&   maze   = game.getMaze();
-        Player& player = game.getPlayer();
-        Camera& camera = player.getCamera();
-        Chunk*  chunks = maze.getChunks();
-        float   time   = game.getTime();
+    stream.seekp(VERSION_OFFSET);
+    stream.write(version, sizeof (char) * 3);
 
-        float playerParams[] {player.getX(),
-                              player.getY(),
-                              player.getZ(),
-                              camera.getPitch(),
-                              camera.getYaw(),
-                              camera.getRoll()};
+    saveGame(stream);
+    savePlayer(stream);
+    saveMaze(stream);
+    saveChunks(stream);
 
-        int32_t mazeParams[] {maze.getWidth(),
-                              maze.getHeight(),
-                              static_cast<int32_t>(maze.getSeed()),
-                              maze.getExitX(),
-                              maze.getExitY(),
-                              maze.getStartX(),
-                              maze.getStartY()};
-
-        stream.write(version, sizeof (char) * 3);
-        stream.seekp(0x100);
-
-        stream.write(reinterpret_cast<char*>(&time), sizeof (float));
-        stream.seekp(0x200);
-
-        stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
-        stream.seekp(0x300);
-
-        stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
-
-        for (int i = 0; i < maze.getChunksCount(); i++)
-            writeChunk(stream, chunks[i]);
-
-        stream.close();
-    }
+    stream.close();
 }
 
 void
 Saver::deleteSave() {
     if (saveExists(settings))
         std::remove(getFilename(settings).c_str());
+}
+
+float
+Saver::getLastSaveTime() {
+    return lastSaveTime;
+}
+
+void
+Saver::setGame(Game& game) {
+    Saver::game = &game;
+}
+
+void
+Saver::saveGame(std::ostream& stream) {
+    float time = game->getTime();
+
+    lastSaveTime = time;
+
+    stream.seekp(GAME_OFFSET);
+    stream.write(reinterpret_cast<char*>(&time), sizeof (float));
+}
+
+void
+Saver::savePlayer(std::ostream& stream) {
+    Player& player = game->getPlayer();
+    Camera& camera = player.getCamera();
+
+    float playerParams[] {
+        player.getX(),
+        player.getY(),
+        player.getZ(),
+        camera.getPitch(),
+        camera.getYaw(),
+        camera.getRoll()
+    };
+
+    stream.seekp(PLAYER_OFFSET);
+    stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+}
+
+void
+Saver::saveMaze(std::ostream& stream) {
+    Maze& maze = game->getMaze();
+
+    int32_t mazeParams[] {
+        maze.getWidth(),
+        maze.getHeight(),
+        static_cast<int32_t>(maze.getSeed()),
+        maze.getExitX(),
+        maze.getExitY(),
+        maze.getStartX(),
+        maze.getStartY()};
+
+    stream.seekp(MAZE_OFFSET);
+    stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
+}
+
+void
+Saver::saveChunks(std::ostream& stream) {
+    Maze& maze = game->getMaze();
+    Chunk* chunks = maze.getChunks();
+
+    stream.seekp(CHUNKS_OFFSET);
+    for (int i = 0; i < maze.getChunksCount(); i++)
+        saveChunk(stream, chunks[i]);
 }
 
 bool
@@ -162,7 +213,7 @@ Saver::getFilename(Settings& settings) {
 }
 
 void
-Saver::writeChunk(std::ostream& stream, Chunk& chunk) {
+Saver::saveChunk(std::ostream& stream, Chunk& chunk) {
     const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
     char bytes[byteCount] {0};
 
@@ -178,7 +229,7 @@ Saver::writeChunk(std::ostream& stream, Chunk& chunk) {
 }
 
 void
-Saver::readChunk(std::istream& stream, Chunk& chunk) {
+Saver::loadChunk(std::istream& stream, Chunk& chunk) {
     const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
     char bytes[byteCount];
 

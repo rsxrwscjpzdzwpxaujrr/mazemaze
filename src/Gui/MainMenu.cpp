@@ -33,6 +33,7 @@ namespace mazemaze {
 namespace gui {
 
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
+                                         saver(new Saver(settings)),
                                          settings(settings) {
     getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
@@ -56,6 +57,8 @@ MainMenu::~MainMenu() {
 
     if (game != nullptr)
         delete game;
+
+    delete saver;
 }
 
 void
@@ -66,7 +69,7 @@ MainMenu::onEvent(const sf::Event& event) {
 
 void
 MainMenu::newGame(int mazeWidth, int mazeHeight) {
-    game = new Game(*this, settings, mazeWidth, mazeHeight);
+    game = new Game(*this, settings, *saver, mazeWidth, mazeHeight);
     game->newGame();
 
     setupGame();
@@ -74,7 +77,7 @@ MainMenu::newGame(int mazeWidth, int mazeHeight) {
 
 void
 MainMenu::resumeGame() {
-    game = Saver::load(*this, settings);
+    game = saver->load(*this);
 
     setupGame();
 }

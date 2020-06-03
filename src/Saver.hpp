@@ -35,23 +35,33 @@ class Saver {
 public:
     static const char version[];
 
-    static Game* load(gui::MainMenu& mainMenu, Settings& settings);
     static bool saveExists(Settings& settings);
 
-    Saver(Game& game, Settings& settings);
+    Saver(Settings& settings);
     ~Saver();
 
+    Game* load(gui::MainMenu& mainMenu);
     void save();
     void deleteSave();
 
+    float getLastSaveTime();
+
+    void setGame(Game& game);
+
 private:
-    Game& game;
+    Game* game;
     Settings& settings;
+    float lastSaveTime;
+
+    void saveGame  (std::ostream& stream);
+    void savePlayer(std::ostream& stream);
+    void saveMaze  (std::ostream& stream);
+    void saveChunks(std::ostream& stream);
 
     static std::string getFilename(Settings& settings);
 
-    static void writeChunk(std::ostream& stream, Chunk& chunk);
-    static void readChunk(std::istream& stream, Chunk& chunk);
+    static void saveChunk(std::ostream& stream, Chunk& chunk);
+    static void loadChunk(std::istream& stream, Chunk& chunk);
 };
 
 }

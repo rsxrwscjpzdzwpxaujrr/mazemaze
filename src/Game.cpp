@@ -39,21 +39,22 @@
 
 namespace mazemaze {
 
-Game::Game(gui::MainMenu& mainMenu, Settings& settings, int mazeWidth, int mazeHeight) :
+Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWidth, int mazeHeight) :
         gui::Background(this, this, nullptr),
         maze(mazeWidth, mazeHeight),
         mazeRenderer(0),
         mazeRenderers{nullptr},
         player(1.5f, 0.0f, 1.5f),
         settings(settings),
-        saver(new Saver(*this, settings)),
+        saver(saver),
         mainMenu(mainMenu),
-        lastSaveTime(0.0f),
         paused(false),
         won(false),
         oldPauseKeyState(false),
         time(0.0f),
         wantExit(false) {
+    saver.setGame(*this);
+
     mazeRenderers[0] = new renderers::Classic(*this);
     mazeRenderers[1] = new renderers::Gray(*this);
     mazeRenderers[2] = new renderers::Brick(*this);
@@ -87,7 +88,6 @@ Game::newGame() {
 
 void
 Game::onLoad() {
-    lastSaveTime = time;
     setPaused(false);
     setWon(false);
 }
@@ -111,8 +111,8 @@ Game::tick(float deltaTime) {
     if (!(paused || won)) {
         player.tick(deltaTime, window, *this);
 
-        if (time - lastSaveTime >= settings.getAutosaveTime() && settings.getAutosave())
-            save();
+        if (time - saver.getLastSaveTime() >= settings.getAutosaveTime() && settings.getAutosave())
+            saver.save();
 
         mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
 
@@ -175,7 +175,7 @@ Game::setPaused(bool paused) {
             mainMenu.setState(pauseState);
 
             if (settings.getAutosave())
-                save();
+                saver.save();
         } else
             mainMenu.backTo(hudState);
     }
@@ -186,9 +186,9 @@ Game::setWantExit() {
     wantExit = true;
 
     if (won)
-        saver->deleteSave();
+        saver.deleteSave();
     else
-        save();
+        saver.save();
 
     mainMenu.stopGame();
 }
@@ -259,12 +259,6 @@ Game::getCamera() {
 Settings&
 Game::getSettings() {
     return settings;
-}
-
-void
-Game::save() {
-    saver->save();
-    lastSaveTime = time;
 }
 
 }
