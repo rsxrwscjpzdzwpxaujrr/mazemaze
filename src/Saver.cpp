@@ -112,6 +112,9 @@ Saver::save() {
     if (game == nullptr)
         throw std::logic_error("game is nullptr");
 
+    if (lastSaveTime == game->getTime())
+        return;
+
     std::ofstream stream;
 
     stream.exceptions(std::ios::failbit | std::ios::badbit);
