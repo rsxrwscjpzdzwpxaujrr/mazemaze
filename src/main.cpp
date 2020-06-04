@@ -22,7 +22,6 @@
 
 #include "GraphicEngine.hpp"
 #include "Settings.hpp"
-#include "path_separator.hpp"
 
 #include "Gui/MainMenu.hpp"
 
@@ -30,7 +29,7 @@ using namespace mazemaze;
 
 int
 main() {
-    bindtextdomain("mazemaze", "." PATH_SEPARATOR "locale");
+    bindtextdomain("mazemaze", "locale");
     textdomain("mazemaze");
     bind_textdomain_codeset("mazemaze", "UTF-8");
 
