@@ -25,6 +25,7 @@
 #include "GraphicEngine.hpp"
 #include "Saver.hpp"
 #include "Settings.hpp"
+#include "Logger.hpp"
 
 #include "Gui/MainMenu.hpp"
 
@@ -53,6 +54,8 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
         oldPauseKeyState(false),
         time(0.0f),
         wantExit(false) {
+    Logger::inst().log_debug("Constructor of Game called.");
+
     saver.setGame(*this);
 
     mazeRenderers[0] = new renderers::Classic(*this);
@@ -68,6 +71,8 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
 }
 
 Game::~Game() {
+    Logger::inst().log_debug("Destructor of Game called.");
+
     mainMenu.removeState(wonState);
     mainMenu.removeState(pauseState);
     mainMenu.removeState(hudState);
@@ -172,17 +177,24 @@ Game::setPaused(bool paused) {
         Game::paused = paused;
 
         if (paused) {
+            Logger::inst().log_debug("Game paused.");
+
             mainMenu.setState(pauseState);
 
             if (settings.getAutosave())
                 saver.save();
-        } else
+        } else {
+            Logger::inst().log_debug("Game unpaused.");
+
             mainMenu.backTo(hudState);
+        }
     }
 }
 
 void
 Game::setWantExit() {
+    Logger::inst().log_debug("Game wants exit.");
+
     wantExit = true;
 
     if (won)

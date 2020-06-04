@@ -25,7 +25,6 @@
 # include <windows.h>
 # include <processenv.h>
 # include <shlobj.h>
-# include "utils.hpp"
 #else
 # include <regex>
 # include <wordexp.h>
@@ -34,9 +33,11 @@
 # include <sys/stat.h>
 #endif
 
+#include "utils.hpp"
 #include "path_separator.hpp"
 #include "GraphicEngine.hpp"
 #include "Game.hpp"
+#include "Logger.hpp"
 
 namespace mazemaze {
 
@@ -95,6 +96,8 @@ Settings::Settings(bool readConfig) :
             return;
     }
 
+    Logger::inst().log_debug("Config not read. Using defaults.");
+
 #ifdef _WIN32
 
     setEnvironment();
@@ -111,6 +114,8 @@ Settings::Settings(bool readConfig) :
         lang = tempLang;
 
 #endif
+
+    Logger::inst().log_debug(format("System lang is %s.", lang.c_str()));
 
     antialiasing = 0;
     autosave = true;
@@ -203,6 +208,8 @@ Settings::getDataDir() const {
 
 void
 Settings::setLang(const std::string &lang) {
+    Logger::inst().log_debug(format("Setting language to %s.", lang.c_str()));
+
     setenv("LANGUAGE", lang.c_str(), true);
 
     resetLocales();
@@ -340,6 +347,8 @@ Settings::initDataDir() {
 
 void
 Settings::writeConfig() {
+    Logger::inst().log_debug("Writing config.");
+
     std::ofstream ofs(configFile);
 
     Json::StyledStreamWriter writer;
@@ -374,6 +383,8 @@ Settings::writeConfig() {
 
 bool
 Settings::readConfig() {
+    Logger::inst().log_debug("Reading config.");
+
     std::ifstream ifs(configFile);
 
     Json::Reader reader;

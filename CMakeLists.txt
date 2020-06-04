@@ -27,6 +27,7 @@ set(SOURCES
     src/FpsCalculator.cpp
     src/utils.cpp
     src/Skybox.cpp
+    src/Logger.cpp
     src/Gui/Background.cpp
     src/Gui/MainMenu.cpp
     src/Gui/Gui.cpp
@@ -65,6 +66,7 @@ set(HEADERS
     src/utils.hpp
     src/path_separator.hpp
     src/Skybox.hpp
+    src/Logger.hpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp

@@ -24,6 +24,7 @@
 #include "GraphicEngine.hpp"
 #include "Chunk.hpp"
 #include "Game.hpp"
+#include "Logger.hpp"
 
 namespace mazemaze {
 
@@ -73,6 +74,8 @@ MazeRenderer::tick(float deltaTime, float playerX, float playerY, bool force) {
     int pY = static_cast<int>(playerY) / (Chunk::SIZE / 2);
 
     if (pX != oldHcpX || pY != oldHcpY || force) {
+        Logger::inst().log_debug("Re-enabling chunks.");
+
         oldHcpX = pX;
         oldHcpY = pY;
 

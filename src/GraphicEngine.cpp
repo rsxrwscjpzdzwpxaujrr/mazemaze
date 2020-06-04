@@ -23,6 +23,8 @@
 #include <SFML/OpenGL.hpp>
 
 #include "path_separator.hpp"
+#include "Logger.hpp"
+#include "utils.hpp"
 
 namespace mazemaze {
 
@@ -60,6 +62,8 @@ GraphicEngine::openWindow() {
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
+    Logger::inst().log_debug("Main window opening.");
+
     const sf::String windowName = L"Mazemaze 0.3-git";
     sf::Uint32 style;
 
@@ -111,6 +115,7 @@ GraphicEngine::update() {
 
 void
 GraphicEngine::setStates() {
+//  Logger::inst().log_debug("Setting GL states.");
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -143,6 +148,8 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
 
             switch (event.type) {
                 case sf::Event::Closed:
+                    Logger::inst().log_debug("sf::Event::Closed");
+
                     running = false;
                     break;
 
@@ -151,10 +158,14 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
                     break;
 
                 case sf::Event::GainedFocus:
+                    Logger::inst().log_debug("sf::Event::GainedFocus");
+
                     focus = true;
                     break;
 
                 case sf::Event::LostFocus:
+                    Logger::inst().log_debug("sf::Event::LostFocus");
+
                     focus = false;
                     break;
 
@@ -296,6 +307,9 @@ GraphicEngine::calcMaxAntialiasing() {
 
     settings = win.getSettings();
     win.close();
+
+    Logger::inst().log_debug(format("Calculated max antialiasing is %d.",
+                                    settings.antialiasingLevel));
 
     return settings.antialiasingLevel;
 }

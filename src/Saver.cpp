@@ -22,6 +22,7 @@
 #include "Settings.hpp"
 #include "path_separator.hpp"
 #include "utils.hpp"
+#include "Logger.hpp"
 
 #define VERSION_OFFSET 0x0
 #define GAME_OFFSET    0x100
@@ -112,8 +113,16 @@ Saver::save() {
     if (game == nullptr)
         throw std::logic_error("game is nullptr");
 
-    if (lastSaveTime == game->getTime())
+    if (lastSaveTime == game->getTime()) {
+        Logger::inst().log_debug(
+            format("Trying to save, but game time is equal to last save time. "
+                   "Last save time is %f.",
+                   lastSaveTime));
+
         return;
+    }
+
+    Logger::inst().log_debug(format("Saving. Saver is %svirgin.", virgin ? "" : "not "));
 
     std::ofstream stream;
 
@@ -140,6 +149,8 @@ Saver::save() {
     virgin = false;
 
     stream.close();
+
+    Logger::inst().log_debug(format("Saving completed. Last save time is %f.", lastSaveTime));
 }
 
 void
