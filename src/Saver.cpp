@@ -146,7 +146,7 @@ Saver::deleteSave() {
 }
 
 float
-Saver::getLastSaveTime() {
+Saver::getLastSaveTime() const {
     return lastSaveTime;
 }
 

@@ -44,7 +44,7 @@ public:
     void save();
     void deleteSave();
 
-    float getLastSaveTime();
+    float getLastSaveTime() const;
 
     void setGame(Game& game);
 

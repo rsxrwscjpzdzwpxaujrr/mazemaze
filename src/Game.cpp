@@ -257,7 +257,7 @@ Game::getCamera() {
 }
 
 Settings&
-Game::getSettings() {
+Game::getSettings() const {
     return settings;
 }
 

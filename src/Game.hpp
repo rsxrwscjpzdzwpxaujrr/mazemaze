@@ -62,8 +62,8 @@ public:
     Maze& getMaze();
     Player& getPlayer();
     Camera* getCamera() override;
-    MazeRenderer& getRenderer();
-    Settings& getSettings();
+    MazeRenderer& getRenderer() const;
+    Settings& getSettings() const;
 
 private:
     Maze maze;
