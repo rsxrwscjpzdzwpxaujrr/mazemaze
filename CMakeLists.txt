@@ -48,14 +48,50 @@ set(SOURCES
     src/MazeRenderers/Brick.cpp
     src/MazeRenderers/NightBrick.cpp)
 
+set(HEADERS
+    src/Camera.hpp
+    src/Chunk.hpp
+    src/Game.hpp
+    src/GraphicEngine.hpp
+    src/IRenderable.hpp
+    src/ITickable.hpp
+    src/Maze.hpp
+    src/MazeRenderer.hpp
+    src/Player.hpp
+    src/StarSky.hpp
+    src/Settings.hpp
+    src/Saver.hpp
+    src/FpsCalculator.hpp
+    src/utils.hpp
+    src/path_separator.hpp
+    src/Skybox.hpp
+    src/Gui/Background.hpp
+    src/Gui/MainMenu.hpp
+    src/Gui/Gui.hpp
+    src/Gui/State.hpp
+    src/Gui/States/Hud.hpp
+    src/Gui/States/Main.hpp
+    src/Gui/States/OptionsMenu.hpp
+    src/Gui/States/Options.hpp
+    src/Gui/States/OptionsGraphics.hpp
+    src/Gui/States/OptionsOther.hpp
+    src/Gui/States/OptionsControls.hpp
+    src/Gui/States/Pause.hpp
+    src/Gui/States/Win.hpp
+    src/Gui/States/NewGame.hpp
+    src/MazeRenderers/Classic.hpp
+    src/MazeRenderers/Gray.hpp
+    src/MazeRenderers/Brick.hpp
+    src/MazeRenderers/NightBrick.hpp)
+
 if (WIN32)
     set(SOURCES ${SOURCES} win/resource.rc)
 endif (WIN32)
 
 if (WIN32)
-    add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
 else (WIN32)
-    add_executable(${PROJECT_NAME} ${SOURCES})
+    add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 endif (WIN32)
 
 if (SFGUI_FOUND)
