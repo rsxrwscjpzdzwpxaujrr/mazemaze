@@ -9,6 +9,7 @@ find_package(Intl REQUIRED MODULE)
 find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
+find_package(Threads REQUIRED)
 
 set(SOURCES
     src/Camera.cpp
@@ -136,6 +137,7 @@ target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} SFGUI::SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 if (WIN32)
     target_link_libraries(${PROJECT_NAME} iconv)
