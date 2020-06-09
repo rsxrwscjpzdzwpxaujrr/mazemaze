@@ -127,33 +127,38 @@ Saver::save() {
     std::thread([this] {
         Logger::inst().log_debug(format("Saving. Saver is %svirgin.", virgin ? "" : "not "));
 
-        std::ofstream stream;
+        try {
+            std::ofstream stream;
 
-        stream.exceptions(std::ios::failbit | std::ios::badbit);
+            stream.exceptions(std::ios::failbit | std::ios::badbit);
 
-        std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
+            std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
 
-        if (virgin)
-            mode |= std::ios::trunc;
+            if (virgin)
+                mode |= std::ios::trunc;
 
-        stream.open(getFilename(settings), mode);
+            stream.open(getFilename(settings), mode);
 
-        stream.seekp(VERSION_OFFSET);
-        stream.write(version, sizeof (char) * 3);
+            stream.seekp(VERSION_OFFSET);
+            stream.write(version, sizeof (char) * 3);
 
-        saveGame(stream);
-        savePlayer(stream);
+            saveGame(stream);
+            savePlayer(stream);
 
-        if (virgin) {
-            saveMaze(stream);
-            saveChunks(stream);
+            if (virgin) {
+                saveMaze(stream);
+                saveChunks(stream);
+            }
+
+            stream.close();
+
+            virgin = false;
+
+            Logger::inst().log_debug(
+                format("Saving completed. Last save time is %f.", lastSaveTime));
+        } catch (const std::ofstream::failure& e) {
+            Logger::inst().log_error(format("Saving error: %s, code: %d.", e.what(), e.code()));
         }
-
-        virgin = false;
-
-        stream.close();
-
-        Logger::inst().log_debug(format("Saving completed. Last save time is %f.", lastSaveTime));
     }).detach();
 }
 
