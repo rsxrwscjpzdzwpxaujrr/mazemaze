@@ -21,6 +21,7 @@
 
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
+#include <SFGUI/Renderers.hpp>
 
 #include "path_separator.hpp"
 
@@ -129,6 +130,8 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
     float frameDeltaTime = 1.0f / 60.0f;
     bool running = true;
 
+    sfg::Renderer& sfgRenderer = sfg::VertexBufferRenderer::Get();
+
     sfgui.AddCharacterSet(0x20,  0x80);
     sfgui.AddCharacterSet(0x400, 0x500);
 
@@ -178,7 +181,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
         mainMenu.render();
 
         window->resetGLStates();
-        sfgui.Display(*window);
+        sfgRenderer.Display(*window);
         window->display();
 
         running &= !mainMenu.isWantExit();
