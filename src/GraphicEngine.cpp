@@ -21,6 +21,7 @@
 
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
+#include <SFGUI/Renderers.hpp>
 
 #include "path_separator.hpp"
 
@@ -131,6 +132,8 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
 
     sfgui.AddCharacterSet(0x20,  0x80);
     sfgui.AddCharacterSet(0x400, 0x500);
+
+    sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
 
     while (running) {
         update();
