@@ -83,7 +83,7 @@ set(HEADERS
     src/Gui/States/Pause.hpp
     src/Gui/States/Win.hpp
     src/Gui/States/NewGame.hpp
-    src/Gui/States/About.cpp
+    src/Gui/States/About.hpp
     src/MazeRenderers/Classic.hpp
     src/MazeRenderers/Gray.hpp
     src/MazeRenderers/Brick.hpp
