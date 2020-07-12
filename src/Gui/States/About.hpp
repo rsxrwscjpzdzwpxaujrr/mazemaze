@@ -36,11 +36,7 @@ public:
     explicit About(MainMenu& mainMenu, Settings& settings);
     ~About() override;
 
-    void show(bool show) override;
-
 private:
-    void tick(float deltaTime) override;
-
     sfg::Label::Ptr aboutLabel;
 };
 

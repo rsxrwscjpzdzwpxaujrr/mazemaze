@@ -43,15 +43,6 @@ About::About(MainMenu& mainMenu, Settings& settings) :
 
 About::~About() = default;
 
-void
-About::show(bool show) {
-    box->Show(show);
-}
-
-void
-About::tick(float) {
-}
-
 }
 }
 }
