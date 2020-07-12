@@ -92,7 +92,7 @@ Settings::Settings(bool readConfig) :
     configFile = dataDir + PATH_SEPARATOR "config.json";
 
     if (readConfig) {
-        if(Settings::readConfig())
+        if (Settings::readConfig())
             return;
     }
 
@@ -370,7 +370,7 @@ Settings::writeConfig() {
 
     Json::Value controls = Json::objectValue;
 
-    for(auto it = Settings::controls.begin(); it != Settings::controls.end(); it++) {
+    for (auto it = Settings::controls.begin(); it != Settings::controls.end(); it++) {
         controls[it->first] = it->second;
     }
 
@@ -393,7 +393,7 @@ Settings::readConfig() {
     if (reader.parse(ifs, config)) {
         Json::Value controls = config["controls"];
 
-        for(auto it = controls.begin(); it != controls.end(); it++) {
+        for (auto it = controls.begin(); it != controls.end(); it++) {
             auto control = it.key().asString();
             auto key     = static_cast<sf::Keyboard::Key>(it->asUInt());
 
