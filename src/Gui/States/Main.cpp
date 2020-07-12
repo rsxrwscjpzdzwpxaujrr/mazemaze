@@ -22,6 +22,7 @@
 
 #include "../MainMenu.hpp"
 
+#include "About.hpp"
 #include "NewGame.hpp"
 #include "OptionsMenu.hpp"
 
@@ -36,6 +37,7 @@ Main::Main(MainMenu& mainMenu, Settings& settings) :
         buttonResume( Button::Create(pgtx("main", "Resume"))),
         buttonNewGame(Button::Create(pgtx("main", "New Game"))),
         buttonOptions(Button::Create(pgtx("main", "Options"))),
+        buttonAbout(  Button::Create(pgtx("main", "About"))),
         buttonExit(   Button::Create(pgtx("main", "Exit"))),
         settings(settings) {
     initSignals(mainMenu);
@@ -46,6 +48,7 @@ Main::Main(MainMenu& mainMenu, Settings& settings) :
 
     newGameState = mainMenu.addState(new NewGame(mainMenu));
     optionsState = mainMenu.addState(options);
+    aboutState   = mainMenu.addState(new About(mainMenu, settings));
 
     mainMenu.setOptionsState(*options, optionsState);
 }
@@ -73,6 +76,7 @@ Main::updateButtons(bool saveExists) {
     box->Pack(buttonResume);
     box->Pack(buttonNewGame);
     box->Pack(buttonOptions);
+    box->Pack(buttonAbout);
     box->Pack(buttonExit);
 
     box->SetRequisition({300.0f, box->GetRequisition().y});
@@ -94,6 +98,10 @@ Main::initSignals(MainMenu& mainMenu) {
 
     buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
         mainMenu.setState(optionsState);
+    });
+
+    buttonAbout->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
+        mainMenu.setState(aboutState);
     });
 
     buttonExit->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {

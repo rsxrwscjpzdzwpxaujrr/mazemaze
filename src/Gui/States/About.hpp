@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,9 +19,10 @@
 
 #include "../State.hpp"
 
+#include "Options.hpp"
+
 namespace mazemaze {
 
-class Game;
 class Settings;
 
 namespace gui {
@@ -30,28 +31,17 @@ class MainMenu;
 
 namespace states {
 
-class Main : public State {
+class About : public Options {
 public:
-    explicit Main(MainMenu& mainMenu, Settings& settings);
-    ~Main() override;
+    explicit About(MainMenu& mainMenu, Settings& settings);
+    ~About() override;
 
     void show(bool show) override;
-    void updateButtons(bool saveExists);
 
 private:
-    sfg::Button::Ptr buttonResume;
-    sfg::Button::Ptr buttonNewGame;
-    sfg::Button::Ptr buttonOptions;
-    sfg::Button::Ptr buttonAbout;
-    sfg::Button::Ptr buttonExit;
+    void tick(float deltaTime) override;
 
-    Settings& settings;
-
-    int newGameState;
-    int optionsState;
-    int aboutState;
-
-    void initSignals(MainMenu& mainMenu);
+    sfg::Label::Ptr aboutLabel;
 };
 
 }
