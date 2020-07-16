@@ -278,7 +278,7 @@ Game::genSeed() {
     using namespace std::chrono;
 
     auto now = system_clock().now().time_since_epoch();
-    return duration_cast<seconds>(now).count();
+    return duration_cast<milliseconds>(now).count();
 }
 
 }
