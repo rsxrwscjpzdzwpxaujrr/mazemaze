@@ -84,6 +84,8 @@ private:
     bool oldPauseKeyState;
     float time;
     bool wantExit;
+
+    unsigned int genSeed();
 };
 
 }

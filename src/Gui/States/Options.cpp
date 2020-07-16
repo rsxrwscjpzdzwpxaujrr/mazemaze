@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,7 +39,8 @@ Options::initSignals(MainMenu& mainMenu) {
     });
 }
 
-Options::Options(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
+Options::Options(MainMenu& mainMenu, Settings& settings, const std::string& name) :
+        State(mainMenu.getDesktop(), name),
         settings  (settings),
         windowBox (Box::Create(Box::Orientation::VERTICAL)),
         backButton(Button::Create(pgtx("options", "Back"))) {

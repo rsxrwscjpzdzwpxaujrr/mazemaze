@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -139,7 +139,7 @@ Maze::generate(unsigned int seed) {
     setOpened(getExitX(), getExitY(), true);
     Maze::seed = seed;
 
-    Logger::inst().log_debug("Maze generation completed.");
+    Logger::inst().log_status("Maze generation completed.");
 }
 
 void

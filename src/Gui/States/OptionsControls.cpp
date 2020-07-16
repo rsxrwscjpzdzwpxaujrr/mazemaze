@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ namespace states {
 const int OptionsControls::buttonsCount = 4;
 
 OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings),
+        Options(mainMenu, settings, "OptionsControls"),
         keyButtons(new Button::Ptr[buttonsCount]),
         keyLabels(new sf::String[buttonsCount] {
             pgtx("options", "Forward"),

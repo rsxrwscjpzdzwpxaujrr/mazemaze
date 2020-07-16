@@ -19,6 +19,8 @@
 
 #include <SFML/OpenGL.hpp>
 
+#include "../Logger.hpp"
+#include "../utils.hpp"
 #include "../Chunk.hpp"
 #include "../Game.hpp"
 #include "../Camera.hpp"
@@ -40,6 +42,8 @@ Brick::~Brick() = default;
 
 void
 Brick::compileWalls() {
+    Logger::inst().log_debug("Compiling walls.");
+
     objl::Loader loader = objl::Loader();
     loader.LoadFile("data" PATH_SEPARATOR "wall.obj");
 
@@ -239,12 +243,14 @@ Brick::onDisable() {
 
 void
 Brick::compileChunk(int num) {
+    int x = (num % maze.getChunksX()) * Chunk::SIZE;
+    int y = (num / maze.getChunksX()) * Chunk::SIZE;
+
+    Logger::inst().log_debug(format("Compiling chunk %d at %d %d.", num, x, y));
+
     glNewList(drawList + num, GL_COMPILE);
 
     glPushMatrix();
-
-    int x = (num % maze.getChunksX()) * Chunk::SIZE;
-    int y = (num / maze.getChunksX()) * Chunk::SIZE;
 
     glTranslatef(x, 0.0, y);
 

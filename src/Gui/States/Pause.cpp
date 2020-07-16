@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,8 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Pause::Pause(MainMenu& mainMenu, Game& game) : State(mainMenu.getDesktop()) {
+Pause::Pause(MainMenu& mainMenu, Game& game) :
+        State(mainMenu.getDesktop(), "Pause") {
     auto buttonResume  = Button::Create(pgtx("pause", "Resume"));
     auto buttonOptions = Button::Create(pgtx("pause", "Options"));
     auto buttonExit    = Button::Create(pgtx("pause", "Exit to main menu"));

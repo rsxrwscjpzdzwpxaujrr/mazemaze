@@ -31,7 +31,7 @@ namespace gui {
 namespace states {
 
 Hud::Hud(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop()),
+        State(mainMenu.getDesktop(), "Hud"),
         settings(settings),
         fpsCalculator([this] (float fps) {
             fpsLabel->SetText(format("%.2f", fps));

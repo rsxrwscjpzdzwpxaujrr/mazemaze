@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,9 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Win::Win(MainMenu& mainMenu, Game& game) : State (mainMenu.getDesktop()), game(game) {
+Win::Win(MainMenu& mainMenu, Game& game) :
+        State(mainMenu.getDesktop(), "State"),
+        game(game) {
     auto buttonExit           = Button::Create(pgtx("win", "Exit to main menu"));
     auto label                = Label::Create(pgtx("win", "You won!"));
     auto winNoteTimeAlignment = Alignment::Create();

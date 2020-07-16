@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +16,8 @@
  */
 
 #include "Gui.hpp"
+
+#include "../Logger.hpp"
 
 #include "State.hpp"
 
@@ -85,6 +87,8 @@ Gui::backTo(int destState) {
 
 int
 Gui::addState(State* state) {
+    Logger::inst().log_debug("Adding " + state->name + " state to GUI.");
+
     states.emplace_back(state);
     states[states.size() - 1]->show(false);
 
@@ -107,6 +111,8 @@ Gui::removeStates() {
 
 void
 Gui::setState(int state, bool back) {
+    Logger::inst().log_debug("Setting state to " + getState(state).name);
+
     for (unsigned int i = 0; i < states.size(); i++) {
         if (i == state) {
             states[i]->show(true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@
 
 #include <SFML/OpenGL.hpp>
 
+#include "../Logger.hpp"
+#include "../utils.hpp"
 #include "../Chunk.hpp"
 #include "../Game.hpp"
 #include "../Camera.hpp"
@@ -35,12 +37,14 @@ Classic::~Classic() = default;
 
 void
 Classic::compileChunk(int num) {
+    int x = (num % maze.getChunksX()) * Chunk::SIZE;
+    int y = (num / maze.getChunksX()) * Chunk::SIZE;
+
+    Logger::inst().log_debug(format("Compiling chunk %d at %d %d.", num, x, y));
+
     glNewList(drawList + num, GL_COMPILE);
 
     glPushMatrix();
-
-    int x = (num % maze.getChunksX()) * Chunk::SIZE;
-    int y = (num / maze.getChunksX()) * Chunk::SIZE;
 
     glTranslatef(x, 0.0, y);
 

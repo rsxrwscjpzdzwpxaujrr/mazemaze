@@ -71,7 +71,7 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
 }
 
 Game::~Game() {
-    Logger::inst().log_debug("Destructor of Game called.");
+    Logger::inst().log_status("Game closed.");
 
     mainMenu.removeState(wonState);
     mainMenu.removeState(pauseState);
@@ -95,6 +95,8 @@ void
 Game::onLoad() {
     setPaused(false);
     setWon(false);
+
+    Logger::inst().log_status("Game started.");
 }
 
 void

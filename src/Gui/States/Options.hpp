@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "../State.hpp"
 
 namespace mazemaze {
@@ -31,7 +33,7 @@ namespace states {
 
 class Options : public State {
 public:
-    explicit Options(MainMenu& mainMenu, Settings& settings);
+    explicit Options(MainMenu& mainMenu, Settings& settings, const std::string& name);
     ~Options() override;
 
 protected:

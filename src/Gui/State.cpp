@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,8 @@
 namespace mazemaze {
 namespace gui {
 
-State::State(sfg::Desktop& desktop) :
+State::State(sfg::Desktop& desktop, const std::string& name) :
+        name(name),
         desktop(desktop),
         box(sfg::Box::Create()) {}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -51,7 +51,8 @@ OptionsMenu::initSignals(MainMenu& mainMenu) {
     });
 }
 
-OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) : State(mainMenu.getDesktop()),
+OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) :
+        State(mainMenu.getDesktop(), "OptionsMenu"),
         graphicsButton (Button::Create(pgtx("options", "Graphics"))),
         controlsButton (Button::Create(pgtx("options", "Controls"))),
         otherButton    (Button::Create(pgtx("options", "Other"))),

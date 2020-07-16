@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@
 
 #include <SFML/OpenGL.hpp>
 
+#include "../Logger.hpp"
+#include "../utils.hpp"
 #include "../Game.hpp"
 #include "../Camera.hpp"
 

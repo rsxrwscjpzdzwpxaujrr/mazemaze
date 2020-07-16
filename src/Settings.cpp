@@ -116,6 +116,7 @@ Settings::Settings(bool readConfig) :
 #endif
 
     Logger::inst().log_debug(format("System lang is %s.", lang.c_str()));
+    Logger::inst().log_debug("Setting default settings.");
 
     antialiasing = 0;
     autosave = true;
@@ -219,6 +220,8 @@ Settings::setLang(const std::string &lang) {
 
 void
 Settings::setAntialiasing(unsigned int antialiasing) {
+    Logger::inst().log_debug(format("Setting antialiasing to %d.", antialiasing));
+
     GraphicEngine::getInstance().setAntialiasing(antialiasing);
 
     Settings::antialiasing = antialiasing;
@@ -226,41 +229,57 @@ Settings::setAntialiasing(unsigned int antialiasing) {
 
 void
 Settings::setFullscreen(bool fullscreen) {
+    Logger::inst().log_debug(format("Setting fullsreen to %s.", fullscreen ? "true" : "false"));
+
     GraphicEngine::getInstance().setFullscreen(fullscreen);
 }
 
 void
 Settings::setVsync(bool vsync) {
+    Logger::inst().log_debug(format("Setting V-Sync to %s.", vsync ? "true" : "false"));
+
     GraphicEngine::getInstance().setVsync(vsync);
 }
 
 void
 Settings::setAutosave(bool autosave) {
+    Logger::inst().log_debug(format("Setting autosave to %s.", autosave ? "true" : "false"));
+
     Settings::autosave = autosave;
 }
 
 void
 Settings::setAutosaveTime(float autosaveTime) {
+    Logger::inst().log_debug(format("Setting autosave time to %f.", autosaveTime));
+
     Settings::autosaveTime = autosaveTime;
 }
 
 void
 Settings::setRenderer(int id) {
+    Logger::inst().log_debug(format("Setting renderer to %d.", id));
+
     renderer = id;
 }
 
 void
 Settings::setShowFps(bool showFps) {
+    Logger::inst().log_debug(format("Setting showFps to %d.", showFps ? "true" : "false"));
+
     Settings::showFps = showFps;
 }
 
 void
 Settings::setKey(const std::string& control, sf::Keyboard::Key key) {
+    Logger::inst().log_debug("Changing controls.");
+
     controls[control] = key;
 }
 
 void
 Settings::setSensitivity(float sensitivity) {
+    Logger::inst().log_debug(format("Setting sensitivity to %f.", sensitivity));
+
     Settings::sensitivity = sensitivity;
 }
 

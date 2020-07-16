@@ -33,7 +33,7 @@ namespace gui {
 namespace states {
 
 Main::Main(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop()),
+        State(mainMenu.getDesktop(), "Main"),
         buttonResume( Button::Create(pgtx("main", "Resume"))),
         buttonNewGame(Button::Create(pgtx("main", "New Game"))),
         buttonOptions(Button::Create(pgtx("main", "Options"))),

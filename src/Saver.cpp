@@ -154,7 +154,7 @@ Saver::save() {
 
             virgin = false;
 
-            Logger::inst().log_debug(
+            Logger::inst().log_status(
                 format("Saving completed. Last save time is %f.", lastSaveTime));
         } catch (const std::ofstream::failure& e) {
             Logger::inst().log_error(format("Saving error: %s, code: %d.", e.what(), e.code()));

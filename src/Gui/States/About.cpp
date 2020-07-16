@@ -26,7 +26,7 @@ namespace gui {
 namespace states {
 
 About::About(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings),
+        Options(mainMenu, settings, "About"),
         aboutLabel(Label::Create("Mazemaze 0.3-git (under development)\n"
                                  "2018 - 2020\n"
                                  "\n"

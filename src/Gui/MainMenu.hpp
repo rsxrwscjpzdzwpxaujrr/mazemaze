@@ -47,6 +47,7 @@ public:
     void resumeGame();
     void stopGame();
     void reopen();
+    bool isGameOpen();
 
     int  getOptionsState() const;
     void setOptionsState(states::OptionsMenu& options, int state);

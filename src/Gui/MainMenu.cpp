@@ -23,6 +23,7 @@
 #include "../Saver.hpp"
 #include "../Settings.hpp"
 #include "../StarSky.hpp"
+#include "../Logger.hpp"
 #include "../path_separator.hpp"
 
 #include "Background.hpp"
@@ -35,6 +36,8 @@ namespace gui {
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          saver(new Saver(settings)),
                                          settings(settings) {
+    Logger::inst().log_debug("Starting main menu.");
+
     getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
     mainState = addState(new states::Main(*this, settings));
@@ -95,6 +98,8 @@ MainMenu::stopGame() {
 
 void
 MainMenu::reopen() {
+    Logger::inst().log_debug("Reopening main menu.");
+
     removeStates();
 
     std::stack<int> stateStack;
@@ -113,6 +118,11 @@ MainMenu::reopen() {
         setState(stateStack.top());
         stateStack.pop();
     }
+}
+
+bool
+MainMenu::isGameOpen() {
+    return game != nullptr;
 }
 
 int
