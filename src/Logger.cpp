@@ -37,8 +37,9 @@ Logger::log(const std::string& level, const std::string& message) {
 
     auto now = system_clock::now().time_since_epoch();
 
-    std::string fullMessage = format("[%d] [%s]%s%s",
+    std::string fullMessage = format("[%d.%03d] [%s]%s%s",
                                      duration_cast<seconds>(now).count(),
+                                     duration_cast<milliseconds>(now).count() % 1000,
                                      level.c_str(),
                                      indent,
                                      message.c_str());
