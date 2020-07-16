@@ -19,7 +19,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include <ctime>
+#include <chrono>
 
 #include "utils.hpp"
 
@@ -30,11 +30,15 @@ Logger::~Logger() = default;
 
 void
 Logger::log(const std::string& level, const std::string& message) {
+    using namespace std::chrono;
+
     char indent[] = "        ";
     indent[7 - level.size()] = '\0';
 
+    auto now = system_clock::now().time_since_epoch();
+
     std::string fullMessage = format("[%d] [%s]%s%s",
-                                     std::time(nullptr),
+                                     duration_cast<seconds>(now).count(),
                                      level.c_str(),
                                      indent,
                                      message.c_str());

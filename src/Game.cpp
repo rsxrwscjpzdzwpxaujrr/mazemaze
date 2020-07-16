@@ -17,7 +17,7 @@
 
 #include "Game.hpp"
 
-#include <ctime>
+#include <chrono>
 
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -86,7 +86,7 @@ Game::~Game() {
 
 void
 Game::newGame() {
-    maze.generate(static_cast<unsigned int>(std::time(nullptr)));
+    maze.generate(genSeed());
     player.start(maze);
     onLoad();
 }
@@ -271,6 +271,14 @@ Game::getCamera() {
 Settings&
 Game::getSettings() const {
     return settings;
+}
+
+unsigned int
+Game::genSeed() {
+    using namespace std::chrono;
+
+    auto now = system_clock().now().time_since_epoch();
+    return duration_cast<seconds>(now).count();
 }
 
 }
