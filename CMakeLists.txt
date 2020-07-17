@@ -5,6 +5,10 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 project(mazemaze)
 
+option(SFGUI_SUBMODULE          "Do you want to use SFGUI submodule?"     ON)
+option(JSONCPP_STATIC_LIBRARIES "Do you want to link JsonCpp statically?" ON)
+option(SFML_STATIC_LIBRARIES    "Do you want to link SFML statically?"    OFF)
+
 find_package(Intl REQUIRED MODULE)
 find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
@@ -101,7 +105,7 @@ endif (WIN32)
 
 if (SFGUI_FOUND)
     message(STATUS "Found SFGUI ${SFGUI_VERSION} in ${SFGUI_DIR}")
-else (SFGUI_FOUND)
+elseif (SFGUI_SUBMODULE)
     if (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
         message(STATUS "Found SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
     else (EXISTS ${CMAKE_SOURCE_DIR}/sfgui/CMakeLists.txt)
@@ -125,7 +129,11 @@ else (SFGUI_FOUND)
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
 
-set(JSONCPP_TARGET jsoncpp_lib_static)
+if (JSONCPP_STATIC_LIBRARIES)
+    set(JSONCPP_TARGET jsoncpp_lib_static)
+else (JSONCPP_STATIC_LIBRARIES)
+    set(JSONCPP_TARGET jsoncpp_lib)
+endif (JSONCPP_STATIC_LIBRARIES)
 
 get_target_property(JSON_INC_PATH ${JSONCPP_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
 
