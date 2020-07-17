@@ -264,7 +264,7 @@ Settings::setRenderer(int id) {
 
 void
 Settings::setShowFps(bool showFps) {
-    Logger::inst().log_debug(format("Setting showFps to %d.", showFps ? "true" : "false"));
+    Logger::inst().log_debug(format("Setting showFps to %s.", showFps ? "true" : "false"));
 
     Settings::showFps = showFps;
 }
