@@ -47,7 +47,7 @@ public:
         DEBUG  = 0,
         STATUS = 1,
         WARN   = 2,
-        ERROR  = 3,
+        ERROR  = 3
     };
 
     class Message {
