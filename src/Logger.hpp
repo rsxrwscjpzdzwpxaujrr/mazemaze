@@ -19,6 +19,7 @@
 
 #include <deque>
 #include <string>
+#include <chrono>
 
 #define DEBUG_LEVEL  "DEBUG"
 #define STATUS_LEVEL "STATUS"
@@ -49,13 +50,24 @@ public:
         ERROR  = 3,
     };
 
+    class Message {
+    public:
+        Message(Level level, const std::string& message);
+
+        std::chrono::system_clock::time_point time;
+        Level level;
+        std::string message;
+
+        std::string to_string();
+    };
+
 private:
     Logger();
     ~Logger();
 
     void log(Level level, const std::string& message);
 
-    std::deque<std::string> messages;
+    std::deque<Message> messages;
 };
 
 inline void

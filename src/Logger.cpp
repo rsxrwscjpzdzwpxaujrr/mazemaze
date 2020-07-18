@@ -30,6 +30,21 @@ Logger::~Logger() = default;
 
 void
 Logger::log(Level level, const std::string& message) {
+    Message message_obj(level, message);
+
+    std::cout << message_obj.to_string() << std::endl;
+
+    messages.emplace_back(message_obj);
+}
+
+Logger::Message::Message(Logger::Level level, const std::string& message) :
+        time(std::chrono::system_clock::now()),
+        level(level),
+        message(message) {
+}
+
+std::string
+Logger::Message::to_string() {
     using namespace std::chrono;
 
     std::string levelText = "";
@@ -55,18 +70,14 @@ Logger::log(Level level, const std::string& message) {
     char indent[] = "        ";
     indent[7 - levelText.size()] = '\0';
 
-    auto now = system_clock::now().time_since_epoch();
+    auto since_epoch = time.time_since_epoch();
 
-    std::string fullMessage = format("[%d.%03d] [%s]%s%s",
-                                     duration_cast<seconds>(now).count(),
-                                     duration_cast<milliseconds>(now).count() % 1000,
-                                     level.c_str(),
-                                     indent,
-                                     message.c_str());
-
-    std::cout << fullMessage << std::endl;
-
-    messages.emplace_back(fullMessage);
+    return format("[%d.%03d] [%s]%s%s",
+           duration_cast<seconds>(since_epoch).count(),
+           duration_cast<milliseconds>(since_epoch).count() % 1000,
+           levelText.c_str(),
+           indent,
+           message.c_str());
 }
 
 }
