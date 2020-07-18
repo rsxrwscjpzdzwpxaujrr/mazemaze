@@ -37,16 +37,23 @@ public:
         return instance;
     }
 
-    void log_debug(const std::string& message);
+    void log_debug (const std::string& message);
     void log_status(const std::string& message);
-    void log_warn(const std::string& message);
-    void log_error(const std::string& message);
+    void log_warn  (const std::string& message);
+    void log_error (const std::string& message);
+
+    enum Level {
+        DEBUG  = 0,
+        STATUS = 1,
+        WARN   = 2,
+        ERROR  = 3,
+    };
 
 private:
     Logger();
     ~Logger();
 
-    void log(const std::string& level, const std::string& message);
+    void log(Level level, const std::string& message);
 
     std::deque<std::string> messages;
 };
@@ -54,23 +61,23 @@ private:
 inline void
 Logger::log_debug(const std::string& message) {
 #ifndef _NDEBUG
-    log(DEBUG_LEVEL, message);
+    log(DEBUG, message);
 #endif
 }
 
 inline void
 Logger::log_status(const std::string& message) {
-    log(STATUS_LEVEL, message);
+    log(STATUS, message);
 }
 
 inline void
 Logger::log_warn(const std::string& message) {
-    log(WARN_LEVEL, message);
+    log(WARN, message);
 }
 
 inline void
 Logger::log_error(const std::string& message) {
-    log(ERROR_LEVEL, message);
+    log(ERROR, message);
 }
 
 }

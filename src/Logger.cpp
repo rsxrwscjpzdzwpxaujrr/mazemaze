@@ -29,11 +29,31 @@ Logger::Logger() = default;
 Logger::~Logger() = default;
 
 void
-Logger::log(const std::string& level, const std::string& message) {
+Logger::log(Level level, const std::string& message) {
     using namespace std::chrono;
 
+    std::string levelText = "";
+
+    switch (level) {
+    case DEBUG:
+        levelText = DEBUG_LEVEL;
+        break;
+
+    case STATUS:
+        levelText = STATUS_LEVEL;
+        break;
+
+    case WARN:
+        levelText = WARN_LEVEL;
+        break;
+
+    case ERROR:
+        levelText = ERROR_LEVEL;
+        break;
+    }
+
     char indent[] = "        ";
-    indent[7 - level.size()] = '\0';
+    indent[7 - levelText.size()] = '\0';
 
     auto now = system_clock::now().time_since_epoch();
 
