@@ -47,7 +47,7 @@ public:
         DEBUG  = 0,
         STATUS = 1,
         WARN   = 2,
-        ERROR  = 3
+        ERR    = 3
     };
 
     class Message {
@@ -89,7 +89,7 @@ Logger::log_warn(const std::string& message) {
 
 inline void
 Logger::log_error(const std::string& message) {
-    log(ERROR, message);
+    log(ERR, message);
 }
 
 }

@@ -62,7 +62,7 @@ Logger::Message::to_string() {
         levelText = WARN_LEVEL;
         break;
 
-    case ERROR:
+    case ERR:
         levelText = ERROR_LEVEL;
         break;
     }
