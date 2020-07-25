@@ -38,6 +38,8 @@ public:
     void show(bool show) override;
     void updateButtons(bool saveExists);
 
+    void center() override;
+
 private:
     sfg::Button::Ptr buttonResume;
     sfg::Button::Ptr buttonNewGame;

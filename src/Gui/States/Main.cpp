@@ -19,6 +19,7 @@
 
 #include "../../utils.hpp"
 #include "../../Saver.hpp"
+#include "../../GraphicEngine.hpp"
 
 #include "../MainMenu.hpp"
 
@@ -51,6 +52,8 @@ Main::Main(MainMenu& mainMenu, Settings& settings) :
     aboutState   = mainMenu.addState(new About(mainMenu, settings));
 
     mainMenu.setOptionsState(*options, optionsState);
+
+    buttonAbout->SetClass("verySmall");
 }
 
 Main::~Main() = default;
@@ -58,6 +61,8 @@ Main::~Main() = default;
 void
 Main::show(bool show) {
     State::show(show);
+
+    buttonAbout->Show(show);
 
     if (show)
         updateButtons(Saver::saveExists(settings));
@@ -76,14 +81,34 @@ Main::updateButtons(bool saveExists) {
     box->Pack(buttonResume);
     box->Pack(buttonNewGame);
     box->Pack(buttonOptions);
-    box->Pack(buttonAbout);
     box->Pack(buttonExit);
+
+    desktop.Add(buttonAbout);
 
     box->SetRequisition({300.0f, box->GetRequisition().y});
 
     desktop.Add(box);
 
     center();
+}
+
+void
+Main::center() {
+    sf::Vector2f widgetSize(buttonAbout->GetAllocation().width,
+                            buttonAbout->GetAllocation().height);
+
+    sf::Vector2f windowSize =
+        static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
+
+    buttonAbout->Show(windowSize.x > 640 && windowSize.y > 300);
+
+    sf::Vector2f spacing(24.0f, 24.0f);
+
+    buttonAbout->SetAllocation(sf::FloatRect(
+        windowSize - widgetSize - spacing,
+        {140.0f, 36.0f}));
+
+    State::center();
 }
 
 void
