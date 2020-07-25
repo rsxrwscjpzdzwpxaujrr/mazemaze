@@ -5,15 +5,17 @@ set(OpenGL_GL_PREFERENCE LEGACY)
 
 project(mazemaze)
 
-option(SFGUI_SUBMODULE          "Do you want to use SFGUI submodule?"     ON)
-option(JSONCPP_STATIC_LIBRARIES "Do you want to link JsonCpp statically?" ON)
-option(SFML_STATIC_LIBRARIES    "Do you want to link SFML statically?"    OFF)
+option(SFGUI_SUBMODULE       "Do you want to use SFGUI submodule?"  ON)
+option(SFML_STATIC_LIBRARIES "Do you want to link SFML statically?" OFF)
 
 find_package(Intl REQUIRED MODULE)
-find_package(jsoncpp REQUIRED CONFIG)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 find_package(Threads REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(JsonCpp REQUIRED IMPORTED_TARGET jsoncpp)
 
 set(SOURCES
     src/Camera.cpp
@@ -129,20 +131,11 @@ elseif (SFGUI_SUBMODULE)
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
 
-if (JSONCPP_STATIC_LIBRARIES)
-    set(JSONCPP_TARGET jsoncpp_lib_static)
-else (JSONCPP_STATIC_LIBRARIES)
-    set(JSONCPP_TARGET jsoncpp_lib)
-endif (JSONCPP_STATIC_LIBRARIES)
-
-get_target_property(JSON_INC_PATH ${JSONCPP_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${JSON_INC_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${Intl_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CONFIG++_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE lib)
 
-target_link_libraries(${PROJECT_NAME} ${JSONCPP_TARGET})
+target_link_libraries(${PROJECT_NAME} PkgConfig::JsonCpp)
 target_link_libraries(${PROJECT_NAME} ${Intl_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} SFGUI::SFGUI)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)
