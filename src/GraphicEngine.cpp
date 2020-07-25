@@ -62,7 +62,9 @@ GraphicEngine::openWindow() {
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
-    Logger::inst().log_debug("Main window opening.");
+    Logger::inst().log_debug(format("Main window opening. Size is %dx%d",
+                                    videoMode.width,
+                                    videoMode.height));
 
     const sf::String windowName = L"Mazemaze 0.3-git";
     sf::Uint32 style;
