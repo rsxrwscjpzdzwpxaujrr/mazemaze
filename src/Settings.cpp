@@ -18,6 +18,7 @@
 #include "Settings.hpp"
 
 #include <stdlib.h>
+#include <fstream>
 #include <gettext.h>
 #include <json/json.h>
 
@@ -118,7 +119,7 @@ Settings::Settings(bool readConfig) :
 
 #endif
 
-    Logger::inst().log_debug(format("System lang is %s.", lang.c_str()));
+    Logger::inst().log_debug(fmt("System lang is %s.", lang.c_str()));
     Logger::inst().log_debug("Setting default settings.");
 
     antialiasing = 0;
@@ -219,7 +220,7 @@ Settings::setMainMenu(gui::MainMenu* mainMenu) {
 
 void
 Settings::setLang(const std::string &lang) {
-    Logger::inst().log_debug(format("Setting language to %s.", lang.c_str()));
+    Logger::inst().log_debug(fmt("Setting language to %s.", lang.c_str()));
 
     setenv("LANGUAGE", lang.c_str(), true);
 
@@ -230,7 +231,7 @@ Settings::setLang(const std::string &lang) {
 
 void
 Settings::setAntialiasing(unsigned int antialiasing) {
-    Logger::inst().log_debug(format("Setting antialiasing to %d.", antialiasing));
+    Logger::inst().log_debug(fmt("Setting antialiasing to %d.", antialiasing));
 
     GraphicEngine::getInstance().setAntialiasing(antialiasing);
 
@@ -239,42 +240,42 @@ Settings::setAntialiasing(unsigned int antialiasing) {
 
 void
 Settings::setFullscreen(bool fullscreen) {
-    Logger::inst().log_debug(format("Setting fullsreen to %s.", fullscreen ? "true" : "false"));
+    Logger::inst().log_debug(fmt("Setting fullsreen to %s.", fullscreen ? "true" : "false"));
 
     GraphicEngine::getInstance().setFullscreen(fullscreen);
 }
 
 void
 Settings::setVsync(bool vsync) {
-    Logger::inst().log_debug(format("Setting V-Sync to %s.", vsync ? "true" : "false"));
+    Logger::inst().log_debug(fmt("Setting V-Sync to %s.", vsync ? "true" : "false"));
 
     GraphicEngine::getInstance().setVsync(vsync);
 }
 
 void
 Settings::setAutosave(bool autosave) {
-    Logger::inst().log_debug(format("Setting autosave to %s.", autosave ? "true" : "false"));
+    Logger::inst().log_debug(fmt("Setting autosave to %s.", autosave ? "true" : "false"));
 
     Settings::autosave = autosave;
 }
 
 void
 Settings::setAutosaveTime(float autosaveTime) {
-    Logger::inst().log_debug(format("Setting autosave time to %f.", autosaveTime));
+    Logger::inst().log_debug(fmt("Setting autosave time to %f.", autosaveTime));
 
     Settings::autosaveTime = autosaveTime;
 }
 
 void
 Settings::setRenderer(int id) {
-    Logger::inst().log_debug(format("Setting renderer to %d.", id));
+    Logger::inst().log_debug(fmt("Setting renderer to %d.", id));
 
     renderer = id;
 }
 
 void
 Settings::setShowFps(bool showFps) {
-    Logger::inst().log_debug(format("Setting showFps to %s.", showFps ? "true" : "false"));
+    Logger::inst().log_debug(fmt("Setting showFps to %s.", showFps ? "true" : "false"));
 
     Settings::showFps = showFps;
 
@@ -291,7 +292,7 @@ Settings::setKey(const std::string& control, sf::Keyboard::Key key) {
 
 void
 Settings::setSensitivity(float sensitivity) {
-    Logger::inst().log_debug(format("Setting sensitivity to %f.", sensitivity));
+    Logger::inst().log_debug(fmt("Setting sensitivity to %f.", sensitivity));
 
     Settings::sensitivity = sensitivity;
 }

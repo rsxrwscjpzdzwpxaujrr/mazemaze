@@ -20,9 +20,7 @@
 #include "Gui/Background.hpp"
 
 #include "Maze.hpp"
-#include "MazeRenderer.hpp"
 #include "Player.hpp"
-#include "Saver.hpp"
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
 
@@ -35,6 +33,8 @@ class MainMenu;
 
 class Camera;
 class Settings;
+class MazeRenderer;
+class Saver;
 
 class Game : public gui::Background {
 public:

@@ -60,9 +60,9 @@ Saver::load(gui::MainMenu& mainMenu) {
     stream.read(version, sizeof (char) * 3);
 
     if (version[0] != Saver::version[0])
-        throw std::runtime_error(format("Incompatible save version %d.%d.%d", version[0],
-                                                                              version[1],
-                                                                              version[2]));
+        throw std::runtime_error(fmt("Incompatible save version %d.%d.%d", version[0],
+                                                                           version[1],
+                                                                           version[2]));
 
     stream.seekg(GAME_OFFSET);
     stream.read(reinterpret_cast<char*>(&time), sizeof (float));
@@ -117,15 +117,15 @@ Saver::save() {
 
     if (lastSaveTime == game->getTime()) {
         Logger::inst().log_debug(
-            format("Trying to save, but game time is equal to last save time. "
-                   "Last save time is %f.",
-                   lastSaveTime));
+            fmt("Trying to save, but game time is equal to last save time. "
+                "Last save time is %f.",
+                lastSaveTime));
 
         return;
     }
 
     std::thread([this] {
-        Logger::inst().log_debug(format("Saving. Saver is %svirgin.", virgin ? "" : "not "));
+        Logger::inst().log_debug(fmt("Saving. Saver is %svirgin.", virgin ? "" : "not "));
 
         try {
             std::ofstream stream;
@@ -155,9 +155,12 @@ Saver::save() {
             virgin = false;
 
             Logger::inst().log_status(
-                format("Saving completed. Last save time is %f.", lastSaveTime));
+                fmt("Saving completed. Last save time is %f.", lastSaveTime)
+            );
         } catch (const std::ofstream::failure& e) {
-            Logger::inst().log_error(format("Saving error: %s, code: %d.", e.what(), e.code()));
+            Logger::inst().log_error(
+                fmt("Saving error: %s, code: %d.", e.what(), e.code())
+            );
         }
     }).detach();
 }

@@ -63,7 +63,7 @@ OptionsGraphics::initAntialiasingCombo() {
     antialiasingCombo->AppendItem(pgtx("options", "No"));
 
     for (int i = 2; i <= maxAntialiasing; i *= 2)
-        antialiasingCombo->AppendItem(format("%dx", i));
+        antialiasingCombo->AppendItem(fmt("%dx", i));
 }
 
 void

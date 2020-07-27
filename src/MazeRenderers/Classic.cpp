@@ -40,7 +40,7 @@ Classic::compileChunk(int num) {
     int x = (num % maze.getChunksX()) * Chunk::SIZE;
     int y = (num / maze.getChunksX()) * Chunk::SIZE;
 
-    Logger::inst().log_debug(format("Compiling chunk %d at %d %d.", num, x, y));
+    Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, x, y));
 
     glNewList(drawList + num, GL_COMPILE);
 

@@ -72,12 +72,14 @@ Logger::Message::to_string() {
 
     auto since_epoch = time.time_since_epoch();
 
-    return format("[%d.%03d] [%s]%s%s",
-           duration_cast<seconds>(since_epoch).count(),
-           duration_cast<milliseconds>(since_epoch).count() % 1000,
-           levelText.c_str(),
-           indent,
-           message.c_str());
+    return fmt(
+        "[%d.%03d] [%s]%s%s",
+        duration_cast<seconds>(since_epoch).count(),
+        duration_cast<milliseconds>(since_epoch).count() % 1000,
+        levelText.c_str(),
+        indent,
+        message.c_str()
+    );
 }
 
 }

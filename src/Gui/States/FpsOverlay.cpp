@@ -34,7 +34,7 @@ FpsOverlay::FpsOverlay(MainMenu& mainMenu, Settings& settings) :
         State(mainMenu.getDesktop(), "FpsOverlay"),
         settings(settings),
         fpsCalculator([this] (float fps) {
-            fpsLabel->SetText(format("%.2f", fps));
+            fpsLabel->SetText(fmt("%.2f", fps));
             box->UpdateDrawablePosition();
         }, 0.5f),
         showing(false) {

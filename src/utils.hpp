@@ -25,7 +25,7 @@
 
 namespace mazemaze {
 
-std::string format(const char *fmt, ...);
+std::string fmt(const char *fmt, ...);
 sf::String pgtx(const char* msgctxt, const char* msgid);
 sf::String pgtxf(const char* msgctxt, const char* msgid, ...);
 sf::String npgtxf(const char* msgctxt, const char* msgid, const char* msgidPlural, int n);

@@ -26,6 +26,7 @@
 #include "Saver.hpp"
 #include "Settings.hpp"
 #include "Logger.hpp"
+#include "MazeRenderer.hpp"
 
 #include "Gui/MainMenu.hpp"
 

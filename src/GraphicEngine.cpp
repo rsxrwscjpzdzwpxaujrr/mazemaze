@@ -62,9 +62,9 @@ GraphicEngine::openWindow() {
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
-    Logger::inst().log_debug(format("Main window opening. Size is %dx%d",
-                                    videoMode.width,
-                                    videoMode.height));
+    Logger::inst().log_debug(fmt("Main window opening. Size is %dx%d",
+                                 videoMode.width,
+                                 videoMode.height));
 
     const sf::String windowName = L"Mazemaze 0.3-git";
     sf::Uint32 style;
@@ -310,8 +310,8 @@ GraphicEngine::calcMaxAntialiasing() {
     settings = win.getSettings();
     win.close();
 
-    Logger::inst().log_debug(format("Calculated max antialiasing is %d.",
-                                    settings.antialiasingLevel));
+    Logger::inst().log_debug(fmt("Calculated max antialiasing is %d.",
+                                 settings.antialiasingLevel));
 
     return settings.antialiasingLevel;
 }
