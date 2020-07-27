@@ -330,11 +330,11 @@ Settings::setEnvironment() {
                   countryName,
                   sizeof(countryName) / sizeof(char));
 
-    std::string systemLang = format("%s_%s:%s", langName, countryName, langName);
+    std::string systemLang = fmt("%s_%s:%s", langName, countryName, langName);
 
     setenv("LANGUAGE", systemLang.c_str(), true);
 
-    lang = format("%s_%s", langName, countryName);
+    lang = fmt("%s_%s", langName, countryName);
 }
 
 #endif
