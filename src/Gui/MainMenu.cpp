@@ -100,30 +100,6 @@ MainMenu::stopGame() {
     setBackground(starSkyBackground);
 }
 
-void
-MainMenu::reopen() {
-    Logger::inst().log_debug("Reopening main menu.");
-
-    removeStates();
-
-    std::stack<int> stateStack;
-
-    do {
-        stateStack.push(getState());
-        back();
-    } while (getState() != mainState);
-
-    mainState = addState(new states::Main(*this, settings));
-
-    if (game != nullptr)
-        game->openGui();
-
-    while (!stateStack.empty()) {
-        setState(stateStack.top());
-        stateStack.pop();
-    }
-}
-
 bool
 MainMenu::isGameOpen() {
     return game != nullptr;

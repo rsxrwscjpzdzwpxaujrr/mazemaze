@@ -63,6 +63,7 @@ private:
         bool isOpened();
         sfg::Window::Ptr getWindow();
 
+        void resetText();
         void center();
         void open(int button);
         void close();
@@ -82,11 +83,15 @@ private:
         void initSignals();
     };
 
+    sfg::Scale::Ptr sensitivitySlider;
     sfg::Adjustment::Ptr sensitivityAdjustement;
     std::array<sfg::Button::Ptr, buttonsCount> keyButtons;
     std::array<sf::String, buttonsCount>       keyLabels;
 
     KeyChangeWindow keyChangeWindow;
+
+    Option sensitivityOpt;
+    std::array<Option, buttonsCount> keyOpts;
 
     sf::Keyboard::Key  selectedKey;
     std::array<std::string, buttonsCount> keyControls;

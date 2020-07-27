@@ -118,6 +118,14 @@ Gui::removeStates() {
 }
 
 void
+Gui::resetText() {
+    Logger::inst().log_debug("Resetting text.");
+
+    for (auto i = states.begin(); i < states.end(); i++)
+        (*i)->resetText();
+}
+
+void
 Gui::addOverlay(int stateId) {
     Logger::inst().log_debug("Adding overlay " + getState(stateId).name);
 

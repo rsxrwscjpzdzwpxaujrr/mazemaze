@@ -71,17 +71,19 @@ NewGame::initSignals(MainMenu& mainMenu) {
 
 NewGame::NewGame(MainMenu& mainMenu) :
         State(mainMenu.getDesktop(), "NewGame"),
-        backButton(Button::Create(pgtx("new_game", "Back"))),
-        startButton(Button::Create(pgtx("new_game", "Start"))),
+        backButton(Button::Create()),
+        startButton(Button::Create()),
         sizeEntry(Entry::Create(L"10")),
+        mazeSizeLabel(Label::Create()),
         oldtext(sizeEntry->GetText()),
         oldcursor(sizeEntry->GetCursorPosition()) {
+    resetText();
+
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
     auto separatorHorizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
     auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
     auto window              = Window::Create(Window::Style::BACKGROUND);
     auto windowBox           = Box::Create(Box::Orientation::VERTICAL);
-    auto mazeSizeLabel       = Label::Create(pgtx("new_game", "Enter maze size"));
 
     separatorHorizontal->SetRequisition({20.0f, 0.0f});
     separatorVertical->SetRequisition({0.0f, 20.0f});
@@ -122,6 +124,13 @@ NewGame::NewGame(MainMenu& mainMenu) :
 void
 NewGame::tick(float) {
     oldcursor = sizeEntry->GetCursorPosition();
+}
+
+void
+NewGame::resetText() {
+    backButton   ->SetLabel(pgtx("new_game", "Back"));
+    startButton  ->SetLabel(pgtx("new_game", "Start"));
+    mazeSizeLabel->SetText (pgtx("new_game", "Enter maze size"));
 }
 
 NewGame::~NewGame() = default;

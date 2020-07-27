@@ -31,26 +31,28 @@ namespace states {
 
 OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
         Options(mainMenu, settings, "OptionsControls"),
-        keyButtons{Button::Create()},
-        keyLabels  {
-            pgtx("options", "Forward"),
-            pgtx("options", "Backward"),
-            pgtx("options", "Right"),
-            pgtx("options", "Left")
-        },
+        sensitivitySlider(Scale::Create(Scrollbar::Orientation::HORIZONTAL)),
+        sensitivityAdjustement(sensitivitySlider->GetAdjustment()),
         keyChangeWindow(*this),
+        sensitivityOpt("", sensitivitySlider),
+        keyOpts {
+            Option(Button::Create()),
+            Option(Button::Create()),
+            Option(Button::Create()),
+            Option(Button::Create())
+        },
         keyControls {
             "up",
             "down",
             "right",
             "left",
         } {
-    auto sensitivitySlider = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
+    resetText();
 
     sf::Vector2f buttonSize         = {200.0f,  28.0f};
     sf::Vector2f adjustmementBounds = {0.0001f, 0.003f};
 
-    windowBox->Pack(makeOption(pgtx("options", "Mouse sensitivity"), sensitivitySlider));
+    windowBox->Pack(sensitivityOpt.toWidget());
 
     sensitivitySlider->SetRequisition(buttonSize);
 
@@ -63,14 +65,14 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
         (adjustmementBounds.y - adjustmementBounds.x) / buttonSize.x);
 
     for (int i = 0; i < buttonsCount; i++) {
-        keyButtons[i] = Button::Create();
+        keyButtons[i] = std::dynamic_pointer_cast<sfg::Button>(keyOpts[i].getControl());
         updateKeyButtonLabel(i);
 
         keyButtons[i]->SetRequisition(buttonSize);
         keyButtons[i]->SetClass("verySmall");
         keyButtons[i]->SetZOrder(0);
 
-        windowBox->Pack(makeOption(keyLabels[i], keyButtons[i]));
+        windowBox->Pack(keyOpts[i].toWidget());
     }
 
     initSignals();
@@ -101,6 +103,23 @@ OptionsControls::center() {
     State::center();
 
     keyChangeWindow.center();
+}
+
+void
+OptionsControls::onResetText() {
+    keyLabels = {
+        pgtx("options", "Forward"),
+        pgtx("options", "Backward"),
+        pgtx("options", "Right"),
+        pgtx("options", "Left")
+    };
+
+    for (int i = 0; i < buttonsCount; i++)
+        keyOpts[i].changeText(keyLabels[i]);
+
+    sensitivityOpt.changeText(pgtx("options", "Mouse sensitivity"));
+
+    keyChangeWindow.resetText();
 }
 
 void

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,10 +35,13 @@ public:
     ~Win() override;
 
     void show(bool show) override;
+    void resetText() override;
 
 private:
-    sfg::Label::Ptr winNoteTimeLabel;
-    sfg::Label::Ptr winNoteSizeLabel;
+    sfg::Button::Ptr exitButton;
+    sfg::Label::Ptr  winLabel;
+    sfg::Label::Ptr  winNoteTimeLabel;
+    sfg::Label::Ptr  winNoteSizeLabel;
     Game& game;
 
     void updateLabels(Game& game);

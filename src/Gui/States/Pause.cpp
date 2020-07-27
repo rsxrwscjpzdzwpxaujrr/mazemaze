@@ -29,10 +29,11 @@ namespace gui {
 namespace states {
 
 Pause::Pause(MainMenu& mainMenu, Game& game) :
-        State(mainMenu.getDesktop(), "Pause") {
-    auto buttonResume  = Button::Create(pgtx("pause", "Resume"));
-    auto buttonOptions = Button::Create(pgtx("pause", "Options"));
-    auto buttonExit    = Button::Create(pgtx("pause", "Exit to main menu"));
+        State(mainMenu.getDesktop(), "Pause"),
+        buttonResume(Button::Create()),
+        buttonOptions(Button::Create()),
+        buttonExit(Button::Create()) {
+    resetText();
 
     buttonResume->GetSignal(Widget::OnLeftClick).Connect([&game] {
         game.setPaused(false);
@@ -58,6 +59,13 @@ Pause::Pause(MainMenu& mainMenu, Game& game) :
     desktop.Add(box);
 
     center();
+}
+
+void
+Pause::resetText() {
+    buttonResume ->SetLabel(pgtx("pause", "Resume"));
+    buttonOptions->SetLabel(pgtx("pause", "Options"));
+    buttonExit   ->SetLabel(pgtx("pause", "Exit to main menu"));
 }
 
 Pause::~Pause() = default;

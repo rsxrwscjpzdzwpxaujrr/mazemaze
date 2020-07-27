@@ -35,11 +35,13 @@ public:
     ~NewGame() override;
 
     void tick(float deltatime) override;
+    void resetText() override;
 
 private:
     sfg::Button::Ptr backButton;
     sfg::Button::Ptr startButton;
     sfg::Entry::Ptr  sizeEntry;
+    sfg::Label::Ptr  mazeSizeLabel;
 
     sf::String oldtext;
     int oldcursor;

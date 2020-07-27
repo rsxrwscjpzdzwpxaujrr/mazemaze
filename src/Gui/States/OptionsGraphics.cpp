@@ -22,6 +22,8 @@
 #include "../../utils.hpp"
 #include "../../Settings.hpp"
 
+#include <memory>
+
 using namespace sfg;
 
 namespace mazemaze {
@@ -60,7 +62,7 @@ void
 OptionsGraphics::initAntialiasingCombo() {
     int maxAntialiasing = settings.getMaxAntialiasing();
 
-    antialiasingCombo->AppendItem(pgtx("options", "No"));
+    antialiasingCombo->AppendItem("");
 
     for (int i = 2; i <= maxAntialiasing; i *= 2)
         antialiasingCombo->AppendItem(fmt("%dx", i));
@@ -85,10 +87,10 @@ OptionsGraphics::initOptions() {
 
     vsyncCheck->SetActive(settings.getVsync());
 
-    styleCombo->AppendItem(pgtx("options", "Classic"));
-    styleCombo->AppendItem(pgtx("options", "Gray"));
-    styleCombo->AppendItem(pgtx("options", "Brick"));
-    styleCombo->AppendItem(pgtx("options", "Night Brick"));
+    styleCombo->AppendItem("");
+    styleCombo->AppendItem("");
+    styleCombo->AppendItem("");
+    styleCombo->AppendItem("");
     styleCombo->SelectItem(settings.getRenderer());
 }
 
@@ -97,16 +99,41 @@ OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
         fullscreenCheck  (CheckButton::Create(L"")),
         vsyncCheck       (CheckButton::Create(L"")),
         antialiasingCombo(ComboBox::Create()),
-        styleCombo       (ComboBox::Create()) {
-    windowBox->Pack(makeOption(pgtx("options", "Fullscreen"), fullscreenCheck));
-    windowBox->Pack(makeOption(pgtx("options", "Antialiasing"), antialiasingCombo));
-    windowBox->Pack(makeOption(pgtx("options", "V-Sync"), vsyncCheck));
-    windowBox->Pack(makeOption(pgtx("options", "Style"), styleCombo));
+        styleCombo       (ComboBox::Create()),
+        fullscreenOpt  (Option("", fullscreenCheck)),
+        vsyncOpt       (Option("", vsyncCheck)),
+        antialiasingOpt(Option("", antialiasingCombo)),
+        styleOpt       (Option("", styleCombo)) {
+    windowBox->Pack(fullscreenOpt.toWidget());
+    windowBox->Pack(antialiasingOpt.toWidget());
+    windowBox->Pack(vsyncOpt.toWidget());
+    windowBox->Pack(styleOpt.toWidget());
 
     initSignals();
     initOptions();
 
+    resetText();
+
     center();
+}
+
+void
+OptionsGraphics::onResetText() {
+    fullscreenOpt.changeText  (pgtx("options", "Fullscreen"));
+    vsyncOpt.changeText       (pgtx("options", "V-Sync"));
+    antialiasingOpt.changeText(pgtx("options", "Antialiasing"));
+    styleOpt.changeText       (pgtx("options", "Style"));
+
+    styleCombo->ChangeItem(0, pgtx("options", "Classic"));
+    styleCombo->ChangeItem(1, pgtx("options", "Gray"));
+    styleCombo->ChangeItem(2, pgtx("options", "Brick"));
+    styleCombo->ChangeItem(3, pgtx("options", "Night Brick"));
+
+    styleCombo->RequestResize();
+
+    antialiasingCombo->ChangeItem(0, pgtx("options", "No"));
+
+    antialiasingCombo->RequestResize();
 }
 
 OptionsGraphics::~OptionsGraphics() = default;

@@ -36,6 +36,8 @@ public:
     explicit About(MainMenu& mainMenu, Settings& settings);
     ~About() override;
 
+    void onResetText() override;
+
 private:
     sfg::Label::Ptr aboutLabel;
 };

@@ -60,6 +60,9 @@ FpsOverlay::show(bool show) {
 }
 
 void
+FpsOverlay::resetText() {}
+
+void
 FpsOverlay::tick(float deltaTime) {
     if (showing)
         fpsCalculator.tick(deltaTime);

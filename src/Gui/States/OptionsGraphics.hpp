@@ -38,11 +38,19 @@ public:
     explicit OptionsGraphics(MainMenu& mainMenu, Settings& settings);
     ~OptionsGraphics() override;
 
+    //void resetText() override;
+    void onResetText() override;
+
 private:
     sfg::CheckButton::Ptr fullscreenCheck;
     sfg::CheckButton::Ptr vsyncCheck;
     sfg::ComboBox::Ptr    antialiasingCombo;
     sfg::ComboBox::Ptr    styleCombo;
+
+    Option fullscreenOpt;
+    Option vsyncOpt;
+    Option antialiasingOpt;
+    Option styleOpt;
 
     void initSignals();
     void initAntialiasingCombo();

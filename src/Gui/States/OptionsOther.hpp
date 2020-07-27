@@ -38,12 +38,18 @@ public:
     explicit OptionsOther(MainMenu& mainMenu, Settings& settings);
     ~OptionsOther() override;
 
+    void onResetText() override;
+
 private:
     sfg::ComboBox::Ptr    langCombo;
     sfg::CheckButton::Ptr autosaveCheck;
     sfg::CheckButton::Ptr showFpsCheck;
 
-    void initSignals(MainMenu& mainMenu);
+    Option langOpt;
+    Option autosaveOpt;
+    Option showFpsOpt;
+
+    void initSignals();
     void initOptions();
 };
 

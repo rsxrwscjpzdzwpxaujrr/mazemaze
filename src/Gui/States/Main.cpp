@@ -35,13 +35,15 @@ namespace states {
 
 Main::Main(MainMenu& mainMenu, Settings& settings) :
         State(mainMenu.getDesktop(), "Main"),
-        buttonResume( Button::Create(pgtx("main", "Resume"))),
-        buttonNewGame(Button::Create(pgtx("main", "New Game"))),
-        buttonOptions(Button::Create(pgtx("main", "Options"))),
-        buttonAbout(  Button::Create(pgtx("main", "About"))),
-        buttonExit(   Button::Create(pgtx("main", "Exit"))),
+        buttonResume(Button::Create()),
+        buttonNewGame(Button::Create()),
+        buttonOptions(Button::Create()),
+        buttonAbout(Button::Create()),
+        buttonExit(Button::Create()),
         settings(settings),
         showing(false) {
+    resetText();
+
     initSignals(mainMenu);
 
     updateButtons(Saver::saveExists(settings));
@@ -112,6 +114,15 @@ Main::center() {
         {140.0f, 36.0f}));
 
     State::center();
+}
+
+void
+Main::resetText() {
+    buttonResume ->SetLabel(pgtx("main", "Resume"));
+    buttonNewGame->SetLabel(pgtx("main", "New Game"));
+    buttonOptions->SetLabel(pgtx("main", "Options"));
+    buttonAbout  ->SetLabel(pgtx("main", "About"));
+    buttonExit   ->SetLabel(pgtx("main", "Exit"));
 }
 
 void

@@ -32,13 +32,15 @@ namespace states {
 
 Win::Win(MainMenu& mainMenu, Game& game) :
         State(mainMenu.getDesktop(), "State"),
+        exitButton(Button::Create()),
+        winLabel(Label::Create()),
         game(game) {
-    auto buttonExit           = Button::Create(pgtx("win", "Exit to main menu"));
-    auto label                = Label::Create(pgtx("win", "You won!"));
+    resetText();
+
     auto winNoteTimeAlignment = Alignment::Create();
     auto winNoteSizeAlignment = Alignment::Create();
 
-    label->SetClass("win");
+    winLabel->SetClass("win");
 
     winNoteTimeLabel = Label::Create();
     winNoteSizeLabel = Label::Create();
@@ -53,19 +55,19 @@ Win::Win(MainMenu& mainMenu, Game& game) :
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
-    box->Pack(label);
+    box->Pack(winLabel);
     box->Pack(Separator::Create(Separator::Orientation::VERTICAL));
     box->Pack(winNoteTimeAlignment);
     box->Pack(winNoteSizeAlignment);
     box->Pack(Separator::Create(Separator::Orientation::VERTICAL));
-    box->Pack(buttonExit);
+    box->Pack(exitButton);
 
     box->SetSpacing(20.0f);
     box->SetRequisition({400.0f, box->GetRequisition().y});
 
     desktop.Add(box);
 
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&game] {
+    exitButton->GetSignal(Widget::OnLeftClick).Connect([&game] {
         game.setWantExit();
     });
 
@@ -80,6 +82,12 @@ Win::show(bool show) {
 
     if (show)
         updateLabels(game);
+}
+
+void
+Win::resetText() {
+    exitButton->SetLabel(pgtx("win", "Exit to main menu"));
+    winLabel  ->SetText (pgtx("win", "You won!"));
 }
 
 void

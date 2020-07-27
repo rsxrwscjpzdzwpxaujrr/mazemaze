@@ -37,6 +37,7 @@ public:
     virtual void center(sfg::Widget::Ptr widget);
     virtual void show(bool show);
     virtual void tick(float deltatime);
+    virtual void resetText() = 0;
     virtual sfg::Container::Ptr getMainContainer();
 
 protected:

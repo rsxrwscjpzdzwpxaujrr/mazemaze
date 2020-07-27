@@ -39,6 +39,7 @@ public:
     void updateButtons(bool saveExists);
 
     void center() override;
+    void resetText() override;
 
 private:
     sfg::Button::Ptr buttonResume;

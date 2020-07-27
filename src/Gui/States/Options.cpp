@@ -43,7 +43,7 @@ Options::Options(MainMenu& mainMenu, Settings& settings, const std::string& name
         State(mainMenu.getDesktop(), name),
         settings  (settings),
         windowBox (Box::Create(Box::Orientation::VERTICAL)),
-        backButton(Button::Create(pgtx("options", "Back"))) {
+        backButton(Button::Create()) {
     auto window          = Window::Create(Window::Style::BACKGROUND);
     auto windowAlignment = Alignment::Create();
 
@@ -68,29 +68,58 @@ Options::Options(MainMenu& mainMenu, Settings& settings, const std::string& name
     initSignals(mainMenu);
 }
 
-Box::Ptr Options::makeOption(const sf::String& label, Widget::Ptr widget) {
+void
+Options::resetText() {
+    backButton->SetLabel(pgtx("options", "Back"));
+
+    onResetText();
+}
+
+void
+Options::onResetText() {
+
+}
+
+Options::~Options() = default;
+
+Options::Option::Option(const sf::String& label, Widget::Ptr control) :
+        label(Label::Create(label)),
+        control(control),
+        widget(Box::Create()) {
     auto alignment1 = Alignment::Create();
     auto alignment2 = Alignment::Create();
-    auto box        = Box::Create();
 
-    alignment1->Add(Label::Create(label));
+    alignment1->Add(Options::Option::label);
 
     alignment1->SetScale({0.0f, 0.0f});
     alignment1->SetAlignment({0.0f, 0.5f});
 
-    alignment2->Add(widget);
+    alignment2->Add(control);
 
     alignment2->SetScale({0.0f, 0.0f});
     alignment2->SetAlignment({1.0f, 0.5f});
 
-    box->Pack(alignment1);
-    box->Pack(alignment2);
-    box->SetClass("options");
-
-    return box;
+    std::static_pointer_cast<sfg::Box>(widget)->Pack(alignment1);
+    std::static_pointer_cast<sfg::Box>(widget)->Pack(alignment2);
+    Option::widget->SetClass("options");
 }
 
-Options::~Options() = default;
+Options::Option::Option(Widget::Ptr widget) : Options::Option(L"", widget) {}
+
+void
+Options::Option::changeText(const sf::String& text) {
+    label->SetText(text);
+}
+
+Widget::Ptr
+Options::Option::getControl() const {
+    return control;
+}
+
+Widget::Ptr
+Options::Option::toWidget() const {
+    return widget;
+}
 
 }
 }

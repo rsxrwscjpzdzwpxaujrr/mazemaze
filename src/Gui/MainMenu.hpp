@@ -46,7 +46,6 @@ public:
     void newGame(int mazeWidth, int mazeHeight);
     void resumeGame();
     void stopGame();
-    void reopen();
     bool isGameOpen();
     void showFps(bool show);
 

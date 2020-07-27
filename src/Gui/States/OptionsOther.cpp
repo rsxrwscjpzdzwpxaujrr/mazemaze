@@ -17,8 +17,6 @@
 
 #include "OptionsOther.hpp"
 
-#include "../MainMenu.hpp"
-
 #include "../../utils.hpp"
 #include "../../Settings.hpp"
 
@@ -29,13 +27,11 @@ namespace gui {
 namespace states {
 
 void
-OptionsOther::initSignals(MainMenu& mainMenu) {
-    langCombo->GetSignal(ComboBox::OnSelect).Connect([this, &mainMenu] () {
+OptionsOther::initSignals() {
+    langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
         auto langs = settings.getSupportedLangs();
 
         settings.setLang(langs[langCombo->GetSelectedItem()].code);
-
-        mainMenu.reopen();
     });
 
     autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
@@ -49,13 +45,15 @@ OptionsOther::initSignals(MainMenu& mainMenu) {
 
 void
 OptionsOther::initOptions() {
-    std::string lang = settings.getLang();
+    std::string curLang = settings.getLang();
     auto langs = settings.getSupportedLangs();
 
-    for (int i = 0; i < settings.getSupportedLangsCount(); i++) {
-        langCombo->AppendItem(langs[i].name);
+    int i = 0;
 
-        if (langs[i].code == lang)
+    for (auto lang = langs.begin(); lang < langs.end(); lang++, i++) {
+        langCombo->AppendItem(lang->name);
+
+        if (lang->code == curLang)
             langCombo->SelectItem(i);
     }
 
@@ -67,15 +65,27 @@ OptionsOther::OptionsOther(MainMenu& mainMenu, Settings& settings) :
         Options(mainMenu, settings, "OptionsOther"),
         langCombo    (ComboBox::Create()),
         autosaveCheck(CheckButton::Create(L"")),
-        showFpsCheck (CheckButton::Create(L"")) {
-    windowBox->Pack(makeOption(pgtx("options", "Language"), langCombo));
-    windowBox->Pack(makeOption(pgtx("options", "Autosave"), autosaveCheck));
-    windowBox->Pack(makeOption(pgtx("options", "Show FPS"), showFpsCheck));
+        showFpsCheck (CheckButton::Create(L"")),
+        langOpt(Option(langCombo)),
+        autosaveOpt(Option(autosaveCheck)),
+        showFpsOpt(Option(showFpsCheck)) {
+    resetText();
 
-    initSignals(mainMenu);
+    windowBox->Pack(langOpt.toWidget());
+    windowBox->Pack(autosaveOpt.toWidget());
+    windowBox->Pack(showFpsOpt.toWidget());
+
+    initSignals();
     initOptions();
 
     center();
+}
+
+void
+OptionsOther::onResetText() {
+    langOpt.changeText    (pgtx("options", "Language"));
+    autosaveOpt.changeText(pgtx("options", "Autosave"));
+    showFpsOpt.changeText (pgtx("options", "Show FPS"));
 }
 
 OptionsOther::~OptionsOther() = default;

@@ -38,6 +38,8 @@ public:
 
     void show(bool show) override;
 
+    void resetText() override;
+
 private:
     sfg::Label::Ptr fpsLabel;
     Settings& settings;

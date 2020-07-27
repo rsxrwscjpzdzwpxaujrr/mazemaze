@@ -19,6 +19,8 @@
 
 #include <string>
 
+#include <SFML/System/String.hpp>
+
 #include "../State.hpp"
 
 namespace mazemaze {
@@ -36,12 +38,28 @@ public:
     explicit Options(MainMenu& mainMenu, Settings& settings, const std::string& name);
     ~Options() override;
 
+    void resetText() override final;
+    virtual void onResetText();
+
 protected:
     Settings& settings;
 
     sfg::Box::Ptr windowBox;
 
-    sfg::Box::Ptr makeOption(const sf::String& label, sfg::Widget::Ptr widget);
+    class Option {
+    public:
+        explicit Option(const sf::String& label, sfg::Widget::Ptr control);
+        explicit Option(sfg::Widget::Ptr widget);
+
+        void changeText(const sf::String& text);
+        sfg::Widget::Ptr getControl() const;
+        sfg::Widget::Ptr toWidget() const;
+
+    private:
+        sfg::Label::Ptr label;
+        sfg::Widget::Ptr control;
+        sfg::Widget::Ptr widget;
+    };
 
 private:
     sfg::Button::Ptr backButton;

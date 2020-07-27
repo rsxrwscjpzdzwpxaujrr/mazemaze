@@ -50,6 +50,8 @@ public:
     void removeState(int state);
     void removeStates();
 
+    void resetText();
+
     void addOverlay(int stateId);
     void removeOverlay(int stateId);
 

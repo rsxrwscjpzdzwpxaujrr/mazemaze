@@ -34,6 +34,8 @@ public:
     explicit OptionsMenu(MainMenu& mainMenu, Settings& settings);
     ~OptionsMenu() override;
 
+    void resetText() override;
+
 private:
     sfg::Button::Ptr graphicsButton;
     sfg::Button::Ptr controlsButton;

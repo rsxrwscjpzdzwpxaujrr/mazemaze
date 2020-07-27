@@ -53,10 +53,12 @@ OptionsMenu::initSignals(MainMenu& mainMenu) {
 
 OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) :
         State(mainMenu.getDesktop(), "OptionsMenu"),
-        graphicsButton (Button::Create(pgtx("options", "Graphics"))),
-        controlsButton (Button::Create(pgtx("options", "Controls"))),
-        otherButton    (Button::Create(pgtx("options", "Other"))),
-        backButton     (Button::Create(pgtx("options", "Back"))) {
+        graphicsButton (Button::Create()),
+        controlsButton (Button::Create()),
+        otherButton    (Button::Create()),
+        backButton     (Button::Create()) {
+    resetText();
+
     box->SetOrientation(Box::Orientation::VERTICAL);
     box->SetRequisition({300.0f, box->GetRequisition().y});
     box->SetSpacing(20.0f);
@@ -75,6 +77,14 @@ OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) :
     graphicsState = mainMenu.addState(new OptionsGraphics(mainMenu, settings));
     controlsState = mainMenu.addState(new OptionsControls(mainMenu, settings));
     otherState    = mainMenu.addState(new OptionsOther   (mainMenu, settings));
+}
+
+void
+OptionsMenu::resetText() {
+    graphicsButton->SetLabel(pgtx("options", "Graphics"));
+    controlsButton->SetLabel(pgtx("options", "Controls"));
+    otherButton   ->SetLabel(pgtx("options", "Other"));
+    backButton    ->SetLabel(pgtx("options", "Back"));
 }
 
 OptionsMenu::~OptionsMenu() = default;

@@ -31,11 +31,13 @@ OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& optCtrls) :
         optCtrls(optCtrls),
         window         (Window::Create(Window::Style::BACKGROUND)),
         label          (Label::Create()),
-        cancelButton   (Button::Create(pgtx("options", "Cancel"))),
-        okButton       (Button::Create(pgtx("options", "Ok"))),
+        cancelButton   (Button::Create()),
+        okButton       (Button::Create()),
         buttonSeparator(Separator::Create(Separator::Orientation::HORIZONTAL)),
         button(-1),
         opened(false) {
+    resetText();
+
     auto mainBox      = Box::Create(Box::Orientation::VERTICAL);
     auto buttonsBox   = Box::Create(Box::Orientation::HORIZONTAL);
 
@@ -89,8 +91,6 @@ OptionsControls::KeyChangeWindow::open(int button) {
 
     KeyChangeWindow::button = button;
 
-    label->SetText(pgtx("options", "Press new key"));
-
     okButton->Show(false);
     buttonSeparator->Show(false);
 
@@ -113,6 +113,13 @@ OptionsControls::KeyChangeWindow::isOpened() {
 Window::Ptr
 OptionsControls::KeyChangeWindow::getWindow() {
     return window;
+}
+
+void
+OptionsControls::KeyChangeWindow::resetText() {
+    label       ->SetText (pgtx("options", "Press new key"));
+    cancelButton->SetLabel(pgtx("options", "Cancel"));
+    okButton    ->SetLabel(pgtx("options", "Ok"));
 }
 
 void

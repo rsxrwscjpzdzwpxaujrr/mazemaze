@@ -219,6 +219,9 @@ Settings::setLang(const std::string &lang) {
 
     resetLocales();
 
+    if (mainMenu)
+        mainMenu->resetText();
+
     Settings::lang = lang;
 }
 
