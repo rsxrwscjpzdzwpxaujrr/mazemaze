@@ -53,6 +53,8 @@ private:
     int optionsState;
     int aboutState;
 
+    bool showing;
+
     void initSignals(MainMenu& mainMenu);
 };
 

@@ -40,7 +40,8 @@ Main::Main(MainMenu& mainMenu, Settings& settings) :
         buttonOptions(Button::Create(pgtx("main", "Options"))),
         buttonAbout(  Button::Create(pgtx("main", "About"))),
         buttonExit(   Button::Create(pgtx("main", "Exit"))),
-        settings(settings) {
+        settings(settings),
+        showing(false) {
     initSignals(mainMenu);
 
     updateButtons(Saver::saveExists(settings));
@@ -61,6 +62,8 @@ Main::~Main() = default;
 void
 Main::show(bool show) {
     State::show(show);
+
+    showing = show;
 
     buttonAbout->Show(show);
 
@@ -100,7 +103,7 @@ Main::center() {
     sf::Vector2f windowSize =
         static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
 
-    buttonAbout->Show(windowSize.x > 640 && windowSize.y > 300);
+    buttonAbout->Show(showing && windowSize.x > 640 && windowSize.y > 300);
 
     sf::Vector2f spacing(24.0f, 24.0f);
 
