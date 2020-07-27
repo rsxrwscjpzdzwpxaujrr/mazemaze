@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Hud.hpp"
+#include "FpsOverlay.hpp"
 
 #include <SFGUI/Widgets.hpp>
 
@@ -30,13 +30,14 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Hud::Hud(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop(), "Hud"),
+FpsOverlay::FpsOverlay(MainMenu& mainMenu, Settings& settings) :
+        State(mainMenu.getDesktop(), "FpsOverlay"),
         settings(settings),
         fpsCalculator([this] (float fps) {
             fpsLabel->SetText(format("%.2f", fps));
             box->UpdateDrawablePosition();
-        }, 0.5f) {
+        }, 0.5f),
+        showing(false) {
     auto window = Window::Create(Window::Style::BACKGROUND);
 
     fpsLabel = Label::Create(L"00,00");
@@ -49,21 +50,23 @@ Hud::Hud(MainMenu& mainMenu, Settings& settings) :
     desktop.Add(box);
 }
 
-Hud::~Hud() = default;
+FpsOverlay::~FpsOverlay() = default;
 
 void
-Hud::show(bool show) {
-    box->Show(show && settings.getShowFps());
+FpsOverlay::show(bool show) {
+    box->Show(show);
+
+    showing = show;
 }
 
 void
-Hud::tick(float deltaTime) {
-    if (settings.getShowFps())
+FpsOverlay::tick(float deltaTime) {
+    if (showing)
         fpsCalculator.tick(deltaTime);
 }
 
 void
-Hud::center() {
+FpsOverlay::center() {
     box->UpdateDrawablePosition();
 }
 

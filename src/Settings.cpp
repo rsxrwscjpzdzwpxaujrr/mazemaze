@@ -39,6 +39,8 @@
 #include "Game.hpp"
 #include "Logger.hpp"
 
+#include "Gui/MainMenu.hpp"
+
 namespace mazemaze {
 
 #ifdef _WIN32
@@ -81,6 +83,7 @@ mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S
 #endif
 
 Settings::Settings(bool readConfig) :
+        mainMenu(nullptr),
         supportedLangsCount(3),
         supportedLangs(new Language[3] {
             Language(L"English",    "en_US"),
@@ -208,6 +211,13 @@ Settings::getDataDir() const {
 }
 
 void
+Settings::setMainMenu(gui::MainMenu* mainMenu) {
+    Settings::mainMenu = mainMenu;
+
+    mainMenu->showFps(showFps);
+}
+
+void
 Settings::setLang(const std::string &lang) {
     Logger::inst().log_debug(format("Setting language to %s.", lang.c_str()));
 
@@ -267,6 +277,9 @@ Settings::setShowFps(bool showFps) {
     Logger::inst().log_debug(format("Setting showFps to %s.", showFps ? "true" : "false"));
 
     Settings::showFps = showFps;
+
+    if (mainMenu)
+        mainMenu->showFps(showFps);
 }
 
 void

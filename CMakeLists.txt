@@ -39,7 +39,7 @@ set(SOURCES
     src/Gui/MainMenu.cpp
     src/Gui/Gui.cpp
     src/Gui/State.cpp
-    src/Gui/States/Hud.cpp
+    src/Gui/States/FpsOverlay.cpp
     src/Gui/States/Main.cpp
     src/Gui/States/OptionsMenu.cpp
     src/Gui/States/Options.cpp
@@ -79,7 +79,7 @@ set(HEADERS
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp
     src/Gui/State.hpp
-    src/Gui/States/Hud.hpp
+    src/Gui/States/FpsOverlay.hpp
     src/Gui/States/Main.hpp
     src/Gui/States/OptionsMenu.hpp
     src/Gui/States/Options.hpp

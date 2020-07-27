@@ -41,6 +41,8 @@ main() {
 
     gui::MainMenu mainMenu(settings);
 
+    settings.setMainMenu(&mainMenu);
+
     engine.loop(sfgui, mainMenu);
 
     return 0;

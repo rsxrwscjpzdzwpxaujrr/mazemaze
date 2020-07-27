@@ -53,10 +53,15 @@ void
 Gui::tick(float deltaTime) {
     desktop.Update(deltaTime);
 
-    states[state]->tick(deltaTime);
+    if (state > 0)
+        states[state]->tick(deltaTime);
 
     if (background != nullptr)
         background->tick(deltaTime);
+
+    for (auto i = overlays.begin(); i < overlays.end(); i++) {
+        states[*i]->tick(deltaTime);
+    }
 }
 
 void
@@ -97,6 +102,9 @@ Gui::addState(State* state) {
 
 void
 Gui::removeState(int state) {
+    if (Gui::state == state)
+        setState(-1);
+
     delete states[state];
     states.erase(states.begin() + state);
 }
@@ -110,17 +118,44 @@ Gui::removeStates() {
 }
 
 void
-Gui::setState(int state, bool back) {
-    Logger::inst().log_debug("Setting state to " + getState(state).name);
+Gui::addOverlay(int stateId) {
+    Logger::inst().log_debug("Adding overlay " + getState(stateId).name);
 
-    for (unsigned int i = 0; i < states.size(); i++) {
+    states[stateId]->show(true);
+
+    overlays.emplace_back(stateId);
+}
+
+void
+Gui::removeOverlay(int stateId) {
+    Logger::inst().log_debug("Removing overlay " + getState(stateId).name);
+
+    states[stateId]->show(false);
+
+    for (auto i = overlays.begin(); i < overlays.end(); i++) {
+        if (*i == stateId) {
+            overlays.erase(i);
+            break;
+        }
+    }
+}
+
+void
+Gui::setState(int state, bool back) {
+    Logger::inst().log_debug("Setting state to " + (state >= 0 ? getState(state).name : "-1"));
+
+    if (Gui::state >= 0)
+        states[Gui::state]->show(false);
+
+    if (state < 0 && !back)
+        stateStack.emplace(state);
+
+    for (int i = 0; i < states.size(); i++) {
         if (i == state) {
             states[i]->show(true);
 
             if (!back)
                 stateStack.emplace(i);
-        } else {
-            states[i]->show(false);
         }
     }
 

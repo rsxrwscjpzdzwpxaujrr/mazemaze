@@ -31,10 +31,10 @@ class MainMenu;
 
 namespace states {
 
-class Hud : public State {
+class FpsOverlay : public State {
 public:
-    explicit Hud(MainMenu& mainMenu, Settings& settings);
-    ~Hud() override;
+    explicit FpsOverlay(MainMenu& mainMenu, Settings& settings);
+    ~FpsOverlay() override;
 
     void show(bool show) override;
 
@@ -42,6 +42,8 @@ private:
     sfg::Label::Ptr fpsLabel;
     Settings& settings;
     FpsCalculator fpsCalculator;
+
+    bool showing;
 
     void tick(float deltaTime) override;
     void center() override;

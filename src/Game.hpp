@@ -75,7 +75,6 @@ private:
 
     gui::MainMenu& mainMenu;
 
-    int hudState;
     int pauseState;
     int wonState;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,6 +50,9 @@ public:
     void removeState(int state);
     void removeStates();
 
+    void addOverlay(int stateId);
+    void removeOverlay(int stateId);
+
     void setState(int state, bool back = false);
     void setBackground(Background* background);
 
@@ -68,6 +71,7 @@ private:
 
     std::vector<State*> states;
     std::stack<int> stateStack;
+    std::vector<int> overlays;
     int state;
 
     bool wantExit;

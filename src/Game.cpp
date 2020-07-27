@@ -29,7 +29,7 @@
 
 #include "Gui/MainMenu.hpp"
 
-#include "Gui/States/Hud.hpp"
+#include "Gui/States/FpsOverlay.hpp"
 #include "Gui/States/Pause.hpp"
 #include "Gui/States/Win.hpp"
 
@@ -67,7 +67,7 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
 
     openGui();
 
-    mainMenu.setState(hudState);
+    mainMenu.setState(-1);
 }
 
 Game::~Game() {
@@ -75,7 +75,6 @@ Game::~Game() {
 
     mainMenu.removeState(wonState);
     mainMenu.removeState(pauseState);
-    mainMenu.removeState(hudState);
 
     mazeRenderers[mazeRenderer]->disable();
 
@@ -134,7 +133,6 @@ Game::tick(float deltaTime) {
 void
 Game::openGui() {
     using namespace gui::states;
-    hudState   = mainMenu.addState(new Hud  (mainMenu, settings));
     pauseState = mainMenu.addState(new Pause(mainMenu, *this));
     wonState   = mainMenu.addState(new Win  (mainMenu, *this));
 }
@@ -188,7 +186,7 @@ Game::setPaused(bool paused) {
         } else {
             Logger::inst().log_debug("Game unpaused.");
 
-            mainMenu.backTo(hudState);
+            mainMenu.backTo(-1);
         }
     }
 }
@@ -226,7 +224,7 @@ Game::setWon(bool won) {
         if (won)
             mainMenu.setState(wonState);
         else
-            mainMenu.backTo(hudState);
+            mainMenu.backTo(-1);
     }
 }
 

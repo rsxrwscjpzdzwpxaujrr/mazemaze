@@ -26,6 +26,12 @@ namespace mazemaze {
 
 class Game;
 
+namespace gui {
+
+class MainMenu;
+
+}
+
 class Settings {
 public:
     struct Language {
@@ -55,6 +61,8 @@ public:
     float             getSensitivity() const;
     std::string       getDataDir() const;
 
+    void setMainMenu(gui::MainMenu* mainMenu);
+
     void setLang(const std::string &lang);
     void setAntialiasing(unsigned int antialiasing);
     void setFullscreen(bool fullscreen);
@@ -69,6 +77,8 @@ public:
 private:
     std::string dataDir;
     std::string configFile;
+
+    gui::MainMenu* mainMenu;
 
     std::string lang;
     int supportedLangsCount;

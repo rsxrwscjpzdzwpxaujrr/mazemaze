@@ -48,9 +48,11 @@ public:
     void stopGame();
     void reopen();
     bool isGameOpen();
+    void showFps(bool show);
 
     int  getOptionsState() const;
     void setOptionsState(states::OptionsMenu& options, int state);
+    bool getShowFps() const;
 
 private:
     Game* game;
@@ -59,7 +61,10 @@ private:
     Settings& settings;
 
     int mainState;
+    int fpsState;
     int optionsState;
+
+    bool fpsShow;
 
     void setupGame();
 };

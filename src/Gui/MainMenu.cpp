@@ -29,18 +29,22 @@
 #include "Background.hpp"
 
 #include "States/Main.hpp"
+#include "States/FpsOverlay.hpp"
 
 namespace mazemaze {
 namespace gui {
 
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          saver(new Saver(settings)),
-                                         settings(settings) {
+                                         settings(settings),
+                                         fpsShow(false) {
     Logger::inst().log_debug("Starting main menu.");
 
     getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
     mainState = addState(new states::Main(*this, settings));
+    fpsState  = addState(new states::FpsOverlay (*this, settings));
+
     setState(mainState);
 
     StarSky* starsky = new StarSky(1024, 600.0f, 0.0f, 0.0f);
@@ -125,6 +129,18 @@ MainMenu::isGameOpen() {
     return game != nullptr;
 }
 
+void
+MainMenu::showFps(bool show) {
+    if (fpsShow != show) {
+        if (show)
+            addOverlay(fpsState);
+        else
+            removeOverlay(fpsState);
+
+        fpsShow = show;
+    }
+}
+
 int
 MainMenu::getOptionsState() const {
     return optionsState;
@@ -133,6 +149,11 @@ MainMenu::getOptionsState() const {
 void
 MainMenu::setOptionsState(states::OptionsMenu&, int state) {
     optionsState = state;
+}
+
+bool
+MainMenu::getShowFps() const {
+    return fpsShow;
 }
 
 void
