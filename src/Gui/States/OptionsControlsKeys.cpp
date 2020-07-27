@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -140,28 +140,28 @@ OptionsControls::getKeyName(sf::Keyboard::Key key) {
             return L"Escape";
 
         case Keyboard::Key::LControl:
-            return pgtx("options|keys", "Left Ctrl");
+            return pgtxf("options|keys", "Left %s", "Ctrl");
 
         case Keyboard::Key::LShift:
-            return pgtx("options|keys", "Left Shift");
+            return pgtxf("options|keys", "Left %s", "Shift");
 
         case Keyboard::Key::LAlt:
-            return pgtx("options|keys", "Left Alt");
+            return pgtxf("options|keys", "Left %s", "Alt");
 
         case Keyboard::Key::LSystem:
-            return pgtx("options|keys", "Left System");
+            return pgtxf("options|keys", "Left %s", "System");
 
         case Keyboard::Key::RControl:
-            return pgtx("options|keys", "Right Ctrl");
+            return pgtxf("options|keys", "Right %s", "Ctrl");
 
         case Keyboard::Key::RShift:
-            return pgtx("options|keys", "Right Shift");
+            return pgtxf("options|keys", "Right %s", "Shift");
 
         case Keyboard::Key::RAlt:
-            return pgtx("options|keys", "Right Alt");
+            return pgtxf("options|keys", "Right %s", "Alt");
 
         case Keyboard::Key::RSystem:
-            return pgtx("options|keys", "Right System");
+            return pgtxf("options|keys", "Right %s", "System");
 
         case Keyboard::Key::Menu:
             return L"Menu";
