@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,36 +31,36 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
         yaw(yaw),
         time(0.0f),
         timeSpeed(timeSpeed),
-        stars(new Star[starCount]) {
+        stars(starCount) {
     std::mt19937 randGen(0);
     std::uniform_real_distribution<float> coordInterval(-1.0, 1.0);
     std::uniform_int_distribution<> sizeInterval(0, 11);
 
-    for (int i = 0; i < starCount;) {
+    for (auto star = stars.begin(); star < stars.end();) {
         float randX = coordInterval(randGen);
         float randY = coordInterval(randGen);
         float randZ = coordInterval(randGen);
         int sizeRand = sizeInterval(randGen);
 
-        float distance = std::sqrt(randX * randX + randY * randY + randZ * randZ);
+        float distance = randX * randX + randY * randY + randZ * randZ;
 
         if (distance <= 1.0f) {
-            Star& star = stars[i];
+            distance = std::sqrt(distance);
 
-            star.x = randX / distance;
-            star.y = randY / distance;
-            star.z = randZ / distance;
+            star->x = randX / distance;
+            star->y = randY / distance;
+            star->z = randZ / distance;
 
             if      (sizeRand <= 7)
-                star.size = 1;
+                star->size = 1;
 
             else if (sizeRand <= 10)
-                star.size = 2;
+                star->size = 2;
 
             else
-                star.size = 3;
+                star->size = 3;
 
-            i++;
+            star++;
         }
     }
 
@@ -69,8 +69,6 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
 
 StarSky::~StarSky() {
     glDeleteLists(drawList, 1);
-
-    delete [] stars;
 }
 
 void
@@ -105,21 +103,19 @@ StarSky::compile() {
     drawList = glGenLists(1);
     glNewList(drawList, GL_COMPILE);
 
-    for (int i = 0; i < starCount; i++) {
-        Star& star = stars[i];
-
-        if      (star.size == 1)
+    for (auto star = stars.begin(); star < stars.end(); star++) {
+        if      (star->size == 1)
             glColor3f(0.33f, 0.33f, 0.33f);
 
-        else if (star.size == 2)
+        else if (star->size == 2)
             glColor3f(0.5f,  0.5f,  0.5f);
 
-        else if (star.size == 3)
+        else if (star->size == 3)
             glColor3f(0.75f, 0.75f, 0.75f);
 
-        glPointSize(star.size);
+        glPointSize(star->size);
         glBegin(GL_POINTS);
-        glVertex3f(star.x, star.y, star.z);
+        glVertex3f(star->x, star->y, star->z);
         glEnd();
     }
 

@@ -51,8 +51,8 @@ NewGame::initSignals(MainMenu& mainMenu) {
             needOld = text.getSize() > max_size_chars;
 
             if (!needOld) {
-                for (unsigned int i = 0; i < text.getSize(); i++) {
-                    if (!std::isdigit(text[i])) {
+                for (auto i = text.begin(); i < text.end(); i++) {
+                    if (!std::isdigit(*i)) {
                         needOld = true;
                         break;
                     }

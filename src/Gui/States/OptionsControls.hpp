@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "Options.hpp"
 
 #include <string>
+#include <array>
 
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -41,7 +42,7 @@ namespace states {
 
 class OptionsControls : public Options {
 public:
-    static const int buttonsCount;
+    static const int buttonsCount = 4;
 
     explicit OptionsControls(MainMenu& mainMenu, Settings& settings);
     ~OptionsControls() override;
@@ -49,6 +50,7 @@ public:
     void show(bool show) override;
     void tick(float deltatime) override;
     void center() override;
+    void onResetText() override;
 
 private:
     class KeyChangeWindow {
@@ -81,13 +83,13 @@ private:
     };
 
     sfg::Adjustment::Ptr sensitivityAdjustement;
-    sfg::Button::Ptr*    keyButtons;
-    sf::String*          keyLabels;
+    std::array<sfg::Button::Ptr, buttonsCount> keyButtons;
+    std::array<sf::String, buttonsCount>       keyLabels;
 
     KeyChangeWindow keyChangeWindow;
 
     sf::Keyboard::Key  selectedKey;
-    std::string*       keyControls;
+    std::array<std::string, buttonsCount> keyControls;
 
     void updateKeyButtonLabel(int button);
 

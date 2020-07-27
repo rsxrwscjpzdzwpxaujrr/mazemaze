@@ -25,6 +25,7 @@ namespace mazemaze {
 namespace gui {
 
 Gui::Gui() : background(nullptr),
+             state(-1),
              wantExit(false) {}
 
 Gui::~Gui() {
@@ -34,9 +35,8 @@ Gui::~Gui() {
 void
 Gui::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
-        for (unsigned int i = 0; i < states.size(); i++) {
-            states[i]->center();
-        }
+        for (auto i = states.begin(); i < states.end(); i++)
+            (*i)->center();
     }
 
     onEvent(event);
@@ -54,13 +54,13 @@ Gui::tick(float deltaTime) {
     desktop.Update(deltaTime);
 
     if (state > 0)
-        states[state]->tick(deltaTime);
+        states.at(state)->tick(deltaTime);
 
     if (background != nullptr)
         background->tick(deltaTime);
 
     for (auto i = overlays.begin(); i < overlays.end(); i++) {
-        states[*i]->tick(deltaTime);
+        states.at(*i)->tick(deltaTime);
     }
 }
 
@@ -95,7 +95,7 @@ Gui::addState(State* state) {
     Logger::inst().log_debug("Adding " + state->name + " state to GUI.");
 
     states.emplace_back(state);
-    states[states.size() - 1]->show(false);
+    states.at(states.size() - 1)->show(false);
 
     return states.size() - 1;
 }
@@ -105,14 +105,14 @@ Gui::removeState(int state) {
     if (Gui::state == state)
         setState(-1);
 
-    delete states[state];
+    delete states.at(state);
     states.erase(states.begin() + state);
 }
 
 void
 Gui::removeStates() {
-    for (size_t i = 0; i < states.size(); i++)
-        delete states[i];
+    for (auto i = states.begin(); i < states.end(); i++)
+        delete *i;
 
     states.clear();
 }
@@ -121,7 +121,7 @@ void
 Gui::addOverlay(int stateId) {
     Logger::inst().log_debug("Adding overlay " + getState(stateId).name);
 
-    states[stateId]->show(true);
+    states.at(stateId)->show(true);
 
     overlays.emplace_back(stateId);
 }
@@ -130,7 +130,7 @@ void
 Gui::removeOverlay(int stateId) {
     Logger::inst().log_debug("Removing overlay " + getState(stateId).name);
 
-    states[stateId]->show(false);
+    states.at(stateId)->show(false);
 
     for (auto i = overlays.begin(); i < overlays.end(); i++) {
         if (*i == stateId) {
@@ -184,7 +184,7 @@ Gui::getState() const {
 
 State&
 Gui::getState(int state) {
-    return *states[state];
+    return *states.at(state);
 }
 
 bool

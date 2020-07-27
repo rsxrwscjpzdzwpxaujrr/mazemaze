@@ -18,6 +18,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <map>
 
 #include <SFML/Window/Keyboard.hpp>
@@ -46,20 +47,19 @@ public:
     explicit Settings(bool readConfig=true);
     ~Settings();
 
-    std::string       getLang() const;
-    unsigned int      getAntialiasing() const;
-    unsigned int      getMaxAntialiasing() const;
-    bool              getFullscreen() const;
-    bool              getVsync() const;
-    bool              getAutosave() const;
-    float             getAutosaveTime() const;
-    int               getRenderer() const;
-    bool              getShowFps() const;
-    sf::Keyboard::Key getKey(const std::string& control);
-    const Language*   getSupportedLangs() const;
-    int               getSupportedLangsCount() const;
-    float             getSensitivity() const;
-    std::string       getDataDir() const;
+    std::string                  getLang() const;
+    unsigned int                 getAntialiasing() const;
+    unsigned int                 getMaxAntialiasing() const;
+    bool                         getFullscreen() const;
+    bool                         getVsync() const;
+    bool                         getAutosave() const;
+    float                        getAutosaveTime() const;
+    int                          getRenderer() const;
+    bool                         getShowFps() const;
+    sf::Keyboard::Key            getKey(const std::string& control);
+    const std::vector<Language>& getSupportedLangs() const;
+    float                        getSensitivity() const;
+    std::string                  getDataDir() const;
 
     void setMainMenu(gui::MainMenu* mainMenu);
 
@@ -81,8 +81,7 @@ private:
     gui::MainMenu* mainMenu;
 
     std::string lang;
-    int supportedLangsCount;
-    Language* supportedLangs;
+    std::vector<Language> supportedLangs;
     unsigned int antialiasing;
     bool autosave;
     float autosaveTime;

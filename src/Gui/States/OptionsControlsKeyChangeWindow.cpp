@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -99,8 +99,8 @@ OptionsControls::KeyChangeWindow::open(int button) {
 
     center();
 
-    for (int i = 0; i < 4; i++)
-        optCtrls.keyButtons[i]->SetState(Widget::State::INSENSITIVE);
+    for (auto i = optCtrls.keyButtons.begin(); i < optCtrls.keyButtons.end(); i++)
+        (*i)->SetState(Widget::State::INSENSITIVE);
 
     initSignals();
 }
@@ -122,8 +122,8 @@ OptionsControls::KeyChangeWindow::close() {
     opened = false;
     window->Show(opened);
 
-    for (int i = 0; i < 4; i++)
-        optCtrls.keyButtons[i]->SetState(Widget::State::NORMAL);
+    for (auto i = optCtrls.keyButtons.begin(); i < optCtrls.keyButtons.end(); i++)
+        (*i)->SetState(Widget::State::NORMAL);
 }
 
 void
@@ -147,7 +147,7 @@ OptionsControls::KeyChangeWindow::initSignals() {
     });
 
     okButton->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        std::string control = optCtrls.keyControls[button];
+        std::string control = optCtrls.keyControls.at(button);
 
         optCtrls.settings.setKey(control, optCtrls.selectedKey);
         optCtrls.updateKeyButtonLabel(button);

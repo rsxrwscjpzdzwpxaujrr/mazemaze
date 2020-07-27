@@ -85,12 +85,11 @@ mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S
 
 Settings::Settings(bool readConfig) :
         mainMenu(nullptr),
-        supportedLangsCount(3),
-        supportedLangs(new Language[3] {
+        supportedLangs{
             Language(L"English",    "en_US"),
             Language(L"Русский",    "ru_RU"),
             Language(L"Українська", "uk_UA")
-        }),
+        },
         renderer(0) {
     initDataDir();
     configFile = dataDir + PATH_SEPARATOR "config.json";
@@ -138,7 +137,6 @@ Settings::Settings(bool readConfig) :
 
 Settings::~Settings() {
     writeConfig();
-    delete [] supportedLangs;
 }
 
 std::string
@@ -191,14 +189,9 @@ Settings::getKey(const std::string& control) {
     return controls[control];
 }
 
-const Settings::Language*
+const std::vector<Settings::Language>&
 Settings::getSupportedLangs() const {
     return supportedLangs;
-}
-
-int
-Settings::getSupportedLangsCount() const {
-    return supportedLangsCount;
 }
 
 float

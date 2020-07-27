@@ -29,24 +29,22 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-const int OptionsControls::buttonsCount = 4;
-
 OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
         Options(mainMenu, settings, "OptionsControls"),
-        keyButtons(new Button::Ptr[buttonsCount]),
-        keyLabels(new sf::String[buttonsCount] {
+        keyButtons{Button::Create()},
+        keyLabels  {
             pgtx("options", "Forward"),
             pgtx("options", "Backward"),
             pgtx("options", "Right"),
             pgtx("options", "Left")
-        }),
+        },
         keyChangeWindow(*this),
-        keyControls(new std::string[buttonsCount] {
+        keyControls {
             "up",
             "down",
             "right",
             "left",
-        }) {
+        } {
     auto sensitivitySlider = Scale::Create(Scrollbar::Orientation::HORIZONTAL);
 
     sf::Vector2f buttonSize         = {200.0f,  28.0f};
@@ -80,11 +78,7 @@ OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
     center();
 }
 
-OptionsControls::~OptionsControls() {
-    delete [] keyButtons;
-    delete [] keyLabels;
-    delete [] keyControls;
-}
+OptionsControls::~OptionsControls() = default;
 
 void
 OptionsControls::show(bool show) {
@@ -111,9 +105,9 @@ OptionsControls::center() {
 
 void
 OptionsControls::updateKeyButtonLabel(int button) {
-    std::string control = keyControls[button];
+    std::string control = keyControls.at(button);
 
-    keyButtons[button]->SetLabel(getKeyName(settings.getKey(control)));
+    keyButtons.at(button)->SetLabel(getKeyName(settings.getKey(control)));
 }
 
 void
@@ -123,7 +117,7 @@ OptionsControls::initSignals() {
     });
 
     for (int i = 0; i < buttonsCount; i++) {
-        keyButtons[i]->GetSignal(Widget::OnLeftClick).Connect([this, i] () {
+        keyButtons.at(i)->GetSignal(Widget::OnLeftClick).Connect([this, i] () {
             keyChangeWindow.open(i);
         });
     }
