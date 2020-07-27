@@ -22,10 +22,8 @@
 
 namespace mazemaze {
 
-std::string
-format(const char *fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
+static std::string
+_format(const char *fmt, va_list args) {
     std::vector<char> v(64);
 
     while (true) {
@@ -52,9 +50,33 @@ format(const char *fmt, ...) {
     }
 }
 
+std::string
+format(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    return _format(fmt, args);
+
+    va_end(args);
+}
+
 sf::String
 pgtx(const char* msgctxt, const char* msgid) {
     std::string tmp = pgettext_expr(msgctxt, msgid);
+
+    return sf::String::fromUtf8(tmp.begin(), tmp.end());
+}
+
+sf::String
+pgtxf(const char* msgctxt, const char* msgid, ...) {
+    std::string tmp = pgettext_expr(msgctxt, msgid);
+
+    va_list args;
+    va_start(args, msgid);
+
+    tmp = _format(tmp.c_str(), args);
+
+    va_end(args);
 
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
 }
@@ -65,5 +87,6 @@ npgtxf(const char* msgctxt, const char* msgid, const char* msgidPlural, int n) {
 
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
 }
+
 
 }

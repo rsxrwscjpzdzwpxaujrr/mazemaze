@@ -17,6 +17,10 @@
 
 #include "About.hpp"
 
+#include <gettext.h>
+
+#include "../../utils.hpp"
+
 #include "../MainMenu.hpp"
 
 using namespace sfg;
@@ -27,14 +31,17 @@ namespace states {
 
 About::About(MainMenu& mainMenu, Settings& settings) :
         Options(mainMenu, settings, "About"),
-        aboutLabel(Label::Create("Mazemaze 0.3-git (under development)\n"
-                                 "2018 - 2020\n"
-                                 "\n"
-                                 "Simple maze game created by sad girl\n"
-                                 "Mira Strannaya. Licensed under GPL v2.\n"
-                                 "\n"
-                                 "You can read more about me and this game on "
-                                 "my personal website https://mira-strannaya.ru/")) {
+    aboutLabel(Label::Create(pgtxf("about",
+            "Mazemaze 0.3-git (under development)\n"
+            "Built on %s\n"
+            "\n"
+            "Simple maze game created by sad girl\n"
+            "Mira Strannaya. Licensed under GPL v2.\n"
+            "\n"
+            "You can read more about me and this game on "
+            "my personal website https://mira-strannaya.ru/",
+            __DATE__))
+        ) {
     aboutLabel->SetLineWrap(true);
     windowBox->Pack(aboutLabel);
 

@@ -8,7 +8,7 @@ if (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
 
     set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}.pot)
 
-    set(XGETTEXT_KEYWORDS --keyword=pgtx:1c,2 --keyword=npgtxf:1c,2,3)
+    set(XGETTEXT_KEYWORDS --keyword=pgtx:1c,2 --keyword=pgtxf:1c,2 --keyword=npgtxf:1c,2,3)
     get_target_property(XGETTEXT_INPUT mazemaze SOURCES)
 
     add_custom_target(translations ALL DEPENDS)
