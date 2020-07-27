@@ -109,6 +109,8 @@ Game::tick(float deltaTime) {
 
     setRenderer(settings.getRenderer());
 
+    mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
+
     if (!(paused || won)) {
         player.tick(deltaTime, window, *this);
 
@@ -116,8 +118,6 @@ Game::tick(float deltaTime) {
             Saver::getInstance().save(*this, settings);
             lastSaveTime = time;
         }
-
-        mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
 
         if (    static_cast<int>(player.getX()) == maze.getExitX() &&
                 static_cast<int>(player.getZ()) == maze.getExitY())
