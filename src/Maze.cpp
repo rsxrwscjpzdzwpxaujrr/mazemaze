@@ -23,6 +23,7 @@
 
 #include "Chunk.hpp"
 #include "Logger.hpp"
+#include "utils.hpp"
 
 namespace mazemaze {
 
@@ -95,7 +96,9 @@ Maze::getSeed() const {
 
 void
 Maze::generate(unsigned int seed) {
-    Logger::inst().log_debug("Maze generation started.");
+    Logger::inst().log_debug(fmt("Maze generation started. Size is %dx%d",
+                                 (width - 1) / 2,
+                                 (height - 1) / 2));
 
     std::stack<sf::Vector2i> generators;
     sf::Vector2i currentGenerator(1, 1);
