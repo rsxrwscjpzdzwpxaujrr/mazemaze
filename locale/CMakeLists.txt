@@ -4,7 +4,7 @@ find_package(Gettext MODULE)
 find_program(XGETTEXT_EXECUTABLE xgettext)
 
 if (Gettext_FOUND AND XGETTEXT_EXECUTABLE)
-    set(LINGUAS ru uk)
+    set(LINGUAS ru uk de)
 
     set(POT_FILE ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}.pot)
 

@@ -80,11 +80,12 @@ mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S
 #endif
 
 Settings::Settings(bool readConfig) :
-        supportedLangsCount(3),
-        supportedLangs(new Language[3] {
+        supportedLangsCount(4),
+        supportedLangs(new Language[4] {
             Language(L"English",    "en_US"),
             Language(L"Русский",    "ru_RU"),
-            Language(L"Українська", "uk_UA")
+            Language(L"Українська", "uk_UA"),
+            Language(L"Deutsch",    "de_DE")
         }),
         renderer(0) {
     initDataDir();
