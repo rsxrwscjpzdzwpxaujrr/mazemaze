@@ -22,6 +22,8 @@
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 
+#include <SFGUI/Renderers.hpp>
+
 #include "path_separator.hpp"
 #include "Logger.hpp"
 #include "utils.hpp"
@@ -135,6 +137,8 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
     sf::Clock deltaClock;
     float frameDeltaTime = 1.0f / 60.0f;
     bool running = true;
+
+    sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
 
     sfgui.AddCharacterSet(0x20,  0x80);
     sfgui.AddCharacterSet(0xC0,  0x100);
