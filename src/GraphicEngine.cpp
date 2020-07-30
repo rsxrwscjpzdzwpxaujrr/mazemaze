@@ -137,6 +137,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
     bool running = true;
 
     sfgui.AddCharacterSet(0x20,  0x80);
+    sfgui.AddCharacterSet(0xC0,  0x100);
     sfgui.AddCharacterSet(0x400, 0x500);
 
     while (running) {
