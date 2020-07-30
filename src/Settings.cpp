@@ -88,7 +88,8 @@ Settings::Settings(bool readConfig) :
         supportedLangs{
             Language(L"English",    "en_US"),
             Language(L"Русский",    "ru_RU"),
-            Language(L"Українська", "uk_UA")
+            Language(L"Українська", "uk_UA"),
+            Language(L"Deutsch",    "de_DE")
         },
         renderer(0) {
     initDataDir();
