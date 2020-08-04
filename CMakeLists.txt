@@ -10,7 +10,7 @@ option(SFML_STATIC_LIBRARIES "Do you want to link SFML statically?" OFF)
 
 find_package(Intl REQUIRED MODULE)
 find_package(OpenGL REQUIRED)
-find_package(SFGUI 0.4 QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
+find_package(SFGUI QUIET CONFIG NO_CMAKE_PACKAGE_REGISTRY)
 find_package(Threads REQUIRED)
 
 find_package(PkgConfig REQUIRED)
