@@ -121,7 +121,7 @@ elseif (SFGUI_SUBMODULE)
     set(SFGUI_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared library." FORCE)
     set(SFGUI_BUILD_EXAMPLES    OFF CACHE BOOL "Build examples."       FORCE)
 
-    add_subdirectory(sfgui)
+    add_subdirectory(sfgui EXCLUDE_FROM_ALL)
 
     target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/sfgui/include)
 endif (SFGUI_FOUND)
