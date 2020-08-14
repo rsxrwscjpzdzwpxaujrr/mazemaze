@@ -19,6 +19,10 @@
 
 #include <cmath>
 
+#ifdef _WIN32
+# include <windows.h>
+#endif
+
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -81,6 +85,13 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
     if (!fullscreen) {
         if (oldWindowPos != sf::Vector2i(-1, -1))
             window->setPosition(oldWindowPos);
+
+#ifdef _WIN32
+        if (oldMaximized) {
+            ShowWindow(window->getSystemHandle(), SW_MAXIMIZE);
+            Logger::inst().log_debug("Maximizing window.");
+        }
+#endif
 
         GraphicEngine::videoMode = videoMode;
     }
@@ -225,6 +236,9 @@ GraphicEngine::setFullscreen(bool fullscreen) {
             if (fullscreen) {
                 oldWindowPos = window->getPosition();
                 oldWindowSize = window->getSize();
+#ifdef _WIN32
+                updateOldMaximized();
+#endif
 
                 videoMode = sf::VideoMode::getDesktopMode();
             } else
@@ -240,6 +254,9 @@ GraphicEngine::setAntialiasing(unsigned int antialiasing) {
     if (antialiasing != settings.antialiasingLevel) {
         if (window != nullptr) {
             oldWindowPos = window->getPosition();
+#ifdef _WIN32
+            updateOldMaximized();
+#endif
 
             if (fullscreen)
                 videoMode = sf::VideoMode::getDesktopMode();
@@ -320,5 +337,17 @@ GraphicEngine::calcMaxAntialiasing() {
 
     return settings.antialiasingLevel;
 }
+
+#ifdef _WIN32
+void
+GraphicEngine::updateOldMaximized() {
+    WINDOWPLACEMENT placement;
+    placement.length = sizeof(WINDOWPLACEMENT);
+
+    GetWindowPlacement(window->getSystemHandle(), &placement);
+
+    oldMaximized = placement.showCmd == SW_MAXIMIZE;
+}
+#endif
 
 }
