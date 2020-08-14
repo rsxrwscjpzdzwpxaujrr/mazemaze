@@ -64,6 +64,9 @@ private:
 
     sf::Vector2i oldWindowPos;
     sf::Vector2u oldWindowSize;
+#ifdef _WIN32
+    bool oldMaximized;
+#endif
 
     int width;
     int height;
@@ -86,6 +89,9 @@ private:
     void update();
     void setStates();
     unsigned int calcMaxAntialiasing();
+#ifdef _WIN32
+    void updateOldMaximized();
+#endif
 };
 
 }
