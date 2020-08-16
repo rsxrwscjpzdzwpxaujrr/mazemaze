@@ -21,6 +21,9 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+
 #include "Chunk.hpp"
 #include "Logger.hpp"
 #include "utils.hpp"
@@ -78,6 +81,7 @@ Maze::genStep(sf::Vector2i& generator, bool tried[], int side) {
     } else {
         setOpened(generator.x + x, generator.y + y, true);
         setOpened(newx, newy, true);
+        anglesOpened++;
 
         for (int i = 0; i < 4; i++)
             tried[i] = false;
@@ -99,6 +103,7 @@ Maze::generate(unsigned int seed) {
     Logger::inst().log_debug(fmt("Maze generation started. Size is %dx%d",
                                  (width - 1) / 2,
                                  (height - 1) / 2));
+    anglesOpened = 0;
 
     std::stack<sf::Vector2i> generators;
     sf::Vector2i currentGenerator(1, 1);
@@ -114,6 +119,9 @@ Maze::generate(unsigned int seed) {
 
     bool done = false;
     bool tried[4] = {false};
+
+    sf::Clock clock;
+    sf::Time lastTime = clock.getElapsedTime();
 
     while (!done) {
         int side = sideDistrib(randGen);
@@ -137,12 +145,22 @@ Maze::generate(unsigned int seed) {
             else
                 currentGenerator = generators.top();
         }
+
+        if (clock.getElapsedTime() - lastTime >= sf::milliseconds(250)) {
+            Logger::inst().log_debug(fmt("Progress: %.1f%%", getGenerationProgress() * 100.0f));
+            lastTime = clock.getElapsedTime();
+        }
     }
 
     setOpened(getExitX(), getExitY(), true);
     Maze::seed = seed;
 
     Logger::inst().log_status("Maze generation completed.");
+}
+
+float
+Maze::getGenerationProgress() const {
+    return anglesOpened / static_cast<float>(((width - 1) / 2) * ((height - 1) / 2));
 }
 
 void

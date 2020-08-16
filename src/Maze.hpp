@@ -31,6 +31,7 @@ public:
     ~Maze();
 
     void generate(unsigned int seed);
+    float getGenerationProgress() const;
 
     void setExitX(int exitX);
     void setExitY(int exitY);
@@ -57,6 +58,8 @@ private:
     void genExit(std::mt19937& random);
     void genStart(std::mt19937& random);
     bool genStep(sf::Vector2i& generator, bool tried[], int side);
+
+    int anglesOpened;
 
     int exitX;
     int exitY;
