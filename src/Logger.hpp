@@ -20,6 +20,7 @@
 #include <deque>
 #include <string>
 #include <chrono>
+#include <mutex>
 
 #define DEBUG_LEVEL  "DEBUG"
 #define STATUS_LEVEL "STATUS"
@@ -68,6 +69,7 @@ private:
     void log(Level level, const std::string& message);
 
     std::deque<Message> messages;
+    std::mutex mutex;
 };
 
 inline void

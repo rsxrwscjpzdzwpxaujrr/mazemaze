@@ -30,11 +30,15 @@ Logger::~Logger() = default;
 
 void
 Logger::log(Level level, const std::string& message) {
+    mutex.lock();
+
     Message message_obj(level, message);
 
     std::cout << message_obj.to_string() << std::endl;
 
     messages.emplace_back(message_obj);
+
+    mutex.unlock();
 }
 
 Logger::Message::Message(Logger::Level level, const std::string& message) :
