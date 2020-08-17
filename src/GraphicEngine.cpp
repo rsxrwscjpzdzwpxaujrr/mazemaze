@@ -82,7 +82,6 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
 #ifdef _WIN32
         if (oldMaximized) {
             ShowWindow(window->getSystemHandle(), SW_MAXIMIZE);
-            Logger::inst().log_debug("Maximizing window.");
         }
 #endif
 
