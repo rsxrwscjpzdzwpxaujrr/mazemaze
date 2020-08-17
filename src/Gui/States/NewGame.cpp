@@ -16,6 +16,7 @@
  */
 
 #include "NewGame.hpp"
+#include "Progress.hpp"
 
 #include "../../utils.hpp"
 
@@ -36,7 +37,9 @@ NewGame::initSignals(MainMenu& mainMenu) {
         if (text.getSize() > 0)
             mazeSize = std::stoi(sizeEntry->GetText().toWideString());
 
-        mainMenu.newGame(mazeSize, mazeSize);
+        Game& game = mainMenu.newGame(mazeSize, mazeSize);
+
+        mainMenu.setState(mainMenu.addState(new Progress(mainMenu, game)));
     });
 
     backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {

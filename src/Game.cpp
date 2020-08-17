@@ -18,6 +18,7 @@
 #include "Game.hpp"
 
 #include <chrono>
+#include <thread>
 
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -54,7 +55,8 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
         won(false),
         oldPauseKeyState(false),
         time(0.0f),
-        wantExit(false) {
+        wantExit(false),
+        loaded(false) {
     Logger::inst().log_debug("Constructor of Game called.");
 
     saver.setGame(*this);
@@ -67,8 +69,6 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
     mazeRenderers[mazeRenderer]->enable();
 
     openGui();
-
-    mainMenu.setState(-1);
 }
 
 Game::~Game() {
@@ -86,15 +86,24 @@ Game::~Game() {
 
 void
 Game::newGame() {
-    maze.generate(genSeed());
-    player.start(maze);
-    onLoad();
+    int seed = genSeed();
+
+    std::thread genThread([this, seed] {
+        if (maze.generate(seed)) {
+            player.start(maze);
+            onLoad();
+        }
+    });
+
+    genThread.detach();
 }
 
 void
 Game::onLoad() {
     setPaused(false);
     setWon(false);
+
+    loaded = true;
 
     Logger::inst().log_status("Game started.");
 }
@@ -247,6 +256,11 @@ Game::isWon() const {
 bool
 Game::isWantExit() const {
     return wantExit;
+}
+
+bool
+Game::isLoaded() const {
+    return loaded;
 }
 
 float

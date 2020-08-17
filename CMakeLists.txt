@@ -52,6 +52,7 @@ set(SOURCES
     src/Gui/States/Win.cpp
     src/Gui/States/NewGame.cpp
     src/Gui/States/About.cpp
+    src/Gui/States/Progress.cpp
     src/MazeRenderers/Classic.cpp
     src/MazeRenderers/Gray.cpp
     src/MazeRenderers/Brick.cpp
@@ -90,6 +91,7 @@ set(HEADERS
     src/Gui/States/Win.hpp
     src/Gui/States/NewGame.hpp
     src/Gui/States/About.hpp
+    src/Gui/States/Progress.hpp
     src/MazeRenderers/Classic.hpp
     src/MazeRenderers/Gray.hpp
     src/MazeRenderers/Brick.hpp

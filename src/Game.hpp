@@ -57,6 +57,7 @@ public:
     bool isPaused() const;
     bool isWon() const;
     bool isWantExit() const;
+    bool isLoaded() const;
 
     float getTime() const;
     Maze& getMaze();
@@ -83,6 +84,7 @@ private:
     bool oldPauseKeyState;
     float time;
     bool wantExit;
+    bool loaded;
 
     unsigned int genSeed();
 };

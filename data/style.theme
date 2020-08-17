@@ -122,6 +122,11 @@ Entry {
     Padding: 10.0f;
 }
 
+ProgressBar {
+    BarColor: #D64937ff;
+    BarBorderWidth: 0.0f;
+}
+
 Box.options {
     Gap: 10.0f;
 }

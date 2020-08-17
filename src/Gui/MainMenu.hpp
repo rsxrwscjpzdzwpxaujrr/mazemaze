@@ -43,7 +43,8 @@ public:
 
     void onEvent(const sf::Event& event) override;
 
-    void newGame(int mazeWidth, int mazeHeight);
+    Game& newGame(int mazeWidth, int mazeHeight);
+    void startGame();
     void resumeGame();
     void stopGame();
     bool isGameOpen();

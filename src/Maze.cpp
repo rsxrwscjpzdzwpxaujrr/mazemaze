@@ -30,26 +30,22 @@
 
 namespace mazemaze {
 
-Maze::Maze(int width, int height) {
+Maze::Maze(int width, int height) :
+        chunks(nullptr) {
     if (width < 1 || height < 1)
         throw std::invalid_argument("Width and height must be 1 or bigger");
 
     Maze::width  = width  * 2 + 1;
     Maze::height = height * 2 + 1;
 
-    unsigned int uWidth  = static_cast<unsigned int>(Maze::width);
-    unsigned int uHeight = static_cast<unsigned int>(Maze::height);
+    chunksX = Maze::width  / Chunk::SIZE;
+    chunksY = Maze::height / Chunk::SIZE;
 
-    chunksX = uWidth  / Chunk::SIZE;
-    chunksY = uHeight / Chunk::SIZE;
-
-    if (uWidth % Chunk::SIZE != 0)
+    if (width % Chunk::SIZE != 0)
         chunksX++;
 
-    if (uHeight % Chunk::SIZE != 0)
+    if (height % Chunk::SIZE != 0)
         chunksY++;
-
-    chunks = new Chunk[chunksX * chunksY] {Chunk()};
 }
 
 Maze::~Maze() {
@@ -98,12 +94,15 @@ Maze::getSeed() const {
     return seed;
 }
 
-void
+bool
 Maze::generate(unsigned int seed) {
     Logger::inst().log_debug(fmt("Maze generation started. Size is %dx%d",
                                  (width - 1) / 2,
                                  (height - 1) / 2));
+    initChunks();
+
     anglesOpened = 0;
+    needCancel = false;
 
     std::stack<sf::Vector2i> generators;
     sf::Vector2i currentGenerator(1, 1);
@@ -146,16 +145,32 @@ Maze::generate(unsigned int seed) {
                 currentGenerator = generators.top();
         }
 
-        if (clock.getElapsedTime() - lastTime >= sf::milliseconds(250)) {
+        if (clock.getElapsedTime() - lastTime >= sf::milliseconds(1000)) {
             Logger::inst().log_debug(fmt("Progress: %.1f%%", getGenerationProgress() * 100.0f));
             lastTime = clock.getElapsedTime();
         }
+
+        if (needCancel) {
+            needCancel = false;
+            anglesOpened = 0;
+
+            Logger::inst().log_warn("Maze generation canceled.");
+            return false;
+        }
     }
+
+    anglesOpened = ((width - 1) / 2) * ((height - 1) / 2);
 
     setOpened(getExitX(), getExitY(), true);
     Maze::seed = seed;
 
     Logger::inst().log_status("Maze generation completed.");
+    return true;
+}
+
+void
+Maze::cancelGeneration() {
+    needCancel = true;
 }
 
 float
@@ -186,7 +201,7 @@ Maze::setStartY(int startY) {
 
 bool
 Maze::getOpened(int x, int y) {
-    if (x < 0 || x >= width || y < 0 || y >= height)
+    if (!chunks || x < 0 || x >= width || y < 0 || y >= height)
         return true;
 
     unsigned int ux = static_cast<unsigned int>(x);
@@ -198,6 +213,9 @@ Maze::getOpened(int x, int y) {
 
 void
 Maze::setOpened(int x, int y, bool opened) {
+    if (!chunks)
+        return;
+
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 
@@ -296,6 +314,14 @@ Maze::getChunksY() const {
 void
 Maze::setSeed(unsigned int seed) {
     Maze::seed = seed;
+}
+
+void
+Maze::initChunks() {
+    if (chunks)
+        delete [] chunks;
+
+    chunks = new Chunk[getChunksCount()] {Chunk()};
 }
 
 }
