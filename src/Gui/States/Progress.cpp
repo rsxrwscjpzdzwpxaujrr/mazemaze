@@ -84,7 +84,6 @@ void
 Progress::tick(float) {
     if (game.isLoaded()) {
         mainMenu.startGame();
-        mainMenu.setState(-1);
     }
 
     progressBar->SetFraction(game.getMaze().getGenerationProgress());

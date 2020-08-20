@@ -81,6 +81,8 @@ Saver::load(gui::MainMenu& mainMenu) {
     Maze& maze = game->getMaze();
 
     stream.seekg(CHUNKS_OFFSET);
+
+    maze.initChunks();
     for (int i = 0; i < maze.getChunksCount(); i++)
         loadChunk(stream, game->getMaze().getChunks()[i]);
 

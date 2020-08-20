@@ -25,6 +25,7 @@
 #include "../StarSky.hpp"
 #include "../Logger.hpp"
 #include "../path_separator.hpp"
+#include "../GraphicEngine.hpp"
 
 #include "Background.hpp"
 
@@ -91,13 +92,16 @@ MainMenu::startGame() {
         return;
 
     setupGame();
+
+    setState(-1);
+    game->setPaused(!GraphicEngine::getInstance().hasFocus());
 }
 
 void
 MainMenu::resumeGame() {
     game = saver->load(*this);
 
-    setupGame();
+    startGame();
 }
 
 void

@@ -47,6 +47,10 @@ void
 Player::start(Maze& maze) {
     x = maze.getStartX() + 0.5f;
     z = maze.getStartY() + 0.5f;
+
+    camera.setX(x);
+    camera.setY(y + height);
+    camera.setZ(z);
 }
 
 void
