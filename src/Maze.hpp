@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-20120, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 #pragma once
 
 #include <random>
+#include <stack>
 
 #include <SFML/System/Vector2.hpp>
 
@@ -27,6 +28,16 @@ class Chunk;
 
 class Maze {
 public:
+    struct Generator {
+        Generator(short x, short y);
+        Generator(short x, short y, int side);
+
+        unsigned short x;
+        unsigned short y;
+        unsigned char tried;
+    };
+
+
     explicit Maze(int width, int height);
     ~Maze();
 
@@ -54,13 +65,13 @@ public:
 
     void setSeed(unsigned int seed);
 
-private:
     void initChunks();
 
+private:
     void setOpened(int x, int y, bool opened);
     void genExit(std::mt19937& random);
     void genStart(std::mt19937& random);
-    bool genStep(sf::Vector2i& generator, bool tried[], int side);
+    bool genStep(std::stack<Generator>& generator, Generator* currentGenerator, int side);
 
     int anglesOpened;
     bool needCancel;

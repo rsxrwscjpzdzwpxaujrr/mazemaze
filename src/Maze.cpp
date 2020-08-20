@@ -17,7 +17,6 @@
 
 #include "Maze.hpp"
 
-#include <stack>
 #include <stdexcept>
 #include <algorithm>
 
@@ -53,37 +52,33 @@ Maze::~Maze() {
 }
 
 bool
-Maze::genStep(sf::Vector2i& generator, bool tried[], int side) {
-    if (tried[side])
-        return false;
+Maze::genStep(std::stack<Generator>& generators, Generator* generator, int side) {
+    int x;
+    int y;
 
-    int x = 0;
-    int y = 0;
-
-    if (side >= 2)
-        y = side % 2 * 2 - 1;
-    else
+    if (side < 2) {
         x = side % 2 * 2 - 1;
+        y = 0;
+    } else {
+        x = 0;
+        y = side % 2 * 2 - 1;
+    }
 
-    int newx = generator.x + x * 2;
-    int newy = generator.y + y * 2;
+    int newx = generator->x + x * 2;
+    int newy = generator->y + y * 2;
 
     bool inbound = newx >= 0 && newx < width && newy >= 0 && newy < height;
 
     if (!inbound || getOpened(newx, newy)) {
-        tried[side] = true;
+        generator->tried |= 1 << side;
 
         return false;
     } else {
-        setOpened(generator.x + x, generator.y + y, true);
+        setOpened(generator->x + x, generator->y + y, true);
         setOpened(newx, newy, true);
         anglesOpened++;
 
-        for (int i = 0; i < 4; i++)
-            tried[i] = false;
-
-        generator.x = newx;
-        generator.y = newy;
+        generators.emplace(Generator(newx, newy, side));
 
         return true;
     }
@@ -104,11 +99,13 @@ Maze::generate(unsigned int seed) {
     anglesOpened = 0;
     needCancel = false;
 
-    std::stack<sf::Vector2i> generators;
-    sf::Vector2i currentGenerator(1, 1);
+    std::stack<Generator> generators;
+    generators.emplace(Generator(1, 1));
+    Generator* currentGenerator = &generators.top();
 
-    setOpened(currentGenerator.x, currentGenerator.y, true);
-    generators.emplace(currentGenerator);
+    setOpened(currentGenerator->x, currentGenerator->y, true);
+
+    anglesOpened++;
 
     std::mt19937 randGen(seed);
     std::uniform_int_distribution<> sideDistrib(0, 3);
@@ -117,32 +114,32 @@ Maze::generate(unsigned int seed) {
     genExit(randGen);
 
     bool done = false;
-    bool tried[4] = {false};
 
     sf::Clock clock;
     sf::Time lastTime = clock.getElapsedTime();
 
     while (!done) {
-        int side = sideDistrib(randGen);
-
-        if (genStep(currentGenerator, tried, side))
-            generators.emplace(currentGenerator);
-
-        bool goBack = true;
-
-        for (int i = 0; i < 4; i++)
-            goBack &= tried[i];
+        bool goBack = currentGenerator->tried == 0xf;
 
         if (goBack) {
             generators.pop();
 
-            for (int i = 0; i < 4; i++)
-                tried[i] = false;
-
-            if (generators.empty())
+            if (generators.empty()) {
                 done = true;
-            else
-                currentGenerator = generators.top();
+                break;
+            }
+
+            currentGenerator = &generators.top();
+        } else {
+            int side = sideDistrib(randGen);
+
+            while (currentGenerator->tried & (1 << side)) {
+                side = sideDistrib(randGen);
+            }
+
+            if (genStep(generators, currentGenerator, side)) {
+                currentGenerator = &generators.top();
+            }
         }
 
         if (clock.getElapsedTime() - lastTime >= sf::milliseconds(1000)) {
@@ -159,9 +156,8 @@ Maze::generate(unsigned int seed) {
         }
     }
 
-    anglesOpened = ((width - 1) / 2) * ((height - 1) / 2);
-
     setOpened(getExitX(), getExitY(), true);
+
     Maze::seed = seed;
 
     Logger::inst().log_status(fmt("Maze generation completed. "
@@ -324,6 +320,14 @@ Maze::initChunks() {
         delete [] chunks;
 
     chunks = new Chunk[getChunksCount()] {Chunk()};
+}
+
+Maze::Generator::Generator(short x, short y) : x(x), y(y), tried(0) {}
+
+Maze::Generator::Generator(short x, short y, int side) : x(x), y(y) {
+    static const int oppside[4] {1, 0, 3, 2};
+
+    tried = 1 << oppside[side];
 }
 
 }
