@@ -164,7 +164,9 @@ Maze::generate(unsigned int seed) {
     setOpened(getExitX(), getExitY(), true);
     Maze::seed = seed;
 
-    Logger::inst().log_status("Maze generation completed.");
+    Logger::inst().log_status(fmt("Maze generation completed. "
+                                  "It took %.2f sec",
+                                  clock.getElapsedTime().asMilliseconds() / 1000.0f));
     return true;
 }
 
