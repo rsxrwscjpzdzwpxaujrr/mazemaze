@@ -152,17 +152,17 @@ Settings::getAntialiasing() const {
 
 unsigned int
 Settings::getMaxAntialiasing() const {
-    return GraphicEngine::getInstance().getMaxAntialiasing();
+    return GraphicEngine::inst().getMaxAntialiasing();
 }
 
 bool
 Settings::getFullscreen() const {
-    return GraphicEngine::getInstance().getFullscreen();
+    return GraphicEngine::inst().getFullscreen();
 }
 
 bool
 Settings::getVsync() const {
-    return GraphicEngine::getInstance().getVsync();
+    return GraphicEngine::inst().getVsync();
 }
 
 bool
@@ -230,7 +230,7 @@ void
 Settings::setAntialiasing(unsigned int antialiasing) {
     Logger::inst().log_debug(fmt("Setting antialiasing to %d.", antialiasing));
 
-    GraphicEngine::getInstance().setAntialiasing(antialiasing);
+    GraphicEngine::inst().setAntialiasing(antialiasing);
 
     Settings::antialiasing = antialiasing;
 }
@@ -239,14 +239,14 @@ void
 Settings::setFullscreen(bool fullscreen) {
     Logger::inst().log_debug(fmt("Setting fullsreen to %s.", fullscreen ? "true" : "false"));
 
-    GraphicEngine::getInstance().setFullscreen(fullscreen);
+    GraphicEngine::inst().setFullscreen(fullscreen);
 }
 
 void
 Settings::setVsync(bool vsync) {
     Logger::inst().log_debug(fmt("Setting V-Sync to %s.", vsync ? "true" : "false"));
 
-    GraphicEngine::getInstance().setVsync(vsync);
+    GraphicEngine::inst().setVsync(vsync);
 }
 
 void

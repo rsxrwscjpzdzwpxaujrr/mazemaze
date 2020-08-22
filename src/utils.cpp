@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -86,6 +86,21 @@ npgtxf(const char* msgctxt, const char* msgid, const char* msgidPlural, int n) {
     std::string tmp = fmt(npgettext_expr(msgctxt, msgid, msgidPlural, n), n);
 
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
+}
+
+void
+sideToCoords(int side, int& x, int& y) {
+    static const int sidesX[4] {-1, 1, 0, 0};
+    static const int sidesY[4] {0, 0, -1, 1};
+
+    x = sidesX[side];
+    y = sidesY[side];
+}
+
+int oppositeSide(int side) {
+    static const int oppSide[4] {1, 0, 3, 2};
+
+    return oppSide[side];
 }
 
 }

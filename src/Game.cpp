@@ -110,7 +110,7 @@ Game::onLoad() {
 
 void
 Game::tick(float deltaTime) {
-    GraphicEngine& graphicEngine = GraphicEngine::getInstance();
+    GraphicEngine& graphicEngine = GraphicEngine::inst();
 
     if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) &&
             oldPauseKeyState &&
@@ -127,7 +127,7 @@ Game::tick(float deltaTime) {
     mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
 
     if (!(paused || won)) {
-        player.tick(deltaTime, window, *this);
+        player.tick(deltaTime, *this);
 
         if (time - saver.getLastSaveTime() >= settings.getAutosaveTime() && settings.getAutosave())
             saver.save();

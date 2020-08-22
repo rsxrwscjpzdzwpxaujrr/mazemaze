@@ -27,6 +27,7 @@
 #include "Maze.hpp"
 #include "Game.hpp"
 #include "Settings.hpp"
+#include "GraphicEngine.hpp"
 
 namespace mazemaze {
 
@@ -54,7 +55,7 @@ Player::start(Maze& maze) {
 }
 
 void
-Player::tick(float deltaTime, sf::Window& window, Game& game) {
+Player::tick(float deltaTime, Game& game) {
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
@@ -93,6 +94,8 @@ Player::tick(float deltaTime, sf::Window& window, Game& game) {
 
         tryMove(game.getMaze(), newx, y, newz);
     }
+
+    sf::Window& window = GraphicEngine::inst().getWindow();
 
     sf::Vector2u windowHalfSize = window.getSize();
     windowHalfSize.x /= 2;

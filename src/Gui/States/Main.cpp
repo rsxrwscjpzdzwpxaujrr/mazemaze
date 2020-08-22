@@ -103,7 +103,7 @@ Main::center() {
                             buttonAbout->GetAllocation().height);
 
     sf::Vector2f windowSize =
-        static_cast<sf::Vector2f>(GraphicEngine::getInstance().getWindow().getSize());
+        static_cast<sf::Vector2f>(GraphicEngine::inst().getWindow().getSize());
 
     buttonAbout->Show(showing && windowSize.x > 640 && windowSize.y > 300);
 

@@ -55,11 +55,11 @@ public:
     public:
         Message(Level level, const std::string& message);
 
-        std::chrono::system_clock::time_point time;
-        Level level;
-        std::string message;
+        const std::chrono::system_clock::time_point time;
+        const Level level;
+        const std::string message;
 
-        std::string to_string();
+        std::string to_string() const;
     };
 
 private:

@@ -124,7 +124,7 @@ OptionsControls::KeyChangeWindow::resetText() {
 
 void
 OptionsControls::KeyChangeWindow::close() {
-    GraphicEngine::getInstance().unwaitKey();
+    GraphicEngine::inst().unwaitKey();
 
     opened = false;
     window->Show(opened);
@@ -135,7 +135,7 @@ OptionsControls::KeyChangeWindow::close() {
 
 void
 OptionsControls::KeyChangeWindow::initSignals() {
-    GraphicEngine::getInstance().waitKey([this] (const sf::Keyboard::Key key) {
+    GraphicEngine::inst().waitKey([this] (const sf::Keyboard::Key key) {
         okButton->Show(true);
         buttonSeparator->Show(true);
 

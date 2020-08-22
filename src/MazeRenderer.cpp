@@ -47,7 +47,7 @@ MazeRenderer::enable() {
     setStates();
     onEnable();
 
-    GraphicEngine::getInstance().setOnSetStatesCallback([this] {
+    GraphicEngine::inst().setOnSetStatesCallback([this] {
         this->setStates();
     });
 
@@ -56,7 +56,7 @@ MazeRenderer::enable() {
 
 void
 MazeRenderer::disable() {
-    GraphicEngine::getInstance().setOnSetStatesCallback([] {});
+    GraphicEngine::inst().setOnSetStatesCallback([] {});
 
     onDisable();
 

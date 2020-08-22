@@ -32,7 +32,7 @@ public:
     ~Player();
 
     void start(Maze& maze);
-    void tick(float deltaTime, sf::Window& window, Game& game);
+    void tick(float deltaTime, Game& game);
 
     Camera& getCamera();
 

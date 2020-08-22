@@ -55,13 +55,7 @@ Maze::genStep(std::stack<Generator>& generators, Generator* generator, int side)
     int x;
     int y;
 
-    if (side < 2) {
-        x = side % 2 * 2 - 1;
-        y = 0;
-    } else {
-        x = 0;
-        y = side % 2 * 2 - 1;
-    }
+    sideToCoords(side, x, y);
 
     int newx = generator->x + x * 2;
     int newy = generator->y + y * 2;

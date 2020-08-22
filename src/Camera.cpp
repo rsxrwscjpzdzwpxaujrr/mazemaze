@@ -50,8 +50,8 @@ Camera::setupTranslation() {
 
 void
 Camera::setupPerspective() {
-    double ratio = GraphicEngine::getInstance().getWidth() /
-                   static_cast<double>(GraphicEngine::getInstance().getHeight());
+    double ratio = GraphicEngine::inst().getWidth() /
+                   static_cast<double>(GraphicEngine::inst().getHeight());
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

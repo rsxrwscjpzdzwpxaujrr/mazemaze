@@ -94,7 +94,7 @@ MainMenu::startGame() {
     setupGame();
 
     setState(-1);
-    game->setPaused(!GraphicEngine::getInstance().hasFocus());
+    game->setPaused(!GraphicEngine::inst().hasFocus());
 }
 
 void

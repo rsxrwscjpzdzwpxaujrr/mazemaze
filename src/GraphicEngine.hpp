@@ -51,7 +51,7 @@ public:
     GraphicEngine(GraphicEngine const&) = delete;
     void operator= (GraphicEngine const&) = delete;
 
-    static GraphicEngine& getInstance() {
+    static GraphicEngine& inst() {
         static GraphicEngine instance;
         return instance;
     }

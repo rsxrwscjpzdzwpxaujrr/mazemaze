@@ -35,7 +35,7 @@ main() {
 
     Settings settings;
     sfg::SFGUI sfgui;
-    GraphicEngine& engine = GraphicEngine::getInstance();
+    GraphicEngine& engine = GraphicEngine::inst();
 
     engine.openWindow();
 
