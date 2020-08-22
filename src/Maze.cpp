@@ -90,9 +90,10 @@ Maze::getSeed() const {
 
 bool
 Maze::generate(unsigned int seed) {
-    Logger::inst().log_debug(fmt("Maze generation started. Size is %dx%d",
+    Logger::inst().log_debug(fmt("Maze generation started. Size is %dx%d. Seed is %d.",
                                  (width - 1) / 2,
-                                 (height - 1) / 2));
+                                 (height - 1) / 2,
+                                 seed));
     initChunks();
 
     anglesOpened = 0;
