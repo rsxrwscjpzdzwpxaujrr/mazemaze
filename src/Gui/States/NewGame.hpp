@@ -43,6 +43,8 @@ private:
     sfg::Entry::Ptr  sizeEntry;
     sfg::Label::Ptr  mazeSizeLabel;
 
+    int progressState;
+
     sf::String oldtext;
     int oldcursor;
 

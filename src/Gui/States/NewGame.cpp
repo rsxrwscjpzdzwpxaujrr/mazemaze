@@ -37,9 +37,10 @@ NewGame::initSignals(MainMenu& mainMenu) {
         if (text.getSize() > 0)
             mazeSize = std::stoi(sizeEntry->GetText().toWideString());
 
-        Game& game = mainMenu.newGame(mazeSize, mazeSize);
+        Game* game = &mainMenu.newGame(mazeSize, mazeSize);
 
-        mainMenu.setState(mainMenu.addState(new Progress(mainMenu, game)));
+        static_cast<Progress&>(mainMenu.getState(progressState)).setGame(game);
+        mainMenu.setState(progressState);
     });
 
     backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
@@ -122,6 +123,8 @@ NewGame::NewGame(MainMenu& mainMenu) :
     initSignals(mainMenu);
 
     center();
+
+    progressState = mainMenu.addState(new Progress(mainMenu));
 }
 
 void

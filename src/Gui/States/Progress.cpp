@@ -31,18 +31,20 @@ namespace states {
 void
 Progress::initSignals() {
     backButton->GetSignal(Widget::OnLeftClick).Connect([this] {
-        game.getMaze().cancelGeneration();
-        mainMenu.back();
+        if (game) {
+            game->getMaze().cancelGeneration();
+            mainMenu.back();
+        }
     });
 }
 
-Progress::Progress(MainMenu& mainMenu, Game& game) :
+Progress::Progress(MainMenu& mainMenu) :
         State(mainMenu.getDesktop(), "Progress"),
         mainMenu(mainMenu),
         backButton(Button::Create()),
         mazeSizeLabel(Label::Create()),
         progressBar(ProgressBar::Create()),
-        game(game) {
+        game(nullptr) {
     resetText();
 
     auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
@@ -57,8 +59,6 @@ Progress::Progress(MainMenu& mainMenu, Game& game) :
     windowBox->Pack(mazeSizeLabel);
     windowBox->Pack(progressBar);
     windowBox->SetSpacing(20.0f);
-
-    progressBar->SetFraction(0.5f);
 
     window->Add(windowBox);
 
@@ -82,17 +82,26 @@ Progress::Progress(MainMenu& mainMenu, Game& game) :
 
 void
 Progress::tick(float) {
-    if (game.isLoaded()) {
-        mainMenu.startGame();
-    }
+    if (game) {
+        if (game->isLoaded()) {
+            progressBar->SetFraction(0);
+            mainMenu.startGame();
+            return;
+        }
 
-    progressBar->SetFraction(game.getMaze().getGenerationProgress());
+        progressBar->SetFraction(game->getMaze().getGenerationProgress());
+    }
 }
 
 void
 Progress::resetText() {
     backButton   ->SetLabel(pgtx("progress", "Cancel"));
     mazeSizeLabel->SetText (pgtx("progress", "Maze generation..."));
+}
+
+void
+Progress::setGame(Game* game) {
+    Progress::game = game;
 }
 
 Progress::~Progress() = default;
