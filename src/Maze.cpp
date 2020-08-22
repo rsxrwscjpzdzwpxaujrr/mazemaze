@@ -18,7 +18,6 @@
 #include "Maze.hpp"
 
 #include <stdexcept>
-#include <algorithm>
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
@@ -223,17 +222,17 @@ Maze::setOpened(int x, int y, bool opened) {
 
 void
 Maze::genExit(std::mt19937& random) {
-    std::uniform_int_distribution<> distrib(0, 8);
-    bool direction;
+    std::uniform_int_distribution<> distrib(0, 3);
+    std::uniform_int_distribution<> boolDistrib(0, 1);
 
     do {
-        int number = distrib(random);
-        int angle = number / 2;
-        direction = number % 2 == 1;
+        int angle = distrib(random);
 
-        exitX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
-        exitY = std::max(std::min(angle / 2 * height, height - 2), 1);
+        exitX = ((angle % 2) * (width - 3)) + 1;
+        exitY = ((angle / 2) * (height - 3)) + 1;
     } while (exitX == startX && exitY == startY && !(width <= 3 && height <= 3));
+
+    bool direction = boolDistrib(random);
 
     int* directedCoord;
 
@@ -250,13 +249,12 @@ Maze::genExit(std::mt19937& random) {
 
 void
 Maze::genStart(std::mt19937& random) {
-    std::uniform_int_distribution<> distrib(0, 4);
+    std::uniform_int_distribution<> distrib(0, 3);
 
-    int number = distrib(random);
-    int angle = number / 2;
+    int angle = distrib(random);
 
-    startX = std::max(std::min(angle % 2 * width,  width  - 2), 1);
-    startY = std::max(std::min(angle / 2 * height, height - 2), 1);
+    startX = ((angle % 2) * (width - 3)) + 1;
+    startY = ((angle / 2) * (height - 3)) + 1;
 }
 
 int
