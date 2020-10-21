@@ -322,7 +322,7 @@ Settings::setEnvironment() {
                   countryName,
                   sizeof(countryName) / sizeof(char));
 
-    setLang(fmt("%s_%s", langName, countryName));
+    setLang(format("%s_%s", langName, countryName));
 }
 
 #endif
