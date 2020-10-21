@@ -40,6 +40,8 @@
 
 namespace mazemaze {
 
+const char* FALLBACK_LANG = "en_US";
+
 #ifdef _WIN32
 
 int
@@ -107,9 +109,9 @@ Settings::Settings(bool readConfig) :
     int encFound = tempLang.find('.');
 
     if (encFound != std::string::npos)
-        lang = tempLang.substr(0, encFound);
+        setLang(tempLang.substr(0, encFound));
     else
-        lang = tempLang;
+        setLang(tempLang);
 
 #endif
 
@@ -204,11 +206,40 @@ Settings::getDataDir() const {
 
 void
 Settings::setLang(const std::string &lang) {
-    setenv("LANGUAGE", lang.c_str(), true);
+    bool langExist = false;
+    std::string usingLang;
+
+    for (int i = 0; i < supportedLangsCount; i++) {
+        Language& language = supportedLangs[i];
+
+        if (language.code == lang) {
+            usingLang = lang;
+            langExist = true;
+            break;
+        }
+    }
+
+    if (!langExist) {
+        for (int i = 0; i < supportedLangsCount; i++) {
+            Language& language = supportedLangs[i];
+
+            if (language.code.substr(0, 2) == lang.substr(0, 2)) {
+                usingLang = language.code;
+                langExist = true;
+                break;
+            }
+        }
+    }
+
+    if (!langExist) {
+        usingLang = FALLBACK_LANG;
+    }
+
+    setenv("LANGUAGE", usingLang.c_str(), true);
 
     resetLocales();
 
-    Settings::lang = lang;
+    Settings::lang = usingLang;
 }
 
 void
@@ -291,11 +322,7 @@ Settings::setEnvironment() {
                   countryName,
                   sizeof(countryName) / sizeof(char));
 
-    std::string systemLang = format("%s_%s:%s", langName, countryName, langName);
-
-    setenv("LANGUAGE", systemLang.c_str(), true);
-
-    lang = format("%s_%s", langName, countryName);
+    setLang(fmt("%s_%s", langName, countryName));
 }
 
 #endif
