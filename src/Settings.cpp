@@ -44,6 +44,8 @@
 
 namespace mazemaze {
 
+const char* FALLBACK_LANG = "en_US";
+
 #ifdef _WIN32
 
 int
@@ -113,13 +115,12 @@ Settings::Settings(bool readConfig) :
     int encFound = tempLang.find('.');
 
     if (encFound != std::string::npos)
-        lang = tempLang.substr(0, encFound);
+        setLang(tempLang.substr(0, encFound));
     else
-        lang = tempLang;
+        setLang(tempLang);
 
 #endif
 
-    Logger::inst().log_debug(fmt("System lang is %s.", lang.c_str()));
     Logger::inst().log_debug("Setting default settings.");
 
     antialiasing = 0;
@@ -216,14 +217,45 @@ void
 Settings::setLang(const std::string &lang) {
     Logger::inst().log_debug(fmt("Setting language to %s.", lang.c_str()));
 
-    setenv("LANGUAGE", lang.c_str(), true);
+    bool langExist = false;
+    std::string usingLang;
+
+    for (Language& language : supportedLangs) {
+        if (language.code == lang) {
+            usingLang = lang;
+            langExist = true;
+            break;
+        }
+    }
+
+    if (!langExist) {
+        for (Language& language : supportedLangs) {
+            if (language.code.substr(0, 2) == lang.substr(0, 2)) {
+                usingLang = language.code;
+                langExist = true;
+                break;
+            }
+        }
+    }
+
+    if (!langExist) {
+        usingLang = FALLBACK_LANG;
+    }
+
+    if (usingLang != lang) {
+        Logger::inst().log_warn(fmt("Can not use language %s, using %s instead.",
+                                    lang.c_str(),
+                                    usingLang.c_str()));
+    }
+
+    setenv("LANGUAGE", usingLang.c_str(), true);
 
     resetLocales();
 
     if (mainMenu)
         mainMenu->resetText();
 
-    Settings::lang = lang;
+    Settings::lang = usingLang;
 }
 
 void
@@ -327,11 +359,7 @@ Settings::setEnvironment() {
                   countryName,
                   sizeof(countryName) / sizeof(char));
 
-    std::string systemLang = fmt("%s_%s:%s", langName, countryName, langName);
-
-    setenv("LANGUAGE", systemLang.c_str(), true);
-
-    lang = fmt("%s_%s", langName, countryName);
+    setLang(fmt("%s_%s", langName, countryName));
 }
 
 #endif
