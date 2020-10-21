@@ -23,7 +23,9 @@ You can download the latest version precompiled binaries:
 You can check checksums of binary packages in [Travis CI logs](https://travis-ci.org/mirai65536/mazemaze/builds).
 
 ### Build:
-First you need to install build dependencies
+On Arch Linux you can also use a [mazemaze](https://aur.archlinux.org/packages/mazemaze/) and [mazemaze-git](https://aur.archlinux.org/packages/mazemaze-git/) AUR packages instead.
+
+First you need to install build dependencies:
 * Ubuntu, Debian, etc:
 ```
 $ sudo apt install libsfml-dev libjsoncpp-dev
