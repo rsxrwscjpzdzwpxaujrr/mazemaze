@@ -46,6 +46,10 @@ Saver::~Saver() = default;
 
 Game*
 Saver::load(gui::MainMenu& mainMenu) {
+    Logger::inst().log_debug(fmt("Loading save."));
+
+    std::lock_guard<std::mutex> lock(mutex);
+
     std::ifstream stream;
 
     stream.open(getFilename(settings), std::ios::in | std::ios::binary);
@@ -105,6 +109,8 @@ Saver::load(gui::MainMenu& mainMenu) {
     maze.setStartX(mazeParams[5]);
     maze.setStartY(mazeParams[6]);
 
+    Logger::inst().log_status(fmt("Save is loaded."));
+
     game->onLoad();
 
     virgin = false;
@@ -122,6 +128,12 @@ Saver::save() {
             fmt("Trying to save, but game time is equal to last save time. "
                 "Last save time is %f.",
                 lastSaveTime));
+
+        return;
+    }
+
+    if (!mutex.try_lock()) {
+        Logger::inst().log_debug(fmt("Trying to save, but mutex is locked."));
 
         return;
     }
@@ -164,6 +176,8 @@ Saver::save() {
                 fmt("Saving error: %s, code: %d.", e.what(), e.code())
             );
         }
+
+        mutex.unlock();
     }).detach();
 }
 

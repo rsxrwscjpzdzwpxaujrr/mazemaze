@@ -19,6 +19,7 @@
 
 #include <string>
 #include <fstream>
+#include <mutex>
 
 namespace mazemaze {
 namespace gui {
@@ -53,6 +54,8 @@ private:
     Settings& settings;
     float lastSaveTime;
     bool virgin;
+
+    std::mutex mutex;
 
     void saveGame  (std::ostream& stream);
     void savePlayer(std::ostream& stream);
