@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,8 +55,8 @@ NewGame::initSignals(MainMenu& mainMenu) {
             needOld = text.getSize() > max_size_chars;
 
             if (!needOld) {
-                for (auto i = text.begin(); i < text.end(); i++) {
-                    if (!std::isdigit(*i)) {
+                for (auto c : text) {
+                    if (!std::isdigit(c)) {
                         needOld = true;
                         break;
                     }

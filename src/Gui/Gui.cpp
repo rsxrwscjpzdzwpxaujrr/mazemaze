@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,8 +35,8 @@ Gui::~Gui() {
 void
 Gui::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
-        for (auto i = states.begin(); i < states.end(); i++)
-            (*i)->center();
+        for (auto state : states)
+            state->center();
     }
 
     onEvent(event);
@@ -59,8 +59,8 @@ Gui::tick(float deltaTime) {
     if (background != nullptr)
         background->tick(deltaTime);
 
-    for (auto i = overlays.begin(); i < overlays.end(); i++) {
-        states.at(*i)->tick(deltaTime);
+    for (auto overlay : overlays) {
+        states.at(overlay)->tick(deltaTime);
     }
 }
 
@@ -111,8 +111,8 @@ Gui::removeState(int state) {
 
 void
 Gui::removeStates() {
-    for (auto i = states.begin(); i < states.end(); i++)
-        delete *i;
+    for (auto state : states)
+        delete state;
 
     states.clear();
 }
@@ -121,8 +121,8 @@ void
 Gui::resetText() {
     Logger::inst().log_debug("Resetting text.");
 
-    for (auto i = states.begin(); i < states.end(); i++)
-        (*i)->resetText();
+    for (auto state : states)
+        state->resetText();
 }
 
 void

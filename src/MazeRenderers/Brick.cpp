@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,8 +52,7 @@ Brick::compileWalls() {
 
     meshDrawList = glGenLists(meshCount);
 
-    for (int i = 0; i < loader.LoadedMeshes.size(); i++) {
-        objl::Mesh& mesh = loader.LoadedMeshes[i];
+    for (auto& mesh : loader.LoadedMeshes) {
         bool initialized = false;
         bool side = false;
         Angle angleType;
