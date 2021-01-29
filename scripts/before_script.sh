@@ -72,7 +72,7 @@ then
 else
     export CMAKE=cmake
 
-    sudo echo "deb http://us.archive.ubuntu.com/ubuntu/ eoan universe" >> \
+    sudo echo "deb http://us.archive.ubuntu.com/ubuntu/ focal universe" >> \
         /etc/apt/sources.list
 
     sudo apt-get --yes update
