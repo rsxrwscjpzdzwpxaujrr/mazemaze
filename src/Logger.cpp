@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,14 @@ Logger::log(Level level, const std::string& message) {
 
     messages.emplace_back(Message(level, message));
 
-    std::cout << messages.back().to_string() << std::endl;
+    std::ostream* stream;
+
+    if (level < WARN)
+        stream = &std::cout;
+    else
+        stream = &std::cerr;
+
+    *stream << messages.back().to_string() << std::endl;
 }
 
 Logger::Message::Message(Logger::Level level, const std::string& message) :
