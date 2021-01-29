@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,23 +61,17 @@ setenv(const char *name, const char *value, int overwrite) {
 
 bool
 mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) {
-    char* p = const_cast<char*>(path);
+    std::string s(path);
+    std::string tmp;
 
-    while (*p != '\0') {
-        p++;
+    for (char c : s) {
+        tmp += c;
 
-        while (*p != '\0' && *p != '/')
-            p++;
-
-        char v = *p;
-        *p = '\0';
-
-        if (mkdir(path, mode) == -1 && errno != EEXIST) {
-            *p = v;
-            return false;
+        if (c == PATH_SEPARATOR[0] || tmp.size() == s.size()) {
+            if (mkdir(tmp.c_str(), mode) == -1 && errno != EEXIST) {
+                return false;
+            }
         }
-
-        *p = v;
     }
 
     return true;
