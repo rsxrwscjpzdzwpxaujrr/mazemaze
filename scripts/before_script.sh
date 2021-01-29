@@ -52,7 +52,7 @@ then
     cd build
     $CMAKE \
         -DSFML_USE_STATIC_STD_LIBS=TRUE \
-        -BUILD_SHARED_LIBS=FALSE \
+        -DBUILD_SHARED_LIBS=FALSE \
         -DSFML_BUILD_EXAMPLES=FALSE \
         -DSFML_BUILD_DOC=FALSE \
         -DSFML_BUILD_AUDIO=FALSE \
