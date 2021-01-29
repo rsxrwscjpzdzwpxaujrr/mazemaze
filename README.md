@@ -1,6 +1,6 @@
 Mazemaze
 ========
-[![Build Status](https://travis-ci.org/mirai65536/mazemaze.svg?branch=master)](https://travis-ci.org/mirai65536/mazemaze)
+[![Build Status](https://travis-ci.com/mirai65536/mazemaze.svg?branch=master)](https://travis-ci.com/mirai65536/mazemaze)
 
 Simple 3D OpenGL first-person maze game.
 
