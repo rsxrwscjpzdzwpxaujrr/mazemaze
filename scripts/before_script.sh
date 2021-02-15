@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -xe
+set -xeE
+trap 'sleep 1' ERR
 
 export VERSION=0.2.2
 
@@ -101,4 +102,4 @@ $CMAKE --build .
 sudo make install
 cd ../..
 
-set +xe
+set +xeE
