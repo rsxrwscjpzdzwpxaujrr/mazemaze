@@ -84,7 +84,7 @@ fi
 
 git clone https://github.com/TankOs/SFGUI.git
 cd SFGUI
-sed '138{s/^/#/}' CMakeLists.txt > tmp    # hack to disable SFGUI warnings
+sed '130{s/^/#/}' CMakeLists.txt > tmp    # hack to disable SFGUI warnings
 mv tmp CMakeLists.txt                     #
 mkdir build
 cd build
