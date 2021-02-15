@@ -10,13 +10,8 @@ then
     zip -r deploy/Mazemaze_${VERSION}_Windows_${ARCH_HUMAN}.zip mazemaze
 else
     cd build
-    $CMAKE $CMAKE_MAZEMAZE_FLAGS \
-        -DCMAKE_INSTALL_PREFIX=../deb/usr \
-        ..
-    sudo make install
+    make install DESTDIR=../deb
     cd ../deb
-    mkdir opt
-    sudo mv /opt/mazemaze opt/
     md5deep -rl opt usr > DEBIAN/md5sums
     cat DEBIAN/md5sums
     cd ..
