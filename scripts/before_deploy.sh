@@ -16,7 +16,7 @@ else
     sudo make install
     cd ../deb
     mkdir opt
-    sudo mv /opt/mazemaze .
+    sudo mv /opt/mazemaze opt/
     md5deep -rl opt usr > DEBIAN/md5sums
     cat DEBIAN/md5sums
     cd ..
