@@ -93,10 +93,10 @@ CameraBobbing::tick(float deltaTime) {
       posCoeffWithEasing = easingFunc(  posCoeff);
      timeCoeffWithEasing = easingFunc( timeCoeff);
 
-    currentPitch = (std::sin(time * 20.0f) + 1.0f) * 0.002f * pitchCoeffWithEasing;
+    currentPitch = (std::cos(time * 22.0f) + 1.0f) * 0.002f * pitchCoeffWithEasing;
 
-    currentX =           std::cos(time * 10.0f)  * 0.02f * posCoeffWithEasing;
-    currentY = -std::abs(std::sin(time * 10.0f)) * 0.02f * posCoeffWithEasing;
+    currentX =           std::cos(time * 11.0f)  * 0.02f * posCoeffWithEasing;
+    currentY = -std::abs(std::sin(time * 11.0f)) * 0.02f * posCoeffWithEasing;
 
     camera.setPitch(pitch - lastPitch + currentPitch);
 
