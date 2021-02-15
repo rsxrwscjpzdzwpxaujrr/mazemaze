@@ -72,6 +72,10 @@ script:
 before_deploy:
     - source scripts/before_deploy.sh
 
+
+after_failure:
+    - sleep 2;
+
 deploy:
     provider: releases
     token: $GITHUB_OAUTH_TOKEN
