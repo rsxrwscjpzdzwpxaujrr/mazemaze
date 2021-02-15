@@ -96,6 +96,8 @@ OptionsGraphics::initOptions() {
     styleCombo->AppendItem("");
     styleCombo->AppendItem("");
     styleCombo->SelectItem(settings.getRenderer());
+
+    cameraBobbingCheck->SetActive(settings.getCameraBobbing());
 }
 
 OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
