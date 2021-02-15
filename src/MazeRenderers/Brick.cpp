@@ -103,7 +103,7 @@ Brick::compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror, bool side) {
     glNewList(getMesh(angleType, vMirror, side), GL_COMPILE);
 
     glBegin(GL_TRIANGLES);
-    glColor3f(0.45f, 0.185f, 0.16f);
+    glColor3f(0.42f, 0.2f, 0.16f);
 
     for (; j != jEnd; j += jStep) {
         objl::Vertex vertex = mesh.Vertices[mesh.Indices[j]];
@@ -150,7 +150,7 @@ Brick::drawMortar(Brick::Angle angleType, bool side) {
 
     xEnd *= -1.0f;
 
-    glColor3f(0.45f, 0.45f, 0.45f);
+    glColor3f(0.375f, 0.375f, 0.375f);
 
     glNormal3f(0.0f, 0.0f, 1.0f);
 
