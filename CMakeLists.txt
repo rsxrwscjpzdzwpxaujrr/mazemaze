@@ -35,6 +35,7 @@ set(SOURCES
     src/utils.cpp
     src/Skybox.cpp
     src/Logger.cpp
+    src/CameraBobbing.cpp
     src/Gui/Background.cpp
     src/Gui/MainMenu.cpp
     src/Gui/Gui.cpp
@@ -76,6 +77,7 @@ set(HEADERS
     src/path_separator.hpp
     src/Skybox.hpp
     src/Logger.hpp
+    src/CameraBobbing.hpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp

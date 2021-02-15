@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +38,10 @@ Player::Player(float x, float y, float z) :
         x(x), y(y), z(z),
         speed(3.0f),
         height(0.65f),
-        width(0.05f) {
+        width(0.05f),
+        moveVectorX(0.0f),
+        moveVectorZ(0.0f),
+        cameraBobbing(camera, *this) {
     camera.setY(y + height);
 }
 
@@ -61,8 +64,8 @@ Player::tick(float deltaTime, Game& game) {
     float pitch = camera.getPitch();
     float yaw   = camera.getYaw();
 
-    float moveVectorX = 0.0f;
-    float moveVectorZ = 0.0f;
+    moveVectorX = 0.0f;
+    moveVectorZ = 0.0f;
 
     Settings& settings = game.getSettings();
 
@@ -102,6 +105,7 @@ Player::tick(float deltaTime, Game& game) {
     windowHalfSize.y /= 2;
 
     sf::Vector2i cursor = sf::Mouse::getPosition(window);
+    sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), window);
 
     float newPitch = pitch;
     float sensitivity = settings.getSensitivity();
@@ -120,12 +124,18 @@ Player::tick(float deltaTime, Game& game) {
     camera.setY(y + height);
     camera.setZ(z);
 
-    sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), window);
+    if (settings.getCameraBobbing())
+        cameraBobbing.tick(deltaTime);
 }
 
 Camera&
 Player::getCamera() {
     return camera;
+}
+
+bool
+Player::isMoving() const {
+    return moveVectorX != 0.0f || moveVectorZ != 0.0f;
 }
 
 float

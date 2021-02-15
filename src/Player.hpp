@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include <SFML/Window.hpp>
 
 #include "Camera.hpp"
+#include "CameraBobbing.hpp"
 
 namespace mazemaze {
 
@@ -36,6 +37,8 @@ public:
 
     Camera& getCamera();
 
+    bool isMoving() const;
+
     float getX() const;
     float getY() const;
     float getZ() const;
@@ -46,7 +49,10 @@ public:
 
 private:
     Camera camera;
+    CameraBobbing cameraBobbing;
 
+    float moveVectorX;
+    float moveVectorZ;
     float x;
     float y;
     float z;

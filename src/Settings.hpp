@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,6 +60,7 @@ public:
     const std::vector<Language>& getSupportedLangs() const;
     float                        getSensitivity() const;
     std::string                  getDataDir() const;
+    bool                         getCameraBobbing() const;
 
     void setMainMenu(gui::MainMenu* mainMenu);
 
@@ -73,6 +74,7 @@ public:
     void setShowFps(bool showFps);
     void setKey(const std::string& control, sf::Keyboard::Key key);
     void setSensitivity(float sensitivity);
+    bool setCameraBobbing(float cameraBobbing);
 
 private:
     std::string dataDir;
@@ -88,6 +90,7 @@ private:
     int renderer;
     bool showFps;
     float sensitivity;
+    bool cameraBobbing;
 
     std::map<std::string, sf::Keyboard::Key> controls;
 

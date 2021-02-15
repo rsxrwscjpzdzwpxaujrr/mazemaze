@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,11 +46,13 @@ private:
     sfg::CheckButton::Ptr vsyncCheck;
     sfg::ComboBox::Ptr    antialiasingCombo;
     sfg::ComboBox::Ptr    styleCombo;
+    sfg::CheckButton::Ptr cameraBobbingCheck;
 
     Option fullscreenOpt;
     Option vsyncOpt;
     Option antialiasingOpt;
     Option styleOpt;
+    Option cameraBobbingOpt;
 
     void initSignals();
     void initAntialiasingCombo();

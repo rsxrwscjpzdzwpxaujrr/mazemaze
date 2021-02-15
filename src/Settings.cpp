@@ -124,6 +124,7 @@ Settings::Settings(bool readConfig) :
     renderer = 3;
     showFps = false;
     setVsync(true);
+    cameraBobbing = true;
 
     controls["up"]    = sf::Keyboard::W;
     controls["down"]  = sf::Keyboard::S;
@@ -198,6 +199,11 @@ Settings::getSensitivity() const {
 std::string
 Settings::getDataDir() const {
     return dataDir;
+}
+
+bool
+Settings::getCameraBobbing() const {
+    return cameraBobbing;
 }
 
 void
@@ -320,6 +326,11 @@ Settings::setSensitivity(float sensitivity) {
     Settings::sensitivity = sensitivity;
 }
 
+bool
+Settings::setCameraBobbing(float cameraBobbing) {
+    Settings::cameraBobbing = cameraBobbing;
+}
+
 std::string
 Settings::resetLocales() {
     char* resultPtr = setlocale(LC_ALL, "");
@@ -417,6 +428,7 @@ Settings::writeConfig() {
     graphics["fullscreen"] = getFullscreen();
     graphics["vsync"] = getVsync();
     graphics["style"] = getRenderer();
+    graphics["cameraBobbing"] = getCameraBobbing();
 
     config["graphics"] = graphics;
 
@@ -460,6 +472,7 @@ Settings::readConfig() {
         setFullscreen(graphics["fullscreen"].asBool());
         setVsync(graphics["vsync"].asBool());
         setRenderer(graphics["style"].asInt());
+        setCameraBobbing(graphics["cameraBobbing"].asBool());
 
         setLang(config["lang"].asString());
         setAutosave(config["autosave"].asBool());

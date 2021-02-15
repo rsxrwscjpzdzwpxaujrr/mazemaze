@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,6 +56,10 @@ OptionsGraphics::initSignals() {
     styleCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
         settings.setRenderer(styleCombo->GetSelectedItem());
     });
+
+    cameraBobbingCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.setCameraBobbing(cameraBobbingCheck->IsActive());
+    });
 }
 
 void
@@ -96,18 +100,21 @@ OptionsGraphics::initOptions() {
 
 OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
         Options(mainMenu, settings, "OptionsGraphics"),
-        fullscreenCheck  (CheckButton::Create(L"")),
-        vsyncCheck       (CheckButton::Create(L"")),
-        antialiasingCombo(ComboBox::Create()),
-        styleCombo       (ComboBox::Create()),
-        fullscreenOpt  (Option("", fullscreenCheck)),
-        vsyncOpt       (Option("", vsyncCheck)),
-        antialiasingOpt(Option("", antialiasingCombo)),
-        styleOpt       (Option("", styleCombo)) {
+        fullscreenCheck   (CheckButton::Create(L"")),
+        vsyncCheck        (CheckButton::Create(L"")),
+        antialiasingCombo (ComboBox::Create()),
+        styleCombo        (ComboBox::Create()),
+        cameraBobbingCheck(CheckButton::Create(L"")),
+        fullscreenOpt   (Option("", fullscreenCheck)),
+        vsyncOpt        (Option("", vsyncCheck)),
+        antialiasingOpt (Option("", antialiasingCombo)),
+        styleOpt        (Option("", styleCombo)),
+        cameraBobbingOpt(Option("", cameraBobbingCheck)) {
     windowBox->Pack(fullscreenOpt.toWidget());
     windowBox->Pack(antialiasingOpt.toWidget());
     windowBox->Pack(vsyncOpt.toWidget());
     windowBox->Pack(styleOpt.toWidget());
+    windowBox->Pack(cameraBobbingOpt.toWidget());
 
     initSignals();
     initOptions();
@@ -119,10 +126,11 @@ OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
 
 void
 OptionsGraphics::onResetText() {
-    fullscreenOpt.changeText  (pgtx("options", "Fullscreen"));
-    vsyncOpt.changeText       (pgtx("options", "V-Sync"));
-    antialiasingOpt.changeText(pgtx("options", "Antialiasing"));
-    styleOpt.changeText       (pgtx("options", "Style"));
+    fullscreenOpt   .changeText(pgtx("options", "Fullscreen"));
+    vsyncOpt        .changeText(pgtx("options", "V-Sync"));
+    antialiasingOpt .changeText(pgtx("options", "Antialiasing"));
+    styleOpt        .changeText(pgtx("options", "Style"));
+    cameraBobbingOpt.changeText(pgtx("options", "Camera Bobbing"));
 
     styleCombo->ChangeItem(0, pgtx("options", "Classic"));
     styleCombo->ChangeItem(1, pgtx("options", "Gray"));
