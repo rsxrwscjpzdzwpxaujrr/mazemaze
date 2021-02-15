@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -xe
+set -xeE
+trap 'sleep 1' ERR
 
 mkdir deploy
 
@@ -29,4 +30,4 @@ fi
 
 md5deep -rl deploy
 
-set +xe
+set +xeE

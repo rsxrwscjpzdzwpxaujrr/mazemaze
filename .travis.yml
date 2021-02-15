@@ -64,13 +64,13 @@ jobs:
               - imagemagick
 
 before_script:
-    - bash scripts/before_script.sh || { sleep 1; exit 1; }
+    - basourcesh scripts/before_script.sh
 
 script:
-    - bash scripts/script.sh || { sleep 1; exit 1; }
+    - source scripts/script.sh
 
 before_deploy:
-    - bash scripts/before_deploy.sh || { sleep 1; exit 1; }
+    - source scripts/before_deploy.sh
 
 deploy:
     provider: releases
