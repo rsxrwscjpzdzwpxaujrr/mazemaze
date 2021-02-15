@@ -12,10 +12,11 @@ else
     cd build
     $CMAKE $CMAKE_MAZEMAZE_FLAGS \
         -DCMAKE_INSTALL_PREFIX=../deb/usr \
-        -DMAZEMAZE_INSTALL_DIR=../deb/opt \
         ..
     sudo make install
     cd ../deb
+    mkdir opt
+    sudo mv /opt/mazemaze .
     md5deep -rl opt usr > DEBIAN/md5sums
     cat DEBIAN/md5sums
     cd ..
