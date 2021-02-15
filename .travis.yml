@@ -64,7 +64,7 @@ jobs:
               - imagemagick
 
 before_script:
-    - basourcesh scripts/before_script.sh
+    - source scripts/before_script.sh
 
 script:
     - source scripts/script.sh
