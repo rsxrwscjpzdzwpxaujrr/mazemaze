@@ -8,6 +8,7 @@
 !/mazemaze.desktop.in
 !/.travis.yml
 !/FONT_LICENSE
+!/deb
 
 !/cmake/
 
