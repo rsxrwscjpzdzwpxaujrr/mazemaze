@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,21 @@
 
 #pragma once
 
+#include "ITickable.hpp"
+
 namespace mazemaze {
 
 class Maze;
 class Game;
 
-class MazeRenderer {
+class MazeRenderer : public ITickable<Game&> {
 public:
     explicit MazeRenderer(Game& game);
     virtual ~MazeRenderer() = 0;
 
     void enable();
     void disable();
-    void tick(float deltaTime, float playerX, float playerY, bool force=false);
+    void tick(Game& game, float deltaTime) override;
     void render();
 
 protected:

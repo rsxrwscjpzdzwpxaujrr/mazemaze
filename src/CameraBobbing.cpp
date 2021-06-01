@@ -25,9 +25,7 @@
 
 namespace mazemaze {
 
-CameraBobbing::CameraBobbing(Camera& camera, Player& player) :
-    camera(camera),
-    player(player),
+CameraBobbing::CameraBobbing() :
     pitchCoeff(0.0f),
     posCoeff(0.0f),
     timeCoeff(0.0f),
@@ -39,7 +37,9 @@ CameraBobbing::CameraBobbing(Camera& camera, Player& player) :
 CameraBobbing::~CameraBobbing() = default;
 
 void
-CameraBobbing::tick(float deltaTime) {
+CameraBobbing::tick(Player& player, float deltaTime) {
+    Camera& camera = player.getCamera();
+
     float pitch = camera.getPitch();
     float yaw   = camera.getYaw();
 

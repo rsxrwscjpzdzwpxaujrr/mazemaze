@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 namespace mazemaze {
 namespace gui {
 
-Background::Background(ITickable* tickable, IRenderable* renderable, Camera* camera) :
+Background::Background(ITickable<void*>* tickable, IRenderable* renderable, Camera* camera) :
     tickable(tickable),
     renderable(renderable),
     camera(camera) {}
@@ -32,8 +32,8 @@ Background::Background(ITickable* tickable, IRenderable* renderable, Camera* cam
 Background::~Background() = default;
 
 void
-Background::tick(float deltaTime) {
-    tickable->tick(deltaTime);
+Background::tick(void* _, float deltaTime) {
+    tickable->tick(_, deltaTime);
 }
 
 void
@@ -49,7 +49,7 @@ Background::render() {
     glPopMatrix();
 }
 
-ITickable*
+ITickable<void*>*
 Background::getTickable() const {
     return tickable;
 }

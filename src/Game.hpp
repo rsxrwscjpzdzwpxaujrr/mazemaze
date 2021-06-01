@@ -23,6 +23,7 @@
 #include "Player.hpp"
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
+#include "TickableHandler.hpp"
 
 namespace mazemaze {
 namespace gui {
@@ -45,7 +46,7 @@ public:
     void onLoad();
 
     void render() override;
-    void tick(float deltaTime) override;
+    void tick(void*, float deltaTime) override;
     void openGui();
 
     void setPaused(bool paused);
@@ -73,6 +74,7 @@ private:
     Player player;
     Settings& settings;
     Saver& saver;
+    TickableHandler<Game&> tickableHandler;
 
     gui::MainMenu& mainMenu;
 

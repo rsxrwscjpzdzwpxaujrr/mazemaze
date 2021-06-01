@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,9 +69,13 @@ MazeRenderer::disable() {
 }
 
 void
-MazeRenderer::tick(float deltaTime, float playerX, float playerY, bool force) {
-    int pX = static_cast<int>(playerX) / (Chunk::SIZE / 2);
-    int pY = static_cast<int>(playerY) / (Chunk::SIZE / 2);
+MazeRenderer::tick(Game& game, float deltaTime) {
+    bool force = false;
+
+    Player& player = game.getPlayer();
+
+    int pX = static_cast<int>(player.getX()) / (Chunk::SIZE / 2);
+    int pY = static_cast<int>(player.getZ()) / (Chunk::SIZE / 2);
 
     if (pX != oldHcpX || pY != oldHcpY || force) {
         Logger::inst().log_debug("Re-enabling chunks.");

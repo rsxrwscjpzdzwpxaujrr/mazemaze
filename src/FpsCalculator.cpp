@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ FpsCalculator::FpsCalculator(std::function<void (float)> const& onUpdate, float 
 FpsCalculator::~FpsCalculator() = default;
 
 void
-FpsCalculator::tick(float deltaTime) {
+FpsCalculator::tick(void*, float deltaTime) {
     timePassed += deltaTime;
     deltaSum += deltaTime;
     deltaCount++;

@@ -35,13 +35,13 @@ Player::Player(float x, float y, float z) :
         camera(x,     0.0f,  z,
                0.0f,  0.0f,  0.0f,
                100.0, 0.005, 100.0),
+        cameraBobbing(nullptr),
+        moveVectorX(0.0f),
+        moveVectorZ(0.0f),
         x(x), y(y), z(z),
         speed(3.0f),
         height(0.65f),
-        width(0.05f),
-        moveVectorX(0.0f),
-        moveVectorZ(0.0f),
-        cameraBobbing(camera, *this) {
+        width(0.05f) {
     camera.setY(y + height);
 }
 
@@ -58,7 +58,10 @@ Player::start(Maze& maze) {
 }
 
 void
-Player::tick(float deltaTime, Game& game) {
+Player::tick(Game& game, float deltaTime) {
+    if (game.isPaused() || game.isWon())
+        return;
+
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     float pitch = camera.getPitch();
@@ -124,8 +127,9 @@ Player::tick(float deltaTime, Game& game) {
     camera.setY(y + height);
     camera.setZ(z);
 
-    if (settings.getCameraBobbing())
-        cameraBobbing.tick(deltaTime);
+    setupCameraBobbing(settings);
+
+    tickableHandler.tick(*this, deltaTime);
 }
 
 Camera&
@@ -205,6 +209,19 @@ void
 Player::sumVector(float angle, float& vecX, float& vecY) {
     vecX += cosf(angle);
     vecY += sinf(angle);
+}
+
+void
+Player::setupCameraBobbing(Settings& settings) {
+    if (settings.getCameraBobbing() && !cameraBobbing) {
+        cameraBobbing = new CameraBobbing;
+        tickableHandler.addTickable(cameraBobbing);
+    }
+
+    else if (!settings.getCameraBobbing() && cameraBobbing) {
+        tickableHandler.removeTickable(cameraBobbing);
+        cameraBobbing = nullptr;
+    }
 }
 
 }

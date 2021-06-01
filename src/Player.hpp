@@ -17,23 +17,27 @@
 
 #pragma once
 
+#include "ITickable.hpp"
+
 #include <SFML/Window.hpp>
 
 #include "Camera.hpp"
 #include "CameraBobbing.hpp"
+#include "TickableHandler.hpp"
 
 namespace mazemaze {
 
 class Maze;
 class Game;
+class Settings;
 
-class Player {
+class Player : public ITickable<Game&> {
 public:
     explicit Player(float x, float y, float z);
     ~Player();
 
     void start(Maze& maze);
-    void tick(float deltaTime, Game& game);
+    void tick(Game& game, float deltaTime) override;
 
     Camera& getCamera();
 
@@ -49,7 +53,8 @@ public:
 
 private:
     Camera camera;
-    CameraBobbing cameraBobbing;
+    TickableHandler<Player&> tickableHandler;
+    CameraBobbing* cameraBobbing;
 
     float moveVectorX;
     float moveVectorZ;
@@ -63,6 +68,7 @@ private:
     void tryMove(Maze& maze, float x, float y, float z);
     bool checkCollision(Maze& maze, float x, float y);
     void sumVector(float angle, float& vecX, float& vecY);
+    void setupCameraBobbing(Settings& settings);
 };
 
 }

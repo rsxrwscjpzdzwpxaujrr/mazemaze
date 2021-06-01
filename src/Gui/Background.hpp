@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,22 +26,22 @@ class Camera;
 
 namespace gui {
 
-class Background : public ITickable, public IRenderable {
+class Background : public ITickable<void*>, public IRenderable {
 public:
-    explicit Background(ITickable* tickable, IRenderable* renderable, Camera* camera);
+    explicit Background(ITickable<void*>* tickable, IRenderable* renderable, Camera* camera);
     ~Background() override;
 
-    void tick(float deltaTime) override;
+    void tick(void*, float deltaTime) override;
     void render() override;
 
-    ITickable*      getTickable() const;
-    IRenderable*    getRenderable() const;
-    virtual Camera* getCamera();
+    ITickable<void*>* getTickable() const;
+    IRenderable*      getRenderable() const;
+    virtual Camera*   getCamera();
 
 private:
-    ITickable* tickable;
-    IRenderable* renderable;
-    Camera* camera;
+    ITickable<void*>* tickable;
+    IRenderable*      renderable;
+    Camera*           camera;
 };
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,10 +19,14 @@
 
 namespace mazemaze {
 
+template<typename T>
 class ITickable {
 public:
-    virtual void tick(float tick) = 0;
+    virtual void tick(T, float deltaTime) = 0;
     virtual ~ITickable();
 };
+
+template<typename T>
+ITickable<T>::~ITickable() = default;
 
 }

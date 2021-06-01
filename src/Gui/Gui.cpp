@@ -50,14 +50,14 @@ Gui::onEvent(const sf::Event&) {
 }
 
 void
-Gui::tick(float deltaTime) {
+Gui::tick(void* _, float deltaTime) {
     desktop.Update(deltaTime);
 
     if (state > 0)
         states.at(state)->tick(deltaTime);
 
     if (background != nullptr)
-        background->tick(deltaTime);
+        background->tick(_, deltaTime);
 
     for (auto overlay : overlays) {
         states.at(overlay)->tick(deltaTime);

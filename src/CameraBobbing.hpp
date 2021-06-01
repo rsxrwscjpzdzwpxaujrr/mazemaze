@@ -21,20 +21,16 @@
 
 namespace mazemaze {
 
-class Camera;
 class Player;
 
-class CameraBobbing {
+class CameraBobbing : public ITickable<Player&> {
 public:
-    explicit CameraBobbing(Camera& camera, Player& player);
+    explicit CameraBobbing();
     ~CameraBobbing();
 
-    void tick(float deltaTime);
+    void tick(Player& player, float deltaTime);
 
 private:
-    Camera& camera;
-    Player& player;
-
     float pitchCoeff;
     float posCoeff;
     float timeCoeff;

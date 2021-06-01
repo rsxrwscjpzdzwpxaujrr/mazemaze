@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ namespace gui {
 
 class State;
 
-class Gui : public ITickable, public IRenderable {
+class Gui : public ITickable<void*>, public IRenderable {
 public:
     Gui();
     ~Gui() override;
@@ -40,7 +40,7 @@ public:
     void handleEvent(const sf::Event& event);
     virtual void onEvent(const sf::Event& event);
 
-    void tick(float deltaTime) override;
+    void tick(void*, float deltaTime) override;
     void render() override;
 
     void back();

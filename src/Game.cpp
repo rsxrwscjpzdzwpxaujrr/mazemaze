@@ -68,6 +68,9 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
 
     mazeRenderers[mazeRenderer]->enable();
 
+    tickableHandler.addTickable(mazeRenderers[mazeRenderer]);
+    tickableHandler.addTickable(&player);
+
     openGui();
 }
 
@@ -109,7 +112,7 @@ Game::onLoad() {
 }
 
 void
-Game::tick(float deltaTime) {
+Game::tick(void*, float deltaTime) {
     GraphicEngine& graphicEngine = GraphicEngine::inst();
 
     if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) &&
@@ -124,11 +127,9 @@ Game::tick(float deltaTime) {
 
     setRenderer(settings.getRenderer());
 
-    mazeRenderers[mazeRenderer]->tick(deltaTime, player.getX(), player.getZ());
+    tickableHandler.tick(*this, deltaTime);
 
     if (!(paused || won)) {
-        player.tick(deltaTime, *this);
-
         if (time - saver.getLastSaveTime() >= settings.getAutosaveTime() && settings.getAutosave())
             saver.save();
 
@@ -219,10 +220,10 @@ void
 Game::setRenderer(int id) {
     if (id != mazeRenderer) {
         mazeRenderers[mazeRenderer]->disable();
+        tickableHandler.removeTickable(mazeRenderers[mazeRenderer]);
         mazeRenderer = id;
+        tickableHandler.addTickable(mazeRenderers[mazeRenderer]);
         mazeRenderers[mazeRenderer]->enable();
-
-        mazeRenderers[mazeRenderer]->tick(0.0f, player.getX(), player.getY(), true);
     }
 }
 

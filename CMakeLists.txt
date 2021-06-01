@@ -23,7 +23,6 @@ set(SOURCES
     src/Game.cpp
     src/GraphicEngine.cpp
     src/IRenderable.cpp
-    src/ITickable.cpp
     src/main.cpp
     src/Maze.cpp
     src/MazeRenderer.cpp
@@ -78,6 +77,7 @@ set(HEADERS
     src/Skybox.hpp
     src/Logger.hpp
     src/CameraBobbing.hpp
+    src/TickableHandler.hpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp
