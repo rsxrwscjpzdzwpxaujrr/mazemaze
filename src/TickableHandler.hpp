@@ -24,8 +24,6 @@
 
 namespace mazemaze {
 
-class Game;
-
 template <typename T>
 class TickableHandler : public ITickable<T>{
 public:

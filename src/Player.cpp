@@ -220,6 +220,7 @@ Player::setupCameraBobbing(Settings& settings) {
 
     else if (!settings.getCameraBobbing() && cameraBobbing) {
         tickableHandler.removeTickable(cameraBobbing);
+        delete cameraBobbing;
         cameraBobbing = nullptr;
     }
 }
