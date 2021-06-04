@@ -73,8 +73,8 @@ then
 else
     export CMAKE=cmake
 
-    sudo echo "deb http://old-releases.ubuntu.com/ubuntu/ eoan universe" >> \
-        /etc/apt/sources.list
+    sudo echo "deb http://old-releases.ubuntu.com/ubuntu/ eoan universe" \
+        | sudo tee /etc/apt/sources.list.d/old_ubuntu.list
 
     sudo apt-get --yes update
     sudo apt-get --yes install libsfml-dev

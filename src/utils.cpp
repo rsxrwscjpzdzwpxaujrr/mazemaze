@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,9 +55,11 @@ fmt(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    return _fmt(fmt, args);
+    std::string tmp = _fmt(fmt, args);
 
     va_end(args);
+
+    return tmp;
 }
 
 sf::String
