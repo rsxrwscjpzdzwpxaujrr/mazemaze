@@ -45,7 +45,12 @@ Player::Player(float x, float y, float z) :
     camera.setY(y + height);
 }
 
-Player::~Player() = default;
+Player::~Player() {
+    if (cameraBobbing) {
+        delete cameraBobbing;
+        cameraBobbing = nullptr;
+    }
+};
 
 void
 Player::start(Maze& maze) {
@@ -220,6 +225,7 @@ Player::setupCameraBobbing(Settings& settings) {
 
     else if (!settings.getCameraBobbing() && cameraBobbing) {
         tickableHandler.removeTickable(cameraBobbing);
+
         delete cameraBobbing;
         cameraBobbing = nullptr;
     }
