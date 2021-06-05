@@ -116,6 +116,32 @@ Label.fps {
     FontSize: 19.0f;
 }
 
+Window.log_window {
+    BackgroundColor: #2D2D2DFF;
+    TitleBackgroundColor: #3D3D3DFF;
+    TitlePadding: 6.0f;
+    HandleSize: 18.0f;
+    CloseHeight: 11.0f;
+    FontName: data/Noto-Mono-R.ttf;
+    FontSize: 14.0f;
+}
+
+.log_element, .odd_log_element {
+    FontName: data/Noto-Mono-R.ttf;
+    FontSize: 14.0f;
+    Padding: 0.0f;
+    Spacing: 0.0f;
+    Gap: 4.0f;
+}
+
+.log_element {
+    BackgroundColor: #00000000;
+}
+
+.odd_log_element {
+    BackgroundColor: #3D3D3DB0;
+}
+
 Entry {
     FontSize: 21.0f;
     BackgroundColor: #3D3D3DFF;

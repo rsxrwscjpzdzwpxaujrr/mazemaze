@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,19 +31,6 @@ namespace mazemaze {
 
 class Logger {
 public:
-    Logger(Logger const&) = delete;
-    void operator= (Logger const&) = delete;
-
-    static Logger& inst() {
-        static Logger instance;
-        return instance;
-    }
-
-    void log_debug (const std::string& message);
-    void log_status(const std::string& message);
-    void log_warn  (const std::string& message);
-    void log_error (const std::string& message);
-
     enum Level {
         DEBUG  = 0,
         STATUS = 1,
@@ -61,6 +48,21 @@ public:
 
         std::string to_string() const;
     };
+
+    Logger(Logger const&) = delete;
+    void operator= (Logger const&) = delete;
+
+    static Logger& inst() {
+        static Logger instance;
+        return instance;
+    }
+
+    void log_debug (const std::string& message);
+    void log_status(const std::string& message);
+    void log_warn  (const std::string& message);
+    void log_error (const std::string& message);
+
+    std::deque<Message>& getMessages();
 
 private:
     Logger();

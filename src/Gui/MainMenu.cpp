@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@
 
 #include "States/Main.hpp"
 #include "States/FpsOverlay.hpp"
+#include "States/Debug.hpp"
 
 namespace mazemaze {
 namespace gui {
@@ -38,13 +39,15 @@ namespace gui {
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          saver(new Saver(settings)),
                                          settings(settings),
-                                         fpsShow(false) {
+                                         fpsShow(false),
+                                         debugShow(false) {
     Logger::inst().log_debug("Starting main menu.");
 
     getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
-    mainState = addState(new states::Main(*this, settings));
-    fpsState  = addState(new states::FpsOverlay (*this, settings));
+    mainState   = addState(new states::Main       (*this, settings));
+    fpsState    = addState(new states::FpsOverlay (*this, settings));
+    debugState  = addState(new states::Debug      (*this          ));
 
     setState(mainState);
 
@@ -73,6 +76,13 @@ void
 MainMenu::onEvent(const sf::Event& event) {
     if (event.type == sf::Event::LostFocus && game != nullptr && game->isLoaded())
         game->setPaused(true);
+
+    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3) {
+        if (game && game->isLoaded() && !game->isPaused() && !game->isWon())
+            game->setPaused(true);
+
+        showDebug(!debugShow);
+    }
 }
 
 Game&
@@ -132,6 +142,18 @@ MainMenu::showFps(bool show) {
     }
 }
 
+void
+MainMenu::showDebug(bool show) {
+    if (debugShow != show) {
+        if (show)
+            addOverlay(debugState);
+        else
+            removeOverlay(debugState);
+
+        debugShow = show;
+    }
+}
+
 int
 MainMenu::getOptionsState() const {
     return optionsState;
@@ -145,6 +167,11 @@ MainMenu::setOptionsState(states::OptionsMenu&, int state) {
 bool
 MainMenu::getShowFps() const {
     return fpsShow;
+}
+
+bool
+MainMenu::getShowDebug() const {
+    return debugShow;
 }
 
 void

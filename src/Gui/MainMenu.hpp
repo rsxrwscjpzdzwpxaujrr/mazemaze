@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -49,10 +49,12 @@ public:
     void stopGame();
     bool isGameOpen();
     void showFps(bool show);
+    void showDebug(bool show);
 
     int  getOptionsState() const;
     void setOptionsState(states::OptionsMenu& options, int state);
     bool getShowFps() const;
+    bool getShowDebug() const;
 
 private:
     Game* game;
@@ -62,9 +64,11 @@ private:
 
     int mainState;
     int fpsState;
+    int debugState;
     int optionsState;
 
     bool fpsShow;
+    bool debugShow;
 
     void setupGame();
 };

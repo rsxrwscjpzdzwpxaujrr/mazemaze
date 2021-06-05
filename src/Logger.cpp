@@ -44,6 +44,11 @@ Logger::log(Level level, const std::string& message) {
     *stream << messages.back().to_string() << std::endl;
 }
 
+std::deque<Logger::Message>&
+Logger::getMessages() {
+    return Logger::messages;
+}
+
 Logger::Message::Message(Logger::Level level, const std::string& message) :
         time(std::chrono::system_clock::now()),
         level(level),
