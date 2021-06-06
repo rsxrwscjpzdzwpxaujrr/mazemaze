@@ -141,7 +141,7 @@ Label.debug, Label.status, Label.warn, Label.error {
 }
 
 Label.debug {
-    Color: #8D8D8DFF;
+    Color: #7D7D7DFF;
 }
 
 Label.warn {
