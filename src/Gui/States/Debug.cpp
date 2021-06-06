@@ -95,7 +95,8 @@ Debug::tick(float) {
 
     last_message = messages.back().time;
 
-    if (adjustement_pinned)
+    if (adjustement_pinned) {
+        scrolled_window->Refresh();
         set_adjustement_value(get_adjustement_upper_value());
 }
 
