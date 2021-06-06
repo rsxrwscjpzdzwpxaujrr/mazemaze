@@ -78,7 +78,7 @@ MainMenu::onEvent(const sf::Event& event) {
         game->setPaused(true);
 
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3) {
-        if (game && game->isLoaded() && !game->isPaused() && !game->isWon())
+        if (game && game->isLoaded() && !game->isPaused() && !game->isWon() && !debugShow)
             game->setPaused(true);
 
         showDebug(!debugShow);
