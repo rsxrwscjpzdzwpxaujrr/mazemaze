@@ -70,6 +70,11 @@ Debug::Debug(MainMenu& main_menu) :
 
 Debug::~Debug() = default;
 
+
+void
+Debug::center() {
+}
+
 void
 Debug::tick(float) {
     if (!showing)

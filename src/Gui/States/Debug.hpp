@@ -35,6 +35,7 @@ public:
     explicit Debug(MainMenu& main_menu);
     ~Debug() override;
 
+    void center() override;
     void tick(float deltaTime) override;
     void show(bool show) override;
     sfg::Container::Ptr getMainContainer() override;
