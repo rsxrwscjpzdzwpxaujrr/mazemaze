@@ -17,10 +17,11 @@
 
 #pragma once
 
-#include <deque>
 #include <string>
 #include <chrono>
 #include <mutex>
+#include <functional>
+#include <vector>
 
 #define DEBUG_LEVEL  "DEBUG"
 #define STATUS_LEVEL "STATUS"
@@ -62,7 +63,9 @@ public:
     void log_warn  (const std::string& message);
     void log_error (const std::string& message);
 
-    std::deque<Message>& getMessages();
+    int  add_message_listener(std::function<void(Message& message)> message_listener);
+    void remove_message_listener(int id);
+    std::vector<Message>& get_messages();
 
 private:
     Logger();
@@ -70,7 +73,8 @@ private:
 
     void log(Level level, const std::string& message);
 
-    std::deque<Message> messages;
+    std::vector<Message> messages;
+    std::vector<std::function<void(Message&)>> message_listeners;
     std::mutex mutex;
 };
 

@@ -42,10 +42,25 @@ Logger::log(Level level, const std::string& message) {
         stream = &std::cerr;
 
     *stream << messages.back().to_string() << std::endl;
+
+    for (auto& message_listener: message_listeners)
+        message_listener(messages.back());
 }
 
-std::deque<Logger::Message>&
-Logger::getMessages() {
+int
+Logger::add_message_listener(std::function<void(Message&)> message_listener) {
+    message_listeners.emplace_back(message_listener);
+
+    return message_listeners.size() - 1;
+}
+
+void
+Logger::remove_message_listener(int id) {
+    message_listeners.erase(message_listeners.begin() + id);
+}
+
+std::vector<Logger::Message>&
+Logger::get_messages() {
     return Logger::messages;
 }
 

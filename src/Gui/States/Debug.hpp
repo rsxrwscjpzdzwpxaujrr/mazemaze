@@ -19,7 +19,7 @@
 
 #include "../State.hpp"
 
-#include <chrono>
+#include <queue>
 
 #include "../../Logger.hpp"
 
@@ -45,7 +45,7 @@ private:
     sfg::Box::Ptr log_box;
     sfg::Window::Ptr window;
     sfg::ScrolledWindow::Ptr scrolled_window;
-    std::chrono::system_clock::time_point last_message;
+    std::queue<Logger::Message> not_displayed_messages;
 
     bool showing;
     bool odd;

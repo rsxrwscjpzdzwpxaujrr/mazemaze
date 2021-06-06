@@ -42,30 +42,37 @@ Debug::Debug(MainMenu& main_menu) :
             Window::Style::CLOSE
         )),
         scrolled_window(ScrolledWindow::Create()),
+        not_displayed_messages(std::deque<Logger::Message>(
+                Logger::inst().get_messages().begin(),
+                Logger::inst().get_messages().end()
+        )),
         showing(false),
         odd(false) {
-    char scrollbar_policy = ScrolledWindow::HORIZONTAL_NEVER | ScrolledWindow::VERTICAL_ALWAYS;
+    Logger::inst().add_message_listener([this] (Logger::Message& message) {
+        not_displayed_messages.emplace(message);
+    });
 
-    scrolled_window->SetScrollbarPolicy(scrollbar_policy);
-    scrolled_window->SetRequisition({ 0, 320 });
+    char scrollbar_policy = ScrolledWindow::HORIZONTAL_NEVER | ScrolledWindow::VERTICAL_ALWAYS;
 
     window->SetClass("log_window");
     window->Add(scrolled_window);
     window->SetTitle(pgtx("debug", "Debug log"));
+    window->SetPosition({ 16.0f, 16.0f });
 
     window->GetSignal(Window::OnCloseButton).Connect([&main_menu] () {
         main_menu.showDebug(false);
     });
 
+    scrolled_window->SetScrollbarPolicy(scrollbar_policy);
+    scrolled_window->SetRequisition({ 0.0f, 320.0f });
     scrolled_window->AddWithViewport(log_box);
 
-    log_box->SetRequisition({ 640, 0 });
+    log_box->SetRequisition({ 640.0f, 0.0f });
     log_box->SetClass("log_box");
 
     tick(0.0f);
 
     desktop.Add(window);
-    desktop.Add(box);
 }
 
 Debug::~Debug() = default;
@@ -83,22 +90,17 @@ Debug::tick(float) {
     bool first = true;
     bool adjustement_pinned = false;
 
-    std::deque<Logger::Message>& messages = Logger::inst().getMessages();
-
-    for (auto& message: messages) {
-        if (message.time > last_message) {
-            if (first) {
-                adjustement_pinned = get_adjustement_value() == get_adjustement_upper_value();
-                first = false;
-            }
-
-            log_box->Pack(create_log_element(message, odd));
-
-            odd = !odd;
+    while (not_displayed_messages.size() > 0) {
+        if (first) {
+            adjustement_pinned = get_adjustement_value() == get_adjustement_upper_value();
+            first = false;
         }
-    }
 
-    last_message = messages.back().time;
+        log_box->Pack(create_log_element(not_displayed_messages.front(), odd));
+        not_displayed_messages.pop();
+
+        odd = !odd;
+    }
 
     if (adjustement_pinned) {
         scrolled_window->Refresh();
