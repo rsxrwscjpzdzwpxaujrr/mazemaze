@@ -98,6 +98,7 @@ Debug::tick(float) {
     if (adjustement_pinned) {
         scrolled_window->Refresh();
         set_adjustement_value(get_adjustement_upper_value());
+    }
 }
 
 void
@@ -120,7 +121,7 @@ Debug::resetText() {
 }
 
 Widget::Ptr
-Debug::create_log_element(Logger::Message message, bool odd) {
+Debug::create_log_element(Logger::Message& message, bool odd) {
     auto element = Window::Create(Window::Style::NO_STYLE);
     element->SetClass("log_element");
 
@@ -129,7 +130,27 @@ Debug::create_log_element(Logger::Message message, bool odd) {
 
     auto label = Label::Create(message.to_string());
 
-    label->SetClass("log_element");
+    std::string class_name;
+
+    switch (message.level) {
+    case Logger::DEBUG:
+        class_name = "debug";
+        break;
+
+    case Logger::STATUS:
+        class_name = "status";
+        break;
+
+    case Logger::WARN:
+        class_name = "warn";
+        break;
+
+    case Logger::ERR:
+        class_name = "error";
+        break;
+    }
+
+    label->SetClass(class_name);
     label->SetAlignment({ 0.0f, 0.5f });
 
     element->Add(label);

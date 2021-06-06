@@ -49,7 +49,7 @@ private:
     bool showing;
     bool odd;
 
-    sfg::Widget::Ptr create_log_element(Logger::Message message, bool odd);
+    sfg::Widget::Ptr create_log_element(Logger::Message& message, bool odd);
     float get_adjustement_upper_value();
     float get_adjustement_value();
     void set_adjustement_value(float value);

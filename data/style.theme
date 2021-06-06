@@ -135,9 +135,21 @@ Window.log_element {
     Gap: 4.0f;
 }
 
-Label.log_element {
+Label.debug, Label.status, Label.warn, Label.error {
     FontName: data/Noto-Mono-R.ttf;
     FontSize: 14.0f;
+}
+
+Label.debug {
+    Color: #8D8D8DFF;
+}
+
+Label.warn {
+    Color: #FFA726FF;
+}
+
+Label.error {
+    Color: #D64937FF;
 }
 
 Entry {
