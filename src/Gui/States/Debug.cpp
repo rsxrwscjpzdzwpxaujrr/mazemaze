@@ -60,6 +60,9 @@ Debug::Debug(MainMenu& main_menu) :
     scrolled_window->AddWithViewport(log_box);
 
     log_box->SetRequisition({ 640, 0 });
+    log_box->SetClass("log_box");
+
+    tick(0.0f);
 
     desktop.Add(window);
     desktop.Add(box);
@@ -72,14 +75,18 @@ Debug::tick(float) {
     if (!showing)
         return;
 
-    auto  adjustement = scrolled_window->GetVerticalAdjustment();
-    float adjustement_upper_value = adjustement->GetUpper() - adjustement->GetPageSize();
-    bool  adjustement_pinned = adjustement->GetValue() == adjustement_upper_value;
+    bool first = true;
+    bool adjustement_pinned = false;
 
     std::deque<Logger::Message>& messages = Logger::inst().getMessages();
 
     for (auto& message: messages) {
         if (message.time > last_message) {
+            if (first) {
+                adjustement_pinned = get_adjustement_value() == get_adjustement_upper_value();
+                first = false;
+            }
+
             log_box->Pack(create_log_element(message, odd));
 
             odd = !odd;
@@ -89,7 +96,7 @@ Debug::tick(float) {
     last_message = messages.back().time;
 
     if (adjustement_pinned)
-        adjustement->SetValue(adjustement->GetUpper());
+        set_adjustement_value(get_adjustement_upper_value());
 }
 
 void
@@ -113,7 +120,7 @@ Debug::resetText() {
 
 Widget::Ptr
 Debug::create_log_element(Logger::Message message, bool odd) {
-    auto element = sfg::Window::Create(Window::Style::BACKGROUND);
+    auto element = Window::Create(Window::Style::BACKGROUND);
 
     if (odd)
         element->SetClass("odd_log_element");
@@ -128,6 +135,27 @@ Debug::create_log_element(Logger::Message message, bool odd) {
     element->Add(label);
 
     return element;
+}
+
+float
+Debug::get_adjustement_upper_value() {
+    auto adjustement = scrolled_window->GetVerticalAdjustment();
+
+    return adjustement->GetUpper() - adjustement->GetPageSize();
+}
+
+float
+Debug::get_adjustement_value() {
+    auto adjustement = scrolled_window->GetVerticalAdjustment();
+
+    return adjustement->GetValue();
+}
+
+void
+Debug::set_adjustement_value(float value) {
+    auto adjustement = scrolled_window->GetVerticalAdjustment();
+
+    adjustement->SetValue(value);
 }
 
 }
