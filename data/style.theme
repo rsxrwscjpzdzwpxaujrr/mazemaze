@@ -126,20 +126,18 @@ Window.log_window {
     FontSize: 14.0f;
 }
 
-.log_element, .odd_log_element {
-    FontName: data/Noto-Mono-R.ttf;
-    FontSize: 14.0f;
-    Padding: 0.0f;
-    Spacing: 0.0f;
+Box.log_box {
     Gap: 4.0f;
 }
 
-.log_element {
-    BackgroundColor: #00000000;
+Window.log_element {
+    BackgroundColor: #3D3D3DB0;
+    Gap: 4.0f;
 }
 
-.odd_log_element {
-    BackgroundColor: #3D3D3DB0;
+Label.log_element {
+    FontName: data/Noto-Mono-R.ttf;
+    FontSize: 14.0f;
 }
 
 Entry {

@@ -120,12 +120,11 @@ Debug::resetText() {
 
 Widget::Ptr
 Debug::create_log_element(Logger::Message message, bool odd) {
-    auto element = Window::Create(Window::Style::BACKGROUND);
+    auto element = Window::Create(Window::Style::NO_STYLE);
+    element->SetClass("log_element");
 
     if (odd)
-        element->SetClass("odd_log_element");
-    else
-        element->SetClass("log_element");
+        element->SetStyle(Window::Style::BACKGROUND);
 
     auto label = Label::Create(message.to_string());
 
