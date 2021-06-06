@@ -102,7 +102,8 @@ void
 OptionsControls::center() {
     State::center();
 
-    keyChangeWindow.center();
+    if (keyChangeWindow.isOpened())
+        State::center(keyChangeWindow.getWindow());
 }
 
 void

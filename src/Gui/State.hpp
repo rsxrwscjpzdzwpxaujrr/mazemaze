@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,6 @@ public:
     virtual ~State();
 
     virtual void center();
-    virtual void center(sfg::Widget::Ptr widget);
     virtual void show(bool show);
     virtual void tick(float deltatime);
     virtual void resetText() = 0;
@@ -43,6 +42,8 @@ public:
 protected:
     sfg::Desktop& desktop;
     sfg::Box::Ptr box;
+
+    virtual void center(sfg::Widget::Ptr widget);
 };
 
 }
