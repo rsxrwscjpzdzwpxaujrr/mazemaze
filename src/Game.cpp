@@ -55,7 +55,6 @@ Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWi
         won(false),
         oldPauseKeyState(false),
         time(0.0f),
-        wantExit(false),
         loaded(false) {
     Logger::inst().log_debug("Constructor of Game called.");
 
@@ -149,6 +148,18 @@ Game::openGui() {
 }
 
 void
+Game::stop() {
+    Logger::inst().log_debug("Game wants exit.");
+
+    if (won)
+        saver.deleteSave();
+    else
+        saver.save();
+
+    mainMenu.stopGame();
+}
+
+void
 Game::render() {
     glPushMatrix();
 
@@ -203,20 +214,6 @@ Game::setPaused(bool paused) {
 }
 
 void
-Game::setWantExit() {
-    Logger::inst().log_debug("Game wants exit.");
-
-    wantExit = true;
-
-    if (won)
-        saver.deleteSave();
-    else
-        saver.save();
-
-    mainMenu.stopGame();
-}
-
-void
 Game::setRenderer(int id) {
     if (id != mazeRenderer) {
         mazeRenderers[mazeRenderer]->disable();
@@ -252,11 +249,6 @@ Game::isPaused() const {
 bool
 Game::isWon() const {
     return won;
-}
-
-bool
-Game::isWantExit() const {
-    return wantExit;
 }
 
 bool

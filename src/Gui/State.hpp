@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "../ITickable.hpp"
+
 #include <string>
 
 #include <SFML/Window/Event.hpp>
@@ -26,7 +28,7 @@
 namespace mazemaze {
 namespace gui {
 
-class State {
+class State : public ITickable<void*> {
 public:
     const std::string name;
 
@@ -35,7 +37,7 @@ public:
 
     virtual void center();
     virtual void show(bool show);
-    virtual void tick(float deltatime);
+    virtual void tick(void*, float deltatime) override;
     virtual void resetText() = 0;
     virtual sfg::Container::Ptr getMainContainer();
 

@@ -70,7 +70,7 @@ Debug::Debug(MainMenu& main_menu) :
     log_box->SetRequisition({ 640.0f, 0.0f });
     log_box->SetClass("log_box");
 
-    tick(0.0f);
+    tick(nullptr, 0.0f);
 
     desktop.Add(window);
 }
@@ -83,7 +83,7 @@ Debug::center() {
 }
 
 void
-Debug::tick(float) {
+Debug::tick(void*, float) {
     if (!showing)
         return;
 

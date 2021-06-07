@@ -24,6 +24,7 @@
 
 #include "../IRenderable.hpp"
 #include "../ITickable.hpp"
+#include "../TickableHandler.hpp"
 
 #include "Background.hpp"
 
@@ -74,6 +75,9 @@ private:
     std::vector<State*> states;
     std::stack<int> stateStack;
     std::vector<int> overlays;
+
+    TickableHandler<void*> tickable_handler;
+
     int state;
 
     bool wantExit;

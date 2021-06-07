@@ -53,15 +53,7 @@ void
 Gui::tick(void* _, float deltaTime) {
     desktop.Update(deltaTime);
 
-    if (state > 0)
-        states.at(state)->tick(deltaTime);
-
-    if (background != nullptr)
-        background->tick(_, deltaTime);
-
-    for (auto overlay : overlays) {
-        states.at(overlay)->tick(deltaTime);
-    }
+    tickable_handler.tick(_, deltaTime);
 }
 
 void
@@ -131,6 +123,7 @@ Gui::addOverlay(int stateId) {
 
     states.at(stateId)->show(true);
 
+    tickable_handler.addTickable(states[stateId]);
     overlays.emplace_back(stateId);
 }
 
@@ -142,6 +135,7 @@ Gui::removeOverlay(int stateId) {
 
     for (auto i = overlays.begin(); i < overlays.end(); i++) {
         if (*i == stateId) {
+            tickable_handler.removeTickable(states[stateId]);
             overlays.erase(i);
             break;
         }
@@ -152,14 +146,17 @@ void
 Gui::setState(int state, bool back) {
     Logger::inst().log_debug("Setting state to " + (state >= 0 ? getState(state).name : "-1"));
 
-    if (Gui::state >= 0)
+    if (Gui::state >= 0) {
         states[Gui::state]->show(false);
+        tickable_handler.removeTickable(states[Gui::state]);
+    }
 
     if (state < 0 && !back)
         stateStack.emplace(state);
 
     for (int i = 0; i < states.size(); i++) {
         if (i == state) {
+            tickable_handler.addTickable(states[i]);
             states[i]->show(true);
 
             if (!back)
@@ -172,6 +169,12 @@ Gui::setState(int state, bool back) {
 
 void
 Gui::setBackground(Background* background) {
+    if (Gui::background)
+        tickable_handler.removeTickable(Gui::background);
+
+    if (Gui::background != background)
+        tickable_handler.addTickable(background);
+
     Gui::background = background;
 }
 

@@ -48,7 +48,7 @@ public:
     ~OptionsControls() override;
 
     void show(bool show) override;
-    void tick(float deltatime) override;
+    void tick(void*, float deltatime) override;
     void center() override;
     void onResetText() override;
 

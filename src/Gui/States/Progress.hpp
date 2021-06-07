@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ public:
     explicit Progress(MainMenu& mainMenu);
     ~Progress() override;
 
-    void tick(float deltatime) override;
+    void tick(void*, float deltatime) override;
     void resetText() override;
     void setGame(Game* game);
 

@@ -63,7 +63,7 @@ void
 FpsOverlay::resetText() {}
 
 void
-FpsOverlay::tick(float deltaTime) {
+FpsOverlay::tick(void*, float deltaTime) {
     if (showing)
         fpsCalculator.tick(nullptr, deltaTime);
 }

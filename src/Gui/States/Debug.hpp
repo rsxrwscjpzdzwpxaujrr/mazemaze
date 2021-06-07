@@ -36,7 +36,7 @@ public:
     ~Debug() override;
 
     void center() override;
-    void tick(float deltaTime) override;
+    void tick(void*, float deltaTime) override;
     void show(bool show) override;
     sfg::Container::Ptr getMainContainer() override;
     void resetText() override;

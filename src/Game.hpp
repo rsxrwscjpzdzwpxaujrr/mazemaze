@@ -48,6 +48,7 @@ public:
     void render() override;
     void tick(void*, float deltaTime) override;
     void openGui();
+    void stop();
 
     void setPaused(bool paused);
     void setWon(bool won);
@@ -57,7 +58,6 @@ public:
 
     bool isPaused() const;
     bool isWon() const;
-    bool isWantExit() const;
     bool isLoaded() const;
 
     float getTime() const;
@@ -85,7 +85,6 @@ private:
     bool won;
     bool oldPauseKeyState;
     float time;
-    bool wantExit;
     bool loaded;
 
     unsigned int genSeed();

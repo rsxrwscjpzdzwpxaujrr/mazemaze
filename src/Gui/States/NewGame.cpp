@@ -128,7 +128,7 @@ NewGame::NewGame(MainMenu& mainMenu) :
 }
 
 void
-NewGame::tick(float) {
+NewGame::tick(void*, float) {
     oldcursor = sizeEntry->GetCursorPosition();
 }
 
