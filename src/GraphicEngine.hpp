@@ -70,6 +70,7 @@ private:
 
     int width;
     int height;
+    bool running;
     bool needReopen;
     bool needReopenEvent;
     bool fullscreen;
@@ -92,6 +93,7 @@ private:
 #ifdef _WIN32
     void updateOldMaximized();
 #endif
+    void handle_events(gui::MainMenu& main_menu);
 };
 
 }

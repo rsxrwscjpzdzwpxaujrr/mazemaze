@@ -38,6 +38,7 @@ GraphicEngine::GraphicEngine() :
         window(nullptr),
         oldWindowPos(-1, -1),
         oldWindowSize(854, 480),
+        running(true),
         needReopenEvent(false),
         vsync(false),
         focus(true),
@@ -147,7 +148,6 @@ void
 GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
     sf::Clock deltaClock;
     float frameDeltaTime = 1.0f / 60.0f;
-    bool running = true;
 
     sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
 
@@ -159,46 +159,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
         update();
         setStates();
 
-        sf::Event event;
-
-        while (window->pollEvent(event)) {
-            mainMenu.handleEvent(event);
-
-            switch (event.type) {
-                case sf::Event::Closed:
-                    Logger::inst().log_debug("sf::Event::Closed");
-
-                    running = false;
-                    break;
-
-                case sf::Event::KeyReleased:
-                    onKeyWaiting(event.key.code);
-                    break;
-
-                case sf::Event::GainedFocus:
-                    Logger::inst().log_debug("sf::Event::GainedFocus");
-
-                    focus = true;
-                    break;
-
-                case sf::Event::LostFocus:
-                    Logger::inst().log_debug("sf::Event::LostFocus");
-
-                    focus = false;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        if (needReopenEvent) {
-            sf::Event event;
-            event.type = sf::Event::Resized;
-
-            mainMenu.handleEvent(event);
-            needReopenEvent = false;
-        }
+        handle_events(mainMenu);
 
         mainMenu.tick(nullptr, frameDeltaTime);
 
@@ -336,6 +297,50 @@ GraphicEngine::calcMaxAntialiasing() {
                                  settings.antialiasingLevel));
 
     return settings.antialiasingLevel;
+}
+
+void
+GraphicEngine::handle_events(gui::MainMenu& main_menu) {
+    sf::Event event;
+
+    while (window->pollEvent(event)) {
+        main_menu.handleEvent(event);
+
+        switch (event.type) {
+        case sf::Event::Closed:
+            Logger::inst().log_debug("sf::Event::Closed");
+
+            running = false;
+            break;
+
+        case sf::Event::KeyReleased:
+            onKeyWaiting(event.key.code);
+            break;
+
+        case sf::Event::GainedFocus:
+            Logger::inst().log_debug("sf::Event::GainedFocus");
+
+            focus = true;
+            break;
+
+        case sf::Event::LostFocus:
+            Logger::inst().log_debug("sf::Event::LostFocus");
+
+            focus = false;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    if (needReopenEvent) {
+        sf::Event event;
+        event.type = sf::Event::Resized;
+
+        main_menu.handleEvent(event);
+        needReopenEvent = false;
+    }
 }
 
 #ifdef _WIN32
