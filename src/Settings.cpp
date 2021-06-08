@@ -100,8 +100,8 @@ Settings::Settings(bool readConfig) :
 
 #ifdef _WIN32
 
-    setEnvironment();
-    resetLocales();
+    set_environment();
+    reset_locales();
 
 #else
 
