@@ -350,7 +350,7 @@ Settings::reset_locales() {
 #ifdef _WIN32
 
 void
-Settings::setEnvironment() {
+Settings::set_environment() {
     char lang_name[4];
     char country_name[4];
 
@@ -398,7 +398,7 @@ Settings::init_data_dir() {
 
 #ifdef _WIN32
 
-    SHCreateDirectoryExA(nullptr, dataDir.c_str(), nullptr);
+    SHCreateDirectoryExA(nullptr, data_dir.c_str(), nullptr);
 
 #else
 
