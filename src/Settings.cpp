@@ -364,7 +364,7 @@ Settings::set_environment() {
                   country_name,
                   sizeof(country_name) / sizeof(char));
 
-    setLang(fmt("%s_%s", lang_name, country_name));
+    set_lang(fmt("%s_%s", lang_name, country_name));
 }
 
 #endif
