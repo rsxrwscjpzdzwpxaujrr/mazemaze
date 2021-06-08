@@ -31,24 +31,24 @@ class NewGame : public State {
 public:
     const char max_size_chars = 4;
 
-    explicit NewGame(MainMenu& mainMenu);
+    explicit NewGame(MainMenu& main_menu);
     ~NewGame() override;
 
-    void tick(void*, float deltatime) override;
-    void resetText() override;
+    void tick(void*, float delta_time) override;
+    void reset_text() override;
 
 private:
-    sfg::Button::Ptr backButton;
-    sfg::Button::Ptr startButton;
-    sfg::Entry::Ptr  sizeEntry;
-    sfg::Label::Ptr  mazeSizeLabel;
+    sfg::Button::Ptr back_button;
+    sfg::Button::Ptr start_button;
+    sfg::Entry::Ptr  size_entry;
+    sfg::Label::Ptr  maze_size_label;
 
-    int progressState;
+    int progress_state;
 
-    sf::String oldtext;
-    int oldcursor;
+    sf::String old_text;
+    int old_cursor;
 
-    void initSignals(MainMenu& mainMenu);
+    void init_signals(MainMenu& main_menu);
 };
 
 }

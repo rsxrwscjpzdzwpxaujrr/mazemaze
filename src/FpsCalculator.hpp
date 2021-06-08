@@ -25,23 +25,23 @@ namespace mazemaze {
 
 class FpsCalculator : public ITickable<void*> {
 public:
-    explicit FpsCalculator(std::function<void (float)> const& onUpdate, float updateInterval);
+    explicit FpsCalculator(std::function<void (float)> const& on_update, float update_interval);
     ~FpsCalculator() override;
 
-    void tick(void*, float deltaTime) override;
+    void tick(void*, float delta_time) override;
 
-    float getLastFps() const;
-    float getUpdateInterval() const;
-    void setUpdateInterval(float updateInterval);
+    float get_last_fps() const;
+    float get_update_interval() const;
+    void set_update_interval(float update_interval);
 
 private:
-    std::function<void (float)> onUpdate;
-    float updateInterval;
-    float timePassed;
+    std::function<void (float)> on_update;
+    float update_interval;
+    float time_passed;
 
-    float deltaSum;
-    float deltaCount;
-    float lastFps;
+    float delta_sum;
+    float delta_count;
+    float last_fps;
 };
 
 }

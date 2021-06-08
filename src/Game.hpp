@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,55 +39,61 @@ class Saver;
 
 class Game : public gui::Background {
 public:
-    explicit Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWidth, int mazeHeight);
+    explicit Game(
+        gui::MainMenu& main_menu,
+        Settings& settings,
+        Saver& saver,
+        int maze_width,
+        int maze_height
+    );
+
     ~Game() override;
 
-    void newGame();
-    void onLoad();
+    void new_game();
+    void on_load();
 
     void render() override;
-    void tick(void*, float deltaTime) override;
-    void openGui();
+    void tick(void*, float delta_time) override;
+    void open_gui();
     void stop();
 
-    void setPaused(bool paused);
-    void setWon(bool won);
-    void setTime(float time);
-    void setWantExit();
-    void setRenderer(int id);
+    void set_paused(bool paused);
+    void set_won(bool won);
+    void set_time(float time);
+    void set_renderer(int id);
 
-    bool isPaused() const;
-    bool isWon() const;
-    bool isLoaded() const;
+    bool is_paused() const;
+    bool is_won() const;
+    bool is_loaded() const;
 
-    float getTime() const;
-    Maze& getMaze();
-    Player& getPlayer();
-    Camera* getCamera() override;
-    MazeRenderer& getRenderer() const;
-    Settings& getSettings() const;
+    float get_time() const;
+    Maze& get_maze();
+    Player& get_player();
+    Camera* get_camera() override;
+    MazeRenderer& get_renderer() const;
+    Settings& get_settings() const;
 
 private:
     Maze maze;
-    int mazeRenderer;
-    MazeRenderer* mazeRenderers[16];
+    int maze_renderer;
+    MazeRenderer* maze_renderers[16];
     Player player;
     Settings& settings;
     Saver& saver;
-    TickableHandler<Game&> tickableHandler;
+    TickableHandler<Game&> tickable_handler;
 
-    gui::MainMenu& mainMenu;
+    gui::MainMenu& main_menu;
 
-    int pauseState;
-    int wonState;
+    int pause_state;
+    int won_state;
 
-    bool paused;
-    bool won;
-    bool oldPauseKeyState;
+    bool  paused;
+    bool  won;
+    bool  old_pause_key_state;
     float time;
-    bool loaded;
+    bool  loaded;
 
-    unsigned int genSeed();
+    unsigned int gen_seed();
 };
 
 }

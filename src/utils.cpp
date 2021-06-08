@@ -62,19 +62,34 @@ fmt(const char *fmt, ...) {
     return tmp;
 }
 
+void
+side_to_coords(int side, int& x, int& y) {
+    static const int sidesX[4] {-1, 1, 0, 0};
+    static const int sidesY[4] {0, 0, -1, 1};
+
+    x = sidesX[side];
+    y = sidesY[side];
+}
+
+int opposite_side(int side) {
+    static const int oppSide[4] {1, 0, 3, 2};
+
+    return oppSide[side];
+}
+
 sf::String
-pgtx(const char* msgctxt, const char* msgid) {
-    std::string tmp = pgettext_expr(msgctxt, msgid);
+pgtx(const char* text, const char* id) {
+    std::string tmp = pgettext_expr(text, id);
 
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
 }
 
 sf::String
-pgtxf(const char* msgctxt, const char* msgid, ...) {
-    std::string tmp = pgettext_expr(msgctxt, msgid);
+pgtxf(const char* text, const char* id, ...) {
+    std::string tmp = pgettext_expr(text, id);
 
     va_list args;
-    va_start(args, msgid);
+    va_start(args, id);
 
     tmp = _fmt(tmp.c_str(), args);
 
@@ -84,25 +99,10 @@ pgtxf(const char* msgctxt, const char* msgid, ...) {
 }
 
 sf::String
-npgtxf(const char* msgctxt, const char* msgid, const char* msgidPlural, int n) {
-    std::string tmp = fmt(npgettext_expr(msgctxt, msgid, msgidPlural, n), n);
+npgtxf(const char* text, const char* id, const char* plural, int n) {
+    std::string tmp = fmt(npgettext_expr(text, id, plural, n), n);
 
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
-}
-
-void
-sideToCoords(int side, int& x, int& y) {
-    static const int sidesX[4] {-1, 1, 0, 0};
-    static const int sidesY[4] {0, 0, -1, 1};
-
-    x = sidesX[side];
-    y = sidesY[side];
-}
-
-int oppositeSide(int side) {
-    static const int oppSide[4] {1, 0, 3, 2};
-
-    return oppSide[side];
 }
 
 }

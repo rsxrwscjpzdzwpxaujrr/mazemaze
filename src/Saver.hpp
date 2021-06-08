@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,36 +36,36 @@ class Saver {
 public:
     static const char version[];
 
-    static bool saveExists(Settings& settings);
+    static bool save_exists(Settings& settings);
 
     Saver(Settings& settings);
     ~Saver();
 
-    Game* load(gui::MainMenu& mainMenu);
+    Game* load(gui::MainMenu& main_menu);
     void save();
-    void deleteSave();
+    void delete_save();
 
-    float getLastSaveTime() const;
+    float get_last_save_time() const;
 
-    void setGame(Game& game);
+    void set_game(Game& game);
 
 private:
     Game* game;
     Settings& settings;
-    float lastSaveTime;
+    float last_save_time;
     bool virgin;
 
     std::mutex mutex;
 
-    void saveGame  (std::ostream& stream);
-    void savePlayer(std::ostream& stream);
-    void saveMaze  (std::ostream& stream);
-    void saveChunks(std::ostream& stream);
+    void save_game  (std::ostream& stream);
+    void save_player(std::ostream& stream);
+    void save_maze  (std::ostream& stream);
+    void save_chunks(std::ostream& stream);
 
-    static std::string getFilename(Settings& settings);
+    static std::string get_filename(Settings& settings);
 
-    static void saveChunk(std::ostream& stream, Chunk& chunk);
-    static void loadChunk(std::istream& stream, Chunk& chunk);
+    static void save_chunk(std::ostream& stream, Chunk& chunk);
+    static void load_chunk(std::istream& stream, Chunk& chunk);
 };
 
 }

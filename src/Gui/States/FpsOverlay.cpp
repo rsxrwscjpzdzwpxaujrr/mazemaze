@@ -30,10 +30,10 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-FpsOverlay::FpsOverlay(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop(), "FpsOverlay"),
+FpsOverlay::FpsOverlay(MainMenu& main_menu, Settings& settings) :
+        State(main_menu.get_desktop(), "FpsOverlay"),
         settings(settings),
-        fpsCalculator([this] (float fps) {
+        fps_calculator([this] (float fps) {
             fpsLabel->SetText(fmt("%.2f", fps));
             box->UpdateDrawablePosition();
         }, 0.5f),
@@ -60,12 +60,12 @@ FpsOverlay::show(bool show) {
 }
 
 void
-FpsOverlay::resetText() {}
+FpsOverlay::reset_text() {}
 
 void
-FpsOverlay::tick(void*, float deltaTime) {
+FpsOverlay::tick(void*, float delta_time) {
     if (showing)
-        fpsCalculator.tick(nullptr, deltaTime);
+        fps_calculator.tick(nullptr, delta_time);
 }
 
 void

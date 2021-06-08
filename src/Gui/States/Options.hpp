@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,25 +35,25 @@ namespace states {
 
 class Options : public State {
 public:
-    explicit Options(MainMenu& mainMenu, Settings& settings, const std::string& name);
+    explicit Options(MainMenu& main_menu, Settings& settings, const std::string& name);
     ~Options() override;
 
-    void resetText() override final;
-    virtual void onResetText();
+    void reset_text() override final;
+    virtual void on_reset_text();
 
 protected:
     Settings& settings;
 
-    sfg::Box::Ptr windowBox;
+    sfg::Box::Ptr window_box;
 
     class Option {
     public:
         explicit Option(const sf::String& label, sfg::Widget::Ptr control);
         explicit Option(sfg::Widget::Ptr widget);
 
-        void changeText(const sf::String& text);
-        sfg::Widget::Ptr getControl() const;
-        sfg::Widget::Ptr toWidget() const;
+        void change_text(const sf::String& text);
+        sfg::Widget::Ptr get_control() const;
+        sfg::Widget::Ptr to_widget() const;
 
     private:
         sfg::Label::Ptr label;
@@ -62,9 +62,9 @@ protected:
     };
 
 private:
-    sfg::Button::Ptr backButton;
+    sfg::Button::Ptr back_button;
 
-    void initSignals(MainMenu& mainMenu);
+    void init_signals(MainMenu& main_menu);
 };
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,58 +33,58 @@ namespace gui {
 namespace states {
 
 void
-OptionsMenu::initSignals(MainMenu& mainMenu) {
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.back();
+OptionsMenu::init_signals(MainMenu& main_menu) {
+    back_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] () {
+        main_menu.back();
     });
 
-    graphicsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
-        mainMenu.setState(graphicsState);
+    graphics_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] () {
+        main_menu.set_state(graphics_state);
     });
 
-    controlsButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
-        mainMenu.setState(controlsState);
+    controls_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] () {
+        main_menu.set_state(controls_state);
     });
 
-    otherButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] () {
-        mainMenu.setState(otherState);
+    other_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] () {
+        main_menu.set_state(other_state);
     });
 }
 
-OptionsMenu::OptionsMenu(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop(), "OptionsMenu"),
-        graphicsButton (Button::Create()),
-        controlsButton (Button::Create()),
-        otherButton    (Button::Create()),
-        backButton     (Button::Create()) {
-    resetText();
+OptionsMenu::OptionsMenu(MainMenu& main_menu, Settings& settings) :
+        State(main_menu.get_desktop(), "OptionsMenu"),
+        graphics_button (Button::Create()),
+        controls_button (Button::Create()),
+        other_button    (Button::Create()),
+        back_button     (Button::Create()) {
+    reset_text();
 
     box->SetOrientation(Box::Orientation::VERTICAL);
     box->SetRequisition({300.0f, box->GetRequisition().y});
     box->SetSpacing(20.0f);
 
-    box->Pack(graphicsButton);
-    box->Pack(controlsButton);
-    box->Pack(otherButton);
-    box->Pack(backButton);
+    box->Pack(graphics_button);
+    box->Pack(controls_button);
+    box->Pack(other_button);
+    box->Pack(back_button);
 
     desktop.Add(box);
 
-    initSignals(mainMenu);
+    init_signals(main_menu);
 
     center();
 
-    graphicsState = mainMenu.addState(new OptionsGraphics(mainMenu, settings));
-    controlsState = mainMenu.addState(new OptionsControls(mainMenu, settings));
-    otherState    = mainMenu.addState(new OptionsOther   (mainMenu, settings));
+    graphics_state = main_menu.add_state(new OptionsGraphics(main_menu, settings));
+    controls_state = main_menu.add_state(new OptionsControls(main_menu, settings));
+    other_state    = main_menu.add_state(new OptionsOther   (main_menu, settings));
 }
 
 void
-OptionsMenu::resetText() {
-    graphicsButton->SetLabel(pgtx("options", "Graphics"));
-    controlsButton->SetLabel(pgtx("options", "Controls"));
-    otherButton   ->SetLabel(pgtx("options", "Other"));
-    backButton    ->SetLabel(pgtx("options", "Back"));
+OptionsMenu::reset_text() {
+    graphics_button->SetLabel(pgtx("options", "Graphics"));
+    controls_button->SetLabel(pgtx("options", "Controls"));
+    other_button   ->SetLabel(pgtx("options", "Other"));
+    back_button    ->SetLabel(pgtx("options", "Back"));
 }
 
 OptionsMenu::~OptionsMenu() = default;

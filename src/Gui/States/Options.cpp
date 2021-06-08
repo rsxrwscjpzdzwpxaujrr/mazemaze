@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,25 +33,25 @@ namespace gui {
 namespace states {
 
 void
-Options::initSignals(MainMenu& mainMenu) {
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] () {
-        mainMenu.back();
+Options::init_signals(MainMenu& main_menu) {
+    back_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] () {
+        main_menu.back();
     });
 }
 
-Options::Options(MainMenu& mainMenu, Settings& settings, const std::string& name) :
-        State(mainMenu.getDesktop(), name),
+Options::Options(MainMenu& main_menu, Settings& settings, const std::string& name) :
+        State(main_menu.get_desktop(), name),
         settings  (settings),
-        windowBox (Box::Create(Box::Orientation::VERTICAL)),
-        backButton(Button::Create()) {
-    auto window          = Window::Create(Window::Style::BACKGROUND);
-    auto windowAlignment = Alignment::Create();
+        window_box (Box::Create(Box::Orientation::VERTICAL)),
+        back_button(Button::Create()) {
+    auto window           = Window::Create(Window::Style::BACKGROUND);
+    auto window_alignment = Alignment::Create();
 
-    windowAlignment->SetScale({1.0f, 0.0f});
-    windowAlignment->SetAlignment({0.0f, 0.0f});
-    windowAlignment->Add(windowBox);
+    window_alignment->SetScale({1.0f, 0.0f});
+    window_alignment->SetAlignment({0.0f, 0.0f});
+    window_alignment->Add(window_box);
 
-    window->Add(windowAlignment);
+    window->Add(window_alignment);
     window->SetRequisition({512.0f, 300.0f});
 
     box->SetOrientation(Box::Orientation::VERTICAL);
@@ -61,22 +61,22 @@ Options::Options(MainMenu& mainMenu, Settings& settings, const std::string& name
     box->SetOrientation(Box::Orientation::VERTICAL);
     box->SetSpacing(20.0f);
     box->Pack(window);
-    box->Pack(backButton);
+    box->Pack(back_button);
 
     desktop.Add(box);
 
-    initSignals(mainMenu);
+    init_signals(main_menu);
 }
 
 void
-Options::resetText() {
-    backButton->SetLabel(pgtx("options", "Back"));
+Options::reset_text() {
+    back_button->SetLabel(pgtx("options", "Back"));
 
-    onResetText();
+    on_reset_text();
 }
 
 void
-Options::onResetText() {
+Options::on_reset_text() {
 
 }
 
@@ -107,17 +107,17 @@ Options::Option::Option(const sf::String& label, Widget::Ptr control) :
 Options::Option::Option(Widget::Ptr widget) : Options::Option(L"", widget) {}
 
 void
-Options::Option::changeText(const sf::String& text) {
+Options::Option::change_text(const sf::String& text) {
     label->SetText(text);
 }
 
 Widget::Ptr
-Options::Option::getControl() const {
+Options::Option::get_control() const {
     return control;
 }
 
 Widget::Ptr
-Options::Option::toWidget() const {
+Options::Option::to_widget() const {
     return widget;
 }
 

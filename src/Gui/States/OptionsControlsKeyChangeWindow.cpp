@@ -27,55 +27,55 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& optCtrls) :
-        optCtrls(optCtrls),
-        window         (Window::Create(Window::Style::BACKGROUND)),
-        label          (Label::Create()),
-        cancelButton   (Button::Create()),
-        okButton       (Button::Create()),
-        buttonSeparator(Separator::Create(Separator::Orientation::HORIZONTAL)),
+OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& opt_ctrls) :
+        opt_ctrls(opt_ctrls),
+        window          (Window::Create(Window::Style::BACKGROUND)),
+        label           (Label::Create()),
+        cancel_button   (Button::Create()),
+        ok_button       (Button::Create()),
+        button_separator(Separator::Create(Separator::Orientation::HORIZONTAL)),
         button(-1),
         opened(false) {
-    resetText();
+    reset_text();
 
-    auto mainBox      = Box::Create(Box::Orientation::VERTICAL);
-    auto buttonsBox   = Box::Create(Box::Orientation::HORIZONTAL);
+    auto main_box    = Box::Create(Box::Orientation::VERTICAL);
+    auto buttons_box = Box::Create(Box::Orientation::HORIZONTAL);
 
     auto separator   = Separator::Create(Separator::Orientation::VERTICAL);
 
-    buttonSeparator->SetRequisition({0.0f, 0.0f});
+    button_separator->SetRequisition({0.0f, 0.0f});
     separator->SetRequisition({0.0f, 10.0f});
 
-    buttonsBox->Pack(cancelButton);
-    buttonsBox->Pack(buttonSeparator);
-    buttonsBox->Pack(okButton);
+    buttons_box->Pack(cancel_button);
+    buttons_box->Pack(button_separator);
+    buttons_box->Pack(ok_button);
 
-    mainBox->Pack(separator);
-    mainBox->Pack(label);
-    mainBox->Pack(buttonsBox);
+    main_box->Pack(separator);
+    main_box->Pack(label);
+    main_box->Pack(buttons_box);
 
-    mainBox->SetClass("nogap");
+    main_box->SetClass("nogap");
 
-    cancelButton->SetClass("small");
-    okButton->SetClass("small");
+    cancel_button->SetClass("small");
+    ok_button->SetClass("small");
     window->SetClass("light");
 
-    window->Add(mainBox);
+    window->Add(main_box);
 
     window->SetRequisition({300, 150});
 
-    optCtrls.desktop.Add(window);
+    opt_ctrls.desktop.Add(window);
     window->Show(opened);
 }
 
 OptionsControls::KeyChangeWindow::~KeyChangeWindow() {
-    optCtrls.desktop.Remove(window);
+    opt_ctrls.desktop.Remove(window);
 }
 
 void
 OptionsControls::KeyChangeWindow::tick() {
     if (opened)
-        optCtrls.desktop.BringToFront(window);
+        opt_ctrls.desktop.BringToFront(window);
 }
 
 void
@@ -85,73 +85,73 @@ OptionsControls::KeyChangeWindow::open(int button) {
 
     KeyChangeWindow::button = button;
 
-    okButton->Show(false);
-    buttonSeparator->Show(false);
+    ok_button->Show(false);
+    button_separator->Show(false);
 
     opened = true;
     window->Show(opened);
 
-    optCtrls.center();
+    opt_ctrls.center();
 
-    for (auto keyButton : optCtrls.keyButtons)
-        keyButton->SetState(Widget::State::INSENSITIVE);
+    for (auto key_button : opt_ctrls.key_buttons)
+        key_button->SetState(Widget::State::INSENSITIVE);
 
-    initSignals();
+    init_signals();
 }
 
 bool
-OptionsControls::KeyChangeWindow::isOpened() {
+OptionsControls::KeyChangeWindow::is_opened() {
     return opened;
 }
 
 Window::Ptr
-OptionsControls::KeyChangeWindow::getWindow() {
+OptionsControls::KeyChangeWindow::get_window() {
     return window;
 }
 
 void
-OptionsControls::KeyChangeWindow::resetText() {
-    label       ->SetText (pgtx("options", "Press new key"));
-    cancelButton->SetLabel(pgtx("options", "Cancel"));
-    okButton    ->SetLabel(pgtx("options", "Ok"));
+OptionsControls::KeyChangeWindow::reset_text() {
+    label        ->SetText (pgtx("options", "Press new key"));
+    cancel_button->SetLabel(pgtx("options", "Cancel"));
+    ok_button    ->SetLabel(pgtx("options", "Ok"));
 }
 
 void
 OptionsControls::KeyChangeWindow::close() {
-    GraphicEngine::inst().unwaitKey();
+    GraphicEngine::inst().unwait_key();
 
     opened = false;
     window->Show(opened);
 
-    for (auto keyButton : optCtrls.keyButtons)
+    for (auto keyButton : opt_ctrls.key_buttons)
         keyButton->SetState(Widget::State::NORMAL);
 }
 
 void
-OptionsControls::KeyChangeWindow::initSignals() {
-    GraphicEngine::inst().waitKey([this] (const sf::Keyboard::Key key) {
-        okButton->Show(true);
-        buttonSeparator->Show(true);
+OptionsControls::KeyChangeWindow::init_signals() {
+    GraphicEngine::inst().wait_key([this] (const sf::Keyboard::Key key) {
+        ok_button->Show(true);
+        button_separator->Show(true);
 
-        optCtrls.selectedKey = key;
+        opt_ctrls.selected_key = key;
 
-        sf::String newText = pgtx("options", "Pressed key is %s");
-        newText.replace("%s", optCtrls.getKeyName(key));
+        sf::String new_text = pgtx("options", "Pressed key is %s");
+        new_text.replace("%s", opt_ctrls.get_key_name(key));
 
-        label->SetText(newText);
+        label->SetText(new_text);
 
-        optCtrls.center();
+        opt_ctrls.center();
     });
 
-    cancelButton->GetSignal(Widget::OnLeftClick).Connect([this] () {
+    cancel_button->GetSignal(Widget::OnLeftClick).Connect([this] () {
         close();
     });
 
-    okButton->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        std::string control = optCtrls.keyControls.at(button);
+    ok_button->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        std::string control = opt_ctrls.key_controls.at(button);
 
-        optCtrls.settings.setKey(control, optCtrls.selectedKey);
-        optCtrls.updateKeyButtonLabel(button);
+        opt_ctrls.settings.set_key(control, opt_ctrls.selected_key);
+        opt_ctrls.update_key_button_label(button);
         close();
     });
 }

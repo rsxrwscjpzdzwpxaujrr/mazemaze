@@ -26,34 +26,34 @@ namespace gui {
 
 Gui::Gui() : background(nullptr),
              state(-1),
-             wantExit(false) {}
+             wants_exit(false) {}
 
 Gui::~Gui() {
-    removeStates();
+    remove_states();
 }
 
 void
-Gui::handleEvent(const sf::Event& event) {
+Gui::handle_event(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
         for (auto state : states)
             state->center();
     }
 
-    onEvent(event);
+    on_event(event);
 
     desktop.HandleEvent(event);
 }
 
 void
-Gui::onEvent(const sf::Event&) {
+Gui::on_event(const sf::Event&) {
 
 }
 
 void
-Gui::tick(void* _, float deltaTime) {
-    desktop.Update(deltaTime);
+Gui::tick(void* _, float delta_time) {
+    desktop.Update(delta_time);
 
-    tickable_handler.tick(_, deltaTime);
+    tickable_handler.tick(_, delta_time);
 }
 
 void
@@ -64,26 +64,26 @@ Gui::render() {
 
 void
 Gui::back() {
-    stateStack.pop();
-    setState(stateStack.top(), true);
+    state_stack.pop();
+    set_state(state_stack.top(), true);
 }
 
 void
-Gui::backTo(int destState) {
-    while (stateStack.top() != destState) {
-        stateStack.pop();
+Gui::back_to(int dest_state) {
+    while (state_stack.top() != dest_state) {
+        state_stack.pop();
 
-        if (stateStack.empty()) {
-            wantExit = true;
+        if (state_stack.empty()) {
+            wants_exit = true;
             return;
         }
     }
 
-    setState(stateStack.top(), true);
+    set_state(state_stack.top(), true);
 }
 
 int
-Gui::addState(State* state) {
+Gui::add_state(State* state) {
     Logger::inst().log_debug("Adding " + state->name + " state to GUI.");
 
     states.emplace_back(state);
@@ -93,16 +93,16 @@ Gui::addState(State* state) {
 }
 
 void
-Gui::removeState(int state) {
+Gui::remove_state(int state) {
     if (Gui::state == state)
-        setState(-1);
+        set_state(-1);
 
     delete states.at(state);
     states.erase(states.begin() + state);
 }
 
 void
-Gui::removeStates() {
+Gui::remove_states() {
     for (auto state : states)
         delete state;
 
@@ -110,32 +110,32 @@ Gui::removeStates() {
 }
 
 void
-Gui::resetText() {
+Gui::reset_text() {
     Logger::inst().log_debug("Resetting text.");
 
     for (auto state : states)
-        state->resetText();
+        state->reset_text();
 }
 
 void
-Gui::addOverlay(int stateId) {
-    Logger::inst().log_debug("Adding overlay " + getState(stateId).name);
+Gui::add_overlay(int state_id) {
+    Logger::inst().log_debug("Adding overlay " + get_state(state_id).name);
 
-    states.at(stateId)->show(true);
+    states.at(state_id)->show(true);
 
-    tickable_handler.addTickable(states[stateId]);
-    overlays.emplace_back(stateId);
+    tickable_handler.addTickable(states[state_id]);
+    overlays.emplace_back(state_id);
 }
 
 void
-Gui::removeOverlay(int stateId) {
-    Logger::inst().log_debug("Removing overlay " + getState(stateId).name);
+Gui::remove_overlay(int state_id) {
+    Logger::inst().log_debug("Removing overlay " + get_state(state_id).name);
 
-    states.at(stateId)->show(false);
+    states.at(state_id)->show(false);
 
     for (auto i = overlays.begin(); i < overlays.end(); i++) {
-        if (*i == stateId) {
-            tickable_handler.removeTickable(states[stateId]);
+        if (*i == state_id) {
+            tickable_handler.removeTickable(states[state_id]);
             overlays.erase(i);
             break;
         }
@@ -143,8 +143,8 @@ Gui::removeOverlay(int stateId) {
 }
 
 void
-Gui::setState(int state, bool back) {
-    Logger::inst().log_debug("Setting state to " + (state >= 0 ? getState(state).name : "-1"));
+Gui::set_state(int state, bool back) {
+    Logger::inst().log_debug("Setting state to " + (state >= 0 ? get_state(state).name : "-1"));
 
     if (Gui::state >= 0) {
         states[Gui::state]->show(false);
@@ -152,7 +152,7 @@ Gui::setState(int state, bool back) {
     }
 
     if (state < 0 && !back)
-        stateStack.emplace(state);
+        state_stack.emplace(state);
 
     for (int i = 0; i < states.size(); i++) {
         if (i == state) {
@@ -160,7 +160,7 @@ Gui::setState(int state, bool back) {
             states[i]->show(true);
 
             if (!back)
-                stateStack.emplace(i);
+                state_stack.emplace(i);
         }
     }
 
@@ -168,7 +168,7 @@ Gui::setState(int state, bool back) {
 }
 
 void
-Gui::setBackground(Background* background) {
+Gui::set_background(Background* background) {
     if (Gui::background)
         tickable_handler.removeTickable(Gui::background);
 
@@ -180,27 +180,27 @@ Gui::setBackground(Background* background) {
 
 void
 Gui::exit() {
-    wantExit = true;
+    wants_exit = true;
 }
 
 sfg::Desktop&
-Gui::getDesktop() {
+Gui::get_desktop() {
     return desktop;
 }
 
 int
-Gui::getState() const {
+Gui::get_state() const {
     return state;
 }
 
 State&
-Gui::getState(int state) {
+Gui::get_state(int state) {
     return *states.at(state);
 }
 
 bool
-Gui::isWantExit() const {
-    return wantExit;
+Gui::is_wants_exit() const {
+    return wants_exit;
 }
 
 }

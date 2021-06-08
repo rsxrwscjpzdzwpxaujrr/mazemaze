@@ -33,23 +33,23 @@ class Progress : public State {
 public:
     const char max_size_chars = 4;
 
-    explicit Progress(MainMenu& mainMenu);
+    explicit Progress(MainMenu& main_menu);
     ~Progress() override;
 
-    void tick(void*, float deltatime) override;
-    void resetText() override;
+    void tick(void*, float delta_time) override;
+    void reset_text() override;
     void setGame(Game* game);
 
 private:
-    MainMenu& mainMenu;
+    MainMenu& main_menu;
 
-    sfg::Button::Ptr backButton;
-    sfg::Label::Ptr  mazeSizeLabel;
-    sfg::ProgressBar::Ptr progressBar;
+    sfg::Button::Ptr back_button;
+    sfg::Label::Ptr  maze_size_label;
+    sfg::ProgressBar::Ptr progress_bar;
 
     Game* game;
 
-    void initSignals();
+    void init_signals();
 };
 
 }

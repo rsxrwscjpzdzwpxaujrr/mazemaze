@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,31 +32,31 @@ namespace states {
 
 class Main : public State {
 public:
-    explicit Main(MainMenu& mainMenu, Settings& settings);
+    explicit Main(MainMenu& main_menu, Settings& settings);
     ~Main() override;
 
     void show(bool show) override;
-    void updateButtons(bool saveExists);
+    void update_buttons(bool save_exists);
 
     void center() override;
-    void resetText() override;
+    void reset_text() override;
 
 private:
-    sfg::Button::Ptr buttonResume;
-    sfg::Button::Ptr buttonNewGame;
-    sfg::Button::Ptr buttonOptions;
-    sfg::Button::Ptr buttonAbout;
-    sfg::Button::Ptr buttonExit;
+    sfg::Button::Ptr resume_button;
+    sfg::Button::Ptr new_game_button;
+    sfg::Button::Ptr options_button;
+    sfg::Button::Ptr about_button;
+    sfg::Button::Ptr exit_button;
 
     Settings& settings;
 
-    int newGameState;
-    int optionsState;
-    int aboutState;
+    int new_game_state;
+    int options_state;
+    int about_state;
 
     bool showing;
 
-    void initSignals(MainMenu& mainMenu);
+    void init_signals(MainMenu& main_menu);
 };
 
 }

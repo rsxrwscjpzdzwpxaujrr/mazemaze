@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,20 +31,20 @@ namespace states {
 
 class Win : public State {
 public:
-    explicit Win(MainMenu& mainMenu, Game& game);
+    explicit Win(MainMenu& main_menu, Game& game);
     ~Win() override;
 
     void show(bool show) override;
-    void resetText() override;
+    void reset_text() override;
 
 private:
-    sfg::Button::Ptr exitButton;
-    sfg::Label::Ptr  winLabel;
-    sfg::Label::Ptr  winNoteTimeLabel;
-    sfg::Label::Ptr  winNoteSizeLabel;
+    sfg::Button::Ptr exit_button;
+    sfg::Label::Ptr  win_label;
+    sfg::Label::Ptr  win_note_time_label;
+    sfg::Label::Ptr  win_note_size_label;
     Game& game;
 
-    void updateLabels(Game& game);
+    void update_labels(Game& game);
 };
 
 }

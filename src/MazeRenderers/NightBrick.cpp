@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,12 +32,12 @@ NightBrick::NightBrick(mazemaze::Game& game) :
     starSky(1024, 0.0f, 1.5f, 0.7f) {}
 
 void
-NightBrick::onTick(float) {
-    starSky.setTime(game.getTime());
+NightBrick::on_tick(float) {
+    starSky.set_time(game.get_time());
 }
 
 void
-NightBrick::setStates() {
+NightBrick::set_states() {
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
@@ -69,24 +69,24 @@ NightBrick::setStates() {
 }
 
 void
-NightBrick::renderChunks(int chunks[]) {
-    Camera& camera = game.getPlayer().getCamera();
+NightBrick::render_chunks(int chunks[]) {
+    Camera& camera = game.get_player().get_camera();
 
-    float light1_position[] = {camera.getX(), camera.getY(), camera.getZ(), 1.0f};
+    float light1_position[] = {camera.get_x(), camera.get_y(), camera.get_z(), 1.0f};
 
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
 
     glEnable(GL_FOG);
     glEnable(GL_LIGHTING);
 
-    MazeRenderer::renderChunks(chunks);
+    MazeRenderer::render_chunks(chunks);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);
 
-    glTranslatef(camera.getX(), camera.getY(), camera.getZ());
+    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
     starSky.render();
-    glTranslatef(-camera.getX(), -camera.getY(), -camera.getZ());
+    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }

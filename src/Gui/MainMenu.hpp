@@ -41,36 +41,36 @@ public:
     explicit MainMenu(Settings& settings);
     ~MainMenu() override;
 
-    void onEvent(const sf::Event& event) override;
+    void on_event(const sf::Event& event) override;
 
-    Game& newGame(int mazeWidth, int mazeHeight);
-    void startGame();
-    void resumeGame();
-    void stopGame();
-    bool isGameOpen();
-    void showFps(bool show);
-    void showDebug(bool show);
+    Game& new_game(int maze_width, int maze_height);
+    void start_game();
+    void resume_game();
+    void stop_game();
+    bool is_game_open();
+    void show_fps(bool show);
+    void show_debug(bool show);
 
-    int  getOptionsState() const;
-    void setOptionsState(states::OptionsMenu& options, int state);
-    bool getShowFps() const;
-    bool getShowDebug() const;
+    int  get_options_state() const;
+    void set_options_state(states::OptionsMenu& options, int state);
+    bool get_show_fps() const;
+    bool get_show_debug() const;
 
 private:
     Game* game;
     Saver* saver;
-    Background* starSkyBackground;
+    Background* star_sky_background;
     Settings& settings;
 
-    int mainState;
-    int fpsState;
-    int debugState;
-    int optionsState;
+    int main_state;
+    int fps_state;
+    int debug_state;
+    int options_state;
 
-    bool fpsShow;
-    bool debugShow;
+    bool fps_show;
+    bool debug_show;
 
-    void setupGame();
+    void setup_game();
 };
 
 }

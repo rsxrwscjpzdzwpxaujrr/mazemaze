@@ -26,96 +26,96 @@
 namespace mazemaze {
 
 CameraBobbing::CameraBobbing() :
-    pitchCoeff(0.0f),
-    posCoeff(0.0f),
-    timeCoeff(0.0f),
-    lastPitch(0.0f),
-    easingType(false),
+    pitch_coeff(0.0f),
+    pos_coeff(0.0f),
+    time_coeff(0.0f),
+    last_pitch(0.0f),
+    easing_type(false),
     time(0.0f) {
 }
 
 CameraBobbing::~CameraBobbing() = default;
 
 void
-CameraBobbing::tick(Player& player, float deltaTime) {
-    Camera& camera = player.getCamera();
+CameraBobbing::tick(Player& player, float delta_time) {
+    Camera& camera = player.get_camera();
 
-    float pitch = camera.getPitch();
-    float yaw   = camera.getYaw();
+    float pitch = camera.get_pitch();
+    float yaw   = camera.get_yaw();
 
-    float x = camera.getX();
-    float y = camera.getY();
-    float z = camera.getZ();
+    float x = camera.get_x();
+    float y = camera.get_y();
+    float z = camera.get_z();
 
-    float currentPitch;
-    float currentX;
-    float currentY;
+    float current_pitch;
+    float current_x;
+    float current_y;
 
-    float pitchCoeffWithEasing;
-    float posCoeffWithEasing;
-    float timeCoeffWithEasing;
+    float pitch_coeff_with_easing;
+    float pos_coeff_with_easing;
+    float time_coeff_with_easing;
 
-    float (*easingFunc)(float);
+    float (*easing_func)(float);
 
-    if (player.isMoving()) {
-        if (pitchCoeff < 1.0f)
-            pitchCoeff += std::min(deltaTime * 5.0f, 1.0f - pitchCoeff);
+    if (player.is_moving()) {
+        if (pitch_coeff < 1.0f)
+            pitch_coeff += std::min(delta_time * 5.0f, 1.0f - pitch_coeff);
 
-        if (  posCoeff < 1.0f)
-            posCoeff   += std::min(deltaTime * 5.0f, 1.0f -   posCoeff);
+        if (  pos_coeff < 1.0f)
+            pos_coeff   += std::min(delta_time * 5.0f, 1.0f -   pos_coeff);
 
-        if ( timeCoeff < 1.0f)
-            timeCoeff  += std::min(deltaTime * 5.0f, 1.0f -  timeCoeff);
+        if ( time_coeff < 1.0f)
+            time_coeff  += std::min(delta_time * 5.0f, 1.0f -  time_coeff);
 
-        easingType = true;
+        easing_type = true;
     }
 
-    if (!player.isMoving()) {
-        if (pitchCoeff > 0.0f)
-            pitchCoeff -= std::min(deltaTime * 2.0f, pitchCoeff);
+    if (!player.is_moving()) {
+        if (pitch_coeff > 0.0f)
+            pitch_coeff -= std::min(delta_time * 2.0f, pitch_coeff);
 
-        if (  posCoeff > 0.0f)
-            posCoeff   -= std::min(deltaTime * 3.0f,   posCoeff);
+        if (  pos_coeff > 0.0f)
+            pos_coeff   -= std::min(delta_time * 3.0f,   pos_coeff);
 
-        if ( timeCoeff > 0.0f)
-            timeCoeff  -= std::min(deltaTime * 3.0f,  timeCoeff);
+        if ( time_coeff > 0.0f)
+            time_coeff  -= std::min(delta_time * 3.0f,  time_coeff);
 
-        easingType = false;
+        easing_type = false;
     }
 
-    if (easingType) {
-        easingFunc = &easeOutCubic;
+    if (easing_type) {
+        easing_func = &ease_out_cubic;
     } else {
-        easingFunc = &easeInCubic;
+        easing_func = &ease_in_cubic;
     }
 
-    pitchCoeffWithEasing = easingFunc(pitchCoeff);
-      posCoeffWithEasing = easingFunc(  posCoeff);
-     timeCoeffWithEasing = easingFunc( timeCoeff);
+    pitch_coeff_with_easing = easing_func(pitch_coeff);
+      pos_coeff_with_easing = easing_func(  pos_coeff);
+     time_coeff_with_easing = easing_func( time_coeff);
 
-    currentPitch = (std::cos(time * 22.0f) + 1.0f) * 0.002f * pitchCoeffWithEasing;
+    current_pitch = (std::cos(time * 22.0f) + 1.0f) * 0.002f * pitch_coeff_with_easing;
 
-    currentX =           std::cos(time * 11.0f)  * 0.02f * posCoeffWithEasing;
-    currentY = -std::abs(std::sin(time * 11.0f)) * 0.02f * posCoeffWithEasing;
+    current_x =           std::cos(time * 11.0f)  * 0.02f * pos_coeff_with_easing;
+    current_y = -std::abs(std::sin(time * 11.0f)) * 0.02f * pos_coeff_with_easing;
 
-    camera.setPitch(pitch - lastPitch + currentPitch);
+    camera.set_pitch(pitch - last_pitch + current_pitch);
 
-    camera.setX(x + currentX * std::cos(yaw));
-    camera.setY(y + currentY);
-    camera.setZ(z + currentX * std::sin(yaw));
+    camera.set_x(x + current_x * std::cos(yaw));
+    camera.set_y(y + current_y);
+    camera.set_z(z + current_x * std::sin(yaw));
 
-    lastPitch = currentPitch;
+    last_pitch = current_pitch;
 
-    time += deltaTime * timeCoeffWithEasing;
+    time += delta_time * time_coeff_with_easing;
 }
 
 float
-CameraBobbing::easeOutCubic(float x) {
-    return 1.0f - easeInCubic(1.0f - x);
+CameraBobbing::ease_out_cubic(float x) {
+    return 1.0f - ease_in_cubic(1.0f - x);
 }
 
 float
-CameraBobbing::easeInCubic(float x) {
+CameraBobbing::ease_in_cubic(float x) {
     return x * x * x;
 }
 

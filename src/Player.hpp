@@ -37,27 +37,27 @@ public:
     ~Player();
 
     void start(Maze& maze);
-    void tick(Game& game, float deltaTime) override;
+    void tick(Game& game, float delta_time) override;
 
-    Camera& getCamera();
+    Camera& get_camera();
 
-    bool isMoving() const;
+    bool is_moving() const;
 
-    float getX() const;
-    float getY() const;
-    float getZ() const;
+    float get_x() const;
+    float get_y() const;
+    float get_z() const;
 
-    void setX(float x);
-    void setY(float y);
-    void setZ(float z);
+    void set_x(float x);
+    void set_y(float y);
+    void set_z(float z);
 
 private:
     Camera camera;
-    TickableHandler<Player&> tickableHandler;
-    CameraBobbing* cameraBobbing;
+    TickableHandler<Player&> tickable_handler;
+    CameraBobbing* camera_bobbing;
 
-    float moveVectorX;
-    float moveVectorZ;
+    float move_vector_x;
+    float move_vector_z;
     float x;
     float y;
     float z;
@@ -65,10 +65,10 @@ private:
     float height;
     float width;
 
-    void tryMove(Maze& maze, float x, float y, float z);
-    bool checkCollision(Maze& maze, float x, float y);
-    void sumVector(float angle, float& vecX, float& vecY);
-    void setupCameraBobbing(Settings& settings);
+    void try_move(Maze& maze, float x, float y, float z);
+    bool check_collision(Maze& maze, float x, float y);
+    void sum_vector(float angle, float& vecX, float& vecY);
+    void setup_camera_bobbing(Settings& settings);
 };
 
 }

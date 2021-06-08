@@ -24,37 +24,37 @@
 
 namespace mazemaze {
 
-StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
-        starCount(starCount),
+StarSky::StarSky(int star_count, float time_speed, float pitch, float yaw) :
+        star_count(star_count),
         distance(90.0f),
         pitch(pitch),
         yaw(yaw),
         time(0.0f),
-        timeSpeed(timeSpeed),
-        stars(starCount) {
-    std::mt19937 randGen(0);
-    std::uniform_real_distribution<float> coordInterval(-1.0, 1.0);
-    std::uniform_int_distribution<> sizeInterval(0, 11);
+        time_speed(time_speed),
+        stars(star_count) {
+    std::mt19937 rand_gen(0);
+    std::uniform_real_distribution<float> coord_interval(-1.0, 1.0);
+    std::uniform_int_distribution<> size_interval(0, 11);
 
     for (auto star = stars.begin(); star < stars.end();) {
-        float randX = coordInterval(randGen);
-        float randY = coordInterval(randGen);
-        float randZ = coordInterval(randGen);
-        int sizeRand = sizeInterval(randGen);
+        float rand_x = coord_interval(rand_gen);
+        float rand_y = coord_interval(rand_gen);
+        float rand_z = coord_interval(rand_gen);
+        int size_rand = size_interval(rand_gen);
 
-        float distance = randX * randX + randY * randY + randZ * randZ;
+        float distance = rand_x * rand_x + rand_y * rand_y + rand_z * rand_z;
 
         if (distance <= 1.0f) {
             distance = std::sqrt(distance);
 
-            star->x = randX / distance;
-            star->y = randY / distance;
-            star->z = randZ / distance;
+            star->x = rand_x / distance;
+            star->y = rand_y / distance;
+            star->z = rand_z / distance;
 
-            if      (sizeRand <= 7)
+            if      (size_rand <= 7)
                 star->size = 1;
 
-            else if (sizeRand <= 10)
+            else if (size_rand <= 10)
                 star->size = 2;
 
             else
@@ -68,7 +68,7 @@ StarSky::StarSky(int starCount, float timeSpeed, float pitch, float yaw) :
 }
 
 StarSky::~StarSky() {
-    glDeleteLists(drawList, 1);
+    glDeleteLists(draw_list, 1);
 }
 
 void
@@ -78,30 +78,30 @@ StarSky::render() {
     roll = time * static_cast<float>((2.0 * M_PI) / 24.0 / 60.0 / 60.0);
 
     glRotatef(pitch * static_cast<float>(180.0 / M_PI), 1.0f, 0.0f, 0.0f);
-    glRotatef(yaw * static_cast<float>(180.0 / M_PI), 0.0f, 1.0f, 0.0f);
-    glRotatef(roll * static_cast<float>(180.0 / M_PI), 0.0f, 0.0f, 1.0f);
+    glRotatef(yaw   * static_cast<float>(180.0 / M_PI), 0.0f, 1.0f, 0.0f);
+    glRotatef(roll  * static_cast<float>(180.0 / M_PI), 0.0f, 0.0f, 1.0f);
 
     glScalef(distance, distance, distance);
 
-    glCallList(drawList);
+    glCallList(draw_list);
 
     glPopMatrix();
 }
 
 void
-StarSky::tick(void*, float deltatime) {
-    time += deltatime * timeSpeed;
+StarSky::tick(void*, float delta_time) {
+    time += delta_time * time_speed;
 }
 
 void
-StarSky::setTime(float time) {
+StarSky::set_time(float time) {
     StarSky::time = time;
 }
 
 void
 StarSky::compile() {
-    drawList = glGenLists(1);
-    glNewList(drawList, GL_COMPILE);
+    draw_list = glGenLists(1);
+    glNewList(draw_list, GL_COMPILE);
 
     for (auto star = stars.begin(); star < stars.end(); star++) {
         if      (star->size == 1)

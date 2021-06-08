@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,34 +21,34 @@ namespace mazemaze {
 
 class Camera {
 public:
-    explicit Camera(float  x,     float  y,        float  z,
-                    float  pitch, float  yaw,      float  roll,
-                    double fov,   double nearDist, double farDist);
+    explicit Camera(float  x,     float  y,         float  z,
+                    float  pitch, float  yaw,       float  roll,
+                    double fov,   double near_dist, double far_dist);
     ~Camera();
 
-    void setupRotation();
-    void setupTranslation();
-    void setupPerspective();
+    void setup_rotation();
+    void setup_translation();
+    void setup_perspective();
 
-    float getX() const;
-    float getY() const;
-    float getZ() const;
+    float get_x() const;
+    float get_y() const;
+    float get_z() const;
 
-    float getPitch() const;
-    float getYaw() const;
-    float getRoll() const;
+    float get_pitch() const;
+    float get_yaw() const;
+    float get_roll() const;
 
-    double getFov() const;
+    double get_fov() const;
 
-    void setX(float x);
-    void setY(float y);
-    void setZ(float z);
+    void set_x(float x);
+    void set_y(float y);
+    void set_z(float z);
 
-    void setPitch(float pitch);
-    void setYaw(float yaw);
-    void setRoll(float roll);
+    void set_pitch(float pitch);
+    void set_yaw(float yaw);
+    void set_roll(float roll);
 
-    void setFov(double fov);
+    void set_fov(double fov);
 
 private:
     float x;
@@ -60,8 +60,8 @@ private:
     float roll;
 
     double fov;
-    double nearDist;
-    double farDist;
+    double near_dist;
+    double far_dist;
 };
 
 }

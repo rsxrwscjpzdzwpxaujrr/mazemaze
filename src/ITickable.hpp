@@ -22,7 +22,7 @@ namespace mazemaze {
 template<typename T>
 class ITickable {
 public:
-    virtual void tick(T, float deltaTime) = 0;
+    virtual void tick(T, float delta_time) = 0;
     virtual ~ITickable();
 };
 

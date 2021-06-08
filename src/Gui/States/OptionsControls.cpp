@@ -29,53 +29,53 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-OptionsControls::OptionsControls(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings, "OptionsControls"),
-        sensitivitySlider(Scale::Create(Scrollbar::Orientation::HORIZONTAL)),
-        sensitivityAdjustement(sensitivitySlider->GetAdjustment()),
-        keyChangeWindow(*this),
-        sensitivityOpt("", sensitivitySlider),
-        keyOpts {
+OptionsControls::OptionsControls(MainMenu& main_menu, Settings& settings) :
+        Options(main_menu, settings, "OptionsControls"),
+        sensitivity_slider(Scale::Create(Scrollbar::Orientation::HORIZONTAL)),
+        sensitivity_adjustement(sensitivity_slider->GetAdjustment()),
+        key_change_window(*this),
+        sensitivity_opt("", sensitivity_slider),
+        key_opts {
             Option(Button::Create()),
             Option(Button::Create()),
             Option(Button::Create()),
             Option(Button::Create())
         },
-        keyControls {
+        key_controls {
             "up",
             "down",
             "right",
             "left",
         } {
-    resetText();
+    reset_text();
 
-    sf::Vector2f buttonSize         = {200.0f,  28.0f};
-    sf::Vector2f adjustmementBounds = {0.0001f, 0.003f};
+    sf::Vector2f button_size         = {200.0f,  28.0f};
+    sf::Vector2f adjustmement_bounds = {0.0001f, 0.003f};
 
-    windowBox->Pack(sensitivityOpt.toWidget());
+    window_box->Pack(sensitivity_opt.to_widget());
 
-    sensitivitySlider->SetRequisition(buttonSize);
+    sensitivity_slider->SetRequisition(button_size);
 
-    sensitivityAdjustement = sensitivitySlider->GetAdjustment();
+    sensitivity_adjustement = sensitivity_slider->GetAdjustment();
 
-    sensitivityAdjustement->SetLower(adjustmementBounds.x);
-    sensitivityAdjustement->SetUpper(adjustmementBounds.y);
+    sensitivity_adjustement->SetLower(adjustmement_bounds.x);
+    sensitivity_adjustement->SetUpper(adjustmement_bounds.y);
 
-    sensitivityAdjustement->SetMinorStep(
-        (adjustmementBounds.y - adjustmementBounds.x) / buttonSize.x);
+    sensitivity_adjustement->SetMinorStep(
+        (adjustmement_bounds.y - adjustmement_bounds.x) / button_size.x);
 
-    for (int i = 0; i < buttonsCount; i++) {
-        keyButtons[i] = std::dynamic_pointer_cast<sfg::Button>(keyOpts[i].getControl());
-        updateKeyButtonLabel(i);
+    for (int i = 0; i < buttons_count; i++) {
+        key_buttons[i] = std::dynamic_pointer_cast<sfg::Button>(key_opts[i].get_control());
+        update_key_button_label(i);
 
-        keyButtons[i]->SetRequisition(buttonSize);
-        keyButtons[i]->SetClass("verySmall");
-        keyButtons[i]->SetZOrder(0);
+        key_buttons[i]->SetRequisition(button_size);
+        key_buttons[i]->SetClass("verySmall");
+        key_buttons[i]->SetZOrder(0);
 
-        windowBox->Pack(keyOpts[i].toWidget());
+        window_box->Pack(key_opts[i].to_widget());
     }
 
-    initSignals();
+    init_signals();
 
     center();
 }
@@ -87,58 +87,58 @@ OptionsControls::show(bool show) {
     State::show(show);
 
     if (show)
-        sensitivityAdjustement->SetValue(settings.getSensitivity());
+        sensitivity_adjustement->SetValue(settings.get_sensitivity());
 
-    if (!show && keyChangeWindow.isOpened())
-        keyChangeWindow.close();
+    if (!show && key_change_window.is_opened())
+        key_change_window.close();
 }
 
 void
 OptionsControls::tick(void*, float) {
-    keyChangeWindow.tick();
+    key_change_window.tick();
 }
 
 void
 OptionsControls::center() {
     State::center();
 
-    if (keyChangeWindow.isOpened())
-        State::center(keyChangeWindow.getWindow());
+    if (key_change_window.is_opened())
+        State::center(key_change_window.get_window());
 }
 
 void
-OptionsControls::onResetText() {
-    keyLabels = {
+OptionsControls::on_reset_text() {
+    key_labels = {
         pgtx("options", "Forward"),
         pgtx("options", "Backward"),
         pgtx("options", "Right"),
         pgtx("options", "Left")
     };
 
-    for (int i = 0; i < buttonsCount; i++)
-        keyOpts[i].changeText(keyLabels[i]);
+    for (int i = 0; i < buttons_count; i++)
+        key_opts[i].change_text(key_labels[i]);
 
-    sensitivityOpt.changeText(pgtx("options", "Mouse sensitivity"));
+    sensitivity_opt.change_text(pgtx("options", "Mouse sensitivity"));
 
-    keyChangeWindow.resetText();
+    key_change_window.reset_text();
 }
 
 void
-OptionsControls::updateKeyButtonLabel(int button) {
-    std::string control = keyControls.at(button);
+OptionsControls::update_key_button_label(int button) {
+    std::string control = key_controls.at(button);
 
-    keyButtons.at(button)->SetLabel(getKeyName(settings.getKey(control)));
+    key_buttons.at(button)->SetLabel(get_key_name(settings.get_key(control)));
 }
 
 void
-OptionsControls::initSignals() {
-    sensitivityAdjustement->GetSignal(Adjustment::OnChange).Connect([this] () {
-        settings.setSensitivity(sensitivityAdjustement->GetValue());
+OptionsControls::init_signals() {
+    sensitivity_adjustement->GetSignal(Adjustment::OnChange).Connect([this] () {
+        settings.set_sensitivity(sensitivity_adjustement->GetValue());
     });
 
-    for (int i = 0; i < buttonsCount; i++) {
-        keyButtons.at(i)->GetSignal(Widget::OnLeftClick).Connect([this, i] () {
-            keyChangeWindow.open(i);
+    for (int i = 0; i < buttons_count; i++) {
+        key_buttons.at(i)->GetSignal(Widget::OnLeftClick).Connect([this, i] () {
+            key_change_window.open(i);
         });
     }
 }

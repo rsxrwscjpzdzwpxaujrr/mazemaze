@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,15 +31,15 @@ namespace states {
 
 class Pause : public State {
 public:
-    explicit Pause(MainMenu& mainMenu, Game& game);
+    explicit Pause(MainMenu& main_menu, Game& game);
     ~Pause() override;
 
-    void resetText() override;
+    void reset_text() override;
 
 private:
-    sfg::Button::Ptr buttonResume;
-    sfg::Button::Ptr buttonOptions;
-    sfg::Button::Ptr buttonExit;
+    sfg::Button::Ptr resume_button;
+    sfg::Button::Ptr options_button;
+    sfg::Button::Ptr exit_button;
 };
 
 }

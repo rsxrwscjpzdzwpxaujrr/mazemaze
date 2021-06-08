@@ -33,7 +33,7 @@ namespace gui {
 namespace states {
 
 Debug::Debug(MainMenu& main_menu) :
-        State(main_menu.getDesktop(), "Debug"),
+        State(main_menu.get_desktop(), "Debug"),
         log_box(Box::Create(Box::Orientation::VERTICAL)),
         window(Window::Create(
             Window::Style::BACKGROUND |
@@ -60,7 +60,7 @@ Debug::Debug(MainMenu& main_menu) :
     window->SetPosition({ 16.0f, 16.0f });
 
     window->GetSignal(Window::OnCloseButton).Connect([&main_menu] () {
-        main_menu.showDebug(false);
+        main_menu.show_debug(false);
     });
 
     scrolled_window->SetScrollbarPolicy(scrollbar_policy);
@@ -119,12 +119,12 @@ Debug::show(bool show) {
 }
 
 Container::Ptr
-Debug::getMainContainer() {
+Debug::get_main_container() {
     return window;
 }
 
 void
-Debug::resetText() {
+Debug::reset_text() {
 }
 
 Widget::Ptr

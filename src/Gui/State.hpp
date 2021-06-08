@@ -37,9 +37,9 @@ public:
 
     virtual void center();
     virtual void show(bool show);
-    virtual void tick(void*, float deltatime) override;
-    virtual void resetText() = 0;
-    virtual sfg::Container::Ptr getMainContainer();
+    virtual void tick(void*, float delta_time) override;
+    virtual void reset_text() = 0;
+    virtual sfg::Container::Ptr get_main_container();
 
 protected:
     sfg::Desktop& desktop;

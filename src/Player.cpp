@@ -35,52 +35,52 @@ Player::Player(float x, float y, float z) :
         camera(x,     0.0f,  z,
                0.0f,  0.0f,  0.0f,
                100.0, 0.005, 100.0),
-        cameraBobbing(nullptr),
-        moveVectorX(0.0f),
-        moveVectorZ(0.0f),
+        camera_bobbing(nullptr),
+        move_vector_x(0.0f),
+        move_vector_z(0.0f),
         x(x), y(y), z(z),
         speed(3.0f),
         height(0.65f),
         width(0.05f) {
-    camera.setY(y + height);
+    camera.set_y(y + height);
 }
 
 Player::~Player() {
-    if (cameraBobbing) {
-        delete cameraBobbing;
-        cameraBobbing = nullptr;
+    if (camera_bobbing) {
+        delete camera_bobbing;
+        camera_bobbing = nullptr;
     }
 };
 
 void
 Player::start(Maze& maze) {
-    x = maze.getStartX() + 0.5f;
-    z = maze.getStartY() + 0.5f;
+    x = maze.get_start_x() + 0.5f;
+    z = maze.get_start_y() + 0.5f;
 
-    camera.setX(x);
-    camera.setY(y + height);
-    camera.setZ(z);
+    camera.set_x(x);
+    camera.set_y(y + height);
+    camera.set_z(z);
 }
 
 void
-Player::tick(Game& game, float deltaTime) {
-    if (game.isPaused() || game.isWon())
+Player::tick(Game& game, float delta_time) {
+    if (game.is_paused() || game.is_won())
         return;
 
     float M_PI_2f = static_cast<float>(M_PI_2);
 
-    float pitch = camera.getPitch();
-    float yaw   = camera.getYaw();
+    float pitch = camera.get_pitch();
+    float yaw   = camera.get_yaw();
 
-    moveVectorX = 0.0f;
-    moveVectorZ = 0.0f;
+    move_vector_x = 0.0f;
+    move_vector_z = 0.0f;
 
-    Settings& settings = game.getSettings();
+    Settings& settings = game.get_settings();
 
-    bool move[] {sf::Keyboard::isKeyPressed(settings.getKey("right")),
-                 sf::Keyboard::isKeyPressed(settings.getKey("down")),
-                 sf::Keyboard::isKeyPressed(settings.getKey("left")),
-                 sf::Keyboard::isKeyPressed(settings.getKey("up"))};
+    bool move[] {sf::Keyboard::isKeyPressed(settings.get_key("right")),
+                 sf::Keyboard::isKeyPressed(settings.get_key("down")),
+                 sf::Keyboard::isKeyPressed(settings.get_key("left")),
+                 sf::Keyboard::isKeyPressed(settings.get_key("up"))};
 
     {
         int i;
@@ -88,105 +88,105 @@ Player::tick(Game& game, float deltaTime) {
 
         for (i = 0, j = yaw; i < 4; i++, j += M_PI_2f)
             if (move[i])
-                sumVector(j, moveVectorX, moveVectorZ);
+                sum_vector(j, move_vector_x, move_vector_z);
     }
 
     if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
-        float factor = 1.0f / std::sqrt((moveVectorX * moveVectorX) +
-                                        (moveVectorZ * moveVectorZ));
+        float factor = 1.0f / std::sqrt((move_vector_x * move_vector_x) +
+                                        (move_vector_z * move_vector_z));
 
-        moveVectorX *= factor;
-        moveVectorZ *= factor;
+        move_vector_x *= factor;
+        move_vector_z *= factor;
     }
 
-    if (moveVectorX != 0.0f || moveVectorZ != 0.0f) {
-        float newx = x + moveVectorX * speed * deltaTime;
-        float newz = z + moveVectorZ * speed * deltaTime;
+    if (move_vector_x != 0.0f || move_vector_z != 0.0f) {
+        float newx = x + move_vector_x * speed * delta_time;
+        float newz = z + move_vector_z * speed * delta_time;
 
-        tryMove(game.getMaze(), newx, y, newz);
+        try_move(game.get_maze(), newx, y, newz);
     }
 
-    sf::Window& window = GraphicEngine::inst().getWindow();
+    sf::Window& window = GraphicEngine::inst().get_window();
 
-    sf::Vector2u windowHalfSize = window.getSize();
-    windowHalfSize.x /= 2;
-    windowHalfSize.y /= 2;
+    sf::Vector2u window_half_size = window.getSize();
+    window_half_size.x /= 2;
+    window_half_size.y /= 2;
 
     sf::Vector2i cursor = sf::Mouse::getPosition(window);
-    sf::Mouse::setPosition(sf::Vector2i(windowHalfSize), window);
+    sf::Mouse::setPosition(sf::Vector2i(window_half_size), window);
 
-    float newPitch = pitch;
-    float sensitivity = settings.getSensitivity();
+    float new_pitch = pitch;
+    float sensitivity = settings.get_sensitivity();
 
-    newPitch += (cursor.y - static_cast<int>(windowHalfSize.y)) * sensitivity;
+    new_pitch += (cursor.y - static_cast<int>(window_half_size.y)) * sensitivity;
 
-    if (newPitch > -M_PI_2f && newPitch < M_PI_2f)
-        pitch = newPitch;
+    if (new_pitch > -M_PI_2f && new_pitch < M_PI_2f)
+        pitch = new_pitch;
 
-    yaw   += (cursor.x - static_cast<int>(windowHalfSize.x)) * sensitivity;
+    yaw   += (cursor.x - static_cast<int>(window_half_size.x)) * sensitivity;
 
-    camera.setPitch(pitch);
-    camera.setYaw(yaw);
+    camera.set_pitch(pitch);
+    camera.set_yaw(yaw);
 
-    camera.setX(x);
-    camera.setY(y + height);
-    camera.setZ(z);
+    camera.set_x(x);
+    camera.set_y(y + height);
+    camera.set_z(z);
 
-    setupCameraBobbing(settings);
+    setup_camera_bobbing(settings);
 
-    tickableHandler.tick(*this, deltaTime);
+    tickable_handler.tick(*this, delta_time);
 }
 
 Camera&
-Player::getCamera() {
+Player::get_camera() {
     return camera;
 }
 
 bool
-Player::isMoving() const {
-    return moveVectorX != 0.0f || moveVectorZ != 0.0f;
+Player::is_moving() const {
+    return move_vector_x != 0.0f || move_vector_z != 0.0f;
 }
 
 float
-Player::getX() const {
+Player::get_x() const {
     return x;
 }
 
 float
-Player::getY() const {
+Player::get_y() const {
     return y;
 }
 
 float
-Player::getZ() const {
+Player::get_z() const {
     return z;
 }
 
 void
-Player::setX(float x) {
+Player::set_x(float x) {
     Player::x = x;
 }
 
 void
-Player::setY(float y) {
+Player::set_y(float y) {
     Player::y = y;
 }
 
 void
-Player::setZ(float z) {
+Player::set_z(float z) {
     Player::z = z;
 }
 
 void
-Player::tryMove(Maze& maze, float x, float y, float z) {
+Player::try_move(Maze& maze, float x, float y, float z) {
     if (!(y < 0.0f && Player::y > 0.0f))
         Player::y = y;
 
     if (y >= 0.0f && y <= 1.0f) {
-        if (!checkCollision(maze, x, Player::z))
+        if (!check_collision(maze, x, Player::z))
             Player::x = x;
 
-        if (!checkCollision(maze, Player::x, z))
+        if (!check_collision(maze, Player::x, z))
             Player::z = z;
     } else {
         Player::x = x;
@@ -195,39 +195,39 @@ Player::tryMove(Maze& maze, float x, float y, float z) {
 }
 
 bool
-Player::checkCollision(Maze& maze, float x, float y) {
+Player::check_collision(Maze& maze, float x, float y) {
     bool intersects = false;
 
     for (int i = static_cast<int>(x) - 1; i <= x + 1; i++)
         for (int j = static_cast<int>(y) - 1; j <= y + 1; j++)
-            if (!maze.getOpened(i, j)) {
-                float deltaX = x - std::max<float>(i, std::min<float>(x, i + 1.0f));
-                float deltaY = y - std::max<float>(j, std::min<float>(y, j + 1.0f));
+            if (!maze.get_opened(i, j)) {
+                float delta_x = x - std::max<float>(i, std::min<float>(x, i + 1.0f));
+                float delta_y = y - std::max<float>(j, std::min<float>(y, j + 1.0f));
 
-                intersects |= (deltaX * deltaX + deltaY * deltaY) < (width * width);
+                intersects |= (delta_x * delta_x + delta_y * delta_y) < (width * width);
             }
 
     return intersects;
 }
 
 void
-Player::sumVector(float angle, float& vecX, float& vecY) {
+Player::sum_vector(float angle, float& vecX, float& vecY) {
     vecX += cosf(angle);
     vecY += sinf(angle);
 }
 
 void
-Player::setupCameraBobbing(Settings& settings) {
-    if (settings.getCameraBobbing() && !cameraBobbing) {
-        cameraBobbing = new CameraBobbing;
-        tickableHandler.addTickable(cameraBobbing);
+Player::setup_camera_bobbing(Settings& settings) {
+    if (settings.get_camera_bobbing() && !camera_bobbing) {
+        camera_bobbing = new CameraBobbing;
+        tickable_handler.addTickable(camera_bobbing);
     }
 
-    else if (!settings.getCameraBobbing() && cameraBobbing) {
-        tickableHandler.removeTickable(cameraBobbing);
+    else if (!settings.get_camera_bobbing() && camera_bobbing) {
+        tickable_handler.removeTickable(camera_bobbing);
 
-        delete cameraBobbing;
-        cameraBobbing = nullptr;
+        delete camera_bobbing;
+        camera_bobbing = nullptr;
     }
 }
 

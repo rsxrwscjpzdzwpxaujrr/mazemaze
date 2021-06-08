@@ -33,30 +33,30 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Main::Main(MainMenu& mainMenu, Settings& settings) :
-        State(mainMenu.getDesktop(), "Main"),
-        buttonResume(Button::Create()),
-        buttonNewGame(Button::Create()),
-        buttonOptions(Button::Create()),
-        buttonAbout(Button::Create()),
-        buttonExit(Button::Create()),
+Main::Main(MainMenu& main_menu, Settings& settings) :
+        State(main_menu.get_desktop(), "Main"),
+        resume_button  (Button::Create()),
+        new_game_button(Button::Create()),
+        options_button (Button::Create()),
+        about_button   (Button::Create()),
+        exit_button    (Button::Create()),
         settings(settings),
         showing(false) {
-    resetText();
+    reset_text();
 
-    initSignals(mainMenu);
+    init_signals(main_menu);
 
-    updateButtons(Saver::saveExists(settings));
+    update_buttons(Saver::save_exists(settings));
 
-    OptionsMenu* options = new OptionsMenu(mainMenu, settings);
+    OptionsMenu* options = new OptionsMenu(main_menu, settings);
 
-    newGameState = mainMenu.addState(new NewGame(mainMenu));
-    optionsState = mainMenu.addState(options);
-    aboutState   = mainMenu.addState(new About(mainMenu, settings));
+    new_game_state = main_menu.add_state(new NewGame(main_menu));
+    options_state  = main_menu.add_state(options);
+    about_state    = main_menu.add_state(new About(main_menu, settings));
 
-    mainMenu.setOptionsState(*options, optionsState);
+    main_menu.set_options_state(*options, options_state);
 
-    buttonAbout->SetClass("verySmall");
+    about_button->SetClass("verySmall");
 }
 
 Main::~Main() = default;
@@ -67,28 +67,28 @@ Main::show(bool show) {
 
     showing = show;
 
-    buttonAbout->Show(show);
+    about_button->Show(show);
 
     if (show)
-        updateButtons(Saver::saveExists(settings));
+        update_buttons(Saver::save_exists(settings));
 }
 
 void
-Main::updateButtons(bool saveExists) {
+Main::update_buttons(bool save_exists) {
     desktop.Remove(box);
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
     box->SetSpacing(20.0f);
 
-    buttonResume->Show(saveExists);
+    resume_button->Show(save_exists);
 
-    box->Pack(buttonResume);
-    box->Pack(buttonNewGame);
-    box->Pack(buttonOptions);
-    box->Pack(buttonExit);
+    box->Pack(resume_button);
+    box->Pack(new_game_button);
+    box->Pack(options_button);
+    box->Pack(exit_button);
 
-    desktop.Add(buttonAbout);
+    desktop.Add(about_button);
 
     box->SetRequisition({300.0f, box->GetRequisition().y});
 
@@ -99,52 +99,53 @@ Main::updateButtons(bool saveExists) {
 
 void
 Main::center() {
-    sf::Vector2f widgetSize(buttonAbout->GetAllocation().width,
-                            buttonAbout->GetAllocation().height);
+    sf::Vector2f widget_size(about_button->GetAllocation().width,
+                             about_button->GetAllocation().height);
 
-    sf::Vector2f windowSize =
-        static_cast<sf::Vector2f>(GraphicEngine::inst().getWindow().getSize());
+    sf::Vector2f window_size =
+        static_cast<sf::Vector2f>(GraphicEngine::inst().get_window().getSize());
 
-    buttonAbout->Show(showing && windowSize.x > 640 && windowSize.y > 300);
+    about_button->Show(showing && window_size.x > 640 && window_size.y > 300);
 
     sf::Vector2f spacing(24.0f, 24.0f);
 
-    buttonAbout->SetAllocation(sf::FloatRect(
-        windowSize - widgetSize - spacing,
-        {140.0f, 36.0f}));
+    about_button->SetAllocation(sf::FloatRect(
+        window_size - widget_size - spacing,
+        { 140.0f, 36.0f }
+    ));
 
     State::center();
 }
 
 void
-Main::resetText() {
-    buttonResume ->SetLabel(pgtx("main", "Resume"));
-    buttonNewGame->SetLabel(pgtx("main", "New Game"));
-    buttonOptions->SetLabel(pgtx("main", "Options"));
-    buttonAbout  ->SetLabel(pgtx("main", "About"));
-    buttonExit   ->SetLabel(pgtx("main", "Exit"));
+Main::reset_text() {
+    resume_button  ->SetLabel(pgtx("main", "Resume"));
+    new_game_button->SetLabel(pgtx("main", "New Game"));
+    options_button ->SetLabel(pgtx("main", "Options"));
+    about_button   ->SetLabel(pgtx("main", "About"));
+    exit_button    ->SetLabel(pgtx("main", "Exit"));
 }
 
 void
-Main::initSignals(MainMenu& mainMenu) {
-    buttonResume->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.resumeGame();
+Main::init_signals(MainMenu& main_menu) {
+    resume_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] {
+        main_menu.resume_game();
     });
 
-    buttonNewGame->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
-        mainMenu.setState(newGameState);
+    new_game_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] {
+        main_menu.set_state(new_game_state);
     });
 
-    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
-        mainMenu.setState(optionsState);
+    options_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] {
+        main_menu.set_state(options_state);
     });
 
-    buttonAbout->GetSignal(Widget::OnLeftClick).Connect([&mainMenu, this] {
-        mainMenu.setState(aboutState);
+    about_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu, this] {
+        main_menu.set_state(about_state);
     });
 
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.exit();
+    exit_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] {
+        main_menu.exit();
     });
 }
 

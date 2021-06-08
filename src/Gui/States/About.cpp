@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,20 +29,20 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-About::About(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings, "About"),
-        aboutLabel(Label::Create()) {
-    resetText();
+About::About(MainMenu& main_menu, Settings& settings) :
+        Options(main_menu, settings, "About"),
+        about_label(Label::Create()) {
+    reset_text();
 
-    aboutLabel->SetLineWrap(true);
-    windowBox->Pack(aboutLabel);
+    about_label->SetLineWrap(true);
+    window_box->Pack(about_label);
 
     center();
 }
 
 void
-About::onResetText() {
-    aboutLabel->SetText(pgtxf("about",
+About::on_reset_text() {
+    about_label->SetText(pgtxf("about",
             "Mazemaze 0.3-git (under development)\n"
             "Built on %s\n"
             "\n"

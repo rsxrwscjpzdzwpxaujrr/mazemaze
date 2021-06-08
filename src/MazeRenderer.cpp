@@ -28,10 +28,10 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Game& game) : maze(game.getMaze()),
+MazeRenderer::MazeRenderer(Game& game) : maze(game.get_maze()),
                                          deleted(true),
-                                         oldHcpX(-1),
-                                         oldHcpY(-1) {}
+                                         old_hcp_x(-1),
+                                         old_hcp_y(-1) {}
 
 MazeRenderer::~MazeRenderer() {
     if (!deleted)
@@ -41,14 +41,14 @@ MazeRenderer::~MazeRenderer() {
 void
 MazeRenderer::enable() {
     visible  = new int[16] {-1};
-    compiled = new bool[maze.getChunksCount()] {false};
-    drawList = glGenLists(maze.getChunksCount());
+    compiled = new bool[maze.get_chunks_count()] {false};
+    draw_list = glGenLists(maze.get_chunks_count());
 
-    setStates();
-    onEnable();
+    set_states();
+    on_enable();
 
-    GraphicEngine::inst().setOnSetStatesCallback([this] {
-        this->setStates();
+    GraphicEngine::inst().set_on_set_states_callback([this] {
+        this->set_states();
     });
 
     deleted = false;
@@ -56,11 +56,11 @@ MazeRenderer::enable() {
 
 void
 MazeRenderer::disable() {
-    GraphicEngine::inst().setOnSetStatesCallback([] {});
+    GraphicEngine::inst().set_on_set_states_callback([] {});
 
-    onDisable();
+    on_disable();
 
-    glDeleteLists(drawList, maze.getChunksCount());
+    glDeleteLists(draw_list, maze.get_chunks_count());
 
     delete [] visible;
     delete [] compiled;
@@ -72,44 +72,44 @@ void
 MazeRenderer::tick(Game& game, float deltaTime) {
     bool force = false;
 
-    Player& player = game.getPlayer();
+    Player& player = game.get_player();
 
-    int pX = static_cast<int>(player.getX()) / (Chunk::SIZE / 2);
-    int pY = static_cast<int>(player.getZ()) / (Chunk::SIZE / 2);
+    int p_x = static_cast<int>(player.get_x()) / (Chunk::SIZE / 2);
+    int p_y = static_cast<int>(player.get_z()) / (Chunk::SIZE / 2);
 
-    if (pX != oldHcpX || pY != oldHcpY || force) {
+    if (p_x != old_hcp_x || p_y != old_hcp_y || force) {
         Logger::inst().log_debug("Re-enabling chunks.");
 
-        oldHcpX = pX;
-        oldHcpY = pY;
+        old_hcp_x = p_x;
+        old_hcp_y = p_y;
 
         for (int i = 0; i < 16; i++)
             visible[i] = -1;
 
-        if (pX % 2 == 0) pX--;
-        if (pY % 2 == 0) pY--;
+        if (p_x % 2 == 0) p_x--;
+        if (p_y % 2 == 0) p_y--;
 
-        pX /= 2;
-        pY /= 2;
+        p_x /= 2;
+        p_y /= 2;
 
-        int peX = pX + 2;
-        int peY = pY + 2;
+        int pe_x = p_x + 2;
+        int pe_y = p_y + 2;
 
-        if (pX < 0) pX = 0;
-        if (pY < 0) pY = 0;
+        if (p_x < 0) p_x = 0;
+        if (p_y < 0) p_y = 0;
 
-        if (peX > maze.getChunksX()) peX = maze.getChunksX();
-        if (peY > maze.getChunksY()) peY = maze.getChunksY();
+        if (pe_x > maze.get_chunks_x()) pe_x = maze.get_chunks_x();
+        if (pe_y > maze.get_chunks_y()) pe_y = maze.get_chunks_y();
 
-        for (int i = pX; i < peX; i++)
-            for (int j = pY; j < peY; j++) {
-                int chunkNum = i + j * maze.getChunksX();
+        for (int i = p_x; i < pe_x; i++)
+            for (int j = p_y; j < pe_y; j++) {
+                int chunkNum = i + j * maze.get_chunks_x();
 
-                enableChunk(chunkNum);
+                enable_chunk(chunkNum);
             }
     }
 
-    onTick(deltaTime);
+    on_tick(deltaTime);
 }
 
 void
@@ -129,25 +129,25 @@ MazeRenderer::render() {
         }
     }
 
-    renderChunks(chunks);
+    render_chunks(chunks);
 }
 
 void
-MazeRenderer::setStates() {
+MazeRenderer::set_states() {
 }
 
 void
-MazeRenderer::onEnable() {
+MazeRenderer::on_enable() {
 }
 
 void
-MazeRenderer::onDisable() {
+MazeRenderer::on_disable() {
 }
 
 void
-MazeRenderer::enableChunk(int num) {
+MazeRenderer::enable_chunk(int num) {
     if (!compiled[num])
-        compileChunk(num);
+        compile_chunk(num);
 
     for (int i = 0; i < 16; i++) {
         if (visible[i] == -1) {
@@ -158,9 +158,9 @@ MazeRenderer::enableChunk(int num) {
 }
 
 void
-MazeRenderer::renderChunks(int chunks[]) {
+MazeRenderer::render_chunks(int chunks[]) {
     for (; *chunks != -1; chunks++)
-        glCallList(drawList + *chunks);
+        glCallList(draw_list + *chunks);
 }
 
 }

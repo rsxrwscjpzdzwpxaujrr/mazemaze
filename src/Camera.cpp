@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,113 +25,113 @@
 
 namespace mazemaze {
 
-Camera::Camera(float  x,     float  y,        float  z,
-               float  pitch, float  yaw,      float  roll,
-               double fov,   double nearDist, double farDist) :
-        x(x),         y(y),               z(z),
-        pitch(pitch), yaw(yaw),           roll(roll),
-        fov(fov),     nearDist(nearDist), farDist(farDist) {}
+Camera::Camera(float  x,     float  y,         float  z,
+               float  pitch, float  yaw,       float  roll,
+               double fov,   double near_dist, double far_dist) :
+        x(x),         y(y),                z(z),
+        pitch(pitch), yaw(yaw),            roll(roll),
+        fov(fov),     near_dist(near_dist), far_dist(far_dist) {}
 
 Camera::~Camera() = default;
 
 void
-Camera::setupRotation() {
+Camera::setup_rotation() {
     float todeg = static_cast<float>(180.0 / M_PI);
 
     glRotatef(pitch * todeg, 1.0, 0.0, 0.0);
-    glRotatef(yaw * todeg, 0.0, 1.0, 0.0);
-    glRotatef(roll * todeg, 0.0, 0.0, 1.0);
+    glRotatef(yaw   * todeg, 0.0, 1.0, 0.0);
+    glRotatef(roll  * todeg, 0.0, 0.0, 1.0);
 }
 
 void
-Camera::setupTranslation() {
+Camera::setup_translation() {
     glTranslatef(-x, -y, -z);
 }
 
 void
-Camera::setupPerspective() {
-    double ratio = GraphicEngine::inst().getWidth() /
-                   static_cast<double>(GraphicEngine::inst().getHeight());
+Camera::setup_perspective() {
+    double ratio = GraphicEngine::inst().get_width() /
+                   static_cast<double>(GraphicEngine::inst().get_height());
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glFrustum(-ratio * nearDist, ratio * nearDist,
-              -1.0   * nearDist, 1.0   * nearDist,
-              (ratio * nearDist) / tan(fov * (M_PI / 360.0)),
-              farDist);
+    glFrustum(-ratio * near_dist, ratio * near_dist,
+              -1.0   * near_dist, 1.0   * near_dist,
+              (ratio * near_dist) / tan(fov * (M_PI / 360.0)),
+              far_dist);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
 float
-Camera::getX() const {
+Camera::get_x() const {
     return x;
 }
 
 float
-Camera::getY() const {
+Camera::get_y() const {
     return y;
 }
 
 float
-Camera::getZ() const {
+Camera::get_z() const {
     return z;
 }
 
 float
-Camera::getPitch() const {
+Camera::get_pitch() const {
     return pitch;
 }
 
 float
-Camera::getYaw() const {
+Camera::get_yaw() const {
     return yaw;
 }
 
 float
-Camera::getRoll() const {
+Camera::get_roll() const {
     return roll;
 }
 
 double
-Camera::getFov() const {
+Camera::get_fov() const {
     return fov;
 }
 
 void
-Camera::setX(float x) {
+Camera::set_x(float x) {
     Camera::x = x;
 }
 
 void
-Camera::setY(float y) {
+Camera::set_y(float y) {
     Camera::y = y;
 }
 
 void
-Camera::setZ(float z) {
+Camera::set_z(float z) {
     Camera::z = z;
 }
 
 void
-Camera::setPitch(float pitch) {
+Camera::set_pitch(float pitch) {
     Camera::pitch = pitch;
 }
 
 void
-Camera::setYaw(float yaw) {
+Camera::set_yaw(float yaw) {
     Camera::yaw = yaw;
 }
 
 void
-Camera::setRoll(float roll) {
+Camera::set_roll(float roll) {
     Camera::roll = roll;
 }
 
 void
-Camera::setFov(double fov) {
+Camera::set_fov(double fov) {
     Camera::fov = fov;
 }
 

@@ -31,12 +31,12 @@ public:
     explicit Background(ITickable<void*>* tickable, IRenderable* renderable, Camera* camera);
     ~Background() override;
 
-    void tick(void*, float deltaTime) override;
+    void tick(void*, float delta_time) override;
     void render() override;
 
-    ITickable<void*>* getTickable() const;
-    IRenderable*      getRenderable() const;
-    virtual Camera*   getCamera();
+    ITickable<void*>* get_tickable() const;
+    IRenderable*      get_renderable() const;
+    virtual Camera*   get_camera();
 
 private:
     ITickable<void*>* tickable;

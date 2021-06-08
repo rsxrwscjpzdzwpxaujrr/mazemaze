@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,9 +35,9 @@ public:
 private:
     StarSky starSky;
 
-    void onTick(float deltaTime) override;
-    void setStates() override;
-    void renderChunks(int chunks[]) override;
+    void on_tick(float delta_time) override;
+    void set_states() override;
+    void render_chunks(int chunks[]) override;
 };
 
 }

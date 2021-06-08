@@ -28,21 +28,21 @@ public:
     explicit CameraBobbing();
     ~CameraBobbing();
 
-    void tick(Player& player, float deltaTime);
+    void tick(Player& player, float delta_time);
 
 private:
-    float pitchCoeff;
-    float posCoeff;
-    float timeCoeff;
+    float pitch_coeff;
+    float pos_coeff;
+    float time_coeff;
 
-    float lastPitch;
+    float last_pitch;
 
-    bool easingType;
+    bool easing_type;
 
     float time;
 
-    static float easeInCubic (float x);
-    static float easeOutCubic(float x);
+    static float ease_in_cubic (float x);
+    static float ease_out_cubic(float x);
 };
 
 }

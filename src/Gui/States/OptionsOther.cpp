@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,65 +27,65 @@ namespace gui {
 namespace states {
 
 void
-OptionsOther::initSignals() {
-    langCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        auto langs = settings.getSupportedLangs();
+OptionsOther::init_signals() {
+    lang_combo->GetSignal(ComboBox::OnSelect).Connect([this] () {
+        auto langs = settings.get_supported_langs();
 
-        settings.setLang(langs[langCombo->GetSelectedItem()].code);
+        settings.set_lang(langs[lang_combo->GetSelectedItem()].code);
     });
 
-    autosaveCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings.setAutosave(autosaveCheck->IsActive());
+    autosave_check->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.set_autosave(autosave_check->IsActive());
     });
 
-    showFpsCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings.setShowFps(showFpsCheck->IsActive());
+    show_fps_check->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.set_show_fps(show_fps_check->IsActive());
     });
 }
 
 void
-OptionsOther::initOptions() {
-    std::string curLang = settings.getLang();
-    auto langs = settings.getSupportedLangs();
+OptionsOther::init_options() {
+    std::string cur_lang = settings.get_lang();
+    auto langs = settings.get_supported_langs();
 
     int i = 0;
 
     for (auto lang = langs.begin(); lang < langs.end(); lang++, i++) {
-        langCombo->AppendItem(lang->name);
+        lang_combo->AppendItem(lang->name);
 
-        if (lang->code == curLang)
-            langCombo->SelectItem(i);
+        if (lang->code == cur_lang)
+            lang_combo->SelectItem(i);
     }
 
-    autosaveCheck->SetActive(settings.getAutosave());
-    showFpsCheck->SetActive(settings.getShowFps());
+    autosave_check->SetActive(settings.get_autosave());
+    show_fps_check->SetActive(settings.get_show_fps());
 }
 
-OptionsOther::OptionsOther(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings, "OptionsOther"),
-        langCombo    (ComboBox::Create()),
-        autosaveCheck(CheckButton::Create(L"")),
-        showFpsCheck (CheckButton::Create(L"")),
-        langOpt(Option(langCombo)),
-        autosaveOpt(Option(autosaveCheck)),
-        showFpsOpt(Option(showFpsCheck)) {
-    resetText();
+OptionsOther::OptionsOther(MainMenu& main_menu, Settings& settings) :
+        Options(main_menu, settings, "OptionsOther"),
+        lang_combo    (ComboBox::Create()),
+        autosave_check(CheckButton::Create(L"")),
+        show_fps_check(CheckButton::Create(L"")),
+        lang_opt    (Option(lang_combo)),
+        autosave_opt(Option(autosave_check)),
+        show_fps_opt(Option(show_fps_check)) {
+    reset_text();
 
-    windowBox->Pack(langOpt.toWidget());
-    windowBox->Pack(autosaveOpt.toWidget());
-    windowBox->Pack(showFpsOpt.toWidget());
+    window_box->Pack(lang_opt.to_widget());
+    window_box->Pack(autosave_opt.to_widget());
+    window_box->Pack(show_fps_opt.to_widget());
 
-    initSignals();
-    initOptions();
+    init_signals();
+    init_options();
 
     center();
 }
 
 void
-OptionsOther::onResetText() {
-    langOpt.changeText    (pgtx("options", "Language"));
-    autosaveOpt.changeText(pgtx("options", "Autosave"));
-    showFpsOpt.changeText (pgtx("options", "Show FPS"));
+OptionsOther::on_reset_text() {
+    lang_opt.change_text    (pgtx("options", "Language"));
+    autosave_opt.change_text(pgtx("options", "Autosave"));
+    show_fps_opt.change_text(pgtx("options", "Show FPS"));
 }
 
 OptionsOther::~OptionsOther() = default;

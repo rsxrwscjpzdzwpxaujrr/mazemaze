@@ -29,114 +29,114 @@ namespace gui {
 namespace states {
 
 void
-NewGame::initSignals(MainMenu& mainMenu) {
-    startButton->GetSignal(Widget::OnLeftClick).Connect([this, &mainMenu] {
-        const sf::String text = sizeEntry->GetText();
+NewGame::init_signals(MainMenu& main_menu) {
+    start_button->GetSignal(Widget::OnLeftClick).Connect([this, &main_menu] {
+        const sf::String text = size_entry->GetText();
         int mazeSize = 1;
 
         if (text.getSize() > 0)
-            mazeSize = std::stoi(sizeEntry->GetText().toWideString());
+            mazeSize = std::stoi(size_entry->GetText().toWideString());
 
-        Game* game = &mainMenu.newGame(mazeSize, mazeSize);
+        Game* game = &main_menu.new_game(mazeSize, mazeSize);
 
-        static_cast<Progress&>(mainMenu.getState(progressState)).setGame(game);
-        mainMenu.setState(progressState);
+        static_cast<Progress&>(main_menu.get_state(progress_state)).setGame(game);
+        main_menu.set_state(progress_state);
     });
 
-    backButton->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.back();
+    back_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] {
+        main_menu.back();
     });
 
-    sizeEntry->GetSignal(Entry::OnTextChanged).Connect([this] {
-        const sf::String text = sizeEntry->GetText();
-        bool needOld = false;
+    size_entry->GetSignal(Entry::OnTextChanged).Connect([this] {
+        const sf::String text = size_entry->GetText();
+        bool need_old = false;
 
         if (text.getSize() != 0) {
-            needOld = text.getSize() > max_size_chars;
+            need_old = text.getSize() > max_size_chars;
 
-            if (!needOld) {
+            if (!need_old) {
                 for (auto c : text) {
                     if (!std::isdigit(c)) {
-                        needOld = true;
+                        need_old = true;
                         break;
                     }
                 }
             }
         }
 
-        if (needOld) {
-            sizeEntry->SetText(oldtext);
-            sizeEntry->SetCursorPosition(oldcursor);
+        if (need_old) {
+            size_entry->SetText(old_text);
+            size_entry->SetCursorPosition(old_cursor);
         }
 
-        oldtext = sizeEntry->GetText();
+        old_text = size_entry->GetText();
     });
 }
 
-NewGame::NewGame(MainMenu& mainMenu) :
-        State(mainMenu.getDesktop(), "NewGame"),
-        backButton(Button::Create()),
-        startButton(Button::Create()),
-        sizeEntry(Entry::Create(L"10")),
-        mazeSizeLabel(Label::Create()),
-        oldtext(sizeEntry->GetText()),
-        oldcursor(sizeEntry->GetCursorPosition()) {
-    resetText();
+NewGame::NewGame(MainMenu& main_menu) :
+        State(main_menu.get_desktop(), "NewGame"),
+        back_button(Button::Create()),
+        start_button(Button::Create()),
+        size_entry(Entry::Create(L"10")),
+        maze_size_label(Label::Create()),
+        old_text(size_entry->GetText()),
+        old_cursor(size_entry->GetCursorPosition()) {
+    reset_text();
 
-    auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
-    auto separatorHorizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
-    auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
-    auto window              = Window::Create(Window::Style::BACKGROUND);
-    auto windowBox           = Box::Create(Box::Orientation::VERTICAL);
+    auto button_box           = Box::Create(Box::Orientation::HORIZONTAL);
+    auto separator_horizontal = Separator::Create(Separator::Orientation::HORIZONTAL);
+    auto separator_vertical   = Separator::Create(Separator::Orientation::VERTICAL);
+    auto window               = Window::Create(Window::Style::BACKGROUND);
+    auto window_box           = Box::Create(Box::Orientation::VERTICAL);
 
-    separatorHorizontal->SetRequisition({20.0f, 0.0f});
-    separatorVertical->SetRequisition({0.0f, 20.0f});
+    separator_horizontal->SetRequisition({20.0f, 0.0f});
+    separator_vertical->SetRequisition({0.0f, 20.0f});
 
-    sizeEntry->SetRequisition({10.0f, 10.0f});
+    size_entry->SetRequisition({10.0f, 10.0f});
 
-    mazeSizeLabel->SetClass("newGameMazeSize");
+    maze_size_label->SetClass("newGameMazeSize");
 
-    windowBox->Pack(mazeSizeLabel);
-    windowBox->Pack(sizeEntry);
-    windowBox->SetSpacing(20.0f);
+    window_box->Pack(maze_size_label);
+    window_box->Pack(size_entry);
+    window_box->SetSpacing(20.0f);
 
-    window->Add(windowBox);
+    window->Add(window_box);
 
-    buttonBox->Pack(backButton);
-    buttonBox->Pack(separatorHorizontal);
-    buttonBox->Pack(startButton);
-    buttonBox->SetClass("nogap");
+    button_box->Pack(back_button);
+    button_box->Pack(separator_horizontal);
+    button_box->Pack(start_button);
+    button_box->SetClass("nogap");
 
-    startButton->SetRequisition({182.0f, 0.0f});
-    backButton->SetRequisition({182.0f, 0.0f});
+    start_button->SetRequisition({182.0f, 0.0f});
+    back_button->SetRequisition({182.0f, 0.0f});
 
     window->SetRequisition({384.0f, 0.0f});
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
     box->Pack(window);
-    box->Pack(separatorVertical);
-    box->Pack(buttonBox);
+    box->Pack(separator_vertical);
+    box->Pack(button_box);
 
     desktop.Add(box);
 
-    initSignals(mainMenu);
+    init_signals(main_menu);
 
     center();
 
-    progressState = mainMenu.addState(new Progress(mainMenu));
+    progress_state = main_menu.add_state(new Progress(main_menu));
 }
 
 void
 NewGame::tick(void*, float) {
-    oldcursor = sizeEntry->GetCursorPosition();
+    old_cursor = size_entry->GetCursorPosition();
 }
 
 void
-NewGame::resetText() {
-    backButton   ->SetLabel(pgtx("new_game", "Back"));
-    startButton  ->SetLabel(pgtx("new_game", "Start"));
-    mazeSizeLabel->SetText (pgtx("new_game", "Enter maze size"));
+NewGame::reset_text() {
+    back_button    ->SetLabel(pgtx("new_game", "Back"));
+    start_button   ->SetLabel(pgtx("new_game", "Start"));
+    maze_size_label->SetText (pgtx("new_game", "Enter maze size"));
 }
 
 NewGame::~NewGame() = default;

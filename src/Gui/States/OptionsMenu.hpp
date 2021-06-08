@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,22 +31,22 @@ namespace states {
 
 class OptionsMenu : public State {
 public:
-    explicit OptionsMenu(MainMenu& mainMenu, Settings& settings);
+    explicit OptionsMenu(MainMenu& main_menu, Settings& settings);
     ~OptionsMenu() override;
 
-    void resetText() override;
+    void reset_text() override;
 
 private:
-    sfg::Button::Ptr graphicsButton;
-    sfg::Button::Ptr controlsButton;
-    sfg::Button::Ptr otherButton;
-    sfg::Button::Ptr backButton;
+    sfg::Button::Ptr graphics_button;
+    sfg::Button::Ptr controls_button;
+    sfg::Button::Ptr other_button;
+    sfg::Button::Ptr back_button;
 
-    int graphicsState;
-    int controlsState;
-    int otherState;
+    int graphics_state;
+    int controls_state;
+    int other_state;
 
-    void initSignals(MainMenu& mainMenu);
+    void init_signals(MainMenu& main_menu);
 };
 
 }

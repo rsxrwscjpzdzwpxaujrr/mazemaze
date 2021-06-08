@@ -31,13 +31,13 @@ namespace gui {
 namespace states {
 
 void
-OptionsGraphics::initSignals() {
-    fullscreenCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings.setFullscreen(fullscreenCheck->IsActive());
+OptionsGraphics::init_signals() {
+    fullscreen_check->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.set_fullscreen(fullscreen_check->IsActive());
     });
 
-    antialiasingCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        int item = antialiasingCombo->GetSelectedItem();
+    antialiasing_combo->GetSignal(ComboBox::OnSelect).Connect([this] () {
+        int item = antialiasing_combo->GetSelectedItem();
         unsigned int antialiasing = 1;
 
         for (int i = 0; i < item; i++)
@@ -46,104 +46,104 @@ OptionsGraphics::initSignals() {
         if (antialiasing == 1)
             antialiasing = 0;
 
-        settings.setAntialiasing(antialiasing);
+        settings.set_antialiasing(antialiasing);
     });
 
-    vsyncCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings.setVsync(vsyncCheck->IsActive());
+    vsync_check->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.set_vsync(vsync_check->IsActive());
     });
 
-    styleCombo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        settings.setRenderer(styleCombo->GetSelectedItem());
+    style_combo->GetSignal(ComboBox::OnSelect).Connect([this] () {
+        settings.set_renderer(style_combo->GetSelectedItem());
     });
 
-    cameraBobbingCheck->GetSignal(Widget::OnLeftClick).Connect([this] () {
-        settings.setCameraBobbing(cameraBobbingCheck->IsActive());
+    camera_bobbing_check->GetSignal(Widget::OnLeftClick).Connect([this] () {
+        settings.set_camera_bobbing(camera_bobbing_check->IsActive());
     });
 }
 
 void
-OptionsGraphics::initAntialiasingCombo() {
-    int maxAntialiasing = settings.getMaxAntialiasing();
+OptionsGraphics::init_antialiasing_combo() {
+    int max_antialiasing = settings.get_max_antialiasing();
 
-    antialiasingCombo->AppendItem("");
+    antialiasing_combo->AppendItem("");
 
-    for (int i = 2; i <= maxAntialiasing; i *= 2)
-        antialiasingCombo->AppendItem(fmt("%dx", i));
+    for (int i = 2; i <= max_antialiasing; i *= 2)
+        antialiasing_combo->AppendItem(fmt("%dx", i));
 }
 
 void
-OptionsGraphics::initOptions() {
-    fullscreenCheck->SetActive(settings.getFullscreen());
+OptionsGraphics::init_options() {
+    fullscreen_check->SetActive(settings.get_fullscreen());
 
-    initAntialiasingCombo();
+    init_antialiasing_combo();
 
-    unsigned int antialiasing = settings.getAntialiasing();
+    unsigned int antialiasing = settings.get_antialiasing();
 
     if (antialiasing == 0)
         antialiasing = 1;
 
     for (unsigned int i = 0, j = 1; j <= antialiasing; i++, j *= 2)
         if (j == antialiasing) {
-            antialiasingCombo->SelectItem(i);
+            antialiasing_combo->SelectItem(i);
             break;
         }
 
-    vsyncCheck->SetActive(settings.getVsync());
+    vsync_check->SetActive(settings.get_vsync());
 
-    styleCombo->AppendItem("");
-    styleCombo->AppendItem("");
-    styleCombo->AppendItem("");
-    styleCombo->AppendItem("");
-    styleCombo->SelectItem(settings.getRenderer());
+    style_combo->AppendItem("");
+    style_combo->AppendItem("");
+    style_combo->AppendItem("");
+    style_combo->AppendItem("");
+    style_combo->SelectItem(settings.get_renderer());
 
-    cameraBobbingCheck->SetActive(settings.getCameraBobbing());
+    camera_bobbing_check->SetActive(settings.get_camera_bobbing());
 }
 
-OptionsGraphics::OptionsGraphics(MainMenu& mainMenu, Settings& settings) :
-        Options(mainMenu, settings, "OptionsGraphics"),
-        fullscreenCheck   (CheckButton::Create(L"")),
-        vsyncCheck        (CheckButton::Create(L"")),
-        antialiasingCombo (ComboBox::Create()),
-        styleCombo        (ComboBox::Create()),
-        cameraBobbingCheck(CheckButton::Create(L"")),
-        fullscreenOpt   (Option("", fullscreenCheck)),
-        vsyncOpt        (Option("", vsyncCheck)),
-        antialiasingOpt (Option("", antialiasingCombo)),
-        styleOpt        (Option("", styleCombo)),
-        cameraBobbingOpt(Option("", cameraBobbingCheck)) {
-    windowBox->Pack(fullscreenOpt.toWidget());
-    windowBox->Pack(antialiasingOpt.toWidget());
-    windowBox->Pack(vsyncOpt.toWidget());
-    windowBox->Pack(styleOpt.toWidget());
-    windowBox->Pack(cameraBobbingOpt.toWidget());
+OptionsGraphics::OptionsGraphics(MainMenu& main_menu, Settings& settings) :
+        Options(main_menu, settings, "OptionsGraphics"),
+        fullscreen_check    (CheckButton::Create(L"")),
+        vsync_check         (CheckButton::Create(L"")),
+        antialiasing_combo  (ComboBox::Create()),
+        style_combo         (ComboBox::Create()),
+        camera_bobbing_check(CheckButton::Create(L"")),
+        fullscreen_opt    (Option("", fullscreen_check)),
+        vsync_opt         (Option("", vsync_check)),
+        antialiasing_opt  (Option("", antialiasing_combo)),
+        style_opt         (Option("", style_combo)),
+        camera_bobbing_opt(Option("", camera_bobbing_check)) {
+    window_box->Pack(fullscreen_opt.to_widget());
+    window_box->Pack(antialiasing_opt.to_widget());
+    window_box->Pack(vsync_opt.to_widget());
+    window_box->Pack(style_opt.to_widget());
+    window_box->Pack(camera_bobbing_opt.to_widget());
 
-    initSignals();
-    initOptions();
+    init_signals();
+    init_options();
 
-    resetText();
+    reset_text();
 
     center();
 }
 
 void
-OptionsGraphics::onResetText() {
-    fullscreenOpt   .changeText(pgtx("options", "Fullscreen"));
-    vsyncOpt        .changeText(pgtx("options", "V-Sync"));
-    antialiasingOpt .changeText(pgtx("options", "Antialiasing"));
-    styleOpt        .changeText(pgtx("options", "Style"));
-    cameraBobbingOpt.changeText(pgtx("options", "Camera Bobbing"));
+OptionsGraphics::on_reset_text() {
+    fullscreen_opt   .change_text(pgtx("options", "Fullscreen"));
+    vsync_opt        .change_text(pgtx("options", "V-Sync"));
+    antialiasing_opt .change_text(pgtx("options", "Antialiasing"));
+    style_opt        .change_text(pgtx("options", "Style"));
+    camera_bobbing_opt.change_text(pgtx("options", "Camera Bobbing"));
 
-    styleCombo->ChangeItem(0, pgtx("options", "Classic"));
-    styleCombo->ChangeItem(1, pgtx("options", "Gray"));
-    styleCombo->ChangeItem(2, pgtx("options", "Brick"));
-    styleCombo->ChangeItem(3, pgtx("options", "Night Brick"));
+    style_combo->ChangeItem(0, pgtx("options", "Classic"));
+    style_combo->ChangeItem(1, pgtx("options", "Gray"));
+    style_combo->ChangeItem(2, pgtx("options", "Brick"));
+    style_combo->ChangeItem(3, pgtx("options", "Night Brick"));
 
-    styleCombo->RequestResize();
+    style_combo->RequestResize();
 
-    antialiasingCombo->ChangeItem(0, pgtx("options", "No"));
+    antialiasing_combo->ChangeItem(0, pgtx("options", "No"));
 
-    antialiasingCombo->RequestResize();
+    antialiasing_combo->RequestResize();
 }
 
 OptionsGraphics::~OptionsGraphics() = default;

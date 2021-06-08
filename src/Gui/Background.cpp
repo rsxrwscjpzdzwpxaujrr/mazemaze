@@ -32,17 +32,17 @@ Background::Background(ITickable<void*>* tickable, IRenderable* renderable, Came
 Background::~Background() = default;
 
 void
-Background::tick(void* _, float deltaTime) {
-    tickable->tick(_, deltaTime);
+Background::tick(void* _, float delta_time) {
+    tickable->tick(_, delta_time);
 }
 
 void
 Background::render() {
     glPushMatrix();
 
-    camera->setupPerspective();
-    camera->setupRotation();
-    camera->setupTranslation();
+    camera->setup_perspective();
+    camera->setup_rotation();
+    camera->setup_translation();
 
     renderable->render();
 
@@ -50,17 +50,17 @@ Background::render() {
 }
 
 ITickable<void*>*
-Background::getTickable() const {
+Background::get_tickable() const {
     return tickable;
 }
 
 IRenderable*
-Background::getRenderable() const {
+Background::get_renderable() const {
     return renderable;
 }
 
 Camera*
-Background::getCamera() {
+Background::get_camera() {
     return camera;
 }
 

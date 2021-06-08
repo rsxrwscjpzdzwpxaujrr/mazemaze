@@ -29,53 +29,53 @@ namespace gui {
 namespace states {
 
 void
-Progress::initSignals() {
-    backButton->GetSignal(Widget::OnLeftClick).Connect([this] {
+Progress::init_signals() {
+    back_button->GetSignal(Widget::OnLeftClick).Connect([this] {
         if (game) {
-            game->getMaze().cancelGeneration();
-            mainMenu.back();
+            game->get_maze().cancel_generation();
+            main_menu.back();
         }
     });
 }
 
-Progress::Progress(MainMenu& mainMenu) :
-        State(mainMenu.getDesktop(), "Progress"),
-        mainMenu(mainMenu),
-        backButton(Button::Create()),
-        mazeSizeLabel(Label::Create()),
-        progressBar(ProgressBar::Create()),
+Progress::Progress(MainMenu& main_menu) :
+        State(main_menu.get_desktop(), "Progress"),
+        main_menu(main_menu),
+        back_button(Button::Create()),
+        maze_size_label(Label::Create()),
+        progress_bar(ProgressBar::Create()),
         game(nullptr) {
-    resetText();
+    reset_text();
 
-    auto buttonBox           = Box::Create(Box::Orientation::HORIZONTAL);
-    auto separatorVertical   = Separator::Create(Separator::Orientation::VERTICAL);
-    auto window              = Window::Create(Window::Style::BACKGROUND);
-    auto windowBox           = Box::Create(Box::Orientation::VERTICAL);
+    auto button_box         = Box::Create(Box::Orientation::HORIZONTAL);
+    auto separator_vertical = Separator::Create(Separator::Orientation::VERTICAL);
+    auto window             = Window::Create(Window::Style::BACKGROUND);
+    auto window_box         = Box::Create(Box::Orientation::VERTICAL);
 
-    separatorVertical->SetRequisition({0.0f, 20.0f});
+    separator_vertical->SetRequisition({0.0f, 20.0f});
 
-    mazeSizeLabel->SetClass("newGameMazeSize");
+    maze_size_label->SetClass("newGameMazeSize");
 
-    windowBox->Pack(mazeSizeLabel);
-    windowBox->Pack(progressBar);
-    windowBox->SetSpacing(20.0f);
+    window_box->Pack(maze_size_label);
+    window_box->Pack(progress_bar);
+    window_box->SetSpacing(20.0f);
 
-    window->Add(windowBox);
+    window->Add(window_box);
 
-    buttonBox->Pack(backButton);
-    buttonBox->SetClass("nogap");
+    button_box->Pack(back_button);
+    button_box->SetClass("nogap");
 
     window->SetRequisition({384.0f, 0.0f});
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
     box->Pack(window);
-    box->Pack(separatorVertical);
-    box->Pack(buttonBox);
+    box->Pack(separator_vertical);
+    box->Pack(button_box);
 
     desktop.Add(box);
 
-    initSignals();
+    init_signals();
 
     center();
 }
@@ -83,20 +83,20 @@ Progress::Progress(MainMenu& mainMenu) :
 void
 Progress::tick(void*, float) {
     if (game) {
-        if (game->isLoaded()) {
-            progressBar->SetFraction(0);
-            mainMenu.startGame();
+        if (game->is_loaded()) {
+            progress_bar->SetFraction(0);
+            main_menu.start_game();
             return;
         }
 
-        progressBar->SetFraction(game->getMaze().getGenerationProgress());
+        progress_bar->SetFraction(game->get_maze().get_generation_progress());
     }
 }
 
 void
-Progress::resetText() {
-    backButton   ->SetLabel(pgtx("progress", "Cancel"));
-    mazeSizeLabel->SetText (pgtx("progress", "Maze generation..."));
+Progress::reset_text() {
+    back_button   ->SetLabel(pgtx("progress", "Cancel"));
+    maze_size_label->SetText (pgtx("progress", "Maze generation..."));
 }
 
 void

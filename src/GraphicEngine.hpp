@@ -28,25 +28,25 @@
 namespace mazemaze {
 
 class GraphicEngine {
-public:  
-    void openWindow();
+public:
+    void open_window();
 
-    void loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu);
-    void waitKey(std::function<void (const sf::Keyboard::Key)> const& onKey);
-    void unwaitKey();
+    void loop(sfg::SFGUI& sfgui, gui::MainMenu& main_menu);
+    void wait_key(std::function<void (const sf::Keyboard::Key)> const& onKey);
+    void unwait_key();
 
-    void setFullscreen(bool fullscreen);
-    void setAntialiasing(unsigned int antialiasing);
-    void setVsync(bool vsync);
-    void setOnSetStatesCallback(std::function<void ()> const& onSetStates);
+    void set_fullscreen(bool fullscreen);
+    void set_antialiasing(unsigned int antialiasing);
+    void set_vsync(bool vsync);
+    void set_on_set_states_callback(std::function<void ()> const& on_set_states);
 
-    sf::RenderWindow& getWindow() const;
-    int getWidth() const;
-    int getHeight() const;
-    unsigned int getMaxAntialiasing() const;
-    bool getFullscreen() const;
-    bool getVsync() const;
-    bool hasFocus() const;
+    sf::RenderWindow& get_window() const;
+    int get_width() const;
+    int get_height() const;
+    unsigned int get_max_antialiasing() const;
+    bool get_fullscreen() const;
+    bool get_vsync() const;
+    bool has_focus() const;
 
     GraphicEngine(GraphicEngine const&) = delete;
     void operator= (GraphicEngine const&) = delete;
@@ -62,36 +62,36 @@ private:
 
     sf::RenderWindow* window;
 
-    sf::Vector2i oldWindowPos;
-    sf::Vector2u oldWindowSize;
+    sf::Vector2i old_window_pos;
+    sf::Vector2u old_window_size;
 #ifdef _WIN32
-    bool oldMaximized;
+    bool old_maximized;
 #endif
 
     int width;
     int height;
     bool running;
-    bool needReopen;
-    bool needReopenEvent;
+    bool need_reopen;
+    bool need_reopen_event;
     bool fullscreen;
     bool vsync;
     bool focus;
-    unsigned int maxAntialiasing;
+    unsigned int max_antialiasing;
     sf::ContextSettings settings;
-    sf::VideoMode videoMode;
+    sf::VideoMode video_mode;
 
     sf::Image icon;
 
-    std::function<void (const sf::Keyboard::Key)> onKeyWaiting;
-    std::function<void ()> onSetStates;
+    std::function<void (const sf::Keyboard::Key)> on_key_waiting;
+    std::function<void ()> on_set_states;
 
-    void openWindow(unsigned int width, unsigned int height, bool fullscreen);
-    void openWindow(sf::VideoMode videoMode, bool fullscreen);
+    void open_window(unsigned int width, unsigned int height, bool fullscreen);
+    void open_window(sf::VideoMode video_mode, bool fullscreen);
     void update();
-    void setStates();
-    unsigned int calcMaxAntialiasing();
+    void set_states();
+    unsigned int calc_max_antialiasing();
 #ifdef _WIN32
-    void updateOldMaximized();
+    void update_old_maximized();
 #endif
     void handle_events(gui::MainMenu& main_menu);
 };

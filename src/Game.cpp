@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,68 +42,74 @@
 
 namespace mazemaze {
 
-Game::Game(gui::MainMenu& mainMenu, Settings& settings, Saver& saver, int mazeWidth, int mazeHeight) :
+Game::Game(
+    gui::MainMenu& main_menu,
+    Settings& settings,
+    Saver& saver,
+    int maze_width,
+    int maze_height
+) :
         gui::Background(this, this, nullptr),
-        maze(mazeWidth, mazeHeight),
-        mazeRenderer(0),
-        mazeRenderers{nullptr},
+        maze(maze_width, maze_height),
+        maze_renderer(0),
+        maze_renderers{nullptr},
         player(1.5f, 0.0f, 1.5f),
         settings(settings),
         saver(saver),
-        mainMenu(mainMenu),
+        main_menu(main_menu),
         paused(false),
         won(false),
-        oldPauseKeyState(false),
+        old_pause_key_state(false),
         time(0.0f),
         loaded(false) {
     Logger::inst().log_debug("Constructor of Game called.");
 
-    saver.setGame(*this);
+    saver.set_game(*this);
 
-    mazeRenderers[0] = new renderers::Classic(*this);
-    mazeRenderers[1] = new renderers::Gray(*this);
-    mazeRenderers[2] = new renderers::Brick(*this);
-    mazeRenderers[3] = new renderers::NightBrick(*this);
+    maze_renderers[0] = new renderers::Classic(*this);
+    maze_renderers[1] = new renderers::Gray(*this);
+    maze_renderers[2] = new renderers::Brick(*this);
+    maze_renderers[3] = new renderers::NightBrick(*this);
 
-    mazeRenderers[mazeRenderer]->enable();
+    maze_renderers[maze_renderer]->enable();
 
-    tickableHandler.addTickable(mazeRenderers[mazeRenderer]);
-    tickableHandler.addTickable(&player);
+    tickable_handler.addTickable(maze_renderers[maze_renderer]);
+    tickable_handler.addTickable(&player);
 
-    openGui();
+    open_gui();
 }
 
 Game::~Game() {
     Logger::inst().log_status("Game closed.");
 
-    mainMenu.removeState(wonState);
-    mainMenu.removeState(pauseState);
+    main_menu.remove_state(won_state);
+    main_menu.remove_state(pause_state);
 
-    mazeRenderers[mazeRenderer]->disable();
+    maze_renderers[maze_renderer]->disable();
 
     for (int i = 0; i < 16; i++)
-        if (mazeRenderers[i] != nullptr)
-            delete mazeRenderers[i];
+        if (maze_renderers[i] != nullptr)
+            delete maze_renderers[i];
 }
 
 void
-Game::newGame() {
-    int seed = genSeed();
+Game::new_game() {
+    int seed = gen_seed();
 
-    std::thread genThread([this, seed] {
+    std::thread gen_thread([this, seed] {
         if (maze.generate(seed)) {
             player.start(maze);
-            onLoad();
+            on_load();
         }
     });
 
-    genThread.detach();
+    gen_thread.detach();
 }
 
 void
-Game::onLoad() {
-    setPaused(false);
-    setWon(false);
+Game::on_load() {
+    set_paused(false);
+    set_won(false);
 
     loaded = true;
 
@@ -112,39 +118,39 @@ Game::onLoad() {
 
 void
 Game::tick(void*, float deltaTime) {
-    GraphicEngine& graphicEngine = GraphicEngine::inst();
+    GraphicEngine& graphic_engine = GraphicEngine::inst();
 
     if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) &&
-            oldPauseKeyState &&
-            graphicEngine.hasFocus())
-        setPaused(!paused);
+            old_pause_key_state &&
+            graphic_engine.has_focus())
+        set_paused(!paused);
 
-    oldPauseKeyState = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+    old_pause_key_state = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
-    sf::RenderWindow& window = graphicEngine.getWindow();
+    sf::RenderWindow& window = graphic_engine.get_window();
     window.setMouseCursorVisible(paused || won);
 
-    setRenderer(settings.getRenderer());
+    set_renderer(settings.get_renderer());
 
-    tickableHandler.tick(*this, deltaTime);
+    tickable_handler.tick(*this, deltaTime);
 
     if (!(paused || won)) {
-        if (time - saver.getLastSaveTime() >= settings.getAutosaveTime() && settings.getAutosave())
+        if (time - saver.get_last_save_time() >= settings.get_autosave_time() && settings.get_autosave())
             saver.save();
 
-        if (    static_cast<int>(player.getX()) == maze.getExitX() &&
-                static_cast<int>(player.getZ()) == maze.getExitY())
-            setWon(true);
+        if (    static_cast<int>(player.get_x()) == maze.get_exit_x() &&
+                static_cast<int>(player.get_z()) == maze.get_exit_y())
+            set_won(true);
 
         time += deltaTime;
     }
 }
 
 void
-Game::openGui() {
+Game::open_gui() {
     using namespace gui::states;
-    pauseState = mainMenu.addState(new Pause(mainMenu, *this));
-    wonState   = mainMenu.addState(new Win  (mainMenu, *this));
+    pause_state = main_menu.add_state(new Pause(main_menu, *this));
+    won_state   = main_menu.add_state(new Win  (main_menu, *this));
 }
 
 void
@@ -152,23 +158,23 @@ Game::stop() {
     Logger::inst().log_debug("Game wants exit.");
 
     if (won)
-        saver.deleteSave();
+        saver.delete_save();
     else
         saver.save();
 
-    mainMenu.stopGame();
+    main_menu.stop_game();
 }
 
 void
 Game::render() {
     glPushMatrix();
 
-    player.getCamera().setupPerspective();
+    player.get_camera().setup_perspective();
 
-    player.getCamera().setupRotation();
+    player.get_camera().setup_rotation();
 
-    player.getCamera().setupTranslation();
-    mazeRenderers[mazeRenderer]->render();
+    player.get_camera().setup_translation();
+    maze_renderers[maze_renderer]->render();
 
     glPopMatrix();
 
@@ -194,95 +200,95 @@ Game::render() {
 }
 
 void
-Game::setPaused(bool paused) {
+Game::set_paused(bool paused) {
     if (Game::paused != paused && !(paused && Game::won)) {
         Game::paused = paused;
 
         if (paused) {
             Logger::inst().log_debug("Game paused.");
 
-            mainMenu.setState(pauseState);
+            main_menu.set_state(pause_state);
 
-            if (settings.getAutosave())
+            if (settings.get_autosave())
                 saver.save();
         } else {
             Logger::inst().log_debug("Game unpaused.");
 
-            mainMenu.backTo(-1);
+            main_menu.back_to(-1);
         }
     }
 }
 
 void
-Game::setRenderer(int id) {
-    if (id != mazeRenderer) {
-        mazeRenderers[mazeRenderer]->disable();
-        tickableHandler.removeTickable(mazeRenderers[mazeRenderer]);
-        mazeRenderer = id;
-        tickableHandler.addTickable(mazeRenderers[mazeRenderer]);
-        mazeRenderers[mazeRenderer]->enable();
+Game::set_renderer(int id) {
+    if (id != maze_renderer) {
+        maze_renderers[maze_renderer]->disable();
+        tickable_handler.removeTickable(maze_renderers[maze_renderer]);
+        maze_renderer = id;
+        tickable_handler.addTickable(maze_renderers[maze_renderer]);
+        maze_renderers[maze_renderer]->enable();
     }
 }
 
 void
-Game::setWon(bool won) {
+Game::set_won(bool won) {
     if (Game::won != won) {
         Game::won = won;
 
         if (won)
-            mainMenu.setState(wonState);
+            main_menu.set_state(won_state);
         else
-            mainMenu.backTo(-1);
+            main_menu.back_to(-1);
     }
 }
 
 void
-Game::setTime(float time) {
+Game::set_time(float time) {
     Game::time = time;
 }
 
 bool
-Game::isPaused() const {
+Game::is_paused() const {
     return paused;
 }
 
 bool
-Game::isWon() const {
+Game::is_won() const {
     return won;
 }
 
 bool
-Game::isLoaded() const {
+Game::is_loaded() const {
     return loaded;
 }
 
 float
-Game::getTime() const {
+Game::get_time() const {
     return time;
 }
 
 Maze&
-Game::getMaze() {
+Game::get_maze() {
     return maze;
 }
 
 Player&
-Game::getPlayer() {
+Game::get_player() {
     return player;
 }
 
 Camera*
-Game::getCamera() {
-    return &player.getCamera();
+Game::get_camera() {
+    return &player.get_camera();
 }
 
 Settings&
-Game::getSettings() const {
+Game::get_settings() const {
     return settings;
 }
 
 unsigned int
-Game::genSeed() {
+Game::gen_seed() {
     using namespace std::chrono;
 
     auto now = system_clock().now().time_since_epoch();

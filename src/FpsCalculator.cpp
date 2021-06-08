@@ -19,48 +19,48 @@
 
 namespace mazemaze {
 
-FpsCalculator::FpsCalculator(std::function<void (float)> const& onUpdate, float updateInterval) :
-        onUpdate(onUpdate),
-        updateInterval(updateInterval),
-        timePassed(0.0f),
-        deltaSum(0.0f),
-        deltaCount(0.0f),
-        lastFps(0.0f) {}
+FpsCalculator::FpsCalculator(std::function<void (float)> const& on_update, float update_interval) :
+        on_update(on_update),
+        update_interval(update_interval),
+        time_passed(0.0f),
+        delta_sum(0.0f),
+        delta_count(0.0f),
+        last_fps(0.0f) {}
 
 FpsCalculator::~FpsCalculator() = default;
 
 void
-FpsCalculator::tick(void*, float deltaTime) {
-    timePassed += deltaTime;
-    deltaSum += deltaTime;
-    deltaCount++;
+FpsCalculator::tick(void*, float delta_time) {
+    time_passed += delta_time;
+    delta_sum += delta_time;
+    delta_count++;
 
-    if (timePassed >= updateInterval) {
-        float bigCount = static_cast<int>(timePassed / updateInterval);
-        timePassed -= updateInterval * bigCount;
+    if (time_passed >= update_interval) {
+        float big_count = static_cast<int>(time_passed / update_interval);
+        time_passed -= update_interval * big_count;
 
-        lastFps = 1.0f / (deltaSum / deltaCount);
+        last_fps = 1.0f / (delta_sum / delta_count);
 
-        onUpdate(lastFps);
+        on_update(last_fps);
 
-        deltaCount = 0.0f;
-        deltaSum = 0.0;
+        delta_count = 0.0f;
+        delta_sum = 0.0;
     }
 }
 
 float
-FpsCalculator::getLastFps() const {
-    return lastFps;
+FpsCalculator::get_last_fps() const {
+    return last_fps;
 }
 
 float
-FpsCalculator::getUpdateInterval() const {
-    return updateInterval;
+FpsCalculator::get_update_interval() const {
+    return update_interval;
 }
 
 void
-FpsCalculator::setUpdateInterval(float updateInterval) {
-    FpsCalculator::updateInterval = updateInterval;
+FpsCalculator::set_update_interval(float update_interval) {
+    FpsCalculator::update_interval = update_interval;
 }
 
 }

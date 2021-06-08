@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,14 +36,14 @@ Maze::Maze(int width, int height) :
     Maze::width  = width  * 2 + 1;
     Maze::height = height * 2 + 1;
 
-    chunksX = Maze::width  / Chunk::SIZE;
-    chunksY = Maze::height / Chunk::SIZE;
+    chunks_x = Maze::width  / Chunk::SIZE;
+    chunks_y = Maze::height / Chunk::SIZE;
 
     if (width % Chunk::SIZE != 0)
-        chunksX++;
+        chunks_x++;
 
     if (height % Chunk::SIZE != 0)
-        chunksY++;
+        chunks_y++;
 }
 
 Maze::~Maze() {
@@ -51,25 +51,25 @@ Maze::~Maze() {
 }
 
 bool
-Maze::genStep(std::stack<Generator>& generators, Generator* generator, int side) {
+Maze::gen_step(std::stack<Generator>& generators, Generator* generator, int side) {
     int x;
     int y;
 
-    sideToCoords(side, x, y);
+    side_to_coords(side, x, y);
 
     int newx = generator->x + x * 2;
     int newy = generator->y + y * 2;
 
     bool inbound = newx >= 0 && newx < width && newy >= 0 && newy < height;
 
-    if (!inbound || getOpened(newx, newy)) {
+    if (!inbound || get_opened(newx, newy)) {
         generator->tried |= 1 << side;
 
         return false;
     } else {
-        setOpened(generator->x + x, generator->y + y, true);
-        setOpened(newx, newy, true);
-        anglesOpened++;
+        set_opened(generator->x + x, generator->y + y, true);
+        set_opened(newx, newy, true);
+        angles_opened++;
 
         generators.emplace(Generator(newx, newy, side));
 
@@ -78,7 +78,7 @@ Maze::genStep(std::stack<Generator>& generators, Generator* generator, int side)
 }
 
 unsigned int
-Maze::getSeed() const {
+Maze::get_seed() const {
     return seed;
 }
 
@@ -88,32 +88,32 @@ Maze::generate(unsigned int seed) {
                                  (width - 1) / 2,
                                  (height - 1) / 2,
                                  seed));
-    initChunks();
+    init_chunks();
 
-    anglesOpened = 0;
-    needCancel = false;
+    angles_opened = 0;
+    need_cancel = false;
 
     std::stack<Generator> generators;
     generators.emplace(Generator(1, 1));
-    Generator* currentGenerator = &generators.top();
+    Generator* current_generator = &generators.top();
 
-    setOpened(currentGenerator->x, currentGenerator->y, true);
+    set_opened(current_generator->x, current_generator->y, true);
 
-    anglesOpened++;
+    angles_opened++;
 
-    std::mt19937 randGen(seed);
-    std::uniform_int_distribution<> sideDistrib(0, 3);
+    std::mt19937 rand_gen(seed);
+    std::uniform_int_distribution<> side_distrib(0, 3);
 
-    genStart(randGen);
-    genExit(randGen);
+    gen_start(rand_gen);
+    gen_exit(rand_gen);
 
     bool done = false;
 
     sf::Clock clock;
-    sf::Time lastTime = clock.getElapsedTime();
+    sf::Time last_time = clock.getElapsedTime();
 
     while (!done) {
-        bool goBack = currentGenerator->tried == 0xf;
+        bool goBack = current_generator->tried == 0xf;
 
         if (goBack) {
             generators.pop();
@@ -123,34 +123,34 @@ Maze::generate(unsigned int seed) {
                 break;
             }
 
-            currentGenerator = &generators.top();
+            current_generator = &generators.top();
         } else {
-            int side = sideDistrib(randGen);
+            int side = side_distrib(rand_gen);
 
-            while (currentGenerator->tried & (1 << side)) {
-                side = sideDistrib(randGen);
+            while (current_generator->tried & (1 << side)) {
+                side = side_distrib(rand_gen);
             }
 
-            if (genStep(generators, currentGenerator, side)) {
-                currentGenerator = &generators.top();
+            if (gen_step(generators, current_generator, side)) {
+                current_generator = &generators.top();
             }
         }
 
-        if (clock.getElapsedTime() - lastTime >= sf::milliseconds(1000)) {
-            Logger::inst().log_debug(fmt("Progress: %.1f%%", getGenerationProgress() * 100.0f));
-            lastTime = clock.getElapsedTime();
+        if (clock.getElapsedTime() - last_time >= sf::milliseconds(1000)) {
+            Logger::inst().log_debug(fmt("Progress: %.1f%%", get_generation_progress() * 100.0f));
+            last_time = clock.getElapsedTime();
         }
 
-        if (needCancel) {
-            needCancel = false;
-            anglesOpened = 0;
+        if (need_cancel) {
+            need_cancel = false;
+            angles_opened = 0;
 
             Logger::inst().log_warn("Maze generation canceled.");
             return false;
         }
     }
 
-    setOpened(getExitX(), getExitY(), true);
+    set_opened(get_exit_x(), get_exit_y(), true);
 
     Maze::seed = seed;
 
@@ -161,164 +161,164 @@ Maze::generate(unsigned int seed) {
 }
 
 void
-Maze::cancelGeneration() {
-    needCancel = true;
+Maze::cancel_generation() {
+    need_cancel = true;
 }
 
 float
-Maze::getGenerationProgress() const {
-    return anglesOpened / static_cast<float>(((width - 1) / 2) * ((height - 1) / 2));
+Maze::get_generation_progress() const {
+    return angles_opened / static_cast<float>(((width - 1) / 2) * ((height - 1) / 2));
 }
 
 void
-Maze::setExitX(int exitX) {
-    Maze::exitX = exitX;
+Maze::set_exit_x(int exitX) {
+    Maze::exit_x = exitX;
 }
 
 void
-Maze::setExitY(int exitY) {
-    Maze::exitY = exitY;
+Maze::set_exit_y(int exitY) {
+    Maze::exit_y = exitY;
 }
 
 void
-Maze::setStartX(int startX) {
-    Maze::startX = startX;
+Maze::set_start_x(int startX) {
+    Maze::start_x = startX;
 }
 
 void
-Maze::setStartY(int startY) {
-    Maze::startY = startY;
+Maze::set_start_y(int startY) {
+    Maze::start_y = startY;
 }
 
 
 bool
-Maze::getOpened(int x, int y) {
+Maze::get_opened(int x, int y) {
     if (!chunks || x < 0 || x >= width || y < 0 || y >= height)
         return true;
 
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 
-    return chunks[((uy / Chunk::SIZE) * chunksX) + (ux / Chunk::SIZE)]
-           .getOpened(ux % Chunk::SIZE, uy % Chunk::SIZE);
+    return chunks[((uy / Chunk::SIZE) * chunks_x) + (ux / Chunk::SIZE)]
+           .get_opened(ux % Chunk::SIZE, uy % Chunk::SIZE);
 }
 
 void
-Maze::setOpened(int x, int y, bool opened) {
+Maze::set_opened(int x, int y, bool opened) {
     if (!chunks)
         return;
 
     unsigned int ux = static_cast<unsigned int>(x);
     unsigned int uy = static_cast<unsigned int>(y);
 
-    chunks[((uy / Chunk::SIZE) * chunksX) + (ux / Chunk::SIZE)]
-            .setOpened(ux % Chunk::SIZE, uy % Chunk::SIZE, opened);
+    chunks[((uy / Chunk::SIZE) * chunks_x) + (ux / Chunk::SIZE)]
+            .set_opened(ux % Chunk::SIZE, uy % Chunk::SIZE, opened);
 }
 
 void
-Maze::genExit(std::mt19937& random) {
+Maze::gen_exit(std::mt19937& random) {
     std::uniform_int_distribution<> distrib(0, 3);
-    std::uniform_int_distribution<> boolDistrib(0, 1);
+    std::uniform_int_distribution<> bool_distrib(0, 1);
 
     do {
         int angle = distrib(random);
 
-        exitX = ((angle % 2) * (width - 3)) + 1;
-        exitY = ((angle / 2) * (height - 3)) + 1;
-    } while (exitX == startX && exitY == startY && !(width <= 3 && height <= 3));
+        exit_x = ((angle % 2) * (width - 3)) + 1;
+        exit_y = ((angle / 2) * (height - 3)) + 1;
+    } while (exit_x == start_x && exit_y == start_y && !(width <= 3 && height <= 3));
 
-    bool direction = boolDistrib(random);
+    bool direction = bool_distrib(random);
 
-    int* directedCoord;
+    int* directed_coord;
 
     if (direction)
-        directedCoord = &exitX;
+        directed_coord = &exit_x;
     else
-        directedCoord = &exitY;
+        directed_coord = &exit_y;
 
-    if (*directedCoord == 1)
-        (*directedCoord)--;
+    if (*directed_coord == 1)
+        (*directed_coord)--;
     else
-        (*directedCoord)++;
+        (*directed_coord)++;
 }
 
 void
-Maze::genStart(std::mt19937& random) {
+Maze::gen_start(std::mt19937& random) {
     std::uniform_int_distribution<> distrib(0, 3);
 
     int angle = distrib(random);
 
-    startX = ((angle % 2) * (width - 3)) + 1;
-    startY = ((angle / 2) * (height - 3)) + 1;
+    start_x = ((angle % 2) * (width - 3)) + 1;
+    start_y = ((angle / 2) * (height - 3)) + 1;
 }
 
 int
-Maze::getWidth() const {
+Maze::get_width() const {
     return width;
 }
 
 int
-Maze::getHeight() const {
+Maze::get_height() const {
     return height;
 }
 
 int
-Maze::getExitX() const {
-    return exitX;
+Maze::get_exit_x() const {
+    return exit_x;
 }
 
 int
-Maze::getExitY() const {
-    return exitY;
+Maze::get_exit_y() const {
+    return exit_y;
 }
 
 int
-Maze::getStartX() const {
-    return startX;
+Maze::get_start_x() const {
+    return start_x;
 }
 
 int
-Maze::getStartY() const {
-    return startY;
+Maze::get_start_y() const {
+    return start_y;
 }
 
 Chunk*
-Maze::getChunks() const {
+Maze::get_chunks() const {
     return chunks;
 }
 
 int
-Maze::getChunksCount() const {
-    return chunksX * chunksY;
+Maze::get_chunks_count() const {
+    return chunks_x * chunks_y;
 }
 
 unsigned int
-Maze::getChunksX() const {
-    return chunksX;
+Maze::get_chunks_x() const {
+    return chunks_x;
 }
 
 unsigned int
-Maze::getChunksY() const {
-    return chunksY;
+Maze::get_chunks_y() const {
+    return chunks_y;
 }
 
 void
-Maze::setSeed(unsigned int seed) {
+Maze::set_seed(unsigned int seed) {
     Maze::seed = seed;
 }
 
 void
-Maze::initChunks() {
+Maze::init_chunks() {
     if (chunks)
         delete [] chunks;
 
-    chunks = new Chunk[getChunksCount()] {Chunk()};
+    chunks = new Chunk[get_chunks_count()] { Chunk() };
 }
 
 Maze::Generator::Generator(short x, short y) : x(x), y(y), tried(0) {}
 
 Maze::Generator::Generator(short x, short y, int side) : x(x), y(y) {
-    static const int oppside[4] {1, 0, 3, 2};
+    static const int oppside[4] { 1, 0, 3, 2 };
 
     tried = 1 << oppside[side];
 }

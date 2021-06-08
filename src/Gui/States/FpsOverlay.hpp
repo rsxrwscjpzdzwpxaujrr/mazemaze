@@ -33,21 +33,21 @@ namespace states {
 
 class FpsOverlay : public State {
 public:
-    explicit FpsOverlay(MainMenu& mainMenu, Settings& settings);
+    explicit FpsOverlay(MainMenu& main_menu, Settings& settings);
     ~FpsOverlay() override;
 
     void show(bool show) override;
 
-    void resetText() override;
+    void reset_text() override;
 
 private:
     sfg::Label::Ptr fpsLabel;
     Settings& settings;
-    FpsCalculator fpsCalculator;
+    FpsCalculator fps_calculator;
 
     bool showing;
 
-    void tick(void*, float deltaTime) override;
+    void tick(void*, float delta_time) override;
     void center() override;
 };
 

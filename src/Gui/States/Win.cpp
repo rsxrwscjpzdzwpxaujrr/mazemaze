@@ -30,44 +30,43 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Win::Win(MainMenu& mainMenu, Game& game) :
-        State(mainMenu.getDesktop(), "State"),
-        exitButton(Button::Create()),
-        winLabel(Label::Create()),
+Win::Win(MainMenu& main_menu, Game& game) :
+        State(main_menu.get_desktop(), "State"),
+        exit_button(Button::Create()),
+        win_label(Label::Create()),
+        win_note_time_label(Label::Create()),
+        win_note_size_label(Label::Create()),
         game(game) {
-    resetText();
+    reset_text();
 
-    auto winNoteTimeAlignment = Alignment::Create();
-    auto winNoteSizeAlignment = Alignment::Create();
+    auto win_note_time_alignment = Alignment::Create();
+    auto win_note_size_alignment = Alignment::Create();
 
-    winLabel->SetClass("win");
+    win_label->SetClass("win");
 
-    winNoteTimeLabel = Label::Create();
-    winNoteSizeLabel = Label::Create();
+    win_note_time_alignment->SetAlignment({0.0f, 0.5f});
+    win_note_time_alignment->SetScale({0.0f, 0.0f});
+    win_note_time_alignment->Add(win_note_time_label);
 
-    winNoteTimeAlignment->SetAlignment({0.0f, 0.5f});
-    winNoteTimeAlignment->SetScale({0.0f, 0.0f});
-    winNoteTimeAlignment->Add(winNoteTimeLabel);
-
-    winNoteSizeAlignment->SetAlignment({0.0f, 0.5f});
-    winNoteSizeAlignment->SetScale({0.0f, 0.0f});
-    winNoteSizeAlignment->Add(winNoteSizeLabel);
+    win_note_size_alignment->SetAlignment({0.0f, 0.5f});
+    win_note_size_alignment->SetScale({0.0f, 0.0f});
+    win_note_size_alignment->Add(win_note_size_label);
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
-    box->Pack(winLabel);
+    box->Pack(win_label);
     box->Pack(Separator::Create(Separator::Orientation::VERTICAL));
-    box->Pack(winNoteTimeAlignment);
-    box->Pack(winNoteSizeAlignment);
+    box->Pack(win_note_time_alignment);
+    box->Pack(win_note_size_alignment);
     box->Pack(Separator::Create(Separator::Orientation::VERTICAL));
-    box->Pack(exitButton);
+    box->Pack(exit_button);
 
     box->SetSpacing(20.0f);
     box->SetRequisition({400.0f, box->GetRequisition().y});
 
     desktop.Add(box);
 
-    exitButton->GetSignal(Widget::OnLeftClick).Connect([&game] {
+    exit_button->GetSignal(Widget::OnLeftClick).Connect([&game] {
         game.stop();
     });
 
@@ -81,45 +80,45 @@ Win::show(bool show) {
     box->Show(show);
 
     if (show)
-        updateLabels(game);
+        update_labels(game);
 }
 
 void
-Win::resetText() {
-    exitButton->SetLabel(pgtx("win", "Exit to main menu"));
-    winLabel  ->SetText (pgtx("win", "You won!"));
+Win::reset_text() {
+    exit_button->SetLabel(pgtx("win", "Exit to main menu"));
+    win_label  ->SetText (pgtx("win", "You won!"));
 }
 
 void
-Win::updateLabels(Game& game) {
-    int time  = static_cast<int>(game.getTime());
+Win::update_labels(Game& game) {
+    int time  = static_cast<int>(game.get_time());
     int secs  = time % 60;
     int mins  = (time / 60) % 60;
     int hours = (time / (60 * 60)) % 24;
     int days  = time / (60 * 60 * 24);
 
-    sf::String timeString(pgtx("win", "Time: "));
+    sf::String time_string(pgtx("win", "Time: "));
 
     if (days > 0)
-        timeString = timeString + npgtxf("win", "%d day ", "%d days ", days);
+        time_string = time_string + npgtxf("win", "%d day ", "%d days ", days);
 
     if (hours > 0)
-        timeString = timeString + npgtxf("win", "%d hour ", "%d hours ", hours);
+        time_string = time_string + npgtxf("win", "%d hour ", "%d hours ", hours);
 
     if (mins > 0)
-        timeString = timeString + npgtxf("win", "%d min ", "%d mins ", mins);
+        time_string = time_string + npgtxf("win", "%d min ", "%d mins ", mins);
 
     if (secs > 0)
-        timeString = timeString + npgtxf("win", "%d sec ", "%d secs ", secs);
+        time_string = time_string + npgtxf("win", "%d sec ", "%d secs ", secs);
 
-    winNoteTimeLabel->SetText(timeString);
+    win_note_time_label->SetText(time_string);
 
-    Maze& maze = game.getMaze();
-    const sf::String mazeSize = std::to_wstring((maze.getWidth()  - 1) / 2) +
-                                L"x" +
-                                std::to_wstring((maze.getHeight() - 1) / 2);
+    Maze& maze = game.get_maze();
+    const sf::String maze_size = std::to_wstring((maze.get_width()  - 1) / 2) +
+                                 L"x" +
+                                 std::to_wstring((maze.get_height() - 1) / 2);
 
-    winNoteSizeLabel->SetText(sf::String(pgtx("win", "Maze size: ")) + mazeSize);
+    win_note_size_label->SetText(sf::String(pgtx("win", "Maze size: ")) + maze_size);
 
     center();
 }

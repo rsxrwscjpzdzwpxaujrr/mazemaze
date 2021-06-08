@@ -31,27 +31,27 @@ public:
 
     void enable();
     void disable();
-    void tick(Game& game, float deltaTime) override;
+    void tick(Game& game, float delta_time) override;
     void render();
 
 protected:
     int* visible;
     Maze& maze;
     bool* compiled;
-    unsigned int drawList;
+    unsigned int draw_list;
     bool deleted;
 
-    virtual void setStates();
-    virtual void onEnable();
-    virtual void onDisable();
-    virtual void onTick(float deltaTime) = 0;
-    virtual void enableChunk(int num);
-    virtual void compileChunk(int num) = 0;
-    virtual void renderChunks(int chunks[]);
+    virtual void set_states();
+    virtual void on_enable();
+    virtual void on_disable();
+    virtual void on_tick(float delta_time) = 0;
+    virtual void enable_chunk(int num);
+    virtual void compile_chunk(int num) = 0;
+    virtual void render_chunks(int chunks[]);
 
 private:
-    int oldHcpX;
-    int oldHcpY;
+    int old_hcp_x;
+    int old_hcp_y;
 };
 
 }

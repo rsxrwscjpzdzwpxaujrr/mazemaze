@@ -28,30 +28,30 @@ namespace mazemaze {
 namespace gui {
 namespace states {
 
-Pause::Pause(MainMenu& mainMenu, Game& game) :
-        State(mainMenu.getDesktop(), "Pause"),
-        buttonResume(Button::Create()),
-        buttonOptions(Button::Create()),
-        buttonExit(Button::Create()) {
-    resetText();
+Pause::Pause(MainMenu& main_menu, Game& game) :
+        State(main_menu.get_desktop(), "Pause"),
+        resume_button(Button::Create()),
+        options_button(Button::Create()),
+        exit_button(Button::Create()) {
+    reset_text();
 
-    buttonResume->GetSignal(Widget::OnLeftClick).Connect([&game] {
-        game.setPaused(false);
+    resume_button->GetSignal(Widget::OnLeftClick).Connect([&game] {
+        game.set_paused(false);
     });
 
-    buttonOptions->GetSignal(Widget::OnLeftClick).Connect([&mainMenu] {
-        mainMenu.setState(mainMenu.getOptionsState());
+    options_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] {
+        main_menu.set_state(main_menu.get_options_state());
     });
 
-    buttonExit->GetSignal(Widget::OnLeftClick).Connect([&game] {
+    exit_button->GetSignal(Widget::OnLeftClick).Connect([&game] {
         game.stop();
     });
 
     box = Box::Create(Box::Orientation::VERTICAL);
 
-    box->Pack(buttonResume);
-    box->Pack(buttonOptions);
-    box->Pack(buttonExit);
+    box->Pack(resume_button);
+    box->Pack(options_button);
+    box->Pack(exit_button);
 
     box->SetSpacing(20.0f);
     box->SetRequisition({400.0f, box->GetRequisition().y});
@@ -62,10 +62,10 @@ Pause::Pause(MainMenu& mainMenu, Game& game) :
 }
 
 void
-Pause::resetText() {
-    buttonResume ->SetLabel(pgtx("pause", "Resume"));
-    buttonOptions->SetLabel(pgtx("pause", "Options"));
-    buttonExit   ->SetLabel(pgtx("pause", "Exit to main menu"));
+Pause::reset_text() {
+    resume_button ->SetLabel(pgtx("pause", "Resume"));
+    options_button->SetLabel(pgtx("pause", "Options"));
+    exit_button   ->SetLabel(pgtx("pause", "Exit to main menu"));
 }
 
 Pause::~Pause() = default;

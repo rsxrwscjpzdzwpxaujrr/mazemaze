@@ -42,64 +42,64 @@ namespace states {
 
 class OptionsControls : public Options {
 public:
-    static const int buttonsCount = 4;
+    static const int buttons_count = 4;
 
-    explicit OptionsControls(MainMenu& mainMenu, Settings& settings);
+    explicit OptionsControls(MainMenu& main_menu, Settings& settings);
     ~OptionsControls() override;
 
     void show(bool show) override;
-    void tick(void*, float deltatime) override;
+    void tick(void*, float delta_time) override;
     void center() override;
-    void onResetText() override;
+    void on_reset_text() override;
 
 private:
     class KeyChangeWindow {
     public:
-        explicit KeyChangeWindow(OptionsControls& optCtrls);
+        explicit KeyChangeWindow(OptionsControls& opt_ctrls);
         ~KeyChangeWindow();
 
         void tick();
 
-        bool isOpened();
-        sfg::Window::Ptr getWindow();
+        bool is_opened();
+        sfg::Window::Ptr get_window();
 
-        void resetText();
+        void reset_text();
         void open(int button);
         void close();
 
     private:
-        OptionsControls& optCtrls;
+        OptionsControls& opt_ctrls;
 
         sfg::Window::Ptr    window;
         sfg::Label::Ptr     label;
-        sfg::Button::Ptr    cancelButton;
-        sfg::Button::Ptr    okButton;
-        sfg::Separator::Ptr buttonSeparator;
+        sfg::Button::Ptr    cancel_button;
+        sfg::Button::Ptr    ok_button;
+        sfg::Separator::Ptr button_separator;
 
         int button;
         bool opened;
 
-        void initSignals();
+        void init_signals();
     };
 
-    sfg::Scale::Ptr sensitivitySlider;
-    sfg::Adjustment::Ptr sensitivityAdjustement;
-    std::array<sfg::Button::Ptr, buttonsCount> keyButtons;
-    std::array<sf::String, buttonsCount>       keyLabels;
+    sfg::Scale::Ptr sensitivity_slider;
+    sfg::Adjustment::Ptr sensitivity_adjustement;
+    std::array<sfg::Button::Ptr, buttons_count> key_buttons;
+    std::array<sf::String, buttons_count>       key_labels;
 
-    KeyChangeWindow keyChangeWindow;
+    KeyChangeWindow key_change_window;
 
-    Option sensitivityOpt;
-    std::array<Option, buttonsCount> keyOpts;
+    Option sensitivity_opt;
+    std::array<Option, buttons_count> key_opts;
 
-    sf::Keyboard::Key  selectedKey;
-    std::array<std::string, buttonsCount> keyControls;
+    sf::Keyboard::Key  selected_key;
+    std::array<std::string, buttons_count> key_controls;
 
-    void updateKeyButtonLabel(int button);
+    void update_key_button_label(int button);
 
-    void initSignals();
+    void init_signals();
 
-    sf::String getKeyName(sf::Keyboard::Key key);
+    sf::String get_key_name(sf::Keyboard::Key key);
 };
 
 }

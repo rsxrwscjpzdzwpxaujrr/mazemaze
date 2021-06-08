@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,22 +35,22 @@ namespace states {
 
 class OptionsOther : public Options {
 public:
-    explicit OptionsOther(MainMenu& mainMenu, Settings& settings);
+    explicit OptionsOther(MainMenu& main_menu, Settings& settings);
     ~OptionsOther() override;
 
-    void onResetText() override;
+    void on_reset_text() override;
 
 private:
-    sfg::ComboBox::Ptr    langCombo;
-    sfg::CheckButton::Ptr autosaveCheck;
-    sfg::CheckButton::Ptr showFpsCheck;
+    sfg::ComboBox::Ptr    lang_combo;
+    sfg::CheckButton::Ptr autosave_check;
+    sfg::CheckButton::Ptr show_fps_check;
 
-    Option langOpt;
-    Option autosaveOpt;
-    Option showFpsOpt;
+    Option lang_opt;
+    Option autosave_opt;
+    Option show_fps_opt;
 
-    void initSignals();
-    void initOptions();
+    void init_signals();
+    void init_options();
 };
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,8 +26,8 @@ public:
     Chunk();
     ~Chunk();
 
-    void setOpened(unsigned int x, unsigned int y, bool opened);
-    bool getOpened(unsigned int x, unsigned int y);
+    void set_opened(unsigned int x, unsigned int y, bool opened);
+    bool get_opened(unsigned int x, unsigned int y);
 
 private:
     bool opened[SIZE][SIZE];

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,49 +42,49 @@ public:
     ~Maze();
 
     bool generate(unsigned int seed);
-    void cancelGeneration();
-    float getGenerationProgress() const;
+    void cancel_generation();
+    float get_generation_progress() const;
 
-    void setExitX(int exitX);
-    void setExitY(int exitY);
-    void setStartX(int startX);
-    void setStartY(int startY);
+    void set_exit_x(int exit_x);
+    void set_exit_y(int exit_y);
+    void set_start_x(int start_x);
+    void set_start_y(int start_y);
 
-    bool getOpened(int x, int y);
-    int getWidth() const;
-    int getHeight() const;
-    unsigned int getSeed() const;
-    int getExitX() const;
-    int getExitY() const;
-    int getStartX() const;
-    int getStartY() const;
-    Chunk* getChunks() const;
-    int getChunksCount() const;
-    unsigned int getChunksX() const;
-    unsigned int getChunksY() const;
+    bool get_opened(int x, int y);
+    int get_width() const;
+    int get_height() const;
+    unsigned int get_seed() const;
+    int get_exit_x() const;
+    int get_exit_y() const;
+    int get_start_x() const;
+    int get_start_y() const;
+    Chunk* get_chunks() const;
+    int get_chunks_count() const;
+    unsigned int get_chunks_x() const;
+    unsigned int get_chunks_y() const;
 
-    void setSeed(unsigned int seed);
+    void set_seed(unsigned int seed);
 
-    void initChunks();
+    void init_chunks();
 
 private:
-    void setOpened(int x, int y, bool opened);
-    void genExit(std::mt19937& random);
-    void genStart(std::mt19937& random);
-    bool genStep(std::stack<Generator>& generator, Generator* currentGenerator, int side);
+    void set_opened(int x, int y, bool opened);
+    void gen_exit(std::mt19937& random);
+    void gen_start(std::mt19937& random);
+    bool gen_step(std::stack<Generator>& generator, Generator* current_generator, int side);
 
-    int anglesOpened;
-    bool needCancel;
+    int angles_opened;
+    bool need_cancel;
 
-    int exitX;
-    int exitY;
-    int startX;
-    int startY;
+    int exit_x;
+    int exit_y;
+    int start_x;
+    int start_y;
     int width;
     int height;
     unsigned int seed;
-    unsigned int chunksX;
-    unsigned int chunksY;
+    unsigned int chunks_x;
+    unsigned int chunks_y;
     Chunk* chunks;
 };
 

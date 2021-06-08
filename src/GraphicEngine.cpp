@@ -36,44 +36,44 @@ namespace mazemaze {
 
 GraphicEngine::GraphicEngine() :
         window(nullptr),
-        oldWindowPos(-1, -1),
-        oldWindowSize(854, 480),
+        old_window_pos(-1, -1),
+        old_window_size(854, 480),
         running(true),
-        needReopenEvent(false),
+        need_reopen_event(false),
         vsync(false),
         focus(true),
-        maxAntialiasing(calcMaxAntialiasing()),
+        max_antialiasing(calc_max_antialiasing()),
         icon(sf::Image()),
-        onSetStates([] () {}) {
+        on_set_states([] () {}) {
     icon.loadFromFile("data" PATH_SEPARATOR "icon.png");
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
 
-    unwaitKey();
+    unwait_key();
 }
 
 GraphicEngine::~GraphicEngine() = default;
 
 void
-GraphicEngine::openWindow() {
-    sf::VideoMode videoMode;
+GraphicEngine::open_window() {
+    sf::VideoMode video_mode;
 
     if (fullscreen)
-        videoMode = sf::VideoMode::getDesktopMode();
+        video_mode = sf::VideoMode::getDesktopMode();
     else
-        videoMode = sf::VideoMode(oldWindowSize.x, oldWindowSize.y);
+        video_mode = sf::VideoMode(old_window_size.x, old_window_size.y);
 
-    openWindow(videoMode, fullscreen);
+    open_window(video_mode, fullscreen);
 }
 
 void
-GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
+GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
     Logger::inst().log_debug(fmt("Main window opening. Size is %dx%d",
-                                 videoMode.width,
-                                 videoMode.height));
+                                 video_mode.width,
+                                 video_mode.height));
 
-    const sf::String windowName = L"Mazemaze 0.3-git";
+    const sf::String window_name = L"Mazemaze 0.3-git";
     sf::Uint32 style;
 
     if (fullscreen)
@@ -81,56 +81,56 @@ GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
     else
         style = sf::Style::Default;
 
-    window = new sf::RenderWindow(videoMode, windowName, style, settings);
+    window = new sf::RenderWindow(video_mode, window_name, style, settings);
 
     if (!fullscreen) {
-        if (oldWindowPos != sf::Vector2i(-1, -1))
-            window->setPosition(oldWindowPos);
+        if (old_window_pos != sf::Vector2i(-1, -1))
+            window->setPosition(old_window_pos);
 
 #ifdef _WIN32
-        if (oldMaximized) {
+        if (old_maximized) {
             ShowWindow(window->getSystemHandle(), SW_MAXIMIZE);
             Logger::inst().log_debug("Maximizing window.");
         }
 #endif
 
-        GraphicEngine::videoMode = videoMode;
+        GraphicEngine::video_mode = video_mode;
     }
 
     settings = window->getSettings();
 
-    sf::Vector2u iconSize = icon.getSize();
-    window->setIcon(iconSize.x, iconSize.y, icon.getPixelsPtr());
+    sf::Vector2u icon_size = icon.getSize();
+    window->setIcon(icon_size.x, icon_size.y, icon.getPixelsPtr());
 
-    setVsync(vsync);
+    set_vsync(vsync);
 }
 
 void
-GraphicEngine::openWindow(unsigned int width, unsigned int height, bool fullscreen) {
-    sf::VideoMode videoMode = sf::VideoMode(width, height);
-    GraphicEngine::openWindow(videoMode, fullscreen);
+GraphicEngine::open_window(unsigned int width, unsigned int height, bool fullscreen) {
+    sf::VideoMode video_mode = sf::VideoMode(width, height);
+    GraphicEngine::open_window(video_mode, fullscreen);
 }
 
 void
 GraphicEngine::update() {
-    sf::Vector2u newSize = window->getSize();
+    sf::Vector2u new_size = window->getSize();
 
-    width = newSize.x;
-    height = newSize.y;
+    width = new_size.x;
+    height = new_size.y;
 
-    if (needReopen) {
+    if (need_reopen) {
         window->close();
         delete window;
 
-        openWindow(videoMode, fullscreen);
+        open_window(video_mode, fullscreen);
 
-        needReopen = false;
-        needReopenEvent = true;
+        need_reopen = false;
+        need_reopen_event = true;
     }
 }
 
 void
-GraphicEngine::setStates() {
+GraphicEngine::set_states() {
 //  Logger::inst().log_debug("Setting GL states.");
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -141,13 +141,13 @@ GraphicEngine::setStates() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glHint(GL_FOG_HINT, GL_FASTEST);
 
-    onSetStates();
+    on_set_states();
 }
 
 void
-GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
-    sf::Clock deltaClock;
-    float frameDeltaTime = 1.0f / 60.0f;
+GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& main_menu) {
+    sf::Clock delta_clock;
+    float frame_delta_time = 1.0f / 60.0f;
 
     sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
 
@@ -157,76 +157,76 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& mainMenu) {
 
     while (running) {
         update();
-        setStates();
+        set_states();
 
-        handle_events(mainMenu);
+        handle_events(main_menu);
 
-        mainMenu.tick(nullptr, frameDeltaTime);
+        main_menu.tick(nullptr, frame_delta_time);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        mainMenu.render();
+        main_menu.render();
 
         window->resetGLStates();
         sfgui.Display(*window);
         window->display();
 
-        running &= !mainMenu.isWantExit();
+        running &= !main_menu.is_wants_exit();
 
-        frameDeltaTime = deltaClock.getElapsedTime().asSeconds();
-        deltaClock.restart();
+        frame_delta_time = delta_clock.getElapsedTime().asSeconds();
+        delta_clock.restart();
     }
 }
 
 void
-GraphicEngine::waitKey(std::function<void (const sf::Keyboard::Key)> const& onKey) {
-    onKeyWaiting = onKey;
+GraphicEngine::wait_key(std::function<void (const sf::Keyboard::Key)> const& onKey) {
+    on_key_waiting = onKey;
 }
 
 void
-GraphicEngine::unwaitKey() {
-    onKeyWaiting = [] (sf::Keyboard::Key) {};
+GraphicEngine::unwait_key() {
+    on_key_waiting = [] (sf::Keyboard::Key) {};
 }
 
 void
-GraphicEngine::setFullscreen(bool fullscreen) {
+GraphicEngine::set_fullscreen(bool fullscreen) {
     if (GraphicEngine::fullscreen != fullscreen) {
         GraphicEngine::fullscreen = fullscreen;
 
         if (window != nullptr) {
             if (fullscreen) {
-                oldWindowPos = window->getPosition();
-                oldWindowSize = window->getSize();
+                old_window_pos = window->getPosition();
+                old_window_size = window->getSize();
 #ifdef _WIN32
-                updateOldMaximized();
+                update_old_maximized();
 #endif
 
-                videoMode = sf::VideoMode::getDesktopMode();
+                video_mode = sf::VideoMode::getDesktopMode();
             } else
-                videoMode = sf::VideoMode(oldWindowSize.x, oldWindowSize.y);
+                video_mode = sf::VideoMode(old_window_size.x, old_window_size.y);
 
-            needReopen = true;
+            need_reopen = true;
         }
     }
 }
 
 void
-GraphicEngine::setAntialiasing(unsigned int antialiasing) {
+GraphicEngine::set_antialiasing(unsigned int antialiasing) {
     if (antialiasing != settings.antialiasingLevel) {
         if (window != nullptr) {
-            oldWindowPos = window->getPosition();
+            old_window_pos = window->getPosition();
 #ifdef _WIN32
-            updateOldMaximized();
+            update_old_maximized();
 #endif
 
             if (fullscreen)
-                videoMode = sf::VideoMode::getDesktopMode();
+                video_mode = sf::VideoMode::getDesktopMode();
             else {
                 sf::Vector2u windowSize = window->getSize();
-                videoMode = sf::VideoMode(windowSize.x, windowSize.y);
+                video_mode = sf::VideoMode(windowSize.x, windowSize.y);
             }
 
-            needReopen = true;
+            need_reopen = true;
         }
 
         settings.antialiasingLevel = antialiasing;
@@ -234,7 +234,7 @@ GraphicEngine::setAntialiasing(unsigned int antialiasing) {
 }
 
 void
-GraphicEngine::setVsync(bool vsync) {
+GraphicEngine::set_vsync(bool vsync) {
     GraphicEngine::vsync = vsync;
 
     if (window != nullptr)
@@ -242,53 +242,53 @@ GraphicEngine::setVsync(bool vsync) {
 }
 
 void
-GraphicEngine::setOnSetStatesCallback(std::function<void ()> const& onSetStates) {
-    GraphicEngine::onSetStates = onSetStates;
+GraphicEngine::set_on_set_states_callback(std::function<void ()> const& on_set_states) {
+    GraphicEngine::on_set_states = on_set_states;
 }
 
 sf::RenderWindow&
-GraphicEngine::getWindow() const {
+GraphicEngine::get_window() const {
     return *window;
 }
 
 int
-GraphicEngine::getWidth() const {
+GraphicEngine::get_width() const {
     return width;
 }
 
 int
-GraphicEngine::getHeight() const {
+GraphicEngine::get_height() const {
     return height;
 }
 
 unsigned int
-GraphicEngine::getMaxAntialiasing() const {
-    return maxAntialiasing;
+GraphicEngine::get_max_antialiasing() const {
+    return max_antialiasing;
 }
 
 bool
-GraphicEngine::getFullscreen() const {
+GraphicEngine::get_fullscreen() const {
     return fullscreen;
 }
 
 bool
-GraphicEngine::getVsync() const {
+GraphicEngine::get_vsync() const {
     return vsync;
 }
 
 bool
-GraphicEngine::hasFocus() const {
+GraphicEngine::has_focus() const {
     return focus;
 }
 
 unsigned int
-GraphicEngine::calcMaxAntialiasing() {
+GraphicEngine::calc_max_antialiasing() {
     sf::ContextSettings settings;
-    sf::VideoMode videoMode = sf::VideoMode(16, 16);
+    sf::VideoMode video_mode = sf::VideoMode(16, 16);
     sf::Uint32 style = sf::Style::None;
     settings.antialiasingLevel = 16;
 
-    sf::RenderWindow win(videoMode, sf::String(), style, settings);
+    sf::RenderWindow win(video_mode, sf::String(), style, settings);
 
     settings = win.getSettings();
     win.close();
@@ -299,12 +299,24 @@ GraphicEngine::calcMaxAntialiasing() {
     return settings.antialiasingLevel;
 }
 
+#ifdef _WIN32
+void
+GraphicEngine::update_old_maximized() {
+    WINDOWPLACEMENT placement;
+    placement.length = sizeof(WINDOWPLACEMENT);
+
+    GetWindowPlacement(window->getSystemHandle(), &placement);
+
+    old_maximized = placement.showCmd == SW_MAXIMIZE;
+}
+#endif
+
 void
 GraphicEngine::handle_events(gui::MainMenu& main_menu) {
     sf::Event event;
 
     while (window->pollEvent(event)) {
-        main_menu.handleEvent(event);
+        main_menu.handle_event(event);
 
         switch (event.type) {
         case sf::Event::Closed:
@@ -314,7 +326,7 @@ GraphicEngine::handle_events(gui::MainMenu& main_menu) {
             break;
 
         case sf::Event::KeyReleased:
-            onKeyWaiting(event.key.code);
+            on_key_waiting(event.key.code);
             break;
 
         case sf::Event::GainedFocus:
@@ -334,25 +346,13 @@ GraphicEngine::handle_events(gui::MainMenu& main_menu) {
         }
     }
 
-    if (needReopenEvent) {
+    if (need_reopen_event) {
         sf::Event event;
         event.type = sf::Event::Resized;
 
-        main_menu.handleEvent(event);
-        needReopenEvent = false;
+        main_menu.handle_event(event);
+        need_reopen_event = false;
     }
 }
-
-#ifdef _WIN32
-void
-GraphicEngine::updateOldMaximized() {
-    WINDOWPLACEMENT placement;
-    placement.length = sizeof(WINDOWPLACEMENT);
-
-    GetWindowPlacement(window->getSystemHandle(), &placement);
-
-    oldMaximized = placement.showCmd == SW_MAXIMIZE;
-}
-#endif
 
 }

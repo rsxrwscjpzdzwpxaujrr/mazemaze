@@ -37,74 +37,74 @@ class Settings {
 public:
     struct Language {
         const std::wstring name;
-        const std::string code;
+        const std::string  code;
 
         Language (const wchar_t* name, const char* code) :
                 name(name),
                 code(code) {}
     };
 
-    explicit Settings(bool readConfig=true);
+    explicit Settings(bool read_config=true);
     ~Settings();
 
-    std::string                  getLang() const;
-    unsigned int                 getAntialiasing() const;
-    unsigned int                 getMaxAntialiasing() const;
-    bool                         getFullscreen() const;
-    bool                         getVsync() const;
-    bool                         getAutosave() const;
-    float                        getAutosaveTime() const;
-    int                          getRenderer() const;
-    bool                         getShowFps() const;
-    sf::Keyboard::Key            getKey(const std::string& control);
-    const std::vector<Language>& getSupportedLangs() const;
-    float                        getSensitivity() const;
-    std::string                  getDataDir() const;
-    bool                         getCameraBobbing() const;
+    std::string                  get_lang() const;
+    unsigned int                 get_antialiasing() const;
+    unsigned int                 get_max_antialiasing() const;
+    bool                         get_fullscreen() const;
+    bool                         get_vsync() const;
+    bool                         get_autosave() const;
+    float                        get_autosave_time() const;
+    int                          get_renderer() const;
+    bool                         get_show_fps() const;
+    sf::Keyboard::Key            get_key(const std::string& control);
+    const std::vector<Language>& get_supported_langs() const;
+    float                        get_sensitivity() const;
+    std::string                  get_data_dir() const;
+    bool                         get_camera_bobbing() const;
 
-    void setMainMenu(gui::MainMenu* mainMenu);
+    void set_main_menu(gui::MainMenu* main_menu);
 
-    void setLang(const std::string &lang);
-    void setAntialiasing(unsigned int antialiasing);
-    void setFullscreen(bool fullscreen);
-    void setVsync(bool vsync);
-    void setAutosave(bool autosave);
-    void setAutosaveTime(float autosaveTime);
-    void setRenderer(int id);
-    void setShowFps(bool showFps);
-    void setKey(const std::string& control, sf::Keyboard::Key key);
-    void setSensitivity(float sensitivity);
-    bool setCameraBobbing(float cameraBobbing);
+    void set_lang(const std::string &lang);
+    void set_antialiasing(unsigned int antialiasing);
+    void set_fullscreen(bool fullscreen);
+    void set_vsync(bool vsync);
+    void set_autosave(bool autosave);
+    void set_autosave_time(float autosave_time);
+    void set_renderer(int id);
+    void set_show_fps(bool show_fps);
+    void set_key(const std::string& control, sf::Keyboard::Key key);
+    void set_sensitivity(float sensitivity);
+    void set_camera_bobbing(float camera_bobbing);
 
 private:
-    std::string dataDir;
-    std::string configFile;
+    std::string data_dir;
+    std::string config_file;
 
-    gui::MainMenu* mainMenu;
+    gui::MainMenu* main_menu;
 
     std::string lang;
-    std::vector<Language> supportedLangs;
+    std::vector<Language> supported_langs;
     unsigned int antialiasing;
-    bool autosave;
-    float autosaveTime;
-    int renderer;
-    bool showFps;
+    bool  autosave;
+    float autosave_time;
+    int   renderer;
+    bool  show_fps;
     float sensitivity;
-    bool cameraBobbing;
+    bool  camera_bobbing;
 
     std::map<std::string, sf::Keyboard::Key> controls;
 
-    std::string resetLocales();
+    std::string reset_locales();
 
 #ifdef _WIN32
 
-    void setEnvironment();
+    void set_environment();
 
 #endif
 
-    void initDataDir();
-    void writeConfig();
-    bool readConfig();
+    void init_data_dir();
+    void write_config();
+    bool read_config();
 };
 
 }

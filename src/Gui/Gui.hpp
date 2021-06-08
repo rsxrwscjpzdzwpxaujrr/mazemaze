@@ -38,34 +38,34 @@ public:
     Gui();
     ~Gui() override;
 
-    void handleEvent(const sf::Event& event);
-    virtual void onEvent(const sf::Event& event);
+    void handle_event(const sf::Event& event);
+    virtual void on_event(const sf::Event& event);
 
-    void tick(void*, float deltaTime) override;
+    void tick(void*, float delta_time) override;
     void render() override;
 
     void back();
-    void backTo(int destState);
+    void back_to(int dest_state);
 
-    int  addState(State* state);
-    void removeState(int state);
-    void removeStates();
+    int  add_state(State* state);
+    void remove_state(int state);
+    void remove_states();
 
-    void resetText();
+    void reset_text();
 
-    void addOverlay(int stateId);
-    void removeOverlay(int stateId);
+    void add_overlay(int state_id);
+    void remove_overlay(int state_id);
 
-    void setState(int state, bool back = false);
-    void setBackground(Background* background);
+    void set_state(int state, bool back = false);
+    void set_background(Background* background);
 
     void exit();
 
-    sfg::Desktop& getDesktop();
-    int           getState() const;
-    State&        getState(int state);
-    Background&   getBackground() const;
-    bool          isWantExit() const;
+    sfg::Desktop& get_desktop();
+    int           get_state() const;
+    State&        get_state(int state);
+    Background&   get_background() const;
+    bool          is_wants_exit() const;
 
 private:
     sfg::Desktop desktop;
@@ -73,14 +73,13 @@ private:
     Background* background;
 
     std::vector<State*> states;
-    std::stack<int> stateStack;
-    std::vector<int> overlays;
+    std::stack <int>    state_stack;
+    std::vector<int>    overlays;
 
     TickableHandler<void*> tickable_handler;
 
-    int state;
-
-    bool wantExit;
+    int  state;
+    bool wants_exit;
 };
 
 }

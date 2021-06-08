@@ -38,8 +38,8 @@ public:
     void center() override;
     void tick(void*, float deltaTime) override;
     void show(bool show) override;
-    sfg::Container::Ptr getMainContainer() override;
-    void resetText() override;
+    sfg::Container::Ptr get_main_container() override;
+    void reset_text() override;
 
 private:
     sfg::Box::Ptr log_box;

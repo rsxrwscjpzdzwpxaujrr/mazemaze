@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,26 +39,26 @@ const char Saver::version[] = {1, 0, 0};
 Saver::Saver(Settings& settings) :
         game(nullptr),
         settings(settings),
-        lastSaveTime(0.0f),
+        last_save_time(0.0f),
         virgin(true) {}
 
 Saver::~Saver() = default;
 
 Game*
-Saver::load(gui::MainMenu& mainMenu) {
+Saver::load(gui::MainMenu& main_menu) {
     Logger::inst().log_debug(fmt("Loading save."));
 
     std::lock_guard<std::mutex> lock(mutex);
 
     std::ifstream stream;
 
-    stream.open(getFilename(settings), std::ios::in | std::ios::binary);
+    stream.open(get_filename(settings), std::ios::in | std::ios::binary);
     stream.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
 
     char version[3];
     float time;
-    float playerParams[6];
-    int32_t mazeParams[7];
+    float player_params[6];
+    int32_t maze_params[7];
 
     stream.seekg(VERSION_OFFSET);
     stream.read(version, sizeof (char) * 3);
@@ -72,46 +72,46 @@ Saver::load(gui::MainMenu& mainMenu) {
     stream.read(reinterpret_cast<char*>(&time), sizeof (float));
 
     stream.seekg(PLAYER_OFFSET);
-    stream.read(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+    stream.read(reinterpret_cast<char*>(&player_params), sizeof (float) * 6);
 
     stream.seekg(MAZE_OFFSET);
-    stream.read(reinterpret_cast<char*>(mazeParams), sizeof (int32_t) * 7);
+    stream.read(reinterpret_cast<char*>(maze_params), sizeof (int32_t) * 7);
 
-    game = new Game(mainMenu, settings, *this, (mazeParams[0] / 2), (mazeParams[1] / 2));
+    game = new Game(main_menu, settings, *this, (maze_params[0] / 2), (maze_params[1] / 2));
 
-    lastSaveTime = time;
-    game->setTime(time);
+    last_save_time = time;
+    game->set_time(time);
 
-    Maze& maze = game->getMaze();
+    Maze& maze = game->get_maze();
 
     stream.seekg(CHUNKS_OFFSET);
 
-    maze.initChunks();
-    for (int i = 0; i < maze.getChunksCount(); i++)
-        loadChunk(stream, game->getMaze().getChunks()[i]);
+    maze.init_chunks();
+    for (int i = 0; i < maze.get_chunks_count(); i++)
+        load_chunk(stream, game->get_maze().get_chunks()[i]);
 
     stream.close();
 
-    Player& player = game->getPlayer();
-    Camera& camera = player.getCamera();
+    Player& player = game->get_player();
+    Camera& camera = player.get_camera();
 
-    player.setX(playerParams[0]);
-    player.setY(playerParams[1]);
-    player.setZ(playerParams[2]);
-    camera.setPitch(playerParams[3]);
-    camera.setYaw  (playerParams[4]);
-    camera.setRoll (playerParams[5]);
+    player.set_x(player_params[0]);
+    player.set_y(player_params[1]);
+    player.set_z(player_params[2]);
+    camera.set_pitch(player_params[3]);
+    camera.set_yaw  (player_params[4]);
+    camera.set_roll (player_params[5]);
 
-    maze.setSeed(mazeParams[2]);
+    maze.set_seed(maze_params[2]);
 
-    maze.setExitX (mazeParams[3]);
-    maze.setExitY (mazeParams[4]);
-    maze.setStartX(mazeParams[5]);
-    maze.setStartY(mazeParams[6]);
+    maze.set_exit_x (maze_params[3]);
+    maze.set_exit_y (maze_params[4]);
+    maze.set_start_x(maze_params[5]);
+    maze.set_start_y(maze_params[6]);
 
     Logger::inst().log_status(fmt("Save is loaded."));
 
-    game->onLoad();
+    game->on_load();
 
     virgin = false;
 
@@ -123,11 +123,11 @@ Saver::save() {
     if (game == nullptr)
         throw std::logic_error("game is nullptr");
 
-    if (lastSaveTime == game->getTime()) {
+    if (last_save_time == game->get_time()) {
         Logger::inst().log_debug(
             fmt("Trying to save, but game time is equal to last save time. "
                 "Last save time is %f.",
-                lastSaveTime));
+                last_save_time));
 
         return;
     }
@@ -151,17 +151,17 @@ Saver::save() {
             if (virgin)
                 mode |= std::ios::trunc;
 
-            stream.open(getFilename(settings), mode);
+            stream.open(get_filename(settings), mode);
 
             stream.seekp(VERSION_OFFSET);
             stream.write(version, sizeof (char) * 3);
 
-            saveGame(stream);
-            savePlayer(stream);
+            save_game(stream);
+            save_player(stream);
 
             if (virgin) {
-                saveMaze(stream);
-                saveChunks(stream);
+                save_maze(stream);
+                save_chunks(stream);
             }
 
             stream.close();
@@ -169,7 +169,7 @@ Saver::save() {
             virgin = false;
 
             Logger::inst().log_status(
-                fmt("Saving completed. Last save time is %f.", lastSaveTime)
+                fmt("Saving completed. Last save time is %f.", last_save_time)
             );
         } catch (const std::ofstream::failure& e) {
             Logger::inst().log_error(
@@ -182,79 +182,79 @@ Saver::save() {
 }
 
 void
-Saver::deleteSave() {
-    if (saveExists(settings))
-        std::remove(getFilename(settings).c_str());
+Saver::delete_save() {
+    if (save_exists(settings))
+        std::remove(get_filename(settings).c_str());
 }
 
 float
-Saver::getLastSaveTime() const {
-    return lastSaveTime;
+Saver::get_last_save_time() const {
+    return last_save_time;
 }
 
 void
-Saver::setGame(Game& game) {
+Saver::set_game(Game& game) {
     Saver::game = &game;
 }
 
 void
-Saver::saveGame(std::ostream& stream) {
-    float time = game->getTime();
+Saver::save_game(std::ostream& stream) {
+    float time = game->get_time();
 
-    lastSaveTime = time;
+    last_save_time = time;
 
     stream.seekp(GAME_OFFSET);
     stream.write(reinterpret_cast<char*>(&time), sizeof (float));
 }
 
 void
-Saver::savePlayer(std::ostream& stream) {
-    Player& player = game->getPlayer();
-    Camera& camera = player.getCamera();
+Saver::save_player(std::ostream& stream) {
+    Player& player = game->get_player();
+    Camera& camera = player.get_camera();
 
-    float playerParams[] {
-        player.getX(),
-        player.getY(),
-        player.getZ(),
-        camera.getPitch(),
-        camera.getYaw(),
-        camera.getRoll()
+    float player_params[] {
+        player.get_x(),
+        player.get_y(),
+        player.get_z(),
+        camera.get_pitch(),
+        camera.get_yaw(),
+        camera.get_roll()
     };
 
     stream.seekp(PLAYER_OFFSET);
-    stream.write(reinterpret_cast<char*>(&playerParams), sizeof (float) * 6);
+    stream.write(reinterpret_cast<char*>(&player_params), sizeof (float) * 6);
 }
 
 void
-Saver::saveMaze(std::ostream& stream) {
-    Maze& maze = game->getMaze();
+Saver::save_maze(std::ostream& stream) {
+    Maze& maze = game->get_maze();
 
-    int32_t mazeParams[] {
-        maze.getWidth(),
-        maze.getHeight(),
-        static_cast<int32_t>(maze.getSeed()),
-        maze.getExitX(),
-        maze.getExitY(),
-        maze.getStartX(),
-        maze.getStartY()};
+    int32_t maze_params[] {
+        maze.get_width(),
+        maze.get_height(),
+        static_cast<int32_t>(maze.get_seed()),
+        maze.get_exit_x(),
+        maze.get_exit_y(),
+        maze.get_start_x(),
+        maze.get_start_y()};
 
     stream.seekp(MAZE_OFFSET);
-    stream.write(reinterpret_cast<char*>(&mazeParams), sizeof (int32_t) * 7);
+    stream.write(reinterpret_cast<char*>(&maze_params), sizeof (int32_t) * 7);
 }
 
 void
-Saver::saveChunks(std::ostream& stream) {
-    Maze& maze = game->getMaze();
-    Chunk* chunks = maze.getChunks();
+Saver::save_chunks(std::ostream& stream) {
+    Maze& maze = game->get_maze();
+    Chunk* chunks = maze.get_chunks();
 
     stream.seekp(CHUNKS_OFFSET);
-    for (int i = 0; i < maze.getChunksCount(); i++)
-        saveChunk(stream, chunks[i]);
+    for (int i = 0; i < maze.get_chunks_count(); i++)
+        save_chunk(stream, chunks[i]);
 }
 
 bool
-Saver::saveExists(Settings& settings) {
-    std::FILE* file = fopen(getFilename(settings).c_str(), "r");
+Saver::save_exists(Settings& settings) {
+    std::FILE* file = fopen(get_filename(settings).c_str(), "r");
     bool exist = file != nullptr;
 
     if (exist)
@@ -264,38 +264,38 @@ Saver::saveExists(Settings& settings) {
 }
 
 std::string
-Saver::getFilename(Settings& settings) {
-    return settings.getDataDir() + PATH_SEPARATOR "sav";
+Saver::get_filename(Settings& settings) {
+    return settings.get_data_dir() + PATH_SEPARATOR "sav";
 }
 
 void
-Saver::saveChunk(std::ostream& stream, Chunk& chunk) {
-    const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
-    char bytes[byteCount] {0};
+Saver::save_chunk(std::ostream& stream, Chunk& chunk) {
+    const int byte_count = (Chunk::SIZE * Chunk::SIZE) / 8;
+    char bytes[byte_count] {0};
 
     for (unsigned int i = 0; i < Chunk::SIZE; i++)
         for (unsigned int j = 0; j < Chunk::SIZE; j++) {
             unsigned int block = i * Chunk::SIZE + j;
 
-            if (chunk.getOpened(i, j))
+            if (chunk.get_opened(i, j))
                 bytes[block / 8] |= 1 << block % 8;
         }
 
-    stream.write(bytes, byteCount);
+    stream.write(bytes, byte_count);
 }
 
 void
-Saver::loadChunk(std::istream& stream, Chunk& chunk) {
-    const int byteCount = (Chunk::SIZE * Chunk::SIZE) / 8;
-    char bytes[byteCount];
+Saver::load_chunk(std::istream& stream, Chunk& chunk) {
+    const int byte_count = (Chunk::SIZE * Chunk::SIZE) / 8;
+    char bytes[byte_count];
 
-    stream.read(bytes, byteCount);
+    stream.read(bytes, byte_count);
 
     for (unsigned int i = 0; i < Chunk::SIZE; i++)
         for (unsigned int j = 0; j < Chunk::SIZE; j++) {
             unsigned int block = i * Chunk::SIZE + j;
 
-            chunk.setOpened(i, j, (bytes[block / 8] & (1 << block % 8)) != 0);
+            chunk.set_opened(i, j, (bytes[block / 8] & (1 << block % 8)) != 0);
         }
 }
 

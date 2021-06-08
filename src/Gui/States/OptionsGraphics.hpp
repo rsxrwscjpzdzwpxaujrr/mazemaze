@@ -35,28 +35,27 @@ namespace states {
 
 class OptionsGraphics : public Options {
 public:
-    explicit OptionsGraphics(MainMenu& mainMenu, Settings& settings);
+    explicit OptionsGraphics(MainMenu& main_menu, Settings& settings);
     ~OptionsGraphics() override;
 
-    //void resetText() override;
-    void onResetText() override;
+    void on_reset_text() override;
 
 private:
-    sfg::CheckButton::Ptr fullscreenCheck;
-    sfg::CheckButton::Ptr vsyncCheck;
-    sfg::ComboBox::Ptr    antialiasingCombo;
-    sfg::ComboBox::Ptr    styleCombo;
-    sfg::CheckButton::Ptr cameraBobbingCheck;
+    sfg::CheckButton::Ptr fullscreen_check;
+    sfg::CheckButton::Ptr vsync_check;
+    sfg::ComboBox::Ptr    antialiasing_combo;
+    sfg::ComboBox::Ptr    style_combo;
+    sfg::CheckButton::Ptr camera_bobbing_check;
 
-    Option fullscreenOpt;
-    Option vsyncOpt;
-    Option antialiasingOpt;
-    Option styleOpt;
-    Option cameraBobbingOpt;
+    Option fullscreen_opt;
+    Option vsync_opt;
+    Option antialiasing_opt;
+    Option style_opt;
+    Option camera_bobbing_opt;
 
-    void initSignals();
-    void initAntialiasingCombo();
-    void initOptions();
+    void init_signals();
+    void init_antialiasing_combo();
+    void init_options();
 };
 
 }

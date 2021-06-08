@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2020-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,10 +36,10 @@ public:
     explicit About(MainMenu& mainMenu, Settings& settings);
     ~About() override;
 
-    void onResetText() override;
+    void on_reset_text() override;
 
 private:
-    sfg::Label::Ptr aboutLabel;
+    sfg::Label::Ptr about_label;
 };
 
 }

@@ -39,32 +39,32 @@ namespace gui {
 MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          saver(new Saver(settings)),
                                          settings(settings),
-                                         fpsShow(false),
-                                         debugShow(false) {
+                                         fps_show(false),
+                                         debug_show(false) {
     Logger::inst().log_debug("Starting main menu.");
 
-    getDesktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
+    get_desktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
-    mainState   = addState(new states::Main       (*this, settings));
-    fpsState    = addState(new states::FpsOverlay (*this, settings));
-    debugState  = addState(new states::Debug      (*this          ));
+    main_state   = add_state(new states::Main       (*this, settings));
+    fps_state    = add_state(new states::FpsOverlay (*this, settings));
+    debug_state  = add_state(new states::Debug      (*this          ));
 
-    setState(mainState);
+    set_state(main_state);
 
-    StarSky* starsky = new StarSky(1024, 600.0f, 0.0f, 0.0f);
+    StarSky* star_sky = new StarSky(1024, 600.0f, 0.0f, 0.0f);
 
-    starSkyBackground = new Background(starsky, starsky,
-                                       new Camera(0.0f,  0.0f,  0.0f,
-                                                  -1.5f, -2.5f, 0.0f,
-                                                  110.0, 10.0,  100.0));
+    star_sky_background = new Background(star_sky, star_sky,
+                                         new Camera( 0.0f ,  0.0f, 0.0f,
+                                                    -1.5f , -2.5f, 0.0f,
+                                                     110.0,  10.0, 100.0));
 
-    setBackground(starSkyBackground);
+    set_background(star_sky_background);
 }
 
 MainMenu::~MainMenu() {
-    delete starSkyBackground->getTickable();
-    delete starSkyBackground->getCamera();
-    delete starSkyBackground;
+    delete star_sky_background->get_tickable();
+    delete star_sky_background->get_camera();
+    delete star_sky_background;
 
     if (game != nullptr)
         delete game;
@@ -73,110 +73,110 @@ MainMenu::~MainMenu() {
 }
 
 void
-MainMenu::onEvent(const sf::Event& event) {
-    if (event.type == sf::Event::LostFocus && game != nullptr && game->isLoaded())
-        game->setPaused(true);
+MainMenu::on_event(const sf::Event& event) {
+    if (event.type == sf::Event::LostFocus && game != nullptr && game->is_loaded())
+        game->set_paused(true);
 
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3) {
-        if (game && game->isLoaded() && !game->isPaused() && !game->isWon() && !debugShow)
-            game->setPaused(true);
+        if (game && game->is_loaded() && !game->is_paused() && !game->is_won() && !debug_show)
+            game->set_paused(true);
 
-        showDebug(!debugShow);
+        show_debug(!debug_show);
     }
 }
 
 Game&
-MainMenu::newGame(int mazeWidth, int mazeHeight) {
-    game = new Game(*this, settings, *saver, mazeWidth, mazeHeight);
-    game->newGame();
+MainMenu::new_game(int maze_width, int maze_height) {
+    game = new Game(*this, settings, *saver, maze_width, maze_height);
+    game->new_game();
 
     return *game;
 }
 
 void
-MainMenu::startGame() {
+MainMenu::start_game() {
     if (!game)
         return;
 
-    if (!game->isLoaded())
+    if (!game->is_loaded())
         return;
 
-    setupGame();
+    setup_game();
 
-    setState(-1);
-    game->setPaused(!GraphicEngine::inst().hasFocus());
+    set_state(-1);
+    game->set_paused(!GraphicEngine::inst().has_focus());
 }
 
 void
-MainMenu::resumeGame() {
+MainMenu::resume_game() {
     game = saver->load(*this);
 
-    startGame();
+    start_game();
 }
 
 void
-MainMenu::stopGame() {
-    backTo(mainState);
+MainMenu::stop_game() {
+    back_to(main_state);
 
     delete game;
 
     game = nullptr;
 
-    setBackground(starSkyBackground);
+    set_background(star_sky_background);
 }
 
 bool
-MainMenu::isGameOpen() {
+MainMenu::is_game_open() {
     return game != nullptr;
 }
 
 void
-MainMenu::showFps(bool show) {
-    if (fpsShow != show) {
+MainMenu::show_fps(bool show) {
+    if (fps_show != show) {
         if (show)
-            addOverlay(fpsState);
+            add_overlay(fps_state);
         else
-            removeOverlay(fpsState);
+            remove_overlay(fps_state);
 
-        fpsShow = show;
+        fps_show = show;
     }
 }
 
 void
-MainMenu::showDebug(bool show) {
-    if (debugShow != show) {
+MainMenu::show_debug(bool show) {
+    if (debug_show != show) {
         if (show)
-            addOverlay(debugState);
+            add_overlay(debug_state);
         else
-            removeOverlay(debugState);
+            remove_overlay(debug_state);
 
-        debugShow = show;
+        debug_show = show;
     }
 }
 
 int
-MainMenu::getOptionsState() const {
-    return optionsState;
+MainMenu::get_options_state() const {
+    return options_state;
 }
 
 void
-MainMenu::setOptionsState(states::OptionsMenu&, int state) {
-    optionsState = state;
+MainMenu::set_options_state(states::OptionsMenu&, int state) {
+    options_state = state;
 }
 
 bool
-MainMenu::getShowFps() const {
-    return fpsShow;
+MainMenu::get_show_fps() const {
+    return fps_show;
 }
 
 bool
-MainMenu::getShowDebug() const {
-    return debugShow;
+MainMenu::get_show_debug() const {
+    return debug_show;
 }
 
 void
-MainMenu::setupGame() {
-    setBackground(game);
+MainMenu::setup_game() {
+    set_background(game);
 }
 
 }

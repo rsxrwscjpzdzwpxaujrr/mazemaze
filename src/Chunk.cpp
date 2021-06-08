@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,12 +28,12 @@ Chunk::Chunk() {
 Chunk::~Chunk() = default;
 
 bool
-Chunk::getOpened(unsigned int x, unsigned int y) {
+Chunk::get_opened(unsigned int x, unsigned int y) {
     return opened[x][y];
 }
 
 void
-Chunk::setOpened(unsigned int x, unsigned int y, bool opened) {
+Chunk::set_opened(unsigned int x, unsigned int y, bool opened) {
     Chunk::opened[x][y] = opened;
 }
 

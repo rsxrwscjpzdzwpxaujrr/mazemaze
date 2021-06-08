@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,23 +36,23 @@ Gray::Gray(Game& game) :
 Gray::~Gray() = default;
 
 void
-Gray::setStates() {
+Gray::set_states() {
     glEnable(GL_LIGHT0);
 }
 
 void
-Gray::onDisable() {
+Gray::on_disable() {
     glDisable(GL_LIGHT0);
 }
 
 void
-Gray::compileChunk(int num) {
-    int x = (num % maze.getChunksX()) * Chunk::SIZE;
-    int y = (num / maze.getChunksX()) * Chunk::SIZE;
+Gray::compile_chunk(int num) {
+    int x = (num % maze.get_chunks_x()) * Chunk::SIZE;
+    int y = (num / maze.get_chunks_x()) * Chunk::SIZE;
 
     Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, x, y));
 
-    glNewList(drawList + num, GL_COMPILE);
+    glNewList(draw_list + num, GL_COMPILE);
 
     glPushMatrix();
 
@@ -65,11 +65,11 @@ Gray::compileChunk(int num) {
     int endX = Chunk::SIZE;
     int endY = Chunk::SIZE;
 
-    if (x + Chunk::SIZE > maze.getWidth())
-        endX = maze.getWidth() % Chunk::SIZE;
+    if (x + Chunk::SIZE > maze.get_width())
+        endX = maze.get_width() % Chunk::SIZE;
 
-    if (y + Chunk::SIZE > maze.getHeight())
-        endY = maze.getHeight() % Chunk::SIZE;
+    if (y + Chunk::SIZE > maze.get_height())
+        endY = maze.get_height() % Chunk::SIZE;
 
     glNormal3f(0.0f, 1.0f, 0.0f);
 
@@ -80,8 +80,8 @@ Gray::compileChunk(int num) {
 
     for (int j = 0; j < endX; j++)
         for (int k = 0; k < endY; k++)
-            if (maze.getOpened(j + x, k + y)) {
-                if (!maze.getOpened(j + 1 + x, k + y)) {
+            if (maze.get_opened(j + x, k + y)) {
+                if (!maze.get_opened(j + 1 + x, k + y)) {
                     glNormal3f(-1.0f, 0.0f, 0.0f);
 
                     glVertex3i(j + 1, 0, k + 1);
@@ -90,7 +90,7 @@ Gray::compileChunk(int num) {
                     glVertex3i(j + 1, 0, k);
                 }
 
-                if (!maze.getOpened(j - 1 + x, k + y)) {
+                if (!maze.get_opened(j - 1 + x, k + y)) {
                     glNormal3f(1.0f, 0.0f, 0.0f);
 
                     glVertex3i(j, 0, k);
@@ -99,7 +99,7 @@ Gray::compileChunk(int num) {
                     glVertex3i(j, 0, k + 1);
                 }
 
-                if (!maze.getOpened(j + x, k + 1 + y)) {
+                if (!maze.get_opened(j + x, k + 1 + y)) {
                     glNormal3f(0.0f, 0.0f, -1.0f);
 
                     glVertex3i(j, 0, k + 1);
@@ -108,7 +108,7 @@ Gray::compileChunk(int num) {
                     glVertex3i(j + 1, 0, k + 1);
                 }
 
-                if (!maze.getOpened(j + x, k - 1 + y)) {
+                if (!maze.get_opened(j + x, k - 1 + y)) {
                     glNormal3f(0.0f, 0.0f, 1.0f);
 
                     glVertex3i(j + 1, 0, k);
@@ -135,12 +135,12 @@ Gray::compileChunk(int num) {
 }
 
 void
-Gray::onTick(float) {
+Gray::on_tick(float) {
 }
 
 void
-Gray::renderChunks(int chunks[]) {
-    Camera& camera = game.getPlayer().getCamera();
+Gray::render_chunks(int chunks[]) {
+    Camera& camera = game.get_player().get_camera();
 
     float light0_diffuse[] = {1.0f, 0.9f, 0.8f};
     float light0_ambient[] = {0.5f, 0.55f, 0.75f};
@@ -152,13 +152,13 @@ Gray::renderChunks(int chunks[]) {
 
     glEnable(GL_LIGHTING);
 
-    MazeRenderer::renderChunks(chunks);
+    MazeRenderer::render_chunks(chunks);
 
     glDisable(GL_LIGHTING);
 
-    glTranslatef(camera.getX(), camera.getY(), camera.getZ());
+    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
     skybox.render();
-    glTranslatef(-camera.getX(), -camera.getY(), -camera.getZ());
+    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }

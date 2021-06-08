@@ -26,14 +26,14 @@ namespace mazemaze {
 
 class StarSky : public IRenderable, public ITickable<void*> {
 public:
-    explicit StarSky(int starCount, float timeSpeed, float pitch, float yaw);
+    explicit StarSky(int star_count, float time_speed, float pitch, float yaw);
     ~StarSky() override;
 
     void generate();
 
     void render() override;
-    void tick(void*, float deltatime) override;
-    void setTime(float time);
+    void tick(void*, float delta_time) override;
+    void set_time(float time);
 
 private:
     struct Star {
@@ -43,7 +43,7 @@ private:
         int size;
     };
 
-    int starCount;
+    int star_count;
 
     float distance;
 
@@ -52,9 +52,9 @@ private:
     float roll;
 
     float time;
-    float timeSpeed;
+    float time_speed;
 
-    unsigned int drawList;
+    unsigned int draw_list;
 
     std::vector<Star> stars;
 

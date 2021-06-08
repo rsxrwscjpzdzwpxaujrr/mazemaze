@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,25 +47,25 @@ private:
         OUTER = 2,
     };
 
-    const int meshCount;
+    const int mesh_count;
 
     Skybox skybox;
-    int meshDrawList;
+    int mesh_draw_list;
 
-    void compileWalls();
-    void compileWall(objl::Mesh& mesh, Angle angleType, bool vMirror, bool side);
-    void drawMortar(Angle angleType, bool side);
-    unsigned int getMesh(Angle angleType, bool vMirror, bool side);
+    void compile_walls();
+    void compile_wall(objl::Mesh& mesh, Angle angle_type, bool v_mirror, bool side);
+    void draw_mortar(Angle angle_type, bool side);
+    unsigned int get_mesh(Angle angle_type, bool v_mirror, bool side);
 
-    Angle getAngle(bool openeds[]);
+    Angle get_angle(bool openeds[]);
 
-    void setStates() override;
-    void onEnable() override;
-    void onDisable() override;
-    void compileChunk(int num) override;
-    void onTick(float deltaTime) override;
-    void renderChunks(int chunks[]) override;
-    void renderWall(Angle leftAngle, Angle rightAngle, bool flip);
+    void set_states() override;
+    void on_enable() override;
+    void on_disable() override;
+    void compile_chunk(int num) override;
+    void on_tick(float deltaTime) override;
+    void render_chunks(int chunks[]) override;
+    void renderWall(Angle left_angle, Angle right_angle, bool flip);
 };
 
 }

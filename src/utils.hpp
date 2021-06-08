@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,10 +26,11 @@
 namespace mazemaze {
 
 std::string fmt(const char *fmt, ...);
-sf::String pgtx(const char* msgctxt, const char* msgid);
-sf::String pgtxf(const char* msgctxt, const char* msgid, ...);
-sf::String npgtxf(const char* msgctxt, const char* msgid, const char* msgidPlural, int n);
-void sideToCoords(int side, int& x, int& y);
-int oppositeSide(int side);
+void side_to_coords(int side, int& x, int& y);
+int opposite_side(int side);
+
+sf::String pgtx  (const char* text, const char* id);
+sf::String pgtxf (const char* text, const char* id, ...);
+sf::String npgtxf(const char* text, const char* id, const char* plural, int n);
 
 }
