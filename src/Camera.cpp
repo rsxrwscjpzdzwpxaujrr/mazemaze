@@ -26,10 +26,10 @@
 namespace mazemaze {
 
 Camera::Camera(float  x,     float  y,         float  z,
-               float  pitch, float  yaw,       float  roll,
+               Rotation rotation,
                double fov,   double near_dist, double far_dist) :
         x(x),         y(y),                z(z),
-        pitch(pitch), yaw(yaw),            roll(roll),
+        m_rotation(rotation),
         fov(fov),     near_dist(near_dist), far_dist(far_dist) {}
 
 Camera::~Camera() = default;
@@ -38,9 +38,9 @@ void
 Camera::setup_rotation() {
     float todeg = static_cast<float>(180.0 / M_PI);
 
-    glRotatef(pitch * todeg, 1.0, 0.0, 0.0);
-    glRotatef(yaw   * todeg, 0.0, 1.0, 0.0);
-    glRotatef(roll  * todeg, 0.0, 0.0, 1.0);
+    glRotatef(m_rotation.pitch() * todeg, 1.0, 0.0, 0.0);
+    glRotatef(m_rotation.yaw()   * todeg, 0.0, 1.0, 0.0);
+    glRotatef(m_rotation.roll()  * todeg, 0.0, 0.0, 1.0);
 }
 
 void
@@ -80,19 +80,9 @@ Camera::get_z() const {
     return z;
 }
 
-float
-Camera::get_pitch() const {
-    return pitch;
-}
-
-float
-Camera::get_yaw() const {
-    return yaw;
-}
-
-float
-Camera::get_roll() const {
-    return roll;
+Rotation&
+Camera::rotation() {
+    return m_rotation;
 }
 
 double
@@ -113,21 +103,6 @@ Camera::set_y(float y) {
 void
 Camera::set_z(float z) {
     Camera::z = z;
-}
-
-void
-Camera::set_pitch(float pitch) {
-    Camera::pitch = pitch;
-}
-
-void
-Camera::set_yaw(float yaw) {
-    Camera::yaw = yaw;
-}
-
-void
-Camera::set_roll(float roll) {
-    Camera::roll = roll;
 }
 
 void

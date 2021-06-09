@@ -29,7 +29,7 @@ namespace renderers {
 
 NightBrick::NightBrick(mazemaze::Game& game) :
     Brick(game),
-    starSky(1024, 0.0f, 1.5f, 0.7f) {}
+    starSky(1024, 0.0f, Rotation(1.5f, 0.7f, 0.0f)) {}
 
 void
 NightBrick::on_tick(float) {

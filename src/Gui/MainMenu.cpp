@@ -51,11 +51,11 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
 
     set_state(main_state);
 
-    StarSky* star_sky = new StarSky(1024, 600.0f, 0.0f, 0.0f);
+    StarSky* star_sky = new StarSky(1024, 600.0f, Rotation());
 
     star_sky_background = new Background(star_sky, star_sky,
                                          new Camera( 0.0f ,  0.0f, 0.0f,
-                                                    -1.5f , -2.5f, 0.0f,
+                                           Rotation(-1.5f , -2.5f, 0.0f),
                                                      110.0,  10.0, 100.0));
 
     set_background(star_sky_background);

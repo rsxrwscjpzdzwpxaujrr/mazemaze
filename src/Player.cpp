@@ -33,7 +33,7 @@ namespace mazemaze {
 
 Player::Player(float x, float y, float z) :
         camera(x,     0.0f,  z,
-               0.0f,  0.0f,  0.0f,
+               Rotation(),
                100.0, 0.005, 100.0),
         camera_bobbing(nullptr),
         move_vector_x(0.0f),
@@ -69,8 +69,7 @@ Player::tick(Game& game, float delta_time) {
 
     float M_PI_2f = static_cast<float>(M_PI_2);
 
-    float pitch = camera.get_pitch();
-    float yaw   = camera.get_yaw();
+    auto& rotation = camera.rotation();
 
     move_vector_x = 0.0f;
     move_vector_z = 0.0f;
@@ -86,7 +85,7 @@ Player::tick(Game& game, float delta_time) {
         int i;
         float j;
 
-        for (i = 0, j = yaw; i < 4; i++, j += M_PI_2f)
+        for (i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
             if (move[i])
                 sum_vector(j, move_vector_x, move_vector_z);
     }
@@ -115,18 +114,18 @@ Player::tick(Game& game, float delta_time) {
     sf::Vector2i cursor = sf::Mouse::getPosition(window);
     sf::Mouse::setPosition(sf::Vector2i(window_half_size), window);
 
-    float new_pitch = pitch;
+    float new_pitch = rotation.pitch();
     float sensitivity = settings.get_sensitivity();
 
     new_pitch += (cursor.y - static_cast<int>(window_half_size.y)) * sensitivity;
 
     if (new_pitch > -M_PI_2f && new_pitch < M_PI_2f)
-        pitch = new_pitch;
+        rotation.set_pitch(new_pitch);
 
-    yaw   += (cursor.x - static_cast<int>(window_half_size.x)) * sensitivity;
-
-    camera.set_pitch(pitch);
-    camera.set_yaw(yaw);
+    rotation.set_yaw(
+        rotation.yaw() +
+        (cursor.x - static_cast<int>(window_half_size.x)) * sensitivity
+    );
 
     camera.set_x(x);
     camera.set_y(y + height);

@@ -92,15 +92,15 @@ Saver::load(gui::MainMenu& main_menu) {
 
     stream.close();
 
-    Player& player = game->get_player();
-    Camera& camera = player.get_camera();
+    auto& player = game->get_player();
+    auto& rotation = player.get_camera().rotation();
 
     player.set_x(player_params[0]);
     player.set_y(player_params[1]);
     player.set_z(player_params[2]);
-    camera.set_pitch(player_params[3]);
-    camera.set_yaw  (player_params[4]);
-    camera.set_roll (player_params[5]);
+    rotation.set_pitch(player_params[3]);
+    rotation.set_yaw  (player_params[4]);
+    rotation.set_roll (player_params[5]);
 
     maze.set_seed(maze_params[2]);
 
@@ -209,16 +209,16 @@ Saver::save_game(std::ostream& stream) {
 
 void
 Saver::save_player(std::ostream& stream) {
-    Player& player = game->get_player();
-    Camera& camera = player.get_camera();
+    auto& player = game->get_player();
+    auto& rotation = player.get_camera().rotation();
 
     float player_params[] {
         player.get_x(),
         player.get_y(),
         player.get_z(),
-        camera.get_pitch(),
-        camera.get_yaw(),
-        camera.get_roll()
+        rotation.pitch(),
+        rotation.yaw(),
+        rotation.roll()
     };
 
     stream.seekp(PLAYER_OFFSET);

@@ -17,12 +17,14 @@
 
 #pragma once
 
+#include "Rotation.hpp"
+
 namespace mazemaze {
 
 class Camera {
 public:
     explicit Camera(float  x,     float  y,         float  z,
-                    float  pitch, float  yaw,       float  roll,
+                    Rotation rotation,
                     double fov,   double near_dist, double far_dist);
     ~Camera();
 
@@ -34,19 +36,13 @@ public:
     float get_y() const;
     float get_z() const;
 
-    float get_pitch() const;
-    float get_yaw() const;
-    float get_roll() const;
+    Rotation& rotation();
 
     double get_fov() const;
 
     void set_x(float x);
     void set_y(float y);
     void set_z(float z);
-
-    void set_pitch(float pitch);
-    void set_yaw(float yaw);
-    void set_roll(float roll);
 
     void set_fov(double fov);
 
@@ -55,9 +51,7 @@ private:
     float y;
     float z;
 
-    float pitch;
-    float yaw;
-    float roll;
+    Rotation m_rotation;
 
     double fov;
     double near_dist;

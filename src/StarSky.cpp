@@ -24,11 +24,10 @@
 
 namespace mazemaze {
 
-StarSky::StarSky(int star_count, float time_speed, float pitch, float yaw) :
+StarSky::StarSky(int star_count, float time_speed, Rotation rotation) :
         star_count(star_count),
         distance(90.0f),
-        pitch(pitch),
-        yaw(yaw),
+        m_rotation(rotation),
         time(0.0f),
         time_speed(time_speed),
         stars(star_count) {
@@ -75,11 +74,13 @@ void
 StarSky::render() {
     glPushMatrix();
 
-    roll = time * static_cast<float>((2.0 * M_PI) / 24.0 / 60.0 / 60.0);
+    float todeg = static_cast<float>(180.0 / M_PI);
 
-    glRotatef(pitch * static_cast<float>(180.0 / M_PI), 1.0f, 0.0f, 0.0f);
-    glRotatef(yaw   * static_cast<float>(180.0 / M_PI), 0.0f, 1.0f, 0.0f);
-    glRotatef(roll  * static_cast<float>(180.0 / M_PI), 0.0f, 0.0f, 1.0f);
+    m_rotation.set_roll(time * static_cast<float>((2.0 * M_PI) / 24.0 / 60.0 / 60.0));
+
+    glRotatef(m_rotation.pitch() * todeg, 1.0f, 0.0f, 0.0f);
+    glRotatef(m_rotation.yaw()   * todeg, 0.0f, 1.0f, 0.0f);
+    glRotatef(m_rotation.roll()  * todeg, 0.0f, 0.0f, 1.0f);
 
     glScalef(distance, distance, distance);
 

@@ -30,7 +30,7 @@ namespace renderers {
 
 Classic::Classic(Game& game) :
         MazeRenderer(game),
-        star_sky(1024, 0.0f, 1.5f, 0.7f),
+        star_sky(1024, 0.0f, Rotation(1.5f, 0.7f, 0.0f)),
         game(game) {}
 
 Classic::~Classic() = default;

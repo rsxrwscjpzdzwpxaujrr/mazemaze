@@ -21,12 +21,13 @@
 
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
+#include "Rotation.hpp"
 
 namespace mazemaze {
 
 class StarSky : public IRenderable, public ITickable<void*> {
 public:
-    explicit StarSky(int star_count, float time_speed, float pitch, float yaw);
+    explicit StarSky(int star_count, float time_speed, Rotation rotation);
     ~StarSky() override;
 
     void generate();
@@ -47,9 +48,7 @@ private:
 
     float distance;
 
-    float pitch;
-    float yaw;
-    float roll;
+    Rotation m_rotation;
 
     float time;
     float time_speed;

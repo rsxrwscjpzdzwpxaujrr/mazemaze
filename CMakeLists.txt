@@ -35,6 +35,7 @@ set(SOURCES
     src/Skybox.cpp
     src/Logger.cpp
     src/CameraBobbing.cpp
+    src/Rotation.cpp
     src/Gui/Background.cpp
     src/Gui/MainMenu.cpp
     src/Gui/Gui.cpp
@@ -79,6 +80,7 @@ set(HEADERS
     src/Logger.hpp
     src/CameraBobbing.hpp
     src/TickableHandler.hpp
+    src/Rotation.hpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp

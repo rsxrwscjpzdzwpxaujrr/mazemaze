@@ -40,12 +40,11 @@ void
 CameraBobbing::tick(Player& player, float delta_time) {
     Camera& camera = player.get_camera();
 
-    float pitch = camera.get_pitch();
-    float yaw   = camera.get_yaw();
-
     float x = camera.get_x();
     float y = camera.get_y();
     float z = camera.get_z();
+
+    auto& rotation = camera.rotation();
 
     float current_pitch;
     float current_x;
@@ -98,11 +97,11 @@ CameraBobbing::tick(Player& player, float delta_time) {
     current_x =           std::cos(time * 11.0f)  * 0.02f * pos_coeff_with_easing;
     current_y = -std::abs(std::sin(time * 11.0f)) * 0.02f * pos_coeff_with_easing;
 
-    camera.set_pitch(pitch - last_pitch + current_pitch);
+    rotation.set_pitch(rotation.pitch() - last_pitch + current_pitch);
 
-    camera.set_x(x + current_x * std::cos(yaw));
+    camera.set_x(x + current_x * std::cos(rotation.yaw()));
     camera.set_y(y + current_y);
-    camera.set_z(z + current_x * std::sin(yaw));
+    camera.set_z(z + current_x * std::sin(rotation.yaw()));
 
     last_pitch = current_pitch;
 
