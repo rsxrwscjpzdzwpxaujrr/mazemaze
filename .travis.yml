@@ -52,7 +52,7 @@ jobs:
               - imagemagick
 
         - name: "Windows i686 static cross-compile"
-          if: tag IS present
+          if: (tag IS present) OR (env(FORCE_DEPLOY) = "TRUE")
           compiler: gcc
           dist:     bionic
           env:
