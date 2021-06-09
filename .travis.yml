@@ -6,6 +6,7 @@ addons:
     - curl
 
 os: linux
+conditions: v0
 
 jobs:
     include:
@@ -52,7 +53,7 @@ jobs:
               - imagemagick
 
         - name: "Windows i686 static cross-compile"
-          if: (tag =~ ^v) OR env(FORCE_DEPLOY)
+          if: (tag IS present) OR env(FORCE_DEPLOY)
           compiler: gcc
           dist:     bionic
           env:
