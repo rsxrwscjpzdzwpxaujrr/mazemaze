@@ -184,7 +184,7 @@ Brick::get_angle(bool openeds[]) {
 }
 
 void
-Brick::renderWall(Angle left_angle, Angle right_angle, bool flip) {
+Brick::render_wall(Angle left_angle, Angle right_angle, bool flip) {
     glTranslatef(-0.5f, 0.0f, 0.0f);
     glCallList(get_mesh(left_angle, flip, false));
 
@@ -294,7 +294,7 @@ Brick::compile_chunk(int num) {
                     bool angles[][2] = {{opened[3], tmpOpened[1]},
                                         {opened[2], tmpOpened[0]}};
 
-                    renderWall(get_angle(angles[0]), get_angle(angles[1]), true);
+                    render_wall(get_angle(angles[0]), get_angle(angles[1]), true);
                     glPopMatrix();
                 }
 
@@ -309,7 +309,7 @@ Brick::compile_chunk(int num) {
                     bool angles[][2] = {{opened[2], tmpOpened[0]},
                                         {opened[3], tmpOpened[1]}};
 
-                    renderWall(get_angle(angles[0]), get_angle(angles[1]), true);
+                    render_wall(get_angle(angles[0]), get_angle(angles[1]), true);
                     glPopMatrix();
                 }
 
@@ -323,7 +323,7 @@ Brick::compile_chunk(int num) {
                     bool angles[][2] = {{opened[0], tmpOpened[0]},
                                         {opened[1], tmpOpened[1]}};
 
-                    renderWall(get_angle(angles[0]), get_angle(angles[1]), false);
+                    render_wall(get_angle(angles[0]), get_angle(angles[1]), false);
                     glPopMatrix();
                 }
 
@@ -334,7 +334,7 @@ Brick::compile_chunk(int num) {
                     bool angles[][2] = {{opened[1], tmpOpened[1]},
                                         {opened[0], tmpOpened[0]}};
 
-                    renderWall(get_angle(angles[0]), get_angle(angles[1]), false);
+                    render_wall(get_angle(angles[0]), get_angle(angles[1]), false);
                 }
 
                 glPopMatrix();
@@ -367,10 +367,11 @@ Brick::render_chunks(int chunks[]) {
 
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);
+}
 
-    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
+void
+Brick::render_sky() {
     skybox.render();
-    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }

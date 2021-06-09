@@ -83,10 +83,11 @@ NightBrick::render_chunks(int chunks[]) {
 
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);
+}
 
-    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
+void
+NightBrick::render_sky() {
     starSky.render();
-    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }

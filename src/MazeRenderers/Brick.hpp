@@ -65,7 +65,8 @@ private:
     void compile_chunk(int num) override;
     void on_tick(float deltaTime) override;
     void render_chunks(int chunks[]) override;
-    void renderWall(Angle left_angle, Angle right_angle, bool flip);
+    void render_sky() override;
+    void render_wall(Angle left_angle, Angle right_angle, bool flip);
 };
 
 }

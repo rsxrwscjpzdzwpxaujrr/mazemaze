@@ -128,14 +128,8 @@ Classic::on_tick(float) {
 }
 
 void
-Classic::render_chunks(int chunks[]) {
-    Camera& camera = game.get_player().get_camera();
-
-    MazeRenderer::render_chunks(chunks);
-
-    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
+Classic::render_sky() {
     star_sky.render();
-    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }

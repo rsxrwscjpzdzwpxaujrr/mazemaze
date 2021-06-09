@@ -38,6 +38,7 @@ private:
     void on_tick(float delta_time) override;
     void set_states() override;
     void render_chunks(int chunks[]) override;
+    void render_sky() override;
 };
 
 }

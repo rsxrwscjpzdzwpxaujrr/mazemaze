@@ -69,7 +69,7 @@ MazeRenderer::disable() {
 }
 
 void
-MazeRenderer::tick(Game& game, float deltaTime) {
+MazeRenderer::tick(Game& game, float delta_time) {
     bool force = false;
 
     Player& player = game.get_player();
@@ -103,13 +103,13 @@ MazeRenderer::tick(Game& game, float deltaTime) {
 
         for (int i = p_x; i < pe_x; i++)
             for (int j = p_y; j < pe_y; j++) {
-                int chunkNum = i + j * maze.get_chunks_x();
+                int chunk_num = i + j * maze.get_chunks_x();
 
-                enable_chunk(chunkNum);
+                enable_chunk(chunk_num);
             }
     }
 
-    on_tick(deltaTime);
+    on_tick(delta_time);
 }
 
 void

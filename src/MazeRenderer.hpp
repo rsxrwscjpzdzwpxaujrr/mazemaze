@@ -33,6 +33,7 @@ public:
     void disable();
     void tick(Game& game, float delta_time) override;
     void render();
+    virtual void render_sky() = 0;
 
 protected:
     int* visible;

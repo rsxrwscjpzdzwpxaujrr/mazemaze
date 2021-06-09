@@ -172,6 +172,7 @@ Game::render() {
     player.get_camera().setup_perspective();
 
     player.get_camera().setup_rotation();
+    maze_renderers[maze_renderer]->render_sky();
 
     player.get_camera().setup_translation();
     maze_renderers[maze_renderer]->render();

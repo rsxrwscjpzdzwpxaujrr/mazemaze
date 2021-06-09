@@ -151,14 +151,13 @@ Gray::render_chunks(int chunks[]) {
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
     glEnable(GL_LIGHTING);
-
     MazeRenderer::render_chunks(chunks);
-
     glDisable(GL_LIGHTING);
+}
 
-    glTranslatef(camera.get_x(), camera.get_y(), camera.get_z());
+void
+Gray::render_sky() {
     skybox.render();
-    glTranslatef(-camera.get_x(), -camera.get_y(), -camera.get_z());
 }
 
 }
