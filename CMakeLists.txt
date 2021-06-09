@@ -36,6 +36,8 @@ set(SOURCES
     src/Logger.cpp
     src/CameraBobbing.cpp
     src/Rotation.cpp
+    src/Point.cpp
+    src/Point2.cpp
     src/Gui/Background.cpp
     src/Gui/MainMenu.cpp
     src/Gui/Gui.cpp
@@ -81,6 +83,8 @@ set(HEADERS
     src/CameraBobbing.hpp
     src/TickableHandler.hpp
     src/Rotation.hpp
+    src/Point.hpp
+    src/Point2.hpp
     src/Gui/Background.hpp
     src/Gui/MainMenu.hpp
     src/Gui/Gui.hpp

@@ -53,10 +53,12 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
 
     StarSky* star_sky = new StarSky(1024, 600.0f, Rotation());
 
-    star_sky_background = new Background(star_sky, star_sky,
-                                         new Camera( 0.0f ,  0.0f, 0.0f,
-                                           Rotation(-1.5f , -2.5f, 0.0f),
-                                                     110.0,  10.0, 100.0));
+    star_sky_background = new Background(
+        star_sky, star_sky,
+        new Camera(Pointf  ( 0.0f,  0.0f, 0.0f),
+                   Rotation(-1.5f, -2.5f, 0.0f),
+                   110.0,  10.0, 100.0)
+    );
 
     set_background(star_sky_background);
 }
@@ -86,8 +88,8 @@ MainMenu::on_event(const sf::Event& event) {
 }
 
 Game&
-MainMenu::new_game(int maze_width, int maze_height) {
-    game = new Game(*this, settings, *saver, maze_width, maze_height);
+MainMenu::new_game(Point2i maze_size) {
+    game = new Game(*this, settings, *saver, maze_size);
     game->new_game();
 
     return *game;

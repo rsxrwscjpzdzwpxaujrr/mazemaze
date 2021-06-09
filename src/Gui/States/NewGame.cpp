@@ -32,12 +32,12 @@ void
 NewGame::init_signals(MainMenu& main_menu) {
     start_button->GetSignal(Widget::OnLeftClick).Connect([this, &main_menu] {
         const sf::String text = size_entry->GetText();
-        int mazeSize = 1;
+        int maze_size = 1;
 
         if (text.getSize() > 0)
-            mazeSize = std::stoi(size_entry->GetText().toWideString());
+            maze_size = std::stoi(size_entry->GetText().toWideString());
 
-        Game* game = &main_menu.new_game(mazeSize, mazeSize);
+        Game* game = &main_menu.new_game(Point2i(maze_size, maze_size));
 
         static_cast<Progress&>(main_menu.get_state(progress_state)).setGame(game);
         main_menu.set_state(progress_state);

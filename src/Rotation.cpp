@@ -19,13 +19,12 @@
 
 #include <cmath>
 
-using namespace mazemaze;
+namespace mazemaze {
 
-Rotation::Rotation(float pitch, float yaw, float roll) :
-        Rotation() {
+Rotation::Rotation(float pitch, float yaw, float roll) : Rotation() {
     set_pitch(pitch);
-    set_yaw(yaw);
-    set_roll(roll);
+    set_yaw  (yaw);
+    set_roll (roll);
 }
 
 Rotation::Rotation() :
@@ -76,4 +75,6 @@ Rotation::normalize(float value) {
     float pi2 = M_PI * 2.0f;
 
     return value - (static_cast<int>(value / pi2) * pi2);
+}
+
 }

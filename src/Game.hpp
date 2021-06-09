@@ -43,8 +43,7 @@ public:
         gui::MainMenu& main_menu,
         Settings& settings,
         Saver& saver,
-        int maze_width,
-        int maze_height
+        Point2i maze_size
     );
 
     ~Game() override;

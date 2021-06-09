@@ -15,34 +15,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "ITickable.hpp"
+#include "Point2.hpp"
 
 namespace mazemaze {
 
-class Player;
+template<typename T>
+Point2<T>::Point2(T x, T y) : x(x), y(y) {
+}
 
-class CameraBobbing : public ITickable<Player&> {
-public:
-    explicit CameraBobbing();
-    ~CameraBobbing();
+template<typename T>
+Point2<T>::Point2() : x(0), y(0) {
+}
 
-    void tick(Player& player, float delta_time);
+template<typename T>
+void
+Point2<T>::set(Point2<T> point) {
+    x = point.x;
+    y = point.y;
+}
 
-private:
-    float rot_coeff;
-    float pos_coeff;
-    float time_coeff;
-
-    float last_pitch;
-
-    bool easing_type;
-
-    float time;
-
-    static float ease_in_cubic (float x);
-    static float ease_out_cubic(float x);
-};
+template<typename T>
+bool
+Point2<T>::operator==(Point2<T> point) {
+    return x == point.x && y == point.y;
+}
 
 }

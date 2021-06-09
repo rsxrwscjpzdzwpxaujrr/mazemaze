@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Gui.hpp"
+#include "../Point2.hpp"
 
 namespace mazemaze {
 
@@ -43,7 +44,7 @@ public:
 
     void on_event(const sf::Event& event) override;
 
-    Game& new_game(int maze_width, int maze_height);
+    Game& new_game(Point2i maze_size);
     void start_game();
     void resume_game();
     void stop_game();

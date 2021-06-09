@@ -17,32 +17,26 @@
 
 #pragma once
 
-#include "ITickable.hpp"
-
 namespace mazemaze {
 
-class Player;
-
-class CameraBobbing : public ITickable<Player&> {
+template<typename T>
+class Point2 {
 public:
-    explicit CameraBobbing();
-    ~CameraBobbing();
+    explicit Point2(T x, T y);
+    Point2();
 
-    void tick(Player& player, float delta_time);
+    void set(Point2<T> point);
 
-private:
-    float rot_coeff;
-    float pos_coeff;
-    float time_coeff;
+    bool operator==(Point2<T> point);
 
-    float last_pitch;
-
-    bool easing_type;
-
-    float time;
-
-    static float ease_in_cubic (float x);
-    static float ease_out_cubic(float x);
+    T x;
+    T y;
 };
+
+template class Point2<float>;
+template class Point2<int>;
+
+typedef Point2<float> Point2f;
+typedef Point2<int>   Point2i;
 
 }

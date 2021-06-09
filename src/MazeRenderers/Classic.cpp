@@ -37,80 +37,81 @@ Classic::~Classic() = default;
 
 void
 Classic::compile_chunk(int num) {
-    int x = (num % maze.get_chunks_x()) * Chunk::SIZE;
-    int y = (num / maze.get_chunks_x()) * Chunk::SIZE;
+    Point2i end(Chunk::SIZE, Chunk::SIZE);
+    Point2i i;
+    Point2i pos(
+        (num % maze.chunks_count().x) * Chunk::SIZE,
+        (num / maze.chunks_count().x) * Chunk::SIZE
+    );
 
-    Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, x, y));
+    Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, pos.x, pos.y));
 
     glNewList(draw_list + num, GL_COMPILE);
 
     glPushMatrix();
 
-    glTranslatef(x, 0.0, y);
+    glTranslatef(pos.x, 0.0, pos.y);
 
     glBegin(GL_QUADS);
 
     glColor3f(1.0f, 0.0f, 1.0f);
 
-    int end_x = Chunk::SIZE;
-    int end_y = Chunk::SIZE;
+    if (pos.x + Chunk::SIZE > maze.size().x)
+        end.x = maze.size().x % Chunk::SIZE;
 
-    if (x + Chunk::SIZE > maze.get_width())
-        end_x = maze.get_width() % Chunk::SIZE;
+    if (pos.y + Chunk::SIZE > maze.size().y)
+        end.y = maze.size().y % Chunk::SIZE;
 
-    if (y + Chunk::SIZE > maze.get_height())
-        end_y = maze.get_height() % Chunk::SIZE;
-
-    glVertex3i(0,     0, end_y);
-    glVertex3i(end_x, 0, end_y);
-    glVertex3i(end_x, 0, 0);
+    glVertex3i(0,     0, end.y);
+    glVertex3i(end.x, 0, end.y);
+    glVertex3i(end.x, 0, 0);
     glVertex3i(0,     0, 0);
 
-    for (int j = 0; j < end_x; j++)
-        for (int k = 0; k < end_y; k++)
-            if (maze.get_opened(j + x, k + y)) {
-                if (!maze.get_opened(j + 1 + x, k + y)) {
+    for (i.x = 0; i.x < end.x; i.x++)
+        for (i.y = 0; i.y < end.y; i.y++)
+            if (maze.get_opened(Point2i(i.x + pos.x, i.y + pos.y))) {
+                if (!maze.get_opened(Point2i(i.x + 1 + pos.x, i.y + pos.y))) {
                     glColor3f(1.0f, 0.0f, 0.0f);
 
-                    glVertex3i(j + 1, 0, k + 1);
-                    glVertex3i(j + 1, 1, k + 1);
-                    glVertex3i(j + 1, 1, k);
-                    glVertex3i(j + 1, 0, k);
+                    glVertex3i(i.x + 1, 0, i.y + 1);
+                    glVertex3i(i.x + 1, 1, i.y + 1);
+                    glVertex3i(i.x + 1, 1, i.y);
+                    glVertex3i(i.x + 1, 0, i.y);
                 }
 
-                if (!maze.get_opened(j - 1 + x, k + y)) {
+                if (!maze.get_opened(Point2i(i.x - 1 + pos.x, i.y + pos.y))) {
                     glColor3f(0.0f, 1.0f, 1.0f);
 
-                    glVertex3i(j, 0, k);
-                    glVertex3i(j, 1, k);
-                    glVertex3i(j, 1, k + 1);
-                    glVertex3i(j, 0, k + 1);
+                    glVertex3i(i.x, 0, i.y);
+                    glVertex3i(i.x, 1, i.y);
+                    glVertex3i(i.x, 1, i.y + 1);
+                    glVertex3i(i.x, 0, i.y + 1);
                 }
 
-                if (!maze.get_opened(j + x, k + 1 + y)) {
+                if (!maze.get_opened(Point2i(i.x + pos.x, i.y + 1 + pos.y))) {
                     glColor3f(0.0f, 0.0f, 1.0f);
 
-                    glVertex3i(j, 0, k + 1);
-                    glVertex3i(j, 1, k + 1);
-                    glVertex3i(j + 1, 1, k + 1);
-                    glVertex3i(j + 1, 0, k + 1);
+                    glVertex3i(i.x,     0, i.y + 1);
+                    glVertex3i(i.x,     1, i.y + 1);
+                    glVertex3i(i.x + 1, 1, i.y + 1);
+                    glVertex3i(i.x + 1, 0, i.y + 1);
                 }
 
-                if (!maze.get_opened(j + x, k - 1 + y)) {
+                if (!maze.get_opened(Point2i(i.x + pos.x, i.y - 1 + pos.y))) {
                     glColor3f(1.0f, 1.0f, 0.0f);
 
-                    glVertex3i(j + 1, 0, k);
-                    glVertex3i(j + 1, 1, k);
-                    glVertex3i(j, 1, k);
-                    glVertex3i(j, 0, k);
+                    glVertex3i(i.x + 1, 0, i.y);
+                    glVertex3i(i.x + 1, 1, i.y);
+                    glVertex3i(i.x,     1, i.y);
+                    glVertex3i(i.x,     0, i.y);
                 }
             } else {
                 glColor3f(0.0f, 1.0f, 0.0f);
 
-                glVertex3i(j, 1, k);
-                glVertex3i(j, 1, k + 1);
-                glVertex3i(j + 1, 1, k + 1);
-                glVertex3i(j + 1, 1, k);
+                glVertex3i(i.x,     1, i.y);
+                glVertex3i(i.x,     1, i.y + 1);
+                glVertex3i(i.x + 1, 1, i.y + 1);
+                glVertex3i(i.x + 1, 1, i.y);
             }
 
     glEnd();

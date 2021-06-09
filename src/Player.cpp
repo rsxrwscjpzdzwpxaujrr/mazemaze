@@ -31,18 +31,16 @@
 
 namespace mazemaze {
 
-Player::Player(float x, float y, float z) :
-        camera(x,     0.0f,  z,
+Player::Player(Pointf position) :
+        camera(position,
                Rotation(),
                100.0, 0.005, 100.0),
         camera_bobbing(nullptr),
-        move_vector_x(0.0f),
-        move_vector_z(0.0f),
-        x(x), y(y), z(z),
+        m_position(position),
         speed(3.0f),
         height(0.65f),
         width(0.05f) {
-    camera.set_y(y + height);
+    camera.position().y = position.y + height;
 }
 
 Player::~Player() {
@@ -54,12 +52,12 @@ Player::~Player() {
 
 void
 Player::start(Maze& maze) {
-    x = maze.get_start_x() + 0.5f;
-    z = maze.get_start_y() + 0.5f;
+    Pointf& cam_pos = camera.position();
 
-    camera.set_x(x);
-    camera.set_y(y + height);
-    camera.set_z(z);
+    m_position.x = maze.start().x + 0.5f;
+    m_position.z = maze.start().y + 0.5f;
+
+    cam_pos.set(Pointf(m_position.x, m_position.y + height, m_position.z));
 }
 
 void
@@ -70,9 +68,10 @@ Player::tick(Game& game, float delta_time) {
     float M_PI_2f = static_cast<float>(M_PI_2);
 
     auto& rotation = camera.rotation();
+    auto& cam_pos  = camera.position();
 
-    move_vector_x = 0.0f;
-    move_vector_z = 0.0f;
+    m_move_vector.x = 0.0f;
+    m_move_vector.y = 0.0f;
 
     Settings& settings = game.get_settings();
 
@@ -87,22 +86,22 @@ Player::tick(Game& game, float delta_time) {
 
         for (i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
             if (move[i])
-                sum_vector(j, move_vector_x, move_vector_z);
+                sum_vector(j, m_move_vector);
     }
 
     if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
-        float factor = 1.0f / std::sqrt((move_vector_x * move_vector_x) +
-                                        (move_vector_z * move_vector_z));
+        float factor = 1.0f / std::sqrt((m_move_vector.x * m_move_vector.x) +
+                                        (m_move_vector.y * m_move_vector.y));
 
-        move_vector_x *= factor;
-        move_vector_z *= factor;
+        m_move_vector.x *= factor;
+        m_move_vector.y *= factor;
     }
 
-    if (move_vector_x != 0.0f || move_vector_z != 0.0f) {
-        float newx = x + move_vector_x * speed * delta_time;
-        float newz = z + move_vector_z * speed * delta_time;
+    if (m_move_vector.x != 0.0f || m_move_vector.y != 0.0f) {
+        float newx = m_position.x + m_move_vector.x * speed * delta_time;
+        float newz = m_position.z + m_move_vector.y * speed * delta_time;
 
-        try_move(game.get_maze(), newx, y, newz);
+        try_move(game.get_maze(), Pointf(newx, m_position.y, newz));
     }
 
     sf::Window& window = GraphicEngine::inst().get_window();
@@ -127,9 +126,7 @@ Player::tick(Game& game, float delta_time) {
         (cursor.x - static_cast<int>(window_half_size.x)) * sensitivity
     );
 
-    camera.set_x(x);
-    camera.set_y(y + height);
-    camera.set_z(z);
+    cam_pos.set(Pointf(m_position.x, m_position.y + height, m_position.z));
 
     setup_camera_bobbing(settings);
 
@@ -143,76 +140,56 @@ Player::get_camera() {
 
 bool
 Player::is_moving() const {
-    return move_vector_x != 0.0f || move_vector_z != 0.0f;
+    return m_move_vector.x != 0.0f || m_move_vector.y != 0.0f;
 }
 
-float
-Player::get_x() const {
-    return x;
-}
-
-float
-Player::get_y() const {
-    return y;
-}
-
-float
-Player::get_z() const {
-    return z;
+Pointf&
+Player::position() {
+    return m_position;
 }
 
 void
-Player::set_x(float x) {
-    Player::x = x;
-}
+Player::try_move(Maze& maze, Pointf pos) {
+    auto& m_pos = m_position;
 
-void
-Player::set_y(float y) {
-    Player::y = y;
-}
+    if (!(pos.y < 0.0f && m_pos.y > 0.0f))
+        m_pos.y = pos.y;
 
-void
-Player::set_z(float z) {
-    Player::z = z;
-}
+    if (pos.y >= 0.0f && pos.y <= 1.0f) {
+        if (!check_collision(maze, Pointf(pos.x, 0.0f, m_pos.z)))
+            m_pos.x = pos.x;
 
-void
-Player::try_move(Maze& maze, float x, float y, float z) {
-    if (!(y < 0.0f && Player::y > 0.0f))
-        Player::y = y;
-
-    if (y >= 0.0f && y <= 1.0f) {
-        if (!check_collision(maze, x, Player::z))
-            Player::x = x;
-
-        if (!check_collision(maze, Player::x, z))
-            Player::z = z;
+        if (!check_collision(maze, Pointf(m_pos.x, 0.0f, pos.z)))
+            m_pos.z = pos.z;
     } else {
-        Player::x = x;
-        Player::z = z;
+        m_pos.set(pos);
     }
 }
 
 bool
-Player::check_collision(Maze& maze, float x, float y) {
+Player::check_collision(Maze& maze, Pointf pos) {
+    using namespace std;
+
     bool intersects = false;
 
-    for (int i = static_cast<int>(x) - 1; i <= x + 1; i++)
-        for (int j = static_cast<int>(y) - 1; j <= y + 1; j++)
-            if (!maze.get_opened(i, j)) {
-                float delta_x = x - std::max<float>(i, std::min<float>(x, i + 1.0f));
-                float delta_y = y - std::max<float>(j, std::min<float>(y, j + 1.0f));
+    for (int i = static_cast<int>(pos.x) - 1; i <= pos.x + 1; i++)
+        for (int j = static_cast<int>(pos.z) - 1; j <= pos.z + 1; j++)
+            if (!maze.get_opened(Point2i(i, j))) {
+                Point2f delta(
+                    pos.x - max<float>(i, min<float>(pos.x, i + 1.0f)),
+                    pos.z - max<float>(j, min<float>(pos.z, j + 1.0f))
+                );
 
-                intersects |= (delta_x * delta_x + delta_y * delta_y) < (width * width);
+                intersects |= (delta.x * delta.x + delta.y * delta.y) < (width * width);
             }
 
     return intersects;
 }
 
 void
-Player::sum_vector(float angle, float& vecX, float& vecY) {
-    vecX += cosf(angle);
-    vecY += sinf(angle);
+Player::sum_vector(float angle, Point2f& vec) {
+    vec.x += cosf(angle);
+    vec.y += sinf(angle);
 }
 
 void

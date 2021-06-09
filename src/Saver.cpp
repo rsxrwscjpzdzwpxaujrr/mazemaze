@@ -69,15 +69,15 @@ Saver::load(gui::MainMenu& main_menu) {
                                                                            version[2]));
 
     stream.seekg(GAME_OFFSET);
-    stream.read(reinterpret_cast<char*>(&time), sizeof (float));
+    stream.read(reinterpret_cast<char*>(&time), sizeof (time));
 
     stream.seekg(PLAYER_OFFSET);
-    stream.read(reinterpret_cast<char*>(&player_params), sizeof (float) * 6);
+    stream.read(reinterpret_cast<char*>(&player_params), sizeof (player_params));
 
     stream.seekg(MAZE_OFFSET);
-    stream.read(reinterpret_cast<char*>(maze_params), sizeof (int32_t) * 7);
+    stream.read(reinterpret_cast<char*>(maze_params), sizeof (maze_params));
 
-    game = new Game(main_menu, settings, *this, (maze_params[0] / 2), (maze_params[1] / 2));
+    game = new Game(main_menu, settings, *this, Point2i((maze_params[0] / 2), (maze_params[1] / 2)));
 
     last_save_time = time;
     game->set_time(time);
@@ -87,27 +87,34 @@ Saver::load(gui::MainMenu& main_menu) {
     stream.seekg(CHUNKS_OFFSET);
 
     maze.init_chunks();
-    for (int i = 0; i < maze.get_chunks_count(); i++)
-        load_chunk(stream, game->get_maze().get_chunks()[i]);
+
+    Point2i chunks_count = maze.chunks_count();
+
+    for (int i = 0; i < chunks_count.x * chunks_count.y; i++)
+        load_chunk(stream, game->get_maze().chunks()[i]);
 
     stream.close();
 
     auto& player = game->get_player();
+    auto& player_pos = player.position();
     auto& rotation = player.get_camera().rotation();
 
-    player.set_x(player_params[0]);
-    player.set_y(player_params[1]);
-    player.set_z(player_params[2]);
+    player_pos.x = player_params[0];
+    player_pos.y = player_params[1];
+    player_pos.z = player_params[2];
     rotation.set_pitch(player_params[3]);
     rotation.set_yaw  (player_params[4]);
     rotation.set_roll (player_params[5]);
-
     maze.set_seed(maze_params[2]);
 
-    maze.set_exit_x (maze_params[3]);
-    maze.set_exit_y (maze_params[4]);
-    maze.set_start_x(maze_params[5]);
-    maze.set_start_y(maze_params[6]);
+    auto& exit  = maze.exit();
+    auto& start = maze.start();
+
+    exit.x = maze_params[3];
+    exit.y = maze_params[4];
+
+    start.x = maze_params[5];
+    start.y = maze_params[6];
 
     Logger::inst().log_status(fmt("Save is loaded."));
 
@@ -210,33 +217,35 @@ Saver::save_game(std::ostream& stream) {
 void
 Saver::save_player(std::ostream& stream) {
     auto& player = game->get_player();
+    auto& player_pos = player.position();
     auto& rotation = player.get_camera().rotation();
 
     float player_params[] {
-        player.get_x(),
-        player.get_y(),
-        player.get_z(),
+        player_pos.x,
+        player_pos.y,
+        player_pos.z,
         rotation.pitch(),
         rotation.yaw(),
         rotation.roll()
     };
 
     stream.seekp(PLAYER_OFFSET);
-    stream.write(reinterpret_cast<char*>(&player_params), sizeof (float) * 6);
+    stream.write(reinterpret_cast<char*>(&player_params), sizeof (player_params));
 }
 
 void
 Saver::save_maze(std::ostream& stream) {
-    Maze& maze = game->get_maze();
+    auto& maze  = game->get_maze();
+    auto  size  = maze.size();
+    auto  exit  = maze.exit();
+    auto  start = maze.start();
 
     int32_t maze_params[] {
-        maze.get_width(),
-        maze.get_height(),
-        static_cast<int32_t>(maze.get_seed()),
-        maze.get_exit_x(),
-        maze.get_exit_y(),
-        maze.get_start_x(),
-        maze.get_start_y()};
+        size .x, size.y,
+        static_cast<int32_t>(maze.seed()),
+        exit .x, exit.y,
+        start.x, start.y
+    };
 
     stream.seekp(MAZE_OFFSET);
     stream.write(reinterpret_cast<char*>(&maze_params), sizeof (int32_t) * 7);
@@ -244,11 +253,12 @@ Saver::save_maze(std::ostream& stream) {
 
 void
 Saver::save_chunks(std::ostream& stream) {
-    Maze& maze = game->get_maze();
-    Chunk* chunks = maze.get_chunks();
+    auto& maze = game->get_maze();
+    auto* chunks = maze.chunks();
+    auto  chunks_count = maze.chunks_count();
 
     stream.seekp(CHUNKS_OFFSET);
-    for (int i = 0; i < maze.get_chunks_count(); i++)
+    for (int i = 0; i < chunks_count.x * chunks_count.y; i++)
         save_chunk(stream, chunks[i]);
 }
 

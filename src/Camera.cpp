@@ -25,12 +25,12 @@
 
 namespace mazemaze {
 
-Camera::Camera(float  x,     float  y,         float  z,
+Camera::Camera(Pointf position,
                Rotation rotation,
                double fov,   double near_dist, double far_dist) :
-        x(x),         y(y),                z(z),
+        m_position(position),
         m_rotation(rotation),
-        fov(fov),     near_dist(near_dist), far_dist(far_dist) {}
+        fov(fov), near_dist(near_dist), far_dist(far_dist) {}
 
 Camera::~Camera() = default;
 
@@ -45,7 +45,7 @@ Camera::setup_rotation() {
 
 void
 Camera::setup_translation() {
-    glTranslatef(-x, -y, -z);
+    glTranslatef(-m_position.x, -m_position.y, -m_position.z);
 }
 
 void
@@ -65,19 +65,9 @@ Camera::setup_perspective() {
     glLoadIdentity();
 }
 
-float
-Camera::get_x() const {
-    return x;
-}
-
-float
-Camera::get_y() const {
-    return y;
-}
-
-float
-Camera::get_z() const {
-    return z;
+Pointf&
+Camera::position() {
+    return m_position;
 }
 
 Rotation&
@@ -88,21 +78,6 @@ Camera::rotation() {
 double
 Camera::get_fov() const {
     return fov;
-}
-
-void
-Camera::set_x(float x) {
-    Camera::x = x;
-}
-
-void
-Camera::set_y(float y) {
-    Camera::y = y;
-}
-
-void
-Camera::set_z(float z) {
-    Camera::z = z;
 }
 
 void

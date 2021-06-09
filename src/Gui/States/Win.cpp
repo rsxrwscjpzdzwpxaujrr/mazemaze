@@ -114,9 +114,9 @@ Win::update_labels(Game& game) {
     win_note_time_label->SetText(time_string);
 
     Maze& maze = game.get_maze();
-    const sf::String maze_size = std::to_wstring((maze.get_width()  - 1) / 2) +
+    const sf::String maze_size = std::to_wstring((maze.size().x - 1) / 2) +
                                  L"x" +
-                                 std::to_wstring((maze.get_height() - 1) / 2);
+                                 std::to_wstring((maze.size().y - 1) / 2);
 
     win_note_size_label->SetText(sf::String(pgtx("win", "Maze size: ")) + maze_size);
 

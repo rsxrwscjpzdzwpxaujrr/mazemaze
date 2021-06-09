@@ -30,8 +30,7 @@ namespace mazemaze {
 
 MazeRenderer::MazeRenderer(Game& game) : maze(game.get_maze()),
                                          deleted(true),
-                                         old_hcp_x(-1),
-                                         old_hcp_y(-1) {}
+                                         old_hcp(-1, -1) {}
 
 MazeRenderer::~MazeRenderer() {
     if (!deleted)
@@ -40,9 +39,11 @@ MazeRenderer::~MazeRenderer() {
 
 void
 MazeRenderer::enable() {
+    int chunks_count = maze.chunks_count().x * maze.chunks_count().y;
+
     visible  = new int[16] {-1};
-    compiled = new bool[maze.get_chunks_count()] {false};
-    draw_list = glGenLists(maze.get_chunks_count());
+    compiled = new bool[chunks_count] {false};
+    draw_list = glGenLists(chunks_count);
 
     set_states();
     on_enable();
@@ -60,7 +61,9 @@ MazeRenderer::disable() {
 
     on_disable();
 
-    glDeleteLists(draw_list, maze.get_chunks_count());
+    int chunk_count = maze.chunks_count().x * maze.chunks_count().y;
+
+    glDeleteLists(draw_list, chunk_count);
 
     delete [] visible;
     delete [] compiled;
@@ -74,36 +77,39 @@ MazeRenderer::tick(Game& game, float delta_time) {
 
     Player& player = game.get_player();
 
-    int p_x = static_cast<int>(player.get_x()) / (Chunk::SIZE / 2);
-    int p_y = static_cast<int>(player.get_z()) / (Chunk::SIZE / 2);
+    Point2i p(
+        static_cast<int>(player.position().x) / (Chunk::SIZE / 2),
+        static_cast<int>(player.position().z) / (Chunk::SIZE / 2)
+    );
 
-    if (p_x != old_hcp_x || p_y != old_hcp_y || force) {
+    if (p.x != old_hcp.x || p.y != old_hcp.y || force) {
         Logger::inst().log_debug("Re-enabling chunks.");
 
-        old_hcp_x = p_x;
-        old_hcp_y = p_y;
+        old_hcp.x = p.x;
+        old_hcp.y = p.y;
 
         for (int i = 0; i < 16; i++)
             visible[i] = -1;
 
-        if (p_x % 2 == 0) p_x--;
-        if (p_y % 2 == 0) p_y--;
+        if (p.x % 2 == 0) p.x--;
+        if (p.y % 2 == 0) p.y--;
 
-        p_x /= 2;
-        p_y /= 2;
+        p.x /= 2;
+        p.y /= 2;
 
-        int pe_x = p_x + 2;
-        int pe_y = p_y + 2;
+        Point2i pe(p.x + 2, p.y + 2);
 
-        if (p_x < 0) p_x = 0;
-        if (p_y < 0) p_y = 0;
+        if (p.x < 0) p.x = 0;
+        if (p.y < 0) p.y = 0;
 
-        if (pe_x > maze.get_chunks_x()) pe_x = maze.get_chunks_x();
-        if (pe_y > maze.get_chunks_y()) pe_y = maze.get_chunks_y();
+        auto& chunks_count = maze.chunks_count();
 
-        for (int i = p_x; i < pe_x; i++)
-            for (int j = p_y; j < pe_y; j++) {
-                int chunk_num = i + j * maze.get_chunks_x();
+        if (pe.x > chunks_count.x) pe.x = chunks_count.x;
+        if (pe.y > chunks_count.y) pe.y = chunks_count.y;
+
+        for (int i = p.x; i < pe.x; i++)
+            for (int j = p.y; j < pe.y; j++) {
+                int chunk_num = i + j * chunks_count.x;
 
                 enable_chunk(chunk_num);
             }

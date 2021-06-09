@@ -17,15 +17,15 @@
 
 #pragma once
 
+#include "Point.hpp"
 #include "Rotation.hpp"
 
 namespace mazemaze {
 
 class Camera {
 public:
-    explicit Camera(float  x,     float  y,         float  z,
-                    Rotation rotation,
-                    double fov,   double near_dist, double far_dist);
+    explicit Camera(Pointf position, Rotation rotation,
+                    double fov, double near_dist, double far_dist);
     ~Camera();
 
     void setup_rotation();
@@ -36,6 +36,7 @@ public:
     float get_y() const;
     float get_z() const;
 
+    Pointf  & position();
     Rotation& rotation();
 
     double get_fov() const;
@@ -47,10 +48,7 @@ public:
     void set_fov(double fov);
 
 private:
-    float x;
-    float y;
-    float z;
-
+    Pointf   m_position;
     Rotation m_rotation;
 
     double fov;

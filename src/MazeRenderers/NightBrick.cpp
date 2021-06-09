@@ -70,9 +70,9 @@ NightBrick::set_states() {
 
 void
 NightBrick::render_chunks(int chunks[]) {
-    Camera& camera = game.get_player().get_camera();
+    auto& position = game.get_player().get_camera().position();
 
-    float light1_position[] = {camera.get_x(), camera.get_y(), camera.get_z(), 1.0f};
+    float light1_position[] = { position.x, position.y, position.z, 1.0f };
 
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
 

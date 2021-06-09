@@ -46,14 +46,13 @@ Game::Game(
     gui::MainMenu& main_menu,
     Settings& settings,
     Saver& saver,
-    int maze_width,
-    int maze_height
+    Point2i maze_size
 ) :
         gui::Background(this, this, nullptr),
-        maze(maze_width, maze_height),
+        maze(maze_size),
         maze_renderer(0),
         maze_renderers{nullptr},
-        player(1.5f, 0.0f, 1.5f),
+        player(Pointf(1.5f, 0.0f, 1.5f)),
         settings(settings),
         saver(saver),
         main_menu(main_menu),
@@ -138,8 +137,8 @@ Game::tick(void*, float deltaTime) {
         if (time - saver.get_last_save_time() >= settings.get_autosave_time() && settings.get_autosave())
             saver.save();
 
-        if (    static_cast<int>(player.get_x()) == maze.get_exit_x() &&
-                static_cast<int>(player.get_z()) == maze.get_exit_y())
+        if (    static_cast<int>(player.position().x) == maze.exit().x &&
+                static_cast<int>(player.position().z) == maze.exit().y)
             set_won(true);
 
         time += deltaTime;

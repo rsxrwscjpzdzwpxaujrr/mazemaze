@@ -18,6 +18,7 @@
 #pragma once
 
 #include "ITickable.hpp"
+#include "Point2.hpp"
 
 namespace mazemaze {
 
@@ -51,8 +52,7 @@ protected:
     virtual void render_chunks(int chunks[]);
 
 private:
-    int old_hcp_x;
-    int old_hcp_y;
+    Point2i old_hcp;
 };
 
 }

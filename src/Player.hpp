@@ -24,6 +24,9 @@
 #include "Camera.hpp"
 #include "CameraBobbing.hpp"
 #include "TickableHandler.hpp"
+#include "Point.hpp"
+#include "Point2.hpp"
+#include "Rotation.hpp"
 
 namespace mazemaze {
 
@@ -33,7 +36,7 @@ class Settings;
 
 class Player : public ITickable<Game&> {
 public:
-    explicit Player(float x, float y, float z);
+    explicit Player(Pointf position);
     ~Player();
 
     void start(Maze& maze);
@@ -43,31 +46,23 @@ public:
 
     bool is_moving() const;
 
-    float get_x() const;
-    float get_y() const;
-    float get_z() const;
-
-    void set_x(float x);
-    void set_y(float y);
-    void set_z(float z);
+    Pointf& position();
 
 private:
     Camera camera;
     TickableHandler<Player&> tickable_handler;
     CameraBobbing* camera_bobbing;
 
-    float move_vector_x;
-    float move_vector_z;
-    float x;
-    float y;
-    float z;
+    Pointf  m_position;
+    Point2f m_move_vector;
+
     float speed;
     float height;
     float width;
 
-    void try_move(Maze& maze, float x, float y, float z);
-    bool check_collision(Maze& maze, float x, float y);
-    void sum_vector(float angle, float& vecX, float& vecY);
+    void try_move(Maze& maze, Pointf position);
+    bool check_collision(Maze& maze, Pointf position);
+    void sum_vector(float angle, Point2f& vec);
     void setup_camera_bobbing(Settings& settings);
 };
 

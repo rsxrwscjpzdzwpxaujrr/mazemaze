@@ -242,57 +242,64 @@ Brick::on_disable() {
 
 void
 Brick::compile_chunk(int num) {
-    int x = (num % maze.get_chunks_x()) * Chunk::SIZE;
-    int y = (num / maze.get_chunks_x()) * Chunk::SIZE;
+    Point2i end(Chunk::SIZE, Chunk::SIZE);
+    Point2i i;
+    Point2i pos(
+        (num % maze.chunks_count().x) * Chunk::SIZE,
+        (num / maze.chunks_count().x) * Chunk::SIZE
+    );
 
-    Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, x, y));
+    Logger::inst().log_debug(fmt("Compiling chunk %d at %d %d.", num, pos.x, pos.y));
 
     glNewList(draw_list + num, GL_COMPILE);
 
     glPushMatrix();
 
-    glTranslatef(x, 0.0, y);
+    glTranslatef(pos.x, 0.0, pos.y);
 
-    int endX = Chunk::SIZE;
-    int endY = Chunk::SIZE;
+    if (pos.x + Chunk::SIZE > maze.size().x)
+        end.x = maze.size().x % Chunk::SIZE;
 
-    if (x + Chunk::SIZE > maze.get_width())
-        endX = maze.get_width() % Chunk::SIZE;
+    if (pos.y + Chunk::SIZE > maze.size().y)
+        end.y = maze.size().y % Chunk::SIZE;
 
-    if (y + Chunk::SIZE > maze.get_height())
-        endY = maze.get_height() % Chunk::SIZE;
-
-    for (int j = 0; j < endX; j++)
-        for (int k = 0; k < endY; k++) {
-            glColor3f(0.4f, 0.4f, 0.4f);
+    for (i.x = 0; i.x < end.x; i.x++)
+        for (i.y = 0; i.y < end.y; i.y++) {
+            glColor3f (0.4f, 0.4f, 0.4f);
             glNormal3f(0.0f, 1.0f, 0.0f);
 
             glBegin(GL_QUADS);
-            glVertex3i(j, 0, k);
-            glVertex3i(j, 0, k + 1);
-            glVertex3i(j + 1, 0, k + 1);
-            glVertex3i(j + 1, 0, k);
+            glVertex3i(i.x,     0, i.y);
+            glVertex3i(i.x,     0, i.y + 1);
+            glVertex3i(i.x + 1, 0, i.y + 1);
+            glVertex3i(i.x + 1, 0, i.y);
             glEnd();
 
-            if (maze.get_opened(j + x, k + y)) {
+            if (maze.get_opened(Point2i(i.x + pos.x, i.y + pos.y))) {
                 glPushMatrix();
-                glTranslatef(j + 0.5f, 0.5f, k + 0.5f);
+                glTranslatef(i.x + 0.5f, 0.5f, i.y + 0.5f);
 
-                bool opened[] = {maze.get_opened(j + 1 + x, k + y),
-                                 maze.get_opened(j - 1 + x, k + y),
-                                 maze.get_opened(j + x, k + 1 + y),
-                                 maze.get_opened(j + x, k - 1 + y)};
+                bool opened[] = {
+                    maze.get_opened(Point2i(i.x + 1 + pos.x, i.y     + pos.y)),
+                    maze.get_opened(Point2i(i.x - 1 + pos.x, i.y     + pos.y)),
+                    maze.get_opened(Point2i(i.x     + pos.x, i.y + 1 + pos.y)),
+                    maze.get_opened(Point2i(i.x     + pos.x, i.y - 1 + pos.y))
+                };
 
                 if (!opened[0]) {
                     glPushMatrix();
 
                     glRotatef(270.0f, 0.0f, 1.0f, 0.0f);
 
-                    bool tmpOpened[] = {maze.get_opened(j + 1 + x, k + 1 + y),
-                                        maze.get_opened(j + 1 + x, k - 1 + y)};
+                    bool tmp_opened[] = {
+                        maze.get_opened(Point2i(i.x + 1 + pos.x, i.y + 1 + pos.y)),
+                        maze.get_opened(Point2i(i.x + 1 + pos.x, i.y - 1 + pos.y))
+                    };
 
-                    bool angles[][2] = {{opened[3], tmpOpened[1]},
-                                        {opened[2], tmpOpened[0]}};
+                    bool angles[][2] = {
+                        { opened[3], tmp_opened[1] },
+                        { opened[2], tmp_opened[0] }
+                    };
 
                     render_wall(get_angle(angles[0]), get_angle(angles[1]), true);
                     glPopMatrix();
@@ -303,11 +310,15 @@ Brick::compile_chunk(int num) {
 
                     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 
-                    bool tmpOpened[] = {maze.get_opened(j - 1 + x, k + 1 + y),
-                                        maze.get_opened(j - 1 + x, k - 1 + y)};
+                    bool tmp_opened[] = {
+                        maze.get_opened(Point2i(i.x - 1 + pos.x, i.y + 1 + pos.y)),
+                        maze.get_opened(Point2i(i.x - 1 + pos.x, i.y - 1 + pos.y))
+                    };
 
-                    bool angles[][2] = {{opened[2], tmpOpened[0]},
-                                        {opened[3], tmpOpened[1]}};
+                    bool angles[][2] = {
+                        { opened[2], tmp_opened[0] },
+                        { opened[3], tmp_opened[1] }
+                    };
 
                     render_wall(get_angle(angles[0]), get_angle(angles[1]), true);
                     glPopMatrix();
@@ -317,22 +328,30 @@ Brick::compile_chunk(int num) {
                     glPushMatrix();
                     glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
 
-                    bool tmpOpened[] = {maze.get_opened(j + 1 + x, k + 1 + y),
-                                        maze.get_opened(j - 1 + x, k + 1 + y)};
+                    bool tmp_opened[] = {
+                        maze.get_opened(Point2i(i.x + 1 + pos.x, i.y + 1 + pos.y)),
+                        maze.get_opened(Point2i(i.x - 1 + pos.x, i.y + 1 + pos.y))
+                    };
 
-                    bool angles[][2] = {{opened[0], tmpOpened[0]},
-                                        {opened[1], tmpOpened[1]}};
+                    bool angles[][2] = {
+                        { opened[0], tmp_opened[0] },
+                        { opened[1], tmp_opened[1] }
+                    };
 
                     render_wall(get_angle(angles[0]), get_angle(angles[1]), false);
                     glPopMatrix();
                 }
 
                 if (!opened[3]) {
-                    bool tmpOpened[] = {maze.get_opened(j + 1 + x, k - 1 + y),
-                                        maze.get_opened(j - 1 + x, k - 1 + y)};
+                    bool tmp_opened[] = {
+                        maze.get_opened(Point2i(i.x + 1 + pos.x, i.y - 1 + pos.y)),
+                        maze.get_opened(Point2i(i.x - 1 + pos.x, i.y - 1 + pos.y))
+                    };
 
-                    bool angles[][2] = {{opened[1], tmpOpened[1]},
-                                        {opened[0], tmpOpened[0]}};
+                    bool angles[][2] = {
+                        { opened[1], tmp_opened[1] },
+                        { opened[0], tmp_opened[0] }
+                    };
 
                     render_wall(get_angle(angles[0]), get_angle(angles[1]), false);
                 }
@@ -354,9 +373,9 @@ Brick::on_tick(float) {
 
 void
 Brick::render_chunks(int chunks[]) {
-    Camera& camera = game.get_player().get_camera();
+    auto& position = game.get_player().get_camera().position();
 
-    float light1_position[] = {camera.get_x(), camera.get_y(), camera.get_z(), 1.0f};
+    float light1_position[] = { position.x, position.y, position.z, 1.0f };
 
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
 
