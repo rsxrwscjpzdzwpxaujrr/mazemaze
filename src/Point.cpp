@@ -41,4 +41,7 @@ Point<T>::operator==(Point<T> point) {
     return x == point.x && y == point.y && z == point.z;
 }
 
+template class Point<float>;
+template class Point<int>;
+
 }

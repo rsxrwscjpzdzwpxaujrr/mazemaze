@@ -34,9 +34,6 @@ public:
     T z;
 };
 
-template class Point<float>;
-template class Point<int>;
-
 typedef Point<float> Pointf;
 typedef Point<int>   Pointi;
 

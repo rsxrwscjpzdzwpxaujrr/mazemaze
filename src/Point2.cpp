@@ -40,4 +40,7 @@ Point2<T>::operator==(Point2<T> point) {
     return x == point.x && y == point.y;
 }
 
+template class Point2<float>;
+template class Point2<int>;
+
 }

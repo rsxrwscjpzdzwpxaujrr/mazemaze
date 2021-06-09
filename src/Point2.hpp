@@ -33,9 +33,6 @@ public:
     T y;
 };
 
-template class Point2<float>;
-template class Point2<int>;
-
 typedef Point2<float> Point2f;
 typedef Point2<int>   Point2i;
 
