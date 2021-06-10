@@ -82,9 +82,14 @@ Player::tick(Game& game, float delta_time) {
         sf::Keyboard::isKeyPressed(settings.key("up"))
     };
 
-    for (int i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
-        if (move[i])
-            sum_vector(j, m_move_vector);
+    {
+        int i = 0;
+        float j = rotation.yaw();
+
+        for (; i < 4; i++, j += M_PI_2f)
+            if (move[i])
+                sum_vector(j, m_move_vector);
+    }
 
     if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
         float factor = 1.0f / std::sqrt((m_move_vector.x * m_move_vector.x) +
