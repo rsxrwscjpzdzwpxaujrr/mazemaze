@@ -6,11 +6,11 @@ addons:
     - curl
 
 os: linux
+cache: ccache
 
 jobs:
     include:
         - name: "Linux Clang"
-          cache: ccache
           compiler: clang
           dist:     bionic
           env:

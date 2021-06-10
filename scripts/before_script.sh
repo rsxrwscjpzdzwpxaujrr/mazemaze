@@ -28,7 +28,8 @@ then
     export MXE_PREFIX=${MXE_DIR}/usr/$MXE_TARGET
 
     export CMAKE="${MXE_DIR}/usr/bin/${MXE_TARGET}-cmake \
-        -DMXE_USE_CCACHE=FALSE"
+        -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache"
 
     sudo apt-get --yes update
     sudo apt-get --yes \
