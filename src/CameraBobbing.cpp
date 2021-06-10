@@ -33,6 +33,12 @@ const float  rot_in_speed = 5.0f;
 const float  pos_in_speed = 5.0f;
 const float time_in_speed = 5.0f;
 
+const float pos_speed = 11.0f;
+const float rot_speed = 22.0f;
+
+const float pos_amount = 0.02f;
+const float rot_amount = 0.002f;
+
 CameraBobbing::CameraBobbing() :
     rot_coeff(0.0f),
     pos_coeff(0.0f),
@@ -96,10 +102,10 @@ CameraBobbing::tick(Player& player, float delta_time) {
      pos_coeff_with_easing = easing_func( pos_coeff);
     time_coeff_with_easing = easing_func(time_coeff);
 
-    current_rot = (std::cos(time * 22.0f) + 1.0f) * 0.002f * rot_coeff_with_easing;
+    current_rot = (std::cos(time * rot_speed) + 1.0f) * rot_amount * rot_coeff_with_easing;
 
-    current.x =           std::cos(time * 11.0f)  * 0.02f * pos_coeff_with_easing;
-    current.y = -std::abs(std::sin(time * 11.0f)) * 0.02f * pos_coeff_with_easing;
+    current.x =           std::cos(time * pos_speed)  * pos_amount * pos_coeff_with_easing;
+    current.y = -std::abs(std::sin(time * pos_speed)) * pos_amount * pos_coeff_with_easing;
 
     rotation.set_pitch(rotation.pitch() - last_pitch + current_rot);
 
