@@ -9,29 +9,12 @@ os: linux
 
 jobs:
     include:
-        - name: "Linux GCC"
-          cache: ccache
-          compiler: gcc
-          dist:     bionic
-          env:
-          - DEPLOY=TRUE
-          - ARCH=x86_64
-          addons:
-              apt_packages:
-              - libxrandr-dev
-              - libudev-dev
-              - g++
-              - libgl1-mesa-dev
-              - libjsoncpp-dev
-              - curl
-              - fakeroot
-              - hashdeep
-
         - name: "Linux Clang"
           cache: ccache
           compiler: clang
           dist:     bionic
           env:
+          - DEPLOY=TRUE
           - ARCH=x86_64
           addons:
               apt_packages:
@@ -41,6 +24,8 @@ jobs:
               - libgl1-mesa-dev
               - libjsoncpp-dev
               - curl
+              - fakeroot
+              - hashdeep
 
         - name: "Windows x86_64 static cross-compile"
           compiler: gcc
