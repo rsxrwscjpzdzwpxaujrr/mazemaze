@@ -89,7 +89,7 @@ GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
 
 #ifdef _WIN32
         if (old_maximized) {
-            ShowWindow(window->getSystemHandle(), SW_MAXIMIZE);
+            ShowWindow(m_window->getSystemHandle(), SW_MAXIMIZE);
             Logger::inst().log_debug("Maximizing window.");
         }
 #endif
@@ -299,7 +299,7 @@ GraphicEngine::update_old_maximized() {
     WINDOWPLACEMENT placement;
     placement.length = sizeof(WINDOWPLACEMENT);
 
-    GetWindowPlacement(window->getSystemHandle(), &placement);
+    GetWindowPlacement(m_window->getSystemHandle(), &placement);
 
     old_maximized = placement.showCmd == SW_MAXIMIZE;
 }
