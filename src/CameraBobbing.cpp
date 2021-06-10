@@ -62,26 +62,26 @@ CameraBobbing::tick(Player& player, float delta_time) {
 
     if (player.is_moving()) {
         if ( rot_coeff < 1.0f)
-             rot_coeff += std::min(delta_time *  rot_out_speed, 1.0f -  rot_coeff);
+             rot_coeff += std::min(delta_time *  rot_in_speed, 1.0f -  rot_coeff);
 
         if ( pos_coeff < 1.0f)
-             pos_coeff += std::min(delta_time *  pos_out_speed, 1.0f -  pos_coeff);
+             pos_coeff += std::min(delta_time *  pos_in_speed, 1.0f -  pos_coeff);
 
         if (time_coeff < 1.0f)
-            time_coeff += std::min(delta_time * time_out_speed, 1.0f - time_coeff);
+            time_coeff += std::min(delta_time * time_in_speed, 1.0f - time_coeff);
 
         easing_type = true;
     }
 
     if (!player.is_moving()) {
         if (rot_coeff > 0.0f)
-            rot_coeff  -= std::min(delta_time *  rot_in_speed,  rot_coeff);
+            rot_coeff  -= std::min(delta_time *  rot_out_speed,  rot_coeff);
 
         if (  pos_coeff > 0.0f)
-            pos_coeff  -= std::min(delta_time *  pos_in_speed,  pos_coeff);
+            pos_coeff  -= std::min(delta_time *  pos_out_speed,  pos_coeff);
 
         if ( time_coeff > 0.0f)
-            time_coeff -= std::min(delta_time * time_in_speed, time_coeff);
+            time_coeff -= std::min(delta_time * time_out_speed, time_coeff);
 
         easing_type = false;
     }
