@@ -10,6 +10,7 @@ os: linux
 jobs:
     include:
         - name: "Linux GCC"
+          cache: ccache
           compiler: gcc
           dist:     bionic
           env:
@@ -27,6 +28,7 @@ jobs:
               - hashdeep
 
         - name: "Linux Clang"
+          cache: ccache
           compiler: clang
           dist:     bionic
           env:

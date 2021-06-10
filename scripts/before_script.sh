@@ -71,6 +71,8 @@ then
             -background transparent \
             win/icon.ico
 else
+    ccache --set-config=compiler_check=content
+
     export CMAKE=cmake
 
     sudo echo "deb http://old-releases.ubuntu.com/ubuntu/ eoan universe" \
