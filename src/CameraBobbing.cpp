@@ -33,10 +33,10 @@ const float  rot_in_speed = 5.0f;
 const float  pos_in_speed = 5.0f;
 const float time_in_speed = 5.0f;
 
-const float pos_speed = 11.0f;
-const float rot_speed = 22.0f;
+const float pos_speed = 9.0f;
+const float rot_speed = pos_speed * 2.0f;
 
-const float pos_amount = 0.02f;
+const float pos_amount = 0.014f;
 const float rot_amount = 0.002f;
 
 CameraBobbing::CameraBobbing() :
