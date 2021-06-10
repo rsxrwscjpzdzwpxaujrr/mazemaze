@@ -30,18 +30,19 @@ public:
 
     void tick(void*, float delta_time) override;
 
-    float get_last_fps() const;
-    float get_update_interval() const;
     void set_update_interval(float update_interval);
+
+    float last_fps() const;
+    float update_interval() const;
 
 private:
     std::function<void (float)> on_update;
-    float update_interval;
+    float m_update_interval;
     float time_passed;
 
     float delta_sum;
     float delta_count;
-    float last_fps;
+    float m_last_fps;
 };
 
 }

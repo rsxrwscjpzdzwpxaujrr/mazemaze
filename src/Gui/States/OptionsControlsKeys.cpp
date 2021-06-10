@@ -24,7 +24,7 @@ namespace gui {
 namespace states {
 
 sf::String
-OptionsControls::get_key_name(sf::Keyboard::Key key) {
+OptionsControls::key_name(sf::Keyboard::Key key) {
     using namespace sf;
 
     switch (key) {

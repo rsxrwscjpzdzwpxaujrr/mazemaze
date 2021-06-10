@@ -34,14 +34,14 @@ public:
     void tick(void*, float delta_time) override;
     void render() override;
 
-    ITickable<void*>* get_tickable() const;
-    IRenderable*      get_renderable() const;
-    virtual Camera*   get_camera();
+    ITickable<void*>* tickable() const;
+    IRenderable*      renderable() const;
+    virtual Camera*   camera();
 
 private:
-    ITickable<void*>* tickable;
-    IRenderable*      renderable;
-    Camera*           camera;
+    ITickable<void*>* m_tickable;
+    IRenderable*      m_renderable;
+    Camera*           m_camera;
 };
 
 }

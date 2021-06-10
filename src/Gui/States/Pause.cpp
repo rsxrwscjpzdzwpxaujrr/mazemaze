@@ -29,7 +29,7 @@ namespace gui {
 namespace states {
 
 Pause::Pause(MainMenu& main_menu, Game& game) :
-        State(main_menu.get_desktop(), "Pause"),
+        State(main_menu.desktop(), "Pause"),
         resume_button(Button::Create()),
         options_button(Button::Create()),
         exit_button(Button::Create()) {
@@ -40,7 +40,7 @@ Pause::Pause(MainMenu& main_menu, Game& game) :
     });
 
     options_button->GetSignal(Widget::OnLeftClick).Connect([&main_menu] {
-        main_menu.set_state(main_menu.get_options_state());
+        main_menu.set_state(main_menu.options_state());
     });
 
     exit_button->GetSignal(Widget::OnLeftClick).Connect([&game] {

@@ -21,11 +21,11 @@ namespace mazemaze {
 
 FpsCalculator::FpsCalculator(std::function<void (float)> const& on_update, float update_interval) :
         on_update(on_update),
-        update_interval(update_interval),
+        m_update_interval(update_interval),
         time_passed(0.0f),
         delta_sum(0.0f),
         delta_count(0.0f),
-        last_fps(0.0f) {}
+        m_last_fps(0.0f) {}
 
 FpsCalculator::~FpsCalculator() = default;
 
@@ -35,13 +35,13 @@ FpsCalculator::tick(void*, float delta_time) {
     delta_sum += delta_time;
     delta_count++;
 
-    if (time_passed >= update_interval) {
-        float big_count = static_cast<int>(time_passed / update_interval);
-        time_passed -= update_interval * big_count;
+    if (time_passed >= m_update_interval) {
+        float big_count = static_cast<int>(time_passed / m_update_interval);
+        time_passed -= m_update_interval * big_count;
 
-        last_fps = 1.0f / (delta_sum / delta_count);
+        m_last_fps = 1.0f / (delta_sum / delta_count);
 
-        on_update(last_fps);
+        on_update(m_last_fps);
 
         delta_count = 0.0f;
         delta_sum = 0.0;
@@ -49,18 +49,18 @@ FpsCalculator::tick(void*, float delta_time) {
 }
 
 float
-FpsCalculator::get_last_fps() const {
-    return last_fps;
+FpsCalculator::last_fps() const {
+    return m_last_fps;
 }
 
 float
-FpsCalculator::get_update_interval() const {
-    return update_interval;
+FpsCalculator::update_interval() const {
+    return m_update_interval;
 }
 
 void
 FpsCalculator::set_update_interval(float update_interval) {
-    FpsCalculator::update_interval = update_interval;
+    m_update_interval = update_interval;
 }
 
 }

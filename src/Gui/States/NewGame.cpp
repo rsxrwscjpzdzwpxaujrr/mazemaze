@@ -39,7 +39,7 @@ NewGame::init_signals(MainMenu& main_menu) {
 
         Game* game = &main_menu.new_game(Point2i(maze_size, maze_size));
 
-        static_cast<Progress&>(main_menu.get_state(progress_state)).setGame(game);
+        static_cast<Progress&>(main_menu.state(progress_state)).setGame(game);
         main_menu.set_state(progress_state);
     });
 
@@ -74,7 +74,7 @@ NewGame::init_signals(MainMenu& main_menu) {
 }
 
 NewGame::NewGame(MainMenu& main_menu) :
-        State(main_menu.get_desktop(), "NewGame"),
+        State(main_menu.desktop(), "NewGame"),
         back_button(Button::Create()),
         start_button(Button::Create()),
         size_entry(Entry::Create(L"10")),

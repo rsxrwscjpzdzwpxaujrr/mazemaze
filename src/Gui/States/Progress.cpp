@@ -32,14 +32,14 @@ void
 Progress::init_signals() {
     back_button->GetSignal(Widget::OnLeftClick).Connect([this] {
         if (game) {
-            game->get_maze().cancel_generation();
+            game->maze().cancel_generation();
             main_menu.back();
         }
     });
 }
 
 Progress::Progress(MainMenu& main_menu) :
-        State(main_menu.get_desktop(), "Progress"),
+        State(main_menu.desktop(), "Progress"),
         main_menu(main_menu),
         back_button(Button::Create()),
         maze_size_label(Label::Create()),
@@ -89,7 +89,7 @@ Progress::tick(void*, float) {
             return;
         }
 
-        progress_bar->SetFraction(game->get_maze().get_generation_progress());
+        progress_bar->SetFraction(game->maze().generation_progress());
     }
 }
 

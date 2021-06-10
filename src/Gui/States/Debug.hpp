@@ -38,7 +38,7 @@ public:
     void center() override;
     void tick(void*, float deltaTime) override;
     void show(bool show) override;
-    sfg::Container::Ptr get_main_container() override;
+    sfg::Container::Ptr main_container() override;
     void reset_text() override;
 
 private:
@@ -51,8 +51,8 @@ private:
     bool odd;
 
     sfg::Widget::Ptr create_log_element(Logger::Message& message, bool odd);
-    float get_adjustement_upper_value();
-    float get_adjustement_value();
+    float adjustement_upper_value();
+    float adjustement_value();
     void set_adjustement_value(float value);
 };
 

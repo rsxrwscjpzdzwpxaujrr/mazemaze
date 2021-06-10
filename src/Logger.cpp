@@ -32,7 +32,7 @@ void
 Logger::log(Level level, const std::string& message) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    messages.emplace_back(Message(level, message));
+    m_messages.emplace_back(Message(level, message));
 
     std::ostream* stream;
 
@@ -41,10 +41,10 @@ Logger::log(Level level, const std::string& message) {
     else
         stream = &std::cerr;
 
-    *stream << messages.back().to_string() << std::endl;
+    *stream << m_messages.back().to_string() << std::endl;
 
     for (auto& message_listener: message_listeners)
-        message_listener(messages.back());
+        message_listener(m_messages.back());
 }
 
 int
@@ -60,8 +60,8 @@ Logger::remove_message_listener(int id) {
 }
 
 std::vector<Logger::Message>&
-Logger::get_messages() {
-    return Logger::messages;
+Logger::messages() {
+    return Logger::m_messages;
 }
 
 Logger::Message::Message(Logger::Level level, const std::string& message) :

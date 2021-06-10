@@ -64,7 +64,7 @@ OptionsGraphics::init_signals() {
 
 void
 OptionsGraphics::init_antialiasing_combo() {
-    int max_antialiasing = settings.get_max_antialiasing();
+    int max_antialiasing = settings.max_antialiasing();
 
     antialiasing_combo->AppendItem("");
 
@@ -74,11 +74,11 @@ OptionsGraphics::init_antialiasing_combo() {
 
 void
 OptionsGraphics::init_options() {
-    fullscreen_check->SetActive(settings.get_fullscreen());
+    fullscreen_check->SetActive(settings.fullscreen());
 
     init_antialiasing_combo();
 
-    unsigned int antialiasing = settings.get_antialiasing();
+    unsigned int antialiasing = settings.antialiasing();
 
     if (antialiasing == 0)
         antialiasing = 1;
@@ -89,15 +89,15 @@ OptionsGraphics::init_options() {
             break;
         }
 
-    vsync_check->SetActive(settings.get_vsync());
+    vsync_check->SetActive(settings.vsync());
 
     style_combo->AppendItem("");
     style_combo->AppendItem("");
     style_combo->AppendItem("");
     style_combo->AppendItem("");
-    style_combo->SelectItem(settings.get_renderer());
+    style_combo->SelectItem(settings.renderer());
 
-    camera_bobbing_check->SetActive(settings.get_camera_bobbing());
+    camera_bobbing_check->SetActive(settings.camera_bobbing());
 }
 
 OptionsGraphics::OptionsGraphics(MainMenu& main_menu, Settings& settings) :

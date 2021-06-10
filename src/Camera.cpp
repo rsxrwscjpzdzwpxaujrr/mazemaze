@@ -30,7 +30,7 @@ Camera::Camera(Pointf position,
                double fov,   double near_dist, double far_dist) :
         m_position(position),
         m_rotation(rotation),
-        fov(fov), near_dist(near_dist), far_dist(far_dist) {}
+        m_fov(fov), near_dist(near_dist), far_dist(far_dist) {}
 
 Camera::~Camera() = default;
 
@@ -50,15 +50,16 @@ Camera::setup_translation() {
 
 void
 Camera::setup_perspective() {
-    double ratio = GraphicEngine::inst().get_width() /
-                   static_cast<double>(GraphicEngine::inst().get_height());
+    auto window_size = GraphicEngine::inst().window_size();
+
+    double ratio = window_size.x / static_cast<double>(window_size.y);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     glFrustum(-ratio * near_dist, ratio * near_dist,
               -1.0   * near_dist, 1.0   * near_dist,
-              (ratio * near_dist) / tan(fov * (M_PI / 360.0)),
+              (ratio * near_dist) / tan(m_fov * (M_PI / 360.0)),
               far_dist);
 
     glMatrixMode(GL_MODELVIEW);
@@ -76,13 +77,13 @@ Camera::rotation() {
 }
 
 double
-Camera::get_fov() const {
-    return fov;
+Camera::fov() const {
+    return m_fov;
 }
 
 void
 Camera::set_fov(double fov) {
-    Camera::fov = fov;
+    m_fov = fov;
 }
 
 }

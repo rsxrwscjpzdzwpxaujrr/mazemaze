@@ -31,7 +31,7 @@ namespace gui {
 namespace states {
 
 FpsOverlay::FpsOverlay(MainMenu& main_menu, Settings& settings) :
-        State(main_menu.get_desktop(), "FpsOverlay"),
+        State(main_menu.desktop(), "FpsOverlay"),
         settings(settings),
         fps_calculator([this] (float fps) {
             fpsLabel->SetText(fmt("%.2f", fps));

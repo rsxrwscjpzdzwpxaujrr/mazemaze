@@ -52,7 +52,7 @@ CameraBobbing::~CameraBobbing() = default;
 
 void
 CameraBobbing::tick(Player& player, float delta_time) {
-    Camera& camera = player.get_camera();
+    Camera& camera = player.camera();
 
     auto&  position = camera.position();
     auto&  rotation = camera.rotation();

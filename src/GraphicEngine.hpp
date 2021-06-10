@@ -40,13 +40,12 @@ public:
     void set_vsync(bool vsync);
     void set_on_set_states_callback(std::function<void ()> const& on_set_states);
 
-    sf::RenderWindow& get_window() const;
-    int get_width() const;
-    int get_height() const;
-    unsigned int get_max_antialiasing() const;
-    bool get_fullscreen() const;
-    bool get_vsync() const;
-    bool has_focus() const;
+    sf::RenderWindow& window();
+    Point2i           window_size() const;
+    unsigned int      max_antialiasing() const;
+    bool              fullscreen() const;
+    bool              vsync() const;
+    bool              has_focus() const;
 
     GraphicEngine(GraphicEngine const&) = delete;
     void operator= (GraphicEngine const&) = delete;
@@ -60,7 +59,7 @@ private:
     GraphicEngine();
     ~GraphicEngine();
 
-    sf::RenderWindow* window;
+    sf::RenderWindow* m_window;
 
     sf::Vector2i old_window_pos;
     sf::Vector2u old_window_size;
@@ -68,15 +67,14 @@ private:
     bool old_maximized;
 #endif
 
-    int width;
-    int height;
+    Point2i m_window_size;
     bool running;
     bool need_reopen;
     bool need_reopen_event;
-    bool fullscreen;
-    bool vsync;
-    bool focus;
-    unsigned int max_antialiasing;
+    bool m_fullscreen;
+    bool m_vsync;
+    bool m_focus;
+    unsigned int m_max_antialiasing;
     sf::ContextSettings settings;
     sf::VideoMode video_mode;
 

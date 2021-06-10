@@ -42,14 +42,14 @@ public:
     void start(Maze& maze);
     void tick(Game& game, float delta_time) override;
 
-    Camera& get_camera();
+    Camera& camera();
 
     bool is_moving() const;
 
     Pointf& position();
 
 private:
-    Camera camera;
+    Camera m_camera;
     TickableHandler<Player&> tickable_handler;
     CameraBobbing* camera_bobbing;
 

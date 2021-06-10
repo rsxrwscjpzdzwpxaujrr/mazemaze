@@ -29,7 +29,7 @@ namespace states {
 void
 OptionsOther::init_signals() {
     lang_combo->GetSignal(ComboBox::OnSelect).Connect([this] () {
-        auto langs = settings.get_supported_langs();
+        auto langs = settings.supported_langs();
 
         settings.set_lang(langs[lang_combo->GetSelectedItem()].code);
     });
@@ -45,8 +45,8 @@ OptionsOther::init_signals() {
 
 void
 OptionsOther::init_options() {
-    std::string cur_lang = settings.get_lang();
-    auto langs = settings.get_supported_langs();
+    std::string cur_lang = settings.lang();
+    auto langs = settings.supported_langs();
 
     int i = 0;
 
@@ -57,8 +57,8 @@ OptionsOther::init_options() {
             lang_combo->SelectItem(i);
     }
 
-    autosave_check->SetActive(settings.get_autosave());
-    show_fps_check->SetActive(settings.get_show_fps());
+    autosave_check->SetActive(settings.autosave());
+    show_fps_check->SetActive(settings.show_fps());
 }
 
 OptionsOther::OptionsOther(MainMenu& main_menu, Settings& settings) :

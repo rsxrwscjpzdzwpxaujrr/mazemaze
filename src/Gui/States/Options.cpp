@@ -40,7 +40,7 @@ Options::init_signals(MainMenu& main_menu) {
 }
 
 Options::Options(MainMenu& main_menu, Settings& settings, const std::string& name) :
-        State(main_menu.get_desktop(), name),
+        State(main_menu.desktop(), name),
         settings  (settings),
         window_box (Box::Create(Box::Orientation::VERTICAL)),
         back_button(Button::Create()) {
@@ -84,7 +84,7 @@ Options::~Options() = default;
 
 Options::Option::Option(const sf::String& label, Widget::Ptr control) :
         label(Label::Create(label)),
-        control(control),
+        m_control(control),
         widget(Box::Create()) {
     auto alignment1 = Alignment::Create();
     auto alignment2 = Alignment::Create();
@@ -112,8 +112,8 @@ Options::Option::change_text(const sf::String& text) {
 }
 
 Widget::Ptr
-Options::Option::get_control() const {
-    return control;
+Options::Option::control() const {
+    return m_control;
 }
 
 Widget::Ptr

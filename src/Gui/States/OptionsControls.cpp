@@ -65,7 +65,7 @@ OptionsControls::OptionsControls(MainMenu& main_menu, Settings& settings) :
         (adjustmement_bounds.y - adjustmement_bounds.x) / button_size.x);
 
     for (int i = 0; i < buttons_count; i++) {
-        key_buttons[i] = std::dynamic_pointer_cast<sfg::Button>(key_opts[i].get_control());
+        key_buttons[i] = std::dynamic_pointer_cast<sfg::Button>(key_opts[i].control());
         update_key_button_label(i);
 
         key_buttons[i]->SetRequisition(button_size);
@@ -87,7 +87,7 @@ OptionsControls::show(bool show) {
     State::show(show);
 
     if (show)
-        sensitivity_adjustement->SetValue(settings.get_sensitivity());
+        sensitivity_adjustement->SetValue(settings.sensitivity());
 
     if (!show && key_change_window.is_opened())
         key_change_window.close();
@@ -103,7 +103,7 @@ OptionsControls::center() {
     State::center();
 
     if (key_change_window.is_opened())
-        State::center(key_change_window.get_window());
+        State::center(key_change_window.window());
 }
 
 void
@@ -127,7 +127,7 @@ void
 OptionsControls::update_key_button_label(int button) {
     std::string control = key_controls.at(button);
 
-    key_buttons.at(button)->SetLabel(get_key_name(settings.get_key(control)));
+    key_buttons.at(button)->SetLabel(key_name(settings.key(control)));
 }
 
 void

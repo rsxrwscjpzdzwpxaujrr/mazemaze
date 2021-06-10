@@ -65,7 +65,7 @@ public:
 
     int  add_message_listener(std::function<void(Message& message)> message_listener);
     void remove_message_listener(int id);
-    std::vector<Message>& get_messages();
+    std::vector<Message>& messages();
 
 private:
     Logger();
@@ -73,7 +73,7 @@ private:
 
     void log(Level level, const std::string& message);
 
-    std::vector<Message> messages;
+    std::vector<Message> m_messages;
     std::vector<std::function<void(Message&)>> message_listeners;
     std::mutex mutex;
 };

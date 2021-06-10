@@ -49,17 +49,17 @@ Game::Game(
     Point2i maze_size
 ) :
         gui::Background(this, this, nullptr),
-        maze(maze_size),
+        m_maze(maze_size),
         maze_renderer(0),
         maze_renderers{nullptr},
-        player(Pointf(1.5f, 0.0f, 1.5f)),
-        settings(settings),
+        m_player(Pointf(1.5f, 0.0f, 1.5f)),
+        m_settings(settings),
         saver(saver),
         main_menu(main_menu),
         paused(false),
         won(false),
         old_pause_key_state(false),
-        time(0.0f),
+        m_time(0.0f),
         loaded(false) {
     Logger::inst().log_debug("Constructor of Game called.");
 
@@ -73,7 +73,7 @@ Game::Game(
     maze_renderers[maze_renderer]->enable();
 
     tickable_handler.addTickable(maze_renderers[maze_renderer]);
-    tickable_handler.addTickable(&player);
+    tickable_handler.addTickable(&m_player);
 
     open_gui();
 }
@@ -96,8 +96,8 @@ Game::new_game() {
     int seed = gen_seed();
 
     std::thread gen_thread([this, seed] {
-        if (maze.generate(seed)) {
-            player.start(maze);
+        if (m_maze.generate(seed)) {
+            m_player.start(m_maze);
             on_load();
         }
     });
@@ -126,22 +126,22 @@ Game::tick(void*, float deltaTime) {
 
     old_pause_key_state = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
-    sf::RenderWindow& window = graphic_engine.get_window();
+    sf::RenderWindow& window = graphic_engine.window();
     window.setMouseCursorVisible(paused || won);
 
-    set_renderer(settings.get_renderer());
+    set_renderer(m_settings.renderer());
 
     tickable_handler.tick(*this, deltaTime);
 
     if (!(paused || won)) {
-        if (time - saver.get_last_save_time() >= settings.get_autosave_time() && settings.get_autosave())
+        if (m_time - saver.last_save_time() >= m_settings.autosave_time() && m_settings.autosave())
             saver.save();
 
-        if (    static_cast<int>(player.position().x) == maze.exit().x &&
-                static_cast<int>(player.position().z) == maze.exit().y)
+        if (    static_cast<int>(m_player.position().x) == m_maze.exit().x &&
+                static_cast<int>(m_player.position().z) == m_maze.exit().y)
             set_won(true);
 
-        time += deltaTime;
+        m_time += deltaTime;
     }
 }
 
@@ -168,12 +168,12 @@ void
 Game::render() {
     glPushMatrix();
 
-    player.get_camera().setup_perspective();
+    m_player.camera().setup_perspective();
 
-    player.get_camera().setup_rotation();
+    m_player.camera().setup_rotation();
     maze_renderers[maze_renderer]->render_sky();
 
-    player.get_camera().setup_translation();
+    m_player.camera().setup_translation();
     maze_renderers[maze_renderer]->render();
 
     glPopMatrix();
@@ -209,7 +209,7 @@ Game::set_paused(bool paused) {
 
             main_menu.set_state(pause_state);
 
-            if (settings.get_autosave())
+            if (m_settings.autosave())
                 saver.save();
         } else {
             Logger::inst().log_debug("Game unpaused.");
@@ -244,7 +244,7 @@ Game::set_won(bool won) {
 
 void
 Game::set_time(float time) {
-    Game::time = time;
+    Game::m_time = time;
 }
 
 bool
@@ -263,28 +263,28 @@ Game::is_loaded() const {
 }
 
 float
-Game::get_time() const {
-    return time;
+Game::time() const {
+    return m_time;
 }
 
 Maze&
-Game::get_maze() {
-    return maze;
+Game::maze() {
+    return m_maze;
 }
 
 Player&
-Game::get_player() {
-    return player;
+Game::player() {
+    return m_player;
 }
 
 Camera*
-Game::get_camera() {
-    return &player.get_camera();
+Game::camera() {
+    return &m_player.camera();
 }
 
 Settings&
-Game::get_settings() const {
-    return settings;
+Game::settings() const {
+    return m_settings;
 }
 
 unsigned int

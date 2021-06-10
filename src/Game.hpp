@@ -65,19 +65,19 @@ public:
     bool is_won() const;
     bool is_loaded() const;
 
-    float get_time() const;
-    Maze& get_maze();
-    Player& get_player();
-    Camera* get_camera() override;
-    MazeRenderer& get_renderer() const;
-    Settings& get_settings() const;
+    float         time() const;
+    Maze&         maze();
+    Player&       player();
+    Camera*       camera() override;
+    MazeRenderer& renderer() const;
+    Settings&     settings() const;
 
 private:
-    Maze maze;
+    Maze m_maze;
     int maze_renderer;
     MazeRenderer* maze_renderers[16];
-    Player player;
-    Settings& settings;
+    Player m_player;
+    Settings& m_settings;
     Saver& saver;
     TickableHandler<Game&> tickable_handler;
 
@@ -89,7 +89,7 @@ private:
     bool  paused;
     bool  won;
     bool  old_pause_key_state;
-    float time;
+    float m_time;
     bool  loaded;
 
     unsigned int gen_seed();

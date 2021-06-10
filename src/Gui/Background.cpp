@@ -25,43 +25,43 @@ namespace mazemaze {
 namespace gui {
 
 Background::Background(ITickable<void*>* tickable, IRenderable* renderable, Camera* camera) :
-    tickable(tickable),
-    renderable(renderable),
-    camera(camera) {}
+    m_tickable(tickable),
+    m_renderable(renderable),
+    m_camera(camera) {}
 
 Background::~Background() = default;
 
 void
 Background::tick(void* _, float delta_time) {
-    tickable->tick(_, delta_time);
+    m_tickable->tick(_, delta_time);
 }
 
 void
 Background::render() {
     glPushMatrix();
 
-    camera->setup_perspective();
-    camera->setup_rotation();
-    camera->setup_translation();
+    m_camera->setup_perspective();
+    m_camera->setup_rotation();
+    m_camera->setup_translation();
 
-    renderable->render();
+    m_renderable->render();
 
     glPopMatrix();
 }
 
 ITickable<void*>*
-Background::get_tickable() const {
-    return tickable;
+Background::tickable() const {
+    return m_tickable;
 }
 
 IRenderable*
-Background::get_renderable() const {
-    return renderable;
+Background::renderable() const {
+    return m_renderable;
 }
 
 Camera*
-Background::get_camera() {
-    return camera;
+Background::camera() {
+    return m_camera;
 }
 
 }

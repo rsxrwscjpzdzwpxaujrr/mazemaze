@@ -45,14 +45,14 @@ public:
     void save();
     void delete_save();
 
-    float get_last_save_time() const;
+    float last_save_time() const;
 
     void set_game(Game& game);
 
 private:
     Game* game;
     Settings& settings;
-    float last_save_time;
+    float m_last_save_time;
     bool virgin;
 
     std::mutex mutex;

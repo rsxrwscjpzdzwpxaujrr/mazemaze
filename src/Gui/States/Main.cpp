@@ -34,7 +34,7 @@ namespace gui {
 namespace states {
 
 Main::Main(MainMenu& main_menu, Settings& settings) :
-        State(main_menu.get_desktop(), "Main"),
+        State(main_menu.desktop(), "Main"),
         resume_button  (Button::Create()),
         new_game_button(Button::Create()),
         options_button (Button::Create()),
@@ -103,7 +103,7 @@ Main::center() {
                              about_button->GetAllocation().height);
 
     sf::Vector2f window_size =
-        static_cast<sf::Vector2f>(GraphicEngine::inst().get_window().getSize());
+        static_cast<sf::Vector2f>(GraphicEngine::inst().window().getSize());
 
     about_button->Show(showing && window_size.x > 640 && window_size.y > 300);
 

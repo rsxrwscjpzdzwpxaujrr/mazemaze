@@ -125,7 +125,7 @@ Classic::compile_chunk(int num) {
 
 void
 Classic::on_tick(float) {
-    star_sky.set_time(game.get_time());
+    star_sky.set_time(game.time());
 }
 
 void

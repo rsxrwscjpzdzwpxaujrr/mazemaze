@@ -137,7 +137,7 @@ Maze::generate(unsigned int seed) {
         }
 
         if (clock.getElapsedTime() - last_time >= sf::milliseconds(1000)) {
-            Logger::inst().log_debug(fmt("Progress: %.1f%%", get_generation_progress() * 100.0f));
+            Logger::inst().log_debug(fmt("Progress: %.1f%%", generation_progress() * 100.0f));
             last_time = clock.getElapsedTime();
         }
 
@@ -166,7 +166,7 @@ Maze::cancel_generation() {
 }
 
 float
-Maze::get_generation_progress() const {
+Maze::generation_progress() const {
     return angles_opened / static_cast<float>(((m_size.x - 1) / 2) * ((m_size.y - 1) / 2));
 }
 

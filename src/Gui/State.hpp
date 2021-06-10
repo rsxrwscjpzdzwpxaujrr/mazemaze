@@ -39,7 +39,7 @@ public:
     virtual void show(bool show);
     virtual void tick(void*, float delta_time) override;
     virtual void reset_text() = 0;
-    virtual sfg::Container::Ptr get_main_container();
+    virtual sfg::Container::Ptr main_container();
 
 protected:
     sfg::Desktop& desktop;

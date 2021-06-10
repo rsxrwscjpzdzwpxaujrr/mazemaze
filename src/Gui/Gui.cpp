@@ -24,9 +24,9 @@
 namespace mazemaze {
 namespace gui {
 
-Gui::Gui() : background(nullptr),
-             state(-1),
-             wants_exit(false) {}
+Gui::Gui() : m_background(nullptr),
+             m_state(-1),
+             m_wants_exit(false) {}
 
 Gui::~Gui() {
     remove_states();
@@ -41,7 +41,7 @@ Gui::handle_event(const sf::Event& event) {
 
     on_event(event);
 
-    desktop.HandleEvent(event);
+    m_desktop.HandleEvent(event);
 }
 
 void
@@ -51,15 +51,15 @@ Gui::on_event(const sf::Event&) {
 
 void
 Gui::tick(void* _, float delta_time) {
-    desktop.Update(delta_time);
+    m_desktop.Update(delta_time);
 
     tickable_handler.tick(_, delta_time);
 }
 
 void
 Gui::render() {
-    if (background != nullptr)
-        background->render();
+    if (m_background != nullptr)
+        m_background->render();
 }
 
 void
@@ -74,7 +74,7 @@ Gui::back_to(int dest_state) {
         state_stack.pop();
 
         if (state_stack.empty()) {
-            wants_exit = true;
+            m_wants_exit = true;
             return;
         }
     }
@@ -94,7 +94,7 @@ Gui::add_state(State* state) {
 
 void
 Gui::remove_state(int state) {
-    if (Gui::state == state)
+    if (m_state == state)
         set_state(-1);
 
     delete states.at(state);
@@ -119,7 +119,7 @@ Gui::reset_text() {
 
 void
 Gui::add_overlay(int state_id) {
-    Logger::inst().log_debug("Adding overlay " + get_state(state_id).name);
+    Logger::inst().log_debug("Adding overlay " + state(state_id).name);
 
     states.at(state_id)->show(true);
 
@@ -129,7 +129,7 @@ Gui::add_overlay(int state_id) {
 
 void
 Gui::remove_overlay(int state_id) {
-    Logger::inst().log_debug("Removing overlay " + get_state(state_id).name);
+    Logger::inst().log_debug("Removing overlay " + state(state_id).name);
 
     states.at(state_id)->show(false);
 
@@ -144,11 +144,11 @@ Gui::remove_overlay(int state_id) {
 
 void
 Gui::set_state(int state, bool back) {
-    Logger::inst().log_debug("Setting state to " + (state >= 0 ? get_state(state).name : "-1"));
+    Logger::inst().log_debug("Setting state to " + (state >= 0 ? Gui::state(state).name : "-1"));
 
-    if (Gui::state >= 0) {
-        states[Gui::state]->show(false);
-        tickable_handler.removeTickable(states[Gui::state]);
+    if (Gui::m_state >= 0) {
+        states[Gui::m_state]->show(false);
+        tickable_handler.removeTickable(states[Gui::m_state]);
     }
 
     if (state < 0 && !back)
@@ -164,43 +164,43 @@ Gui::set_state(int state, bool back) {
         }
     }
 
-    Gui::state = state;
+    m_state = state;
 }
 
 void
 Gui::set_background(Background* background) {
-    if (Gui::background)
-        tickable_handler.removeTickable(Gui::background);
+    if (Gui::m_background)
+        tickable_handler.removeTickable(Gui::m_background);
 
-    if (Gui::background != background)
+    if (Gui::m_background != background)
         tickable_handler.addTickable(background);
 
-    Gui::background = background;
+    m_background = background;
 }
 
 void
 Gui::exit() {
-    wants_exit = true;
+    m_wants_exit = true;
 }
 
 sfg::Desktop&
-Gui::get_desktop() {
-    return desktop;
+Gui::desktop() {
+    return m_desktop;
 }
 
 int
-Gui::get_state() const {
-    return state;
+Gui::state() const {
+    return m_state;
 }
 
 State&
-Gui::get_state(int state) {
+Gui::state(int state) {
     return *states.at(state);
 }
 
 bool
-Gui::is_wants_exit() const {
-    return wants_exit;
+Gui::wants_exit() const {
+    return m_wants_exit;
 }
 
 }

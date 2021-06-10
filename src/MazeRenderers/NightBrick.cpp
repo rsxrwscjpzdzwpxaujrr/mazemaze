@@ -33,7 +33,7 @@ NightBrick::NightBrick(mazemaze::Game& game) :
 
 void
 NightBrick::on_tick(float) {
-    starSky.set_time(game.get_time());
+    starSky.set_time(game.time());
 }
 
 void
@@ -70,7 +70,7 @@ NightBrick::set_states() {
 
 void
 NightBrick::render_chunks(int chunks[]) {
-    auto& position = game.get_player().get_camera().position();
+    auto& position = game.player().camera().position();
 
     float light1_position[] = { position.x, position.y, position.z, 1.0f };
 

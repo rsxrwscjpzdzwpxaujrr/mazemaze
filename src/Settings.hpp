@@ -47,20 +47,20 @@ public:
     explicit Settings(bool read_config=true);
     ~Settings();
 
-    std::string                  get_lang() const;
-    unsigned int                 get_antialiasing() const;
-    unsigned int                 get_max_antialiasing() const;
-    bool                         get_fullscreen() const;
-    bool                         get_vsync() const;
-    bool                         get_autosave() const;
-    float                        get_autosave_time() const;
-    int                          get_renderer() const;
-    bool                         get_show_fps() const;
-    sf::Keyboard::Key            get_key(const std::string& control);
-    const std::vector<Language>& get_supported_langs() const;
-    float                        get_sensitivity() const;
-    std::string                  get_data_dir() const;
-    bool                         get_camera_bobbing() const;
+    std::string                  lang() const;
+    unsigned int                 antialiasing() const;
+    unsigned int                 max_antialiasing() const;
+    bool                         fullscreen() const;
+    bool                         vsync() const;
+    bool                         autosave() const;
+    float                        autosave_time() const;
+    int                          renderer() const;
+    bool                         show_fps() const;
+    sf::Keyboard::Key            key(const std::string& control);
+    const std::vector<Language>& supported_langs() const;
+    float                        sensitivity() const;
+    std::string                  data_dir() const;
+    bool                         camera_bobbing() const;
 
     void set_main_menu(gui::MainMenu* main_menu);
 
@@ -77,20 +77,20 @@ public:
     void set_camera_bobbing(float camera_bobbing);
 
 private:
-    std::string data_dir;
-    std::string config_file;
+    std::string m_data_dir;
+    std::string m_config_file;
 
-    gui::MainMenu* main_menu;
+    gui::MainMenu* m_main_menu;
 
-    std::string lang;
-    std::vector<Language> supported_langs;
-    unsigned int antialiasing;
-    bool  autosave;
-    float autosave_time;
-    int   renderer;
-    bool  show_fps;
-    float sensitivity;
-    bool  camera_bobbing;
+    std::string m_lang;
+    std::vector<Language> m_supported_langs;
+    unsigned int m_antialiasing;
+    bool  m_autosave;
+    float m_autosave_time;
+    int   m_renderer;
+    bool  m_show_fps;
+    float m_sensitivity;
+    bool  m_camera_bobbing;
 
     std::map<std::string, sf::Keyboard::Key> controls;
 

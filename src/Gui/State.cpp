@@ -28,26 +28,26 @@ State::State(sfg::Desktop& desktop, const std::string& name) :
         box(sfg::Box::Create()) {}
 
 State::~State() {
-    desktop.Remove(get_main_container());
+    desktop.Remove(main_container());
 }
 
 void
 State::center() {
-    center(get_main_container());
+    center(main_container());
 }
 
 void
 State::center(sfg::Widget::Ptr widget) {
     sf::Vector2f widget_Size(widget->GetAllocation().width, widget->GetAllocation().height);
     sf::Vector2f window_Size =
-            static_cast<sf::Vector2f>(GraphicEngine::inst().get_window().getSize());
+            static_cast<sf::Vector2f>(GraphicEngine::inst().window().getSize());
 
     widget->SetPosition((window_Size - widget_Size) / 2.0f);
 }
 
 void
 State::show(bool show) {
-    get_main_container()->Show(show);
+    main_container()->Show(show);
 }
 
 void
@@ -56,7 +56,7 @@ State::tick(void*, float) {
 }
 
 sfg::Container::Ptr
-State::get_main_container() {
+State::main_container() {
     return box;
 }
 

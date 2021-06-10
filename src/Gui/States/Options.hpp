@@ -52,12 +52,12 @@ protected:
         explicit Option(sfg::Widget::Ptr widget);
 
         void change_text(const sf::String& text);
-        sfg::Widget::Ptr get_control() const;
+        sfg::Widget::Ptr control() const;
         sfg::Widget::Ptr to_widget() const;
 
     private:
         sfg::Label::Ptr label;
-        sfg::Widget::Ptr control;
+        sfg::Widget::Ptr m_control;
         sfg::Widget::Ptr widget;
     };
 

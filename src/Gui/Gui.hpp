@@ -61,16 +61,16 @@ public:
 
     void exit();
 
-    sfg::Desktop& get_desktop();
-    int           get_state() const;
-    State&        get_state(int state);
-    Background&   get_background() const;
-    bool          is_wants_exit() const;
+    sfg::Desktop& desktop();
+    int           state() const;
+    State&        state(int state);
+    Background&   background() const;
+    bool          wants_exit() const;
 
 private:
-    sfg::Desktop desktop;
+    sfg::Desktop m_desktop;
 
-    Background* background;
+    Background* m_background;
 
     std::vector<State*> states;
     std::stack <int>    state_stack;
@@ -78,8 +78,8 @@ private:
 
     TickableHandler<void*> tickable_handler;
 
-    int  state;
-    bool wants_exit;
+    int  m_state;
+    bool m_wants_exit;
 };
 
 }

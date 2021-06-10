@@ -80,16 +80,16 @@ mkdirp(const char* path, mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S
 #endif
 
 Settings::Settings(bool readConfig) :
-        main_menu(nullptr),
-        supported_langs{
+        m_main_menu(nullptr),
+        m_supported_langs{
             Language(L"English",    "en_US"),
             Language(L"Русский",    "ru_RU"),
             Language(L"Українська", "uk_UA"),
             Language(L"Deutsch",    "de_DE")
         },
-        renderer(0) {
+        m_renderer(0) {
     init_data_dir();
-    config_file = data_dir + PATH_SEPARATOR "config.json";
+    m_config_file = m_data_dir + PATH_SEPARATOR "config.json";
 
     if (readConfig) {
         if (Settings::read_config())
@@ -117,14 +117,14 @@ Settings::Settings(bool readConfig) :
 
     Logger::inst().log_debug("Setting default settings.");
 
-    antialiasing = 0;
-    autosave = true;
-    autosave_time = 30.0f;
-    sensitivity = 0.001f;
-    renderer = 3;
-    show_fps = false;
+    m_antialiasing = 0;
+    m_autosave = true;
+    m_autosave_time = 30.0f;
+    m_sensitivity = 0.001f;
+    m_renderer = 3;
+    m_show_fps = false;
     set_vsync(true);
-    camera_bobbing = true;
+    m_camera_bobbing = true;
 
     controls["up"]    = sf::Keyboard::W;
     controls["down"]  = sf::Keyboard::S;
@@ -137,80 +137,80 @@ Settings::~Settings() {
 }
 
 std::string
-Settings::get_lang() const {
-    return lang;
+Settings::lang() const {
+    return m_lang;
 }
 
 unsigned int
-Settings::get_antialiasing() const {
-    return antialiasing;
+Settings::antialiasing() const {
+    return m_antialiasing;
 }
 
 unsigned int
-Settings::get_max_antialiasing() const {
-    return GraphicEngine::inst().get_max_antialiasing();
+Settings::max_antialiasing() const {
+    return GraphicEngine::inst().max_antialiasing();
 }
 
 bool
-Settings::get_fullscreen() const {
-    return GraphicEngine::inst().get_fullscreen();
+Settings::fullscreen() const {
+    return GraphicEngine::inst().fullscreen();
 }
 
 bool
-Settings::get_vsync() const {
-    return GraphicEngine::inst().get_vsync();
+Settings::vsync() const {
+    return GraphicEngine::inst().vsync();
 }
 
 bool
-Settings::get_autosave() const {
-    return autosave;
+Settings::autosave() const {
+    return m_autosave;
 }
 
 float
-Settings::get_autosave_time() const {
-    return autosave_time;
+Settings::autosave_time() const {
+    return m_autosave_time;
 }
 
 int
-Settings::get_renderer() const {
-    return renderer;
+Settings::renderer() const {
+    return m_renderer;
 }
 
 bool
-Settings::get_show_fps() const {
-    return show_fps;
+Settings::show_fps() const {
+    return m_show_fps;
 }
 
 sf::Keyboard::Key
-Settings::get_key(const std::string& control) {
+Settings::key(const std::string& control) {
     return controls[control];
 }
 
 const std::vector<Settings::Language>&
-Settings::get_supported_langs() const {
-    return supported_langs;
+Settings::supported_langs() const {
+    return m_supported_langs;
 }
 
 float
-Settings::get_sensitivity() const {
-    return sensitivity;
+Settings::sensitivity() const {
+    return m_sensitivity;
 }
 
 std::string
-Settings::get_data_dir() const {
-    return data_dir;
+Settings::data_dir() const {
+    return m_data_dir;
 }
 
 bool
-Settings::get_camera_bobbing() const {
-    return camera_bobbing;
+Settings::camera_bobbing() const {
+    return m_camera_bobbing;
 }
 
 void
 Settings::set_main_menu(gui::MainMenu* main_menu) {
-    Settings::main_menu = main_menu;
+    m_main_menu = main_menu;
 
-    main_menu->show_fps(show_fps);
+    main_menu->show_fps(m_show_fps);
 }
 
 void
@@ -220,7 +220,7 @@ Settings::set_lang(const std::string &lang) {
     bool lang_exist = false;
     std::string using_lang;
 
-    for (Language& language : supported_langs) {
+    for (Language& language : m_supported_langs) {
         if (language.code == lang) {
             using_lang = lang;
             lang_exist = true;
@@ -229,7 +229,7 @@ Settings::set_lang(const std::string &lang) {
     }
 
     if (!lang_exist) {
-        for (Language& language : supported_langs) {
+        for (Language& language : m_supported_langs) {
             if (language.code.substr(0, 2) == lang.substr(0, 2)) {
                 using_lang = language.code;
                 lang_exist = true;
@@ -252,10 +252,10 @@ Settings::set_lang(const std::string &lang) {
 
     reset_locales();
 
-    if (main_menu)
-        main_menu->reset_text();
+    if (m_main_menu)
+        m_main_menu->reset_text();
 
-    Settings::lang = using_lang;
+    m_lang = using_lang;
 }
 
 void
@@ -264,7 +264,7 @@ Settings::set_antialiasing(unsigned int antialiasing) {
 
     GraphicEngine::inst().set_antialiasing(antialiasing);
 
-    Settings::antialiasing = antialiasing;
+    m_antialiasing = antialiasing;
 }
 
 void
@@ -285,31 +285,31 @@ void
 Settings::set_autosave(bool autosave) {
     Logger::inst().log_debug(fmt("Setting autosave to %s.", autosave ? "true" : "false"));
 
-    Settings::autosave = autosave;
+    m_autosave = autosave;
 }
 
 void
 Settings::set_autosave_time(float autosave_time) {
     Logger::inst().log_debug(fmt("Setting autosave time to %f.", autosave_time));
 
-    Settings::autosave_time = autosave_time;
+    m_autosave_time = autosave_time;
 }
 
 void
 Settings::set_renderer(int id) {
     Logger::inst().log_debug(fmt("Setting renderer to %d.", id));
 
-    renderer = id;
+    m_renderer = id;
 }
 
 void
 Settings::set_show_fps(bool show_fps) {
     Logger::inst().log_debug(fmt("Setting showFps to %s.", show_fps ? "true" : "false"));
 
-    Settings::show_fps = show_fps;
+    m_show_fps = show_fps;
 
-    if (main_menu)
-        main_menu->show_fps(show_fps);
+    if (m_main_menu)
+        m_main_menu->show_fps(show_fps);
 }
 
 void
@@ -323,12 +323,12 @@ void
 Settings::set_sensitivity(float sensitivity) {
     Logger::inst().log_debug(fmt("Setting sensitivity to %f.", sensitivity));
 
-    Settings::sensitivity = sensitivity;
+    m_sensitivity = sensitivity;
 }
 
 void
 Settings::set_camera_bobbing(float camera_bobbing) {
-    Settings::camera_bobbing = camera_bobbing;
+    m_camera_bobbing = camera_bobbing;
 }
 
 std::string
@@ -376,7 +376,7 @@ Settings::init_data_dir() {
 
     ExpandEnvironmentStringsA("%LOCALAPPDATA%", local_app_data, 254);
 
-    data_dir = local_app_data;
+    m_data_dir = local_app_data;
 
 #else
 
@@ -390,19 +390,19 @@ Settings::init_data_dir() {
 
     const char* xdg_data_home_exp = p.we_wordv[0];
 
-    data_dir = xdg_data_home_exp;
+    m_data_dir = xdg_data_home_exp;
 
 #endif
 
-    data_dir += PATH_SEPARATOR "mazemaze";
+    m_data_dir += PATH_SEPARATOR "mazemaze";
 
 #ifdef _WIN32
 
-    SHCreateDirectoryExA(nullptr, data_dir.c_str(), nullptr);
+    SHCreateDirectoryExA(nullptr, m_data_dir.c_str(), nullptr);
 
 #else
 
-    mkdirp(data_dir.c_str());
+    mkdirp(m_data_dir.c_str());
     wordfree(&p);
 
 #endif
@@ -412,23 +412,23 @@ void
 Settings::write_config() {
     Logger::inst().log_debug("Writing config.");
 
-    std::ofstream ofs(config_file);
+    std::ofstream ofs(m_config_file);
 
     Json::StyledStreamWriter writer;
     Json::Value config;
 
-    config["lang"] = get_lang();
-    config["autosave"] = get_autosave();
-    config["autosaveTime"] = get_autosave_time();
-    config["showFps"] = get_show_fps();
+    config["lang"] = lang();
+    config["autosave"] = autosave();
+    config["autosaveTime"] = autosave_time();
+    config["showFps"] = show_fps();
 
     Json::Value graphics = Json::objectValue;
 
-    graphics["antialiasing"] = get_antialiasing();
-    graphics["fullscreen"] = get_fullscreen();
-    graphics["vsync"] = get_vsync();
-    graphics["style"] = get_renderer();
-    graphics["cameraBobbing"] = get_camera_bobbing();
+    graphics["antialiasing"] = antialiasing();
+    graphics["fullscreen"] = fullscreen();
+    graphics["vsync"] = vsync();
+    graphics["style"] = renderer();
+    graphics["cameraBobbing"] = camera_bobbing();
 
     config["graphics"] = graphics;
 
@@ -438,7 +438,7 @@ Settings::write_config() {
         controls[it->first] = it->second;
     }
 
-    controls["sensitivity"] = get_sensitivity();
+    controls["sensitivity"] = sensitivity();
 
     config["controls"] = controls;
 
@@ -449,7 +449,7 @@ bool
 Settings::read_config() {
     Logger::inst().log_debug("Reading config.");
 
-    std::ifstream ifs(config_file);
+    std::ifstream ifs(m_config_file);
 
     Json::Reader reader;
     Json::Value config;

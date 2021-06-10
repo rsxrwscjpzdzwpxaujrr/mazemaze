@@ -33,7 +33,7 @@ namespace gui {
 namespace states {
 
 Debug::Debug(MainMenu& main_menu) :
-        State(main_menu.get_desktop(), "Debug"),
+        State(main_menu.desktop(), "Debug"),
         log_box(Box::Create(Box::Orientation::VERTICAL)),
         window(Window::Create(
             Window::Style::BACKGROUND |
@@ -43,8 +43,8 @@ Debug::Debug(MainMenu& main_menu) :
         )),
         scrolled_window(ScrolledWindow::Create()),
         not_displayed_messages(std::deque<Logger::Message>(
-                Logger::inst().get_messages().begin(),
-                Logger::inst().get_messages().end()
+                Logger::inst().messages().begin(),
+                Logger::inst().messages().end()
         )),
         showing(false),
         odd(false) {
@@ -92,7 +92,7 @@ Debug::tick(void*, float) {
 
     while (not_displayed_messages.size() > 0) {
         if (first) {
-            adjustement_pinned = get_adjustement_value() == get_adjustement_upper_value();
+            adjustement_pinned = adjustement_value() == adjustement_upper_value();
             first = false;
         }
 
@@ -104,7 +104,7 @@ Debug::tick(void*, float) {
 
     if (adjustement_pinned) {
         scrolled_window->Refresh();
-        set_adjustement_value(get_adjustement_upper_value());
+        set_adjustement_value(adjustement_upper_value());
     }
 }
 
@@ -119,7 +119,7 @@ Debug::show(bool show) {
 }
 
 Container::Ptr
-Debug::get_main_container() {
+Debug::main_container() {
     return window;
 }
 
@@ -166,14 +166,14 @@ Debug::create_log_element(Logger::Message& message, bool odd) {
 }
 
 float
-Debug::get_adjustement_upper_value() {
+Debug::adjustement_upper_value() {
     auto adjustement = scrolled_window->GetVerticalAdjustment();
 
     return adjustement->GetUpper() - adjustement->GetPageSize();
 }
 
 float
-Debug::get_adjustement_value() {
+Debug::adjustement_value() {
     auto adjustement = scrolled_window->GetVerticalAdjustment();
 
     return adjustement->GetValue();

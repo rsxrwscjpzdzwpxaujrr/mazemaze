@@ -52,7 +52,7 @@ OptionsMenu::init_signals(MainMenu& main_menu) {
 }
 
 OptionsMenu::OptionsMenu(MainMenu& main_menu, Settings& settings) :
-        State(main_menu.get_desktop(), "OptionsMenu"),
+        State(main_menu.desktop(), "OptionsMenu"),
         graphics_button (Button::Create()),
         controls_button (Button::Create()),
         other_button    (Button::Create()),

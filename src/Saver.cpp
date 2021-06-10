@@ -39,7 +39,7 @@ const char Saver::version[] = {1, 0, 0};
 Saver::Saver(Settings& settings) :
         game(nullptr),
         settings(settings),
-        last_save_time(0.0f),
+        m_last_save_time(0.0f),
         virgin(true) {}
 
 Saver::~Saver() = default;
@@ -79,10 +79,10 @@ Saver::load(gui::MainMenu& main_menu) {
 
     game = new Game(main_menu, settings, *this, Point2i((maze_params[0] / 2), (maze_params[1] / 2)));
 
-    last_save_time = time;
+    m_last_save_time = time;
     game->set_time(time);
 
-    Maze& maze = game->get_maze();
+    Maze& maze = game->maze();
 
     stream.seekg(CHUNKS_OFFSET);
 
@@ -91,13 +91,13 @@ Saver::load(gui::MainMenu& main_menu) {
     Point2i chunks_count = maze.chunks_count();
 
     for (int i = 0; i < chunks_count.x * chunks_count.y; i++)
-        load_chunk(stream, game->get_maze().chunks()[i]);
+        load_chunk(stream, game->maze().chunks()[i]);
 
     stream.close();
 
-    auto& player = game->get_player();
+    auto& player = game->player();
     auto& player_pos = player.position();
-    auto& rotation = player.get_camera().rotation();
+    auto& rotation = player.camera().rotation();
 
     player_pos.x = player_params[0];
     player_pos.y = player_params[1];
@@ -130,11 +130,11 @@ Saver::save() {
     if (game == nullptr)
         throw std::logic_error("game is nullptr");
 
-    if (last_save_time == game->get_time()) {
+    if (m_last_save_time == game->time()) {
         Logger::inst().log_debug(
             fmt("Trying to save, but game time is equal to last save time. "
                 "Last save time is %f.",
-                last_save_time));
+                m_last_save_time));
 
         return;
     }
@@ -176,7 +176,7 @@ Saver::save() {
             virgin = false;
 
             Logger::inst().log_status(
-                fmt("Saving completed. Last save time is %f.", last_save_time)
+                fmt("Saving completed. Last save time is %f.", m_last_save_time)
             );
         } catch (const std::ofstream::failure& e) {
             Logger::inst().log_error(
@@ -195,8 +195,8 @@ Saver::delete_save() {
 }
 
 float
-Saver::get_last_save_time() const {
-    return last_save_time;
+Saver::last_save_time() const {
+    return m_last_save_time;
 }
 
 void
@@ -206,9 +206,9 @@ Saver::set_game(Game& game) {
 
 void
 Saver::save_game(std::ostream& stream) {
-    float time = game->get_time();
+    float time = game->time();
 
-    last_save_time = time;
+    m_last_save_time = time;
 
     stream.seekp(GAME_OFFSET);
     stream.write(reinterpret_cast<char*>(&time), sizeof (float));
@@ -216,9 +216,9 @@ Saver::save_game(std::ostream& stream) {
 
 void
 Saver::save_player(std::ostream& stream) {
-    auto& player = game->get_player();
+    auto& player = game->player();
     auto& player_pos = player.position();
-    auto& rotation = player.get_camera().rotation();
+    auto& rotation = player.camera().rotation();
 
     float player_params[] {
         player_pos.x,
@@ -235,7 +235,7 @@ Saver::save_player(std::ostream& stream) {
 
 void
 Saver::save_maze(std::ostream& stream) {
-    auto& maze  = game->get_maze();
+    auto& maze  = game->maze();
     auto  size  = maze.size();
     auto  exit  = maze.exit();
     auto  start = maze.start();
@@ -253,7 +253,7 @@ Saver::save_maze(std::ostream& stream) {
 
 void
 Saver::save_chunks(std::ostream& stream) {
-    auto& maze = game->get_maze();
+    auto& maze = game->maze();
     auto* chunks = maze.chunks();
     auto  chunks_count = maze.chunks_count();
 
@@ -275,7 +275,7 @@ Saver::save_exists(Settings& settings) {
 
 std::string
 Saver::get_filename(Settings& settings) {
-    return settings.get_data_dir() + PATH_SEPARATOR "sav";
+    return settings.data_dir() + PATH_SEPARATOR "sav";
 }
 
 void

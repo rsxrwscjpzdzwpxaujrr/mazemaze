@@ -48,14 +48,15 @@ public:
     void start_game();
     void resume_game();
     void stop_game();
-    bool is_game_open();
     void show_fps(bool show);
     void show_debug(bool show);
 
-    int  get_options_state() const;
     void set_options_state(states::OptionsMenu& options, int state);
-    bool get_show_fps() const;
-    bool get_show_debug() const;
+
+    int  options_state() const;
+    bool show_fps() const;
+    bool show_debug() const;
+    bool is_game_open();
 
 private:
     Game* game;
@@ -63,10 +64,10 @@ private:
     Background* star_sky_background;
     Settings& settings;
 
-    int main_state;
-    int fps_state;
-    int debug_state;
-    int options_state;
+    int m_main_state;
+    int m_fps_state;
+    int m_debug_state;
+    int m_options_state;
 
     bool fps_show;
     bool debug_show;

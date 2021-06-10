@@ -32,7 +32,7 @@
 namespace mazemaze {
 
 Player::Player(Pointf position) :
-        camera(position,
+        m_camera(position,
                Rotation(),
                100.0, 0.005, 100.0),
         camera_bobbing(nullptr),
@@ -40,7 +40,7 @@ Player::Player(Pointf position) :
         speed(3.0f),
         height(0.65f),
         width(0.05f) {
-    camera.position().y = position.y + height;
+    m_camera.position().y = position.y + height;
 }
 
 Player::~Player() {
@@ -52,7 +52,7 @@ Player::~Player() {
 
 void
 Player::start(Maze& maze) {
-    Pointf& cam_pos = camera.position();
+    Pointf& cam_pos = m_camera.position();
 
     m_position.x = maze.start().x + 0.5f;
     m_position.z = maze.start().y + 0.5f;
@@ -67,19 +67,19 @@ Player::tick(Game& game, float delta_time) {
 
     float M_PI_2f = static_cast<float>(M_PI_2);
 
-    auto& rotation = camera.rotation();
-    auto& cam_pos  = camera.position();
+    auto& rotation = m_camera.rotation();
+    auto& cam_pos  = m_camera.position();
 
     m_move_vector.x = 0.0f;
     m_move_vector.y = 0.0f;
 
-    Settings& settings = game.get_settings();
+    Settings& settings = game.settings();
 
     bool move[] {
-        sf::Keyboard::isKeyPressed(settings.get_key("right")),
-        sf::Keyboard::isKeyPressed(settings.get_key("down")),
-        sf::Keyboard::isKeyPressed(settings.get_key("left")),
-        sf::Keyboard::isKeyPressed(settings.get_key("up"))
+        sf::Keyboard::isKeyPressed(settings.key("right")),
+        sf::Keyboard::isKeyPressed(settings.key("down")),
+        sf::Keyboard::isKeyPressed(settings.key("left")),
+        sf::Keyboard::isKeyPressed(settings.key("up"))
     };
 
     for (int i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
@@ -98,10 +98,10 @@ Player::tick(Game& game, float delta_time) {
         float newx = m_position.x + m_move_vector.x * speed * delta_time;
         float newz = m_position.z + m_move_vector.y * speed * delta_time;
 
-        try_move(game.get_maze(), Pointf(newx, m_position.y, newz));
+        try_move(game.maze(), Pointf(newx, m_position.y, newz));
     }
 
-    sf::Window& window = GraphicEngine::inst().get_window();
+    sf::Window& window = GraphicEngine::inst().window();
 
     sf::Vector2u window_half_size = window.getSize();
     window_half_size.x /= 2;
@@ -111,7 +111,7 @@ Player::tick(Game& game, float delta_time) {
     sf::Mouse::setPosition(sf::Vector2i(window_half_size), window);
 
     float new_pitch = rotation.pitch();
-    float sensitivity = settings.get_sensitivity();
+    float sensitivity = settings.sensitivity();
 
     new_pitch += (cursor.y - static_cast<int>(window_half_size.y)) * sensitivity;
 
@@ -131,8 +131,8 @@ Player::tick(Game& game, float delta_time) {
 }
 
 Camera&
-Player::get_camera() {
-    return camera;
+Player::camera() {
+    return m_camera;
 }
 
 bool
@@ -191,12 +191,12 @@ Player::sum_vector(float angle, Point2f& vec) {
 
 void
 Player::setup_camera_bobbing(Settings& settings) {
-    if (settings.get_camera_bobbing() && !camera_bobbing) {
+    if (settings.camera_bobbing() && !camera_bobbing) {
         camera_bobbing = new CameraBobbing;
         tickable_handler.addTickable(camera_bobbing);
     }
 
-    else if (!settings.get_camera_bobbing() && camera_bobbing) {
+    else if (!settings.camera_bobbing() && camera_bobbing) {
         tickable_handler.removeTickable(camera_bobbing);
 
         delete camera_bobbing;

@@ -28,7 +28,7 @@
 
 namespace mazemaze {
 
-MazeRenderer::MazeRenderer(Game& game) : maze(game.get_maze()),
+MazeRenderer::MazeRenderer(Game& game) : maze(game.maze()),
                                          deleted(true),
                                          old_hcp(-1, -1) {}
 
@@ -75,7 +75,7 @@ void
 MazeRenderer::tick(Game& game, float delta_time) {
     bool force = false;
 
-    Player& player = game.get_player();
+    Player& player = game.player();
 
     Point2i p(
         static_cast<int>(player.position().x) / (Chunk::SIZE / 2),

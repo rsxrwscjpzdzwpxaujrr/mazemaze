@@ -32,18 +32,10 @@ public:
     void setup_translation();
     void setup_perspective();
 
-    float get_x() const;
-    float get_y() const;
-    float get_z() const;
-
     Pointf  & position();
     Rotation& rotation();
 
-    double get_fov() const;
-
-    void set_x(float x);
-    void set_y(float y);
-    void set_z(float z);
+    double fov() const;
 
     void set_fov(double fov);
 
@@ -51,7 +43,7 @@ private:
     Pointf   m_position;
     Rotation m_rotation;
 
-    double fov;
+    double m_fov;
     double near_dist;
     double far_dist;
 };

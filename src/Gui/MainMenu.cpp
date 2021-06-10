@@ -43,13 +43,13 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          debug_show(false) {
     Logger::inst().log_debug("Starting main menu.");
 
-    get_desktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
+    desktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
 
-    main_state   = add_state(new states::Main       (*this, settings));
-    fps_state    = add_state(new states::FpsOverlay (*this, settings));
-    debug_state  = add_state(new states::Debug      (*this          ));
+    m_main_state   = add_state(new states::Main      (*this, settings));
+    m_fps_state    = add_state(new states::FpsOverlay(*this, settings));
+    m_debug_state  = add_state(new states::Debug     (*this          ));
 
-    set_state(main_state);
+    set_state(m_main_state);
 
     StarSky* star_sky = new StarSky(1024, 600.0f, Rotation());
 
@@ -64,8 +64,8 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
 }
 
 MainMenu::~MainMenu() {
-    delete star_sky_background->get_tickable();
-    delete star_sky_background->get_camera();
+    delete star_sky_background->tickable();
+    delete star_sky_background->camera();
     delete star_sky_background;
 
     if (game != nullptr)
@@ -118,7 +118,7 @@ MainMenu::resume_game() {
 
 void
 MainMenu::stop_game() {
-    back_to(main_state);
+    back_to(m_main_state);
 
     delete game;
 
@@ -136,9 +136,9 @@ void
 MainMenu::show_fps(bool show) {
     if (fps_show != show) {
         if (show)
-            add_overlay(fps_state);
+            add_overlay(m_fps_state);
         else
-            remove_overlay(fps_state);
+            remove_overlay(m_fps_state);
 
         fps_show = show;
     }
@@ -148,31 +148,31 @@ void
 MainMenu::show_debug(bool show) {
     if (debug_show != show) {
         if (show)
-            add_overlay(debug_state);
+            add_overlay(m_debug_state);
         else
-            remove_overlay(debug_state);
+            remove_overlay(m_debug_state);
 
         debug_show = show;
     }
 }
 
 int
-MainMenu::get_options_state() const {
-    return options_state;
+MainMenu::options_state() const {
+    return m_options_state;
 }
 
 void
 MainMenu::set_options_state(states::OptionsMenu&, int state) {
-    options_state = state;
+    m_options_state = state;
 }
 
 bool
-MainMenu::get_show_fps() const {
+MainMenu::show_fps() const {
     return fps_show;
 }
 
 bool
-MainMenu::get_show_debug() const {
+MainMenu::show_debug() const {
     return debug_show;
 }
 

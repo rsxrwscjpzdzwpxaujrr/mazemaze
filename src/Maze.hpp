@@ -36,8 +36,8 @@ public:
 
     bool generate(unsigned int seed);
     void cancel_generation();
-    float get_generation_progress() const;
 
+    float        generation_progress() const;
     bool         get_opened(Point2i point);
     bool         get_opened(Pointf  point);
     unsigned int seed        () const;

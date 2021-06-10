@@ -31,7 +31,7 @@ namespace gui {
 namespace states {
 
 Win::Win(MainMenu& main_menu, Game& game) :
-        State(main_menu.get_desktop(), "State"),
+        State(main_menu.desktop(), "State"),
         exit_button(Button::Create()),
         win_label(Label::Create()),
         win_note_time_label(Label::Create()),
@@ -91,7 +91,7 @@ Win::reset_text() {
 
 void
 Win::update_labels(Game& game) {
-    int time  = static_cast<int>(game.get_time());
+    int time  = static_cast<int>(game.time());
     int secs  = time % 60;
     int mins  = (time / 60) % 60;
     int hours = (time / (60 * 60)) % 24;
@@ -113,7 +113,7 @@ Win::update_labels(Game& game) {
 
     win_note_time_label->SetText(time_string);
 
-    Maze& maze = game.get_maze();
+    Maze& maze = game.maze();
     const sf::String maze_size = std::to_wstring((maze.size().x - 1) / 2) +
                                  L"x" +
                                  std::to_wstring((maze.size().y - 1) / 2);

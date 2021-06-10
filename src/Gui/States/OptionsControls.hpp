@@ -61,7 +61,7 @@ private:
         void tick();
 
         bool is_opened();
-        sfg::Window::Ptr get_window();
+        sfg::Window::Ptr window();
 
         void reset_text();
         void open(int button);
@@ -70,7 +70,7 @@ private:
     private:
         OptionsControls& opt_ctrls;
 
-        sfg::Window::Ptr    window;
+        sfg::Window::Ptr    m_window;
         sfg::Label::Ptr     label;
         sfg::Button::Ptr    cancel_button;
         sfg::Button::Ptr    ok_button;
@@ -99,7 +99,7 @@ private:
 
     void init_signals();
 
-    sf::String get_key_name(sf::Keyboard::Key key);
+    sf::String key_name(sf::Keyboard::Key key);
 };
 
 }

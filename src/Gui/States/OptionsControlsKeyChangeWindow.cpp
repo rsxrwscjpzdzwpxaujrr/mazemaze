@@ -29,7 +29,7 @@ namespace states {
 
 OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& opt_ctrls) :
         opt_ctrls(opt_ctrls),
-        window          (Window::Create(Window::Style::BACKGROUND)),
+        m_window        (Window::Create(Window::Style::BACKGROUND)),
         label           (Label::Create()),
         cancel_button   (Button::Create()),
         ok_button       (Button::Create()),
@@ -58,24 +58,24 @@ OptionsControls::KeyChangeWindow::KeyChangeWindow(OptionsControls& opt_ctrls) :
 
     cancel_button->SetClass("small");
     ok_button->SetClass("small");
-    window->SetClass("light");
+    m_window->SetClass("light");
 
-    window->Add(main_box);
+    m_window->Add(main_box);
 
-    window->SetRequisition({300, 150});
+    m_window->SetRequisition({300, 150});
 
-    opt_ctrls.desktop.Add(window);
-    window->Show(opened);
+    opt_ctrls.desktop.Add(m_window);
+    m_window->Show(opened);
 }
 
 OptionsControls::KeyChangeWindow::~KeyChangeWindow() {
-    opt_ctrls.desktop.Remove(window);
+    opt_ctrls.desktop.Remove(m_window);
 }
 
 void
 OptionsControls::KeyChangeWindow::tick() {
     if (opened)
-        opt_ctrls.desktop.BringToFront(window);
+        opt_ctrls.desktop.BringToFront(m_window);
 }
 
 void
@@ -89,7 +89,7 @@ OptionsControls::KeyChangeWindow::open(int button) {
     button_separator->Show(false);
 
     opened = true;
-    window->Show(opened);
+    m_window->Show(opened);
 
     opt_ctrls.center();
 
@@ -105,8 +105,8 @@ OptionsControls::KeyChangeWindow::is_opened() {
 }
 
 Window::Ptr
-OptionsControls::KeyChangeWindow::get_window() {
-    return window;
+OptionsControls::KeyChangeWindow::window() {
+    return m_window;
 }
 
 void
@@ -121,7 +121,7 @@ OptionsControls::KeyChangeWindow::close() {
     GraphicEngine::inst().unwait_key();
 
     opened = false;
-    window->Show(opened);
+    m_window->Show(opened);
 
     for (auto keyButton : opt_ctrls.key_buttons)
         keyButton->SetState(Widget::State::NORMAL);
@@ -136,7 +136,7 @@ OptionsControls::KeyChangeWindow::init_signals() {
         opt_ctrls.selected_key = key;
 
         sf::String new_text = pgtx("options", "Pressed key is %s");
-        new_text.replace("%s", opt_ctrls.get_key_name(key));
+        new_text.replace("%s", opt_ctrls.key_name(key));
 
         label->SetText(new_text);
 
