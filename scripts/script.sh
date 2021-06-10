@@ -19,4 +19,6 @@ $CMAKE --build .
 sudo make install
 cd ..
 
+ccache -s
+
 set +xeE
