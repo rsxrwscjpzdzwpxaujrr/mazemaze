@@ -146,6 +146,9 @@ Brick::draw_mortar(Brick::Angle angle_type, bool side) {
     case Angle::OUTER:
         *x_changing = 0.0075f;
         break;
+
+    default:
+        break;
     }
 
     x_end *= -1.0f;
@@ -199,16 +202,16 @@ Brick::set_states() {
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
-    float light0_diffuse[] = {0.5f, 0.45f, 0.4f};
-    float light0_ambient[] = {0.33f, 0.4f, 0.5f};
-    float light0_position[] = {0.5f, 0.75f, 0.25f, 0.0f};
+    float light0_diffuse[] = { 0.5f , 0.45f, 0.4f };
+    float light0_ambient[] = { 0.33f, 0.4f , 0.5f };
+    float light0_position[] = { 0.5f, 0.75f, 0.25f, 0.0f };
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
-    float light1_diffuse[] = {0.25f, 0.225f, 0.2f};
-    float light1_ambient[] = {0.0f, 0.0f, 0.0f};
+    float light1_diffuse[] = { 0.25f, 0.225f, 0.2f };
+    float light1_ambient[] = { 0.0f , 0.0f  , 0.0f };
 
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
     glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
@@ -216,7 +219,7 @@ Brick::set_states() {
     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.4f);
     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.2f);
 
-    float fog_color[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+    float fog_color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
     float fog_density = 0.5f;
 
     glFogfv(GL_FOG_COLOR, fog_color);

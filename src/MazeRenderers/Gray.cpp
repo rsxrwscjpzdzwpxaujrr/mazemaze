@@ -141,9 +141,9 @@ Gray::on_tick(float) {
 
 void
 Gray::render_chunks(int chunks[]) {
-    float light0_diffuse[] = {1.0f, 0.9f, 0.8f};
-    float light0_ambient[] = {0.5f, 0.55f, 0.75f};
-    float light0_position[] = {0.5f, 0.75f, 0.25f, 0.0f};
+    float light0_diffuse[]  = { 1.0f, 0.9f , 0.8f };
+    float light0_ambient[]  = { 0.5f, 0.55f, 0.75f };
+    float light0_position[] = { 0.5f, 0.75f, 0.25f, 0.0f };
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);

@@ -75,19 +75,16 @@ Player::tick(Game& game, float delta_time) {
 
     Settings& settings = game.get_settings();
 
-    bool move[] {sf::Keyboard::isKeyPressed(settings.get_key("right")),
-                 sf::Keyboard::isKeyPressed(settings.get_key("down")),
-                 sf::Keyboard::isKeyPressed(settings.get_key("left")),
-                 sf::Keyboard::isKeyPressed(settings.get_key("up"))};
+    bool move[] {
+        sf::Keyboard::isKeyPressed(settings.get_key("right")),
+        sf::Keyboard::isKeyPressed(settings.get_key("down")),
+        sf::Keyboard::isKeyPressed(settings.get_key("left")),
+        sf::Keyboard::isKeyPressed(settings.get_key("up"))
+    };
 
-    {
-        int i;
-        float j;
-
-        for (i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
-            if (move[i])
-                sum_vector(j, m_move_vector);
-    }
+    for (int i = 0, j = rotation.yaw(); i < 4; i++, j += M_PI_2f)
+        if (move[i])
+            sum_vector(j, m_move_vector);
 
     if ((move[0] ^ move[2]) && (move[1] ^ move[3])) {
         float factor = 1.0f / std::sqrt((m_move_vector.x * m_move_vector.x) +
