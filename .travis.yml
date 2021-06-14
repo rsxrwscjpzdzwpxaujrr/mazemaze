@@ -7,12 +7,12 @@ addons:
 
 os: linux
 cache: ccache
+dist: focal
 
 jobs:
     include:
         - name: "Linux Clang"
           compiler: clang
-          dist:     bionic
           env:
           - DEPLOY=TRUE
           - ARCH=x86_64
@@ -22,6 +22,7 @@ jobs:
               - libudev-dev
               - clang
               - libgl1-mesa-dev
+              - libsfml-dev
               - libjsoncpp-dev
               - curl
               - fakeroot
@@ -29,7 +30,6 @@ jobs:
 
         - name: "Windows x86_64 static cross-compile"
           compiler: gcc
-          dist:     bionic
           env:
           - WINDOWS=TRUE
           - DEPLOY=TRUE
@@ -39,7 +39,7 @@ jobs:
               - imagemagick
 
         - name: "Windows i686 static cross-compile"
-          if: (tag IS present) OR (env(FORCE_DEPLOY) = "TRUE")
+          if: (tag IS present) OR env(FORCE_DEPLOY)
           compiler: gcc
           dist:     bionic
           env:
