@@ -221,10 +221,10 @@ Maze::gen_exit(std::mt19937& random) {
 
     bool direction = bool_distrib(random);
 
-    if (direction) {
-        m_exit.x += m_exit.x == 1 ? 1 : -1;
-        m_exit.y += m_exit.y == 1 ? 1 : -1;
-    }
+    if (direction)
+        m_exit.x += m_exit.x == 1 ? -1 : 1;
+    else
+        m_exit.y += m_exit.y == 1 ? -1 : 1;
 }
 
 void
