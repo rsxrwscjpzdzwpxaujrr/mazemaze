@@ -16,11 +16,13 @@ jobs:
           env:
           - DEPLOY=TRUE
           - ARCH=x86_64
+          - CC_COMPILER=clang-10
+          - CXX_COMPILER=clang-10++
           addons:
               apt_packages:
               - libxrandr-dev
               - libudev-dev
-              - clang
+              - clang-10
               - libgl1-mesa-dev
               - libsfml-dev
               - libjsoncpp-dev

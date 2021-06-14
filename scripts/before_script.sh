@@ -75,6 +75,9 @@ then
             win/icon.ico
 else
     export CMAKE=cmake
+
+    export CC=$CC_COMPILER
+    export CXX=$CXX_COMPILER
 fi
 
 # SFGUI
