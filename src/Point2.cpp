@@ -40,6 +40,12 @@ Point2<T>::operator==(Point2<T> point) {
     return x == point.x && y == point.y;
 }
 
+template<typename T>
+bool
+Point2<T>::operator!=(Point2<T> point) {
+    return !operator==(point);
+}
+
 template class Point2<float>;
 template class Point2<int>;
 

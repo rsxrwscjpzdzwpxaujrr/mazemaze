@@ -82,11 +82,10 @@ MazeRenderer::tick(Game& game, float delta_time) {
         static_cast<int>(player.position().z) / (Chunk::SIZE / 2)
     );
 
-    if (p.x != old_hcp.x || p.y != old_hcp.y || force) {
+    if (p != old_hcp || force) {
         Logger::inst().log_debug("Re-enabling chunks.");
 
-        old_hcp.x = p.x;
-        old_hcp.y = p.y;
+        old_hcp = p;
 
         for (int i = 0; i < 16; i++)
             visible[i] = -1;

@@ -28,6 +28,7 @@ public:
     void set(Point2<T> point);
 
     bool operator==(Point2<T> point);
+    bool operator!=(Point2<T> point);
 
     T x;
     T y;
