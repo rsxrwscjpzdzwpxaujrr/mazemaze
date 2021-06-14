@@ -17,7 +17,7 @@ jobs:
           - DEPLOY=TRUE
           - ARCH=x86_64
           - CC_COMPILER=clang-10
-          - CXX_COMPILER=clang-10++
+          - CXX_COMPILER=clang++-10
           addons:
               apt_packages:
               - libxrandr-dev
