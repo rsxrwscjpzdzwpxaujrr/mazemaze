@@ -12,7 +12,7 @@ dist: focal
 jobs:
     include:
         - name: "Linux Clang"
-          compiler: clang
+          compiler: clang-10
           env:
           - DEPLOY=TRUE
           - ARCH=x86_64
