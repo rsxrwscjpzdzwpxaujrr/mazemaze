@@ -22,6 +22,8 @@
 
 #include "GraphicEngine.hpp"
 #include "Settings.hpp"
+#include "Logger.hpp"
+#include "utils.hpp"
 
 #include "Gui/MainMenu.hpp"
 
@@ -29,6 +31,20 @@ using namespace mazemaze;
 
 int
 main() {
+    {
+        using namespace std::chrono;
+
+        auto init_time = Logger::inst().init_time().time_since_epoch();
+
+        auto time_string = fmt(
+            "%d.%03d",
+            duration_cast<seconds>(init_time).count(),
+            duration_cast<milliseconds>(init_time).count() % 1000
+        );
+
+        Logger::inst().log_status(fmt("Starting at %s", time_string.c_str()));
+    }
+
     bindtextdomain("mazemaze", "locale");
     textdomain("mazemaze");
     bind_textdomain_codeset("mazemaze", "UTF-8");
