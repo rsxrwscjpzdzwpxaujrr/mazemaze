@@ -26,15 +26,15 @@
 
 namespace mazemaze {
 
-const float  rot_out_speed = 2.0f;
-const float  pos_out_speed = 3.0f;
-const float time_out_speed = 3.0f;
+const float  rot_out_speed = 1.5f;
+const float  pos_out_speed = 2.0f;
+const float time_out_speed = 2.0f;
 
-const float  rot_in_speed = 5.0f;
-const float  pos_in_speed = 5.0f;
-const float time_in_speed = 5.0f;
+const float  rot_in_speed = 4.0f;
+const float  pos_in_speed = 4.0f;
+const float time_in_speed = 4.0f;
 
-const float pos_speed = 9.0f;
+const float pos_speed = 7.75f;
 const float rot_speed = pos_speed * 2.0f;
 
 const float pos_amount = 0.014f;
