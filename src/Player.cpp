@@ -28,6 +28,7 @@
 #include "Game.hpp"
 #include "Settings.hpp"
 #include "GraphicEngine.hpp"
+#include "utils.hpp"
 
 namespace mazemaze {
 
@@ -182,7 +183,7 @@ Player::check_collision(Maze& maze, Pointf pos) {
                     pos.z - max<float>(j, min<float>(pos.z, j + 1.0f))
                 );
 
-                intersects |= (delta.x * delta.x + delta.y * delta.y) < (width * width);
+                intersects |= powfi(delta.x, 2) + powfi(delta.y, 2) < powfi(width, 2);
             }
 
     return intersects;

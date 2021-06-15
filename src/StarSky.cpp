@@ -20,6 +20,9 @@
 #include <random>
 #include <cmath>
 
+#include "Point.hpp"
+#include "utils.hpp"
+
 #include <SFML/OpenGL.hpp>
 
 namespace mazemaze {
@@ -36,19 +39,22 @@ StarSky::StarSky(int star_count, float time_speed, Rotation rotation) :
     std::uniform_int_distribution<> size_interval(0, 11);
 
     for (auto star = stars.begin(); star < stars.end();) {
-        float rand_x = coord_interval(rand_gen);
-        float rand_y = coord_interval(rand_gen);
-        float rand_z = coord_interval(rand_gen);
+        Pointf rand(
+            coord_interval(rand_gen),
+            coord_interval(rand_gen),
+            coord_interval(rand_gen)
+        );
+
         int size_rand = size_interval(rand_gen);
 
-        float distance = rand_x * rand_x + rand_y * rand_y + rand_z * rand_z;
+        float distance = powfi(rand.x, 2) + powfi(rand.y, 2) + powfi(rand.z, 2);
 
         if (distance <= 1.0f) {
             distance = std::sqrt(distance);
 
-            star->x = rand_x / distance;
-            star->y = rand_y / distance;
-            star->z = rand_z / distance;
+            star->x = rand.x / distance;
+            star->y = rand.y / distance;
+            star->z = rand.z / distance;
 
             if      (size_rand <= 7)
                 star->size = 1;

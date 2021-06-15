@@ -128,7 +128,7 @@ CameraBobbing::ease_out_cubic(float x) {
 
 float
 CameraBobbing::ease_in_cubic(float x) {
-    return x * x * x;
+    return powfi(x, 3);
 }
 
 }
