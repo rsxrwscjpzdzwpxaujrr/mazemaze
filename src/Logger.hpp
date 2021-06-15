@@ -30,6 +30,8 @@
 
 namespace mazemaze {
 
+using std::chrono::system_clock;
+
 class Logger {
 public:
     enum Level {
@@ -43,7 +45,7 @@ public:
     public:
         Message(Level level, const std::string& message);
 
-        const std::chrono::system_clock::time_point time;
+        const system_clock::time_point time;
         const Level level;
         const std::string message;
 
@@ -64,15 +66,18 @@ public:
     void log_error (const std::string& message);
 
     int  add_message_listener(std::function<void(Message& message)> message_listener);
+
     void remove_message_listener(int id);
     std::vector<Message>& messages();
 
+    system_clock::time_point init_time();
 private:
     Logger();
     ~Logger();
 
     void log(Level level, const std::string& message);
 
+    const system_clock::time_point m_init_time;
     std::vector<Message> m_messages;
     std::vector<std::function<void(Message&)>> message_listeners;
     std::mutex mutex;

@@ -25,7 +25,9 @@
 
 namespace mazemaze {
 
-Logger::Logger() = default;
+Logger::Logger() : m_init_time(system_clock::now().time_since_epoch()) {
+};
+
 Logger::~Logger() = default;
 
 void
@@ -64,8 +66,13 @@ Logger::messages() {
     return Logger::m_messages;
 }
 
+system_clock::time_point
+Logger::init_time() {
+    return m_init_time;
+}
+
 Logger::Message::Message(Logger::Level level, const std::string& message) :
-        time(std::chrono::system_clock::now()),
+        time(system_clock::now()),
         level(level),
         message(message) {
 }
@@ -74,36 +81,52 @@ std::string
 Logger::Message::to_string() const {
     using namespace std::chrono;
 
-    std::string levelText = "";
+    std::string level_text = "";
 
     switch (level) {
     case DEBUG:
-        levelText = DEBUG_LEVEL;
+        level_text = DEBUG_LEVEL;
         break;
 
     case STATUS:
-        levelText = STATUS_LEVEL;
+        level_text = STATUS_LEVEL;
         break;
 
     case WARN:
-        levelText = WARN_LEVEL;
+        level_text = WARN_LEVEL;
         break;
 
     case ERR:
-        levelText = ERROR_LEVEL;
+        level_text = ERROR_LEVEL;
         break;
     }
 
-    char indent[] = "        ";
-    indent[7 - levelText.size()] = '\0';
+    auto since_init = time - Logger::inst().m_init_time;
 
-    auto since_epoch = time.time_since_epoch();
+    std::string time_string = fmt(
+        "%d.%03d",
+        duration_cast<seconds>(since_init).count(),
+        duration_cast<milliseconds>(since_init).count() % 1000
+    );
+
+    int time_chars = 5;
+
+    char indent[]      = "        ";
+    char time_indent[] = "     ";
+
+    indent[7 - level_text.size()] = '\0';
+
+    if (time_string.size() < time_chars + 4) {
+        time_indent[time_chars - (time_string.size() - 4)] = '\0';
+    } else {
+        time_indent[0] = '\0';
+    }
 
     return fmt(
-        "[%d.%03d] [%s]%s%s",
-        duration_cast<seconds>(since_epoch).count(),
-        duration_cast<milliseconds>(since_epoch).count() % 1000,
-        levelText.c_str(),
+        "[%s%s] [%s]%s%s",
+        time_indent,
+        time_string.c_str(),
+        level_text.c_str(),
         indent,
         message.c_str()
     );
