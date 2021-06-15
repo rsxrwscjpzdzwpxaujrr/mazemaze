@@ -19,6 +19,7 @@
 
 #include "Camera.hpp"
 #include "Player.hpp"
+#include "utils.hpp"
 
 #include <cmath>
 #include <algorithm>
@@ -37,7 +38,7 @@ const float pos_speed = 9.0f;
 const float rot_speed = pos_speed * 2.0f;
 
 const float pos_amount = 0.014f;
-const float rot_amount = 0.002f;
+const float rot_amount = 0.0015f;
 
 CameraBobbing::CameraBobbing() :
     rot_coeff(0.0f),
@@ -102,7 +103,9 @@ CameraBobbing::tick(Player& player, float delta_time) {
      pos_coeff_with_easing = easing_func( pos_coeff);
     time_coeff_with_easing = easing_func(time_coeff);
 
-    current_rot = (std::cos(time * rot_speed) + 1.0f) * rot_amount * rot_coeff_with_easing;
+    float rot_raw = powfi((std::cos(time * rot_speed) + 1.0f) / 2.0f, 2) * 2.0f - 1.0f;
+
+    current_rot = rot_raw * rot_amount * rot_coeff_with_easing;
 
     current.x =           std::cos(time * pos_speed)  * pos_amount * pos_coeff_with_easing;
     current.y = -std::abs(std::sin(time * pos_speed)) * pos_amount * pos_coeff_with_easing;

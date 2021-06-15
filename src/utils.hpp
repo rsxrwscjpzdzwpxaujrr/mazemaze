@@ -28,6 +28,7 @@ namespace mazemaze {
 std::string fmt(const char *fmt, ...);
 void side_to_coords(int side, int& x, int& y);
 int opposite_side(int side);
+float powfi(float value, int power);
 
 sf::String pgtx  (const char* text, const char* id);
 sf::String pgtxf (const char* text, const char* id, ...);

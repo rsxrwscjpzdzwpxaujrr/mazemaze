@@ -105,4 +105,14 @@ npgtxf(const char* text, const char* id, const char* plural, int n) {
     return sf::String::fromUtf8(tmp.begin(), tmp.end());
 }
 
+float
+powfi(float value, int power) {
+    float result = 1.0f;
+
+    for (int i = 0; i < power; i++)
+        result *= value;
+
+    return result;
+}
+
 }
