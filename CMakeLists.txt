@@ -126,9 +126,11 @@ elseif (SFGUI_SUBMODULE)
         find_package(Git MODULE)
 
         if (GIT_FOUND)
-            message(STATUS "Downloaded SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
+            message(STATUS "Downloading SFGUI submodule in " ${CMAKE_SOURCE_DIR}/sfgui)
             execute_process(COMMAND ${GIT_EXECUTABLE} submodule init
-                            COMMAND ${GIT_EXECUTABLE} submodule update
+                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/sfgui)
+
+            execute_process(COMMAND ${GIT_EXECUTABLE} submodule update
                             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/sfgui)
         else (GIT_FOUND)
             message(FATAL_ERROR "SFGUI not found and can't be downloaded")
