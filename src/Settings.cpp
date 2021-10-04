@@ -337,9 +337,18 @@ Settings::reset_locales() {
 
     std::string result;
 
-    if (result_ptr != nullptr)
-        result = result_ptr;
-    else
+    if (result_ptr != nullptr) {
+        auto temp_str = std::string(result_ptr);
+        auto equal_pos = temp_str.find('=');
+
+        if (equal_pos == temp_str.npos) {
+            equal_pos = 0;
+        } else {
+            equal_pos++;
+        }
+
+        result = std::string(temp_str.begin() + equal_pos, temp_str.end());
+    } else
         result = "";
 
     setlocale(LC_NUMERIC, "C");
