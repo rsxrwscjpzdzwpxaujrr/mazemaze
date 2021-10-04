@@ -38,6 +38,7 @@ GraphicEngine::GraphicEngine() :
         m_window(nullptr),
         old_window_pos(-1, -1),
         old_window_size(854, 480),
+        icon_loaded(false),
         running(true),
         need_reopen_event(false),
         m_vsync(false),
@@ -45,7 +46,11 @@ GraphicEngine::GraphicEngine() :
         m_max_antialiasing(calc_max_antialiasing()),
         icon(sf::Image()),
         on_set_states([] () {}) {
-    icon.loadFromFile("data" PATH_SEPARATOR "icon.png");
+    auto icon_file = "data" PATH_SEPARATOR "icon.png";
+
+    if (!(icon_loaded = icon.loadFromFile(icon_file))) {
+        Logger::inst().log_error(fmt("Can not load icon file \"%s\"", icon_file));
+    }
 
     settings.depthBits = 24;
     settings.stencilBits = 8;
@@ -99,8 +104,10 @@ GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
 
     settings = m_window->getSettings();
 
-    sf::Vector2u icon_size = icon.getSize();
-    m_window->setIcon(icon_size.x, icon_size.y, icon.getPixelsPtr());
+    if (icon_loaded) {
+        sf::Vector2u icon_size = icon.getSize();
+        m_window->setIcon(icon_size.x, icon_size.y, icon.getPixelsPtr());
+    }
 
     set_vsync(m_vsync);
 }

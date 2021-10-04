@@ -68,6 +68,7 @@ private:
 #endif
 
     Point2i m_window_size;
+    bool icon_loaded;
     bool running;
     bool need_reopen;
     bool need_reopen_event;

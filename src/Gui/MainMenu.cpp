@@ -26,6 +26,7 @@
 #include "../Logger.hpp"
 #include "../path_separator.hpp"
 #include "../GraphicEngine.hpp"
+#include "../utils.hpp"
 
 #include "Background.hpp"
 
@@ -43,7 +44,11 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
                                          debug_show(false) {
     Logger::inst().log_debug("Starting main menu.");
 
-    desktop().LoadThemeFromFile("data" PATH_SEPARATOR "style.theme");
+    auto theme_file = "data" PATH_SEPARATOR "style.theme";
+
+    if (!desktop().LoadThemeFromFile(theme_file)) {
+        Logger::inst().log_error(fmt("Can not load theme file file \"%s\"", theme_file));
+    }
 
     m_main_state   = add_state(new states::Main      (*this, settings));
     m_fps_state    = add_state(new states::FpsOverlay(*this, settings));
