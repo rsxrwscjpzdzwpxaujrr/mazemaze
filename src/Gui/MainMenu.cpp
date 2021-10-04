@@ -56,7 +56,7 @@ MainMenu::MainMenu(Settings& settings) : game(nullptr),
 
     set_state(m_main_state);
 
-    StarSky* star_sky = new StarSky(1024, 600.0f, Rotation());
+    auto* star_sky = new StarSky(1024, 600.0f, Rotation());
 
     star_sky_background = new Background(
         star_sky, star_sky,
