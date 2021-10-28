@@ -17,10 +17,11 @@
 
 #include "Settings.hpp"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <fstream>
 #include <gettext.h>
 #include <json/json.h>
+#include <algorithm>
 
 #ifdef _WIN32
 # include <windows.h>
@@ -29,7 +30,7 @@
 #else
 # include <regex>
 # include <wordexp.h>
-# include <errno.h>
+# include <cerrno>
 # include <unistd.h>
 # include <sys/stat.h>
 #endif
@@ -44,7 +45,7 @@
 
 namespace mazemaze {
 
-const char* FALLBACK_LANG = "en_US";
+const char *const FALLBACK_LANG = "en_US";
 
 #ifdef _WIN32
 
@@ -106,7 +107,7 @@ Settings::Settings(bool readConfig) :
 #else
 
     std::string temp_lang = reset_locales();
-    int enc_found = temp_lang.find('.');
+    unsigned long enc_found = temp_lang.find('.');
 
     if (enc_found != std::string::npos)
         set_lang(temp_lang.substr(0, enc_found));
@@ -217,18 +218,18 @@ void
 Settings::set_lang(const std::string &lang) {
     Logger::inst().log_debug(fmt("Setting language to %s.", lang.c_str()));
 
-    bool lang_exist = false;
     std::string using_lang;
 
-    for (Language& language : m_supported_langs) {
-        if (language.code == lang) {
-            using_lang = lang;
-            lang_exist = true;
-            break;
-        }
-    }
+    bool lang_exist = std::any_of(
+        m_supported_langs.begin(),
+        m_supported_langs.end(),
+        [&] (const Language& language) {
+            return language.code == lang;
+    });
 
-    if (!lang_exist) {
+    if (lang_exist) {
+        using_lang = lang;
+    } else {
         for (Language& language : m_supported_langs) {
             if (language.code.substr(0, 2) == lang.substr(0, 2)) {
                 using_lang = language.code;
@@ -333,7 +334,7 @@ Settings::set_camera_bobbing(float camera_bobbing) {
 
 std::string
 Settings::reset_locales() {
-    char* result_ptr = setlocale(LC_ALL, "");
+    char* result_ptr = std::setlocale(LC_ALL, "");
 
     std::string result;
 
@@ -351,7 +352,7 @@ Settings::reset_locales() {
     } else
         result = "";
 
-    setlocale(LC_NUMERIC, "C");
+    std::setlocale(LC_NUMERIC, "C");
 
     return result;
 }
@@ -443,8 +444,8 @@ Settings::write_config() {
 
     Json::Value controls = Json::objectValue;
 
-    for (auto it = Settings::controls.begin(); it != Settings::controls.end(); it++) {
-        controls[it->first] = it->second;
+    for (const auto& control : Settings::controls) {
+        controls[control.first] = control.second;
     }
 
     controls["sensitivity"] = sensitivity();

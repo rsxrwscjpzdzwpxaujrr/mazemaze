@@ -196,7 +196,7 @@ Player::sum_vector(float angle, Point2f& vec) {
 }
 
 void
-Player::setup_camera_bobbing(Settings& settings) {
+Player::setup_camera_bobbing(const Settings& settings) {
     if (settings.camera_bobbing() && !camera_bobbing) {
         camera_bobbing = new CameraBobbing;
         tickable_handler.addTickable(camera_bobbing);

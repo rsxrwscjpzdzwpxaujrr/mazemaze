@@ -274,7 +274,7 @@ Saver::save_exists(Settings& settings) {
 }
 
 std::string
-Saver::get_filename(Settings& settings) {
+Saver::get_filename(const Settings& settings) {
     return settings.data_dir() + PATH_SEPARATOR "sav";
 }
 

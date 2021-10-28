@@ -20,6 +20,7 @@
 #include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <utility>
 
 #include "utils.hpp"
 
@@ -71,10 +72,10 @@ Logger::init_time() {
     return m_init_time;
 }
 
-Logger::Message::Message(Logger::Level level, const std::string& message) :
+Logger::Message::Message(Logger::Level level, std::string message) :
         time(system_clock::now()),
         level(level),
-        message(message) {
+        message(std::move(message)) {
 }
 
 std::string

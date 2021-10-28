@@ -43,7 +43,7 @@ public:
 
     class Message {
     public:
-        Message(Level level, const std::string& message);
+        Message(Level level, std::string message);
 
         const system_clock::time_point time;
         const Level level;

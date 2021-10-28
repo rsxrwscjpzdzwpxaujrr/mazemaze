@@ -18,6 +18,7 @@
 #include "Maze.hpp"
 
 #include <stdexcept>
+#include <array>
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
@@ -171,12 +172,12 @@ Maze::generation_progress() const {
 }
 
 bool
-Maze::get_opened(Point2i point) {
+Maze::get_opened(Point2i point) const {
     return get_opened(point.x, point.y);
 }
 
 bool
-Maze::get_opened(Pointf point) {
+Maze::get_opened(Pointf point) const {
     if (point.y > 1.0f || point.y < 0.0f)
         return true;
 
@@ -184,7 +185,7 @@ Maze::get_opened(Pointf point) {
 }
 
 bool
-Maze::get_opened(int x, int y) {
+Maze::get_opened(int x, int y) const {
     if (!m_chunks || x < 0 || x >= m_size.x || y < 0 || y >= m_size.y)
         return true;
 
@@ -278,7 +279,7 @@ Maze::init_chunks() {
 Maze::Generator::Generator(short x, short y) : x(x), y(y), tried(0) {}
 
 Maze::Generator::Generator(short x, short y, int side) : x(x), y(y) {
-    static const int oppside[4] { 1, 0, 3, 2 };
+    std::array<int, 4> oppside { 1, 0, 3, 2 };
 
     tried = 1 << oppside[side];
 }

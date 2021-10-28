@@ -38,8 +38,8 @@ public:
     void cancel_generation();
 
     float        generation_progress() const;
-    bool         get_opened(Point2i point);
-    bool         get_opened(Pointf  point);
+    bool         get_opened(Point2i point) const;
+    bool         get_opened(Pointf  point) const;
     unsigned int seed        () const;
     Chunk*       chunks      () const;
     Point2i&     exit        ();
@@ -61,7 +61,7 @@ private:
         unsigned char tried;
     };
 
-    bool get_opened(int x, int y);
+    bool get_opened(int x, int y) const;
     void set_opened(int x, int y, bool opened);
 
     void gen_exit(std::mt19937& random);

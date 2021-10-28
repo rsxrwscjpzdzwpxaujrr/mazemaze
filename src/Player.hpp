@@ -63,7 +63,7 @@ private:
     void try_move(Maze& maze, Pointf position);
     bool check_collision(Maze& maze, Pointf position);
     void sum_vector(float angle, Point2f& vec);
-    void setup_camera_bobbing(Settings& settings);
+    void setup_camera_bobbing(const Settings& settings);
 };
 
 }

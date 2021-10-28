@@ -27,7 +27,7 @@ public:
     ~Chunk();
 
     void set_opened(unsigned int x, unsigned int y, bool opened);
-    bool get_opened(unsigned int x, unsigned int y);
+    bool get_opened(unsigned int x, unsigned int y) const;
 
 private:
     bool opened[SIZE][SIZE];

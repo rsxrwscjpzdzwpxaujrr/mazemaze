@@ -376,7 +376,7 @@ Brick::on_tick(float) {
 
 void
 Brick::render_chunks(int chunks[]) {
-    auto& position = game.player().camera().position();
+    const auto& position = game.player().camera().position();
 
     float light1_position[] = { position.x, position.y, position.z, 1.0f };
 

@@ -28,7 +28,7 @@ Chunk::Chunk() {
 Chunk::~Chunk() = default;
 
 bool
-Chunk::get_opened(unsigned int x, unsigned int y) {
+Chunk::get_opened(unsigned int x, unsigned int y) const {
     return opened[x][y];
 }
 

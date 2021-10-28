@@ -19,6 +19,8 @@
 
 #include "../../utils.hpp"
 
+#define DEFAULT_KEY_NAME(key) case Keyboard::Key::key: return #key
+
 namespace mazemaze {
 namespace gui {
 namespace states {
@@ -28,83 +30,50 @@ OptionsControls::key_name(sf::Keyboard::Key key) {
     using namespace sf;
 
     switch (key) {
-        case Keyboard::Key::A:
-            return L"A";
+        DEFAULT_KEY_NAME(A);
+        DEFAULT_KEY_NAME(B);
+        DEFAULT_KEY_NAME(C);
+        DEFAULT_KEY_NAME(D);
+        DEFAULT_KEY_NAME(E);
+        DEFAULT_KEY_NAME(F);
+        DEFAULT_KEY_NAME(G);
+        DEFAULT_KEY_NAME(H);
+        DEFAULT_KEY_NAME(I);
+        DEFAULT_KEY_NAME(J);
+        DEFAULT_KEY_NAME(K);
+        DEFAULT_KEY_NAME(L);
+        DEFAULT_KEY_NAME(M);
+        DEFAULT_KEY_NAME(N);
+        DEFAULT_KEY_NAME(O);
+        DEFAULT_KEY_NAME(P);
+        DEFAULT_KEY_NAME(Q);
+        DEFAULT_KEY_NAME(R);
+        DEFAULT_KEY_NAME(S);
+        DEFAULT_KEY_NAME(T);
+        DEFAULT_KEY_NAME(U);
+        DEFAULT_KEY_NAME(V);
+        DEFAULT_KEY_NAME(W);
+        DEFAULT_KEY_NAME(X);
+        DEFAULT_KEY_NAME(Y);
+        DEFAULT_KEY_NAME(Z);
 
-        case Keyboard::Key::B:
-            return L"B";
+        DEFAULT_KEY_NAME(Escape);
 
-        case Keyboard::Key::C:
-            return L"C";
-
-        case Keyboard::Key::D:
-            return L"D";
-
-        case Keyboard::Key::E:
-            return L"E";
-
-        case Keyboard::Key::F:
-            return L"F";
-
-        case Keyboard::Key::G:
-            return L"G";
-
-        case Keyboard::Key::H:
-            return L"H";
-
-        case Keyboard::Key::I:
-            return L"I";
-
-        case Keyboard::Key::J:
-            return L"J";
-
-        case Keyboard::Key::K:
-            return L"K";
-
-        case Keyboard::Key::L:
-            return L"L";
-
-        case Keyboard::Key::M:
-            return L"M";
-
-        case Keyboard::Key::N:
-            return L"N";
-
-        case Keyboard::Key::O:
-            return L"O";
-
-        case Keyboard::Key::P:
-            return L"P";
-
-        case Keyboard::Key::Q:
-            return L"Q";
-
-        case Keyboard::Key::R:
-            return L"R";
-
-        case Keyboard::Key::S:
-            return L"S";
-
-        case Keyboard::Key::T:
-            return L"T";
-
-        case Keyboard::Key::U:
-            return L"U";
-
-        case Keyboard::Key::V:
-            return L"V";
-
-        case Keyboard::Key::W:
-            return L"W";
-
-        case Keyboard::Key::X:
-            return L"X";
-
-        case Keyboard::Key::Y:
-            return L"Y";
-
-        case Keyboard::Key::Z:
-            return L"Z";
+        DEFAULT_KEY_NAME(F1 );
+        DEFAULT_KEY_NAME(F2 );
+        DEFAULT_KEY_NAME(F3 );
+        DEFAULT_KEY_NAME(F4 );
+        DEFAULT_KEY_NAME(F5 );
+        DEFAULT_KEY_NAME(F6 );
+        DEFAULT_KEY_NAME(F7 );
+        DEFAULT_KEY_NAME(F8 );
+        DEFAULT_KEY_NAME(F9 );
+        DEFAULT_KEY_NAME(F10);
+        DEFAULT_KEY_NAME(F11);
+        DEFAULT_KEY_NAME(F12);
+        DEFAULT_KEY_NAME(F13);
+        DEFAULT_KEY_NAME(F14);
+        DEFAULT_KEY_NAME(F15);
 
         case Keyboard::Key::Num0:
             return L"0";
@@ -135,9 +104,6 @@ OptionsControls::key_name(sf::Keyboard::Key key) {
 
         case Keyboard::Key::Num9:
             return L"9";
-
-        case Keyboard::Key::Escape:
-            return L"Escape";
 
         case Keyboard::Key::LControl:
             return pgtxf("options|keys", "Left %s", "Ctrl");
@@ -282,54 +248,6 @@ OptionsControls::key_name(sf::Keyboard::Key key) {
 
         case Keyboard::Key::Numpad9:
             return L"Num 9";
-
-        case Keyboard::Key::F1:
-            return L"F1";
-
-        case Keyboard::Key::F2:
-            return L"F2";
-
-        case Keyboard::Key::F3:
-            return L"F3";
-
-        case Keyboard::Key::F4:
-            return L"F4";
-
-        case Keyboard::Key::F5:
-            return L"F5";
-
-        case Keyboard::Key::F6:
-            return L"F6";
-
-        case Keyboard::Key::F7:
-            return L"F7";
-
-        case Keyboard::Key::F8:
-            return L"F8";
-
-        case Keyboard::Key::F9:
-            return L"F9";
-
-        case Keyboard::Key::F10:
-            return L"F10";
-
-        case Keyboard::Key::F11:
-            return L"F11";
-
-        case Keyboard::Key::F12:
-            return L"F12";
-
-        case Keyboard::Key::F13:
-            return L"F13";
-
-        case Keyboard::Key::F14:
-            return L"F14";
-
-        case Keyboard::Key::F15:
-            return L"F15";
-
-        case Keyboard::Key::Pause:
-            return L"Pause";
 
         default:
             return pgtx("options|keys", "Unknown key");

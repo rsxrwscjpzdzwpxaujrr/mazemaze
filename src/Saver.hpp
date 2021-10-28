@@ -62,7 +62,7 @@ private:
     void save_maze  (std::ostream& stream);
     void save_chunks(std::ostream& stream);
 
-    static std::string get_filename(Settings& settings);
+    static std::string get_filename(const Settings& settings);
 
     static void save_chunk(std::ostream& stream, Chunk& chunk);
     static void load_chunk(std::istream& stream, Chunk& chunk);
