@@ -22,7 +22,7 @@
 #include <gettext.h>
 #include <json/json.h>
 #include <algorithm>
-#include <clocale>
+#include <locale.h>
 
 #ifdef _WIN32
 # include <windows.h>
@@ -335,7 +335,8 @@ Settings::set_camera_bobbing(float camera_bobbing) {
 
 std::string
 Settings::reset_locales() {
-    char* result_ptr = std::setlocale(LC_ALL, "");
+    // std::setlocale is not working on MinGW-w64
+    char* result_ptr = setlocale(LC_ALL, "");
 
     std::string result;
 
@@ -353,7 +354,7 @@ Settings::reset_locales() {
     } else
         result = "";
 
-    std::setlocale(LC_NUMERIC, "C");
+    setlocale(LC_NUMERIC, "C");
 
     return result;
 }
