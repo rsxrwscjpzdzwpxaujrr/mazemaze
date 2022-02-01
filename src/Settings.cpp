@@ -22,6 +22,7 @@
 #include <gettext.h>
 #include <json/json.h>
 #include <algorithm>
+#include <clocale>
 
 #ifdef _WIN32
 # include <windows.h>
