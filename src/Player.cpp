@@ -66,7 +66,7 @@ Player::tick(Game& game, float delta_time) {
     if (game.is_paused() || game.is_won())
         return;
 
-    float M_PI_2f = static_cast<float>(M_PI_2);
+    auto pi_2f = static_cast<float>(M_PI_2);
 
     auto& rotation = m_camera.rotation();
     auto& cam_pos  = m_camera.position();
@@ -87,7 +87,7 @@ Player::tick(Game& game, float delta_time) {
         int i = 0;
         float j = rotation.yaw();
 
-        for (; i < 4; i++, j += M_PI_2f)
+        for (; i < 4; i++, j += pi_2f)
             if (move[i])
                 sum_vector(j, m_move_vector);
     }
@@ -121,7 +121,7 @@ Player::tick(Game& game, float delta_time) {
 
     new_pitch += (cursor.y - static_cast<int>(window_half_size.y)) * sensitivity;
 
-    if (new_pitch > -M_PI_2f && new_pitch < M_PI_2f)
+    if (new_pitch > -pi_2f && new_pitch < pi_2f)
         rotation.set_pitch(new_pitch);
 
     rotation.set_yaw(
