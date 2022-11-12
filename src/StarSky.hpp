@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2022, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "IRenderable.hpp"
 #include "ITickable.hpp"
 #include "Rotation.hpp"
+#include "Point.hpp"
 
 namespace mazemaze {
 
@@ -41,6 +42,9 @@ private:
         float x;
         float y;
         float z;
+        float r;
+        float g;
+        float b;
         int size;
     };
 
@@ -57,7 +61,8 @@ private:
 
     std::vector<Star> stars;
 
-    void compile();
+    void   compile();
+    Pointf temp_to_color(float temp) const;
 };
 
 }

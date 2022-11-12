@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2022, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 #include <random>
 #include <cmath>
 
-#include "Point.hpp"
 #include "utils.hpp"
 
 #include <SFML/OpenGL.hpp>
@@ -69,6 +68,18 @@ StarSky::StarSky(int star_count, float time_speed, Rotation rotation) :
         }
     }
 
+    std::normal_distribution<float> temp_interval(7300.0f, 1500.0f);
+
+    for (auto& star : stars) {
+        float temp = temp_interval(rand_gen);
+
+        auto color = temp_to_color(temp);
+
+        star.r = color.x;
+        star.g = color.y;
+        star.b = color.z;
+    }
+
     compile();
 }
 
@@ -112,13 +123,13 @@ StarSky::compile() {
 
     for (auto star = stars.begin(); star < stars.end(); star++) {
         if      (star->size == 1)
-            glColor3f(0.33f, 0.33f, 0.33f);
+            glColor3f(star->r * 0.33f, star->g * 0.33f, star->b * 0.33f);
 
         else if (star->size == 2)
-            glColor3f(0.5f,  0.5f,  0.5f);
+            glColor3f(star->r * 0.5f,  star->g * 0.5f,  star->b * 0.5f);
 
         else if (star->size == 3)
-            glColor3f(0.75f, 0.75f, 0.75f);
+            glColor3f(star->r * 0.75f, star->g * 0.75f, star->b * 0.75f);
 
         glPointSize(star->size);
         glBegin(GL_POINTS);
@@ -127,6 +138,63 @@ StarSky::compile() {
     }
 
     glEndList();
+}
+
+Pointf
+StarSky::temp_to_color(float temp) const {
+    // https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
+
+    if (temp < 1000)
+        temp = 1000;
+
+    if (temp > 40000)
+        temp = 40000;
+
+    float r = 0.0f;
+    float g = 0.0f;
+    float b = 0.0f;
+
+    temp /= 100.0f;
+
+    if (temp <= 66.0f) {
+        r = 1.0f;
+    } else {
+        r = 1.287885654f * std::pow(temp - 60.0f, -0.1332047592f);
+
+        if (r > 1.0f)
+            r = 1.0f;
+
+        if (r < 0.0f)
+            r = 0.0f;
+    }
+
+    if (temp <= 66.0f) {
+        g = 0.388557823f * std::log(temp) - 0.629373313f;
+    } else {
+        g = 1.125477225f * std::pow(temp - 60.0f, -0.0755148492f);
+    }
+
+    if (g > 1.0f)
+        g = 1.0f;
+
+    if (g < 0.0f)
+        g = 0.0f;
+
+    if (temp >= 66.0f) {
+        b = 1.0f;
+    } else if (temp <= 19.0f) {
+        b = 0.0f;
+    } else {
+        b = 0.541084888f * std::log(temp - 10.0f) - 1.191581222f;
+
+        if (b > 1.0f)
+            b = 1.0f;
+
+        if (b < 0.0f)
+            b = 0.0f;
+    }
+
+    return Pointf(r, g, b);
 }
 
 }
