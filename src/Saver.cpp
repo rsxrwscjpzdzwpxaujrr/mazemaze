@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,8 +52,9 @@ Saver::load(gui::MainMenu& main_menu) {
 
     std::ifstream stream;
 
-    stream.open(get_filename(settings), std::ios::in | std::ios::binary);
     stream.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
+
+    stream.open(get_filename(settings), std::ios::in | std::ios::binary);
 
     char version[3];
     float time;
