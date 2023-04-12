@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -134,7 +134,10 @@ Settings::Settings(bool readConfig) :
     controls["left"]  = sf::Keyboard::A;
 }
 
-Settings::~Settings() {
+Settings::~Settings() = default;
+
+void
+Settings::save() {
     write_config();
 }
 

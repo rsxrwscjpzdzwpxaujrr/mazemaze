@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -90,6 +90,11 @@ MainMenu::on_event(const sf::Event& event) {
 
         show_debug(!debug_show);
     }
+}
+
+void
+MainMenu::on_exit() {
+    settings.save();
 }
 
 Game&
