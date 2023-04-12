@@ -150,6 +150,14 @@ Saver::save() {
         Logger::inst().log_debug(fmt("Saving. Saver is %svirgin.", virgin ? "" : "not "));
 
         try {
+            if (virgin && !save_exists(settings)) {
+                Logger::inst().log_debug(
+                        fmt("Saver is not virgin, but save file does not exist. Virginizing.")
+                );
+
+                virgin = true;
+            }
+
             std::ofstream stream;
 
             stream.exceptions(std::ios::failbit | std::ios::badbit);
@@ -193,6 +201,8 @@ void
 Saver::delete_save() {
     if (save_exists(settings))
         std::remove(get_filename(settings).c_str());
+
+    virgin = true;
 }
 
 float
@@ -203,6 +213,7 @@ Saver::last_save_time() const {
 void
 Saver::set_game(Game& game) {
     Saver::game = &game;
+    virgin = true;
 }
 
 void
