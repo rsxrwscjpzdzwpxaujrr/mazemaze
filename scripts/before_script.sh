@@ -3,7 +3,7 @@
 set -xeE
 trap 'sleep 1' ERR
 
-export VERSION=0.2.2
+export VERSION=0.2.3
 
 if [[ $ARCH = "x86_64" ]]
 then

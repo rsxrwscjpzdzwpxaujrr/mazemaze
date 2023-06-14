@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ GraphicEngine::openWindow() {
 
 void
 GraphicEngine::openWindow(sf::VideoMode videoMode, bool fullscreen) {
-    const sf::String windowName = L"Mazemaze 0.2.2";
+    const sf::String windowName = L"Mazemaze 0.2.3";
     sf::Uint32 style;
 
     if (fullscreen)
