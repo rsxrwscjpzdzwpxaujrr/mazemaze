@@ -38,7 +38,7 @@ $ sudo pacman -S sfml jsoncpp
 
 Then you can proceed with the build:
 ```
-$ git clone https://github.com/mirai65536/mazemaze.git
+$ git clone https://github.com/rsxrwscjpzdzwpxaujrr/mazemaze.git
 $ cd mazemaze
 $ mkdir build
 $ cd build
