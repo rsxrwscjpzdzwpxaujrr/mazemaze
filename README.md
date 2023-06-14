@@ -1,6 +1,6 @@
 Mazemaze
 ========
-[![Build Status](https://app.travis-ci.com/rsxrwscjpzdzwpxaujrr/mazemaze.svg?branch=master)](https://app.travis-ci.com/github/rsxrwscjpzdzwpxaujrr/mazemaze)
+[![Build Status](https://app.travis-ci.com/rsxrwscjpzdzwpxaujrr/mazemaze.svg?branch=0.2-stable)](https://app.travis-ci.com/github/rsxrwscjpzdzwpxaujrr/mazemaze)
 
 Simple 3D OpenGL first-person maze game.
 
