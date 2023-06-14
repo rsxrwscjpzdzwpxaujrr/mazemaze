@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -51,7 +51,9 @@ Player::start(Maze& maze) {
 
 void
 Player::tick(float deltaTime, sf::Window& window, Game& game) {
+#ifndef M_PI_2f
     float M_PI_2f = static_cast<float>(M_PI_2);
+#endif
 
     float pitch = camera.getPitch();
     float yaw   = camera.getYaw();
