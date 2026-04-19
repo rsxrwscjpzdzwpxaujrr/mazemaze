@@ -255,7 +255,12 @@ Settings::set_lang(const std::string &lang) {
 
     setenv("LANGUAGE", using_lang.c_str(), true);
 
-    reset_locales();
+    auto locale = reset_locales();
+
+    if (locale == "C") {
+        Logger::inst().log_error(fmt("Locale \"%s\" detected, translations will not work.",
+                                     locale.c_str()));
+    }
 
     if (m_main_menu)
         m_main_menu->reset_text();
@@ -339,7 +344,7 @@ Settings::set_camera_bobbing(float camera_bobbing) {
 std::string
 Settings::reset_locales() {
     // std::setlocale is not working on MinGW-w64
-    char* result_ptr = setlocale(LC_ALL, "");
+    char* result_ptr = setlocale(LC_ALL, nullptr);
 
     std::string result;
 
