@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -81,10 +81,11 @@ MainMenu::~MainMenu() {
 
 void
 MainMenu::on_event(const sf::Event& event) {
-    if (event.type == sf::Event::LostFocus && game != nullptr && game->is_loaded())
+    if (event.is<sf::Event::FocusLost>() && game != nullptr && game->is_loaded())
         game->set_paused(true);
 
-    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3) {
+    if     (event.is<sf::Event::KeyReleased>() && event.getIf<sf::Event::KeyReleased>()->code ==
+            sf::Keyboard::Key::F3) {
         if (game && game->is_loaded() && !game->is_paused() && !game->is_won() && !debug_show)
             game->set_paused(true);
 

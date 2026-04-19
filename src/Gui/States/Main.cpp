@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -99,8 +99,7 @@ Main::update_buttons(bool save_exists) {
 
 void
 Main::center() {
-    sf::Vector2f widget_size(about_button->GetAllocation().width,
-                             about_button->GetAllocation().height);
+    sf::Vector2f widget_size(about_button->GetAllocation().size);
 
     sf::Vector2f window_size =
         static_cast<sf::Vector2f>(GraphicEngine::inst().window().getSize());

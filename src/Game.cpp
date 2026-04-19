@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -119,12 +119,12 @@ void
 Game::tick(void*, float deltaTime) {
     GraphicEngine& graphic_engine = GraphicEngine::inst();
 
-    if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) &&
+    if     (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) &&
             old_pause_key_state &&
             graphic_engine.has_focus())
         set_paused(!paused);
 
-    old_pause_key_state = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+    old_pause_key_state = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
 
     sf::RenderWindow& window = graphic_engine.window();
     window.setMouseCursorVisible(paused || won);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -128,10 +128,10 @@ Settings::Settings(bool readConfig) :
     set_vsync(true);
     m_camera_bobbing = true;
 
-    controls["up"]    = sf::Keyboard::W;
-    controls["down"]  = sf::Keyboard::S;
-    controls["right"] = sf::Keyboard::D;
-    controls["left"]  = sf::Keyboard::A;
+    controls["up"]    = sf::Keyboard::Key::W;
+    controls["down"]  = sf::Keyboard::Key::S;
+    controls["right"] = sf::Keyboard::Key::D;
+    controls["left"]  = sf::Keyboard::Key::A;
 }
 
 Settings::~Settings() = default;
@@ -450,7 +450,7 @@ Settings::write_config() {
     Json::Value controls = Json::objectValue;
 
     for (const auto& control : Settings::controls) {
-        controls[control.first] = control.second;
+        controls[control.first] = static_cast<int>(control.second);
     }
 
     controls["sensitivity"] = sensitivity();

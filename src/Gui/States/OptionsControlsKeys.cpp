@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -147,7 +147,7 @@ OptionsControls::key_name(sf::Keyboard::Key key) {
         case Keyboard::Key::Period:
             return L".";
 
-        case Keyboard::Key::Quote:
+        case Keyboard::Key::Apostrophe:
             return L"'";
 
         case Keyboard::Key::Slash:
@@ -156,7 +156,7 @@ OptionsControls::key_name(sf::Keyboard::Key key) {
         case Keyboard::Key::Backslash:
             return L"\\";
 
-        case Keyboard::Key::Tilde:
+        case Keyboard::Key::Grave:
             return L"~";
 
         case Keyboard::Key::Equal:

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ GraphicEngine::open_window() {
     if (m_fullscreen)
         video_mode = sf::VideoMode::getDesktopMode();
     else
-        video_mode = sf::VideoMode(old_window_size.x, old_window_size.y);
+        video_mode = sf::VideoMode({old_window_size.x, old_window_size.y});
 
     open_window(video_mode, m_fullscreen);
 }
@@ -75,18 +75,22 @@ GraphicEngine::open_window() {
 void
 GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
     Logger::inst().log_debug(fmt("Main window opening. Size is %dx%d",
-                                 video_mode.width,
-                                 video_mode.height));
+                                 video_mode.size.x,
+                                 video_mode.size.y));
 
     const sf::String window_name = L"Mazemaze 0.3-git";
-    sf::Uint32 style;
+    uint32_t style;
+    sf::State state;
 
-    if (fullscreen)
-        style = sf::Style::Fullscreen;
-    else
+    if (fullscreen) {
+        style = sf::Style::None;
+        state = sf::State::Fullscreen;
+    } else {
         style = sf::Style::Default;
+        state = sf::State::Windowed;
+    }
 
-    m_window = new sf::RenderWindow(video_mode, window_name, style, settings);
+    m_window = new sf::RenderWindow(video_mode, window_name, style, state, settings);
 
     if (!fullscreen) {
         if (old_window_pos != sf::Vector2i(-1, -1))
@@ -106,7 +110,7 @@ GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
 
     if (icon_loaded) {
         sf::Vector2u icon_size = icon.getSize();
-        m_window->setIcon(icon_size.x, icon_size.y, icon.getPixelsPtr());
+        m_window->setIcon({icon_size.x, icon_size.y}, icon.getPixelsPtr());
     }
 
     set_vsync(m_vsync);
@@ -114,7 +118,7 @@ GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
 
 void
 GraphicEngine::open_window(unsigned int width, unsigned int height, bool fullscreen) {
-    sf::VideoMode video_mode = sf::VideoMode(width, height);
+    sf::VideoMode video_mode = sf::VideoMode({width, height});
     GraphicEngine::open_window(video_mode, fullscreen);
 }
 
@@ -155,7 +159,7 @@ GraphicEngine::loop(sfg::SFGUI& sfgui, gui::MainMenu& main_menu) {
     sf::Clock delta_clock;
     float frame_delta_time = 1.0f / 60.0f;
 
-    sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
+    //sfg::Renderer::Set(sfg::VertexBufferRenderer::Create());
 
     sfgui.AddCharacterSet(0x20,  0x80);
     sfgui.AddCharacterSet(0xC0,  0x100);
@@ -209,7 +213,7 @@ GraphicEngine::set_fullscreen(bool fullscreen) {
 
                 video_mode = sf::VideoMode::getDesktopMode();
             } else
-                video_mode = sf::VideoMode(old_window_size.x, old_window_size.y);
+                video_mode = sf::VideoMode({old_window_size.x, old_window_size.y});
 
             need_reopen = true;
         }
@@ -218,7 +222,7 @@ GraphicEngine::set_fullscreen(bool fullscreen) {
 
 void
 GraphicEngine::set_antialiasing(unsigned int antialiasing) {
-    if (antialiasing != settings.antialiasingLevel) {
+    if (antialiasing != settings.antiAliasingLevel) {
         if (m_window != nullptr) {
             old_window_pos = m_window->getPosition();
 #ifdef _WIN32
@@ -229,13 +233,13 @@ GraphicEngine::set_antialiasing(unsigned int antialiasing) {
                 video_mode = sf::VideoMode::getDesktopMode();
             else {
                 sf::Vector2u windowSize = m_window->getSize();
-                video_mode = sf::VideoMode(windowSize.x, windowSize.y);
+                video_mode = sf::VideoMode({windowSize.x, windowSize.y});
             }
 
             need_reopen = true;
         }
 
-        settings.antialiasingLevel = antialiasing;
+        settings.antiAliasingLevel = antialiasing;
     }
 }
 
@@ -285,19 +289,20 @@ GraphicEngine::has_focus() const {
 unsigned int
 GraphicEngine::calc_max_antialiasing() {
     sf::ContextSettings settings;
-    sf::VideoMode video_mode = sf::VideoMode(16, 16);
-    sf::Uint32 style = sf::Style::None;
-    settings.antialiasingLevel = 16;
+    sf::VideoMode video_mode = sf::VideoMode({16, 16});
+    uint32_t style = sf::Style::None;
+    sf::State state = sf::State::Windowed;
+    settings.antiAliasingLevel = 16;
 
-    sf::RenderWindow win(video_mode, sf::String(), style, settings);
+    sf::RenderWindow win(video_mode, sf::String(), style, state, settings);
 
     settings = win.getSettings();
     win.close();
 
     Logger::inst().log_debug(fmt("Calculated max antialiasing is %d.",
-                                 settings.antialiasingLevel));
+                                 settings.antiAliasingLevel));
 
-    return settings.antialiasingLevel;
+    return settings.antiAliasingLevel;
 }
 
 #ifdef _WIN32
@@ -314,42 +319,37 @@ GraphicEngine::update_old_maximized() {
 
 void
 GraphicEngine::handle_events(gui::MainMenu& main_menu) {
-    sf::Event event;
+    while (const std::optional event = m_window->pollEvent()) {
+        if (!event.has_value())
+            break;
 
-    while (m_window->pollEvent(event)) {
-        main_menu.handle_event(event);
+        main_menu.handle_event(*event);
 
-        switch (event.type) {
-        case sf::Event::Closed:
+        if (event->is<sf::Event::Closed>()) {
             Logger::inst().log_debug("sf::Event::Closed");
 
             running = false;
-            break;
+        }
 
-        case sf::Event::KeyReleased:
-            on_key_waiting(event.key.code);
-            break;
+        if (const auto* key = event->getIf<sf::Event::KeyReleased>()) {
+            on_key_waiting(key->code);
+        }
 
-        case sf::Event::GainedFocus:
-            Logger::inst().log_debug("sf::Event::GainedFocus");
+        if (event->is<sf::Event::FocusGained>()) {
+            Logger::inst().log_debug("sf::Event::FocusGained");
 
             m_focus = true;
-            break;
+        }
 
-        case sf::Event::LostFocus:
-            Logger::inst().log_debug("sf::Event::LostFocus");
+        if (event->is<sf::Event::FocusLost>()) {
+            Logger::inst().log_debug("sf::Event::FocusLost");
 
             m_focus = false;
-            break;
-
-        default:
-            break;
         }
     }
 
     if (need_reopen_event) {
-        sf::Event event;
-        event.type = sf::Event::Resized;
+        sf::Event::Resized event;
 
         main_menu.handle_event(event);
         need_reopen_event = false;

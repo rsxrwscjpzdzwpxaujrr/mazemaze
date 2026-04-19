@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ State::center() {
 
 void
 State::center(sfg::Widget::Ptr widget) {
-    sf::Vector2f widget_Size(widget->GetAllocation().width, widget->GetAllocation().height);
+    sf::Vector2f widget_Size(widget->GetAllocation().size);
     sf::Vector2f window_Size =
             static_cast<sf::Vector2f>(GraphicEngine::inst().window().getSize());
 
