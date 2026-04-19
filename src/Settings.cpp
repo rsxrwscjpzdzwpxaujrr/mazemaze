@@ -255,6 +255,8 @@ Settings::set_lang(const std::string &lang) {
 
     setenv("LANGUAGE", using_lang.c_str(), true);
 
+    reset_locale();
+
     auto locale = check_locale();
 
     if (locale == "C") {
@@ -341,6 +343,13 @@ Settings::set_camera_bobbing(float camera_bobbing) {
     m_camera_bobbing = camera_bobbing;
 }
 
+void
+Settings::reset_locale() {
+    // std::setlocale is not working on MinGW-w64
+    setlocale(LC_ALL, "");
+    setlocale(LC_NUMERIC, "C");
+}
+
 std::string
 Settings::check_locale() {
     // std::setlocale is not working on MinGW-w64
@@ -350,7 +359,13 @@ Settings::check_locale() {
 
     if (result_ptr != nullptr) {
         auto temp_str = std::string(result_ptr);
-        auto equal_pos = temp_str.find('=');
+
+        auto lc_messages_pos = temp_str.find("LC_MESSAGES");
+
+        if (lc_messages_pos == temp_str.npos)
+            lc_messages_pos = 0;
+
+        auto equal_pos = temp_str.find('=', lc_messages_pos);
 
         if (equal_pos == temp_str.npos) {
             equal_pos = 0;
@@ -358,7 +373,18 @@ Settings::check_locale() {
             equal_pos++;
         }
 
-        result = std::string(temp_str.begin() + equal_pos, temp_str.end());
+        auto end_pos_dot = temp_str.find('.', equal_pos);
+        auto end_pos_semicolon = temp_str.find(';', equal_pos);
+
+        size_t end_pos = temp_str.length();
+
+        if (end_pos_dot != temp_str.npos && end_pos_dot < end_pos)
+            end_pos = end_pos_dot;
+
+        if (end_pos_semicolon != temp_str.npos && end_pos_semicolon < end_pos)
+            end_pos = end_pos_semicolon;
+
+        result = std::string(temp_str.begin() + equal_pos, temp_str.begin() + end_pos);
     } else
         result = "";
 

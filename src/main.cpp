@@ -45,9 +45,6 @@ main() {
         Logger::inst().log_status(fmt("Starting at %s", time_string.c_str()));
     }
 
-    setlocale(LC_ALL, "");
-    setlocale(LC_NUMERIC, "C");
-
     bindtextdomain("mazemaze", "locale");
     textdomain("mazemaze");
     bind_textdomain_codeset("mazemaze", "UTF-8");

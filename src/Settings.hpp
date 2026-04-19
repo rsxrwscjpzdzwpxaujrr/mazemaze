@@ -96,6 +96,7 @@ private:
 
     std::map<std::string, sf::Keyboard::Key> controls;
 
+    void reset_locale();
     std::string check_locale();
 
 #ifdef _WIN32
