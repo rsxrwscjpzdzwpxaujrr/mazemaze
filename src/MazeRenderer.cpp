@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,6 +44,7 @@ MazeRenderer::enable() {
     visible  = new int[16] {-1};
     compiled = new bool[chunks_count] {false};
     draw_list = glGenLists(chunks_count);
+    old_hcp = Point2{-1, -1};
 
     set_states();
     on_enable();
