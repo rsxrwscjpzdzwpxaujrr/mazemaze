@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2018-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,6 +44,9 @@ main() {
 
         Logger::inst().log_status(fmt("Starting at %s", time_string.c_str()));
     }
+
+    setlocale(LC_ALL, "");
+    setlocale(LC_NUMERIC, "C");
 
     bindtextdomain("mazemaze", "locale");
     textdomain("mazemaze");

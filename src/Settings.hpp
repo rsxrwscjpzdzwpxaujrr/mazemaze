@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
+ * Copyright (c) 2019-2026, Мира Странная <rsxrwscjpzdzwpxaujrr@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -96,7 +96,7 @@ private:
 
     std::map<std::string, sf::Keyboard::Key> controls;
 
-    std::string reset_locales();
+    std::string check_locale();
 
 #ifdef _WIN32
 

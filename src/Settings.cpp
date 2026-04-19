@@ -107,7 +107,7 @@ Settings::Settings(bool readConfig) :
 
 #else
 
-    std::string temp_lang = reset_locales();
+    std::string temp_lang = check_locale();
     unsigned long enc_found = temp_lang.find('.');
 
     if (enc_found != std::string::npos)
@@ -255,7 +255,7 @@ Settings::set_lang(const std::string &lang) {
 
     setenv("LANGUAGE", using_lang.c_str(), true);
 
-    auto locale = reset_locales();
+    auto locale = check_locale();
 
     if (locale == "C") {
         Logger::inst().log_error(fmt("Locale \"%s\" detected, translations will not work.",
@@ -342,7 +342,7 @@ Settings::set_camera_bobbing(float camera_bobbing) {
 }
 
 std::string
-Settings::reset_locales() {
+Settings::check_locale() {
     // std::setlocale is not working on MinGW-w64
     char* result_ptr = setlocale(LC_ALL, nullptr);
 
@@ -361,8 +361,6 @@ Settings::reset_locales() {
         result = std::string(temp_str.begin() + equal_pos, temp_str.end());
     } else
         result = "";
-
-    setlocale(LC_NUMERIC, "C");
 
     return result;
 }
