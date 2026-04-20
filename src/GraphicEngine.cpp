@@ -67,7 +67,7 @@ GraphicEngine::open_window() {
     if (m_fullscreen)
         video_mode = sf::VideoMode::getDesktopMode();
     else
-        video_mode = sf::VideoMode({old_window_size.x, old_window_size.y});
+        video_mode = sf::VideoMode(old_window_size);
 
     open_window(video_mode, m_fullscreen);
 }
@@ -108,10 +108,8 @@ GraphicEngine::open_window(sf::VideoMode video_mode, bool fullscreen) {
 
     settings = m_window->getSettings();
 
-    if (icon_loaded) {
-        sf::Vector2u icon_size = icon.getSize();
-        m_window->setIcon({icon_size.x, icon_size.y}, icon.getPixelsPtr());
-    }
+    if (icon_loaded)
+        m_window->setIcon(icon.getSize(), icon.getPixelsPtr());
 
     set_vsync(m_vsync);
 }
@@ -213,7 +211,7 @@ GraphicEngine::set_fullscreen(bool fullscreen) {
 
                 video_mode = sf::VideoMode::getDesktopMode();
             } else
-                video_mode = sf::VideoMode({old_window_size.x, old_window_size.y});
+                video_mode = sf::VideoMode(old_window_size);
 
             need_reopen = true;
         }
@@ -231,10 +229,8 @@ GraphicEngine::set_antialiasing(unsigned int antialiasing) {
 
             if (m_fullscreen)
                 video_mode = sf::VideoMode::getDesktopMode();
-            else {
-                sf::Vector2u windowSize = m_window->getSize();
-                video_mode = sf::VideoMode({windowSize.x, windowSize.y});
-            }
+            else
+                video_mode = sf::VideoMode(m_window->getSize());
 
             need_reopen = true;
         }
